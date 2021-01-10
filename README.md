@@ -6,13 +6,13 @@
  
 **_visit the site_** [GoHealthy](https://gohealthy.pythonanywhere.com/)
  ```
- Go Healthy is a website for medical support. Purpose of the website is to deliver all details about Bed availability,
- Doctors and Blood Donor and how to do first aid. This website has four different features.
- In Check Hospital section user can see the all information about all  the Hospital and
+ Go Healthy is a website for medical support. Purpose of the website is to deliver all details about Bed and Antivenom availability in all hospitals,
+ Doctors and Blood Donor near you and how to do first aid. This website has four different features.
+ In Check Hospital section user can see the all information about all the Hospital and number of
  available bed in Hospital and also can book bed for patients and can see which hospital has Antivenom.
  In Find Doctor section user can see all the information about doctors of their location.
  And in Find Donor section user can see the all information about blood donors.
- In First Aid section there are several free videos are available which will provide you a guide about First Aid.
+ In First Aid section there are several free videos and photos are available which will provide you a guide about First Aid.
  ```
 ## Current Situation of the Healthcare System
    
