@@ -2123,12 +2123,6 @@ def LoadDistrict(request):
     response_data['districtcount'] = len(districts)
     return JsonResponse(response_data)
 
-def MyGeopoint(request):
-    API_Key = "AIzaSyAQFO3XycJlcainVq6xCGq0TOF9_3wqa58"
-    Google_API_Key = googlemaps.Client(key = API_Key)
-    data = {}
-    data['LAT'] = None
-    data['Long'] = None
 
 @login_required(login_url="/login/")
 def NewBook(request):
