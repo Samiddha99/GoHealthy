@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+{% load custom_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bed Book Status</title>
+
+    <script type="text/javascript">
+       function printInfo(ele) {
+        var prtContent = document.getElementById("printPage");
+        var WinPrint = window.open('', '', 'left=0,top=0,width=2480,height=3508,toolbar=0,scrollbars=0,status=0');
+        WinPrint.document.write(prtContent.innerHTML);
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        }
+    </script>
+
+</head>
+<body>
+
+<center>
+{% if noBook %}
+    <img src="{% static 'media/images/logo.png'%}" width="500" height="100"><br><br>
+    <h1 style="color:white">Error 404</h1>
+    <h4 style="color:red">
+        Booking Not Found!<br>
+        May be no booking was done with this Id or Patient has been released of this Booking Id.
+    </h4>
+    <br><br>
+    <h5>Click <a href="{% url 'StatusCheck' %}">Here</a> to Check Status of Booking</h5>
+    <h5 style="color:black">Go Back to <a href="{% url 'project-Home'%}">Home</a></h5>
+    {% else %}
+<div class="row">
+    <div class="col-md"></div>
+    <div class="col-md-8 ml-2 mr-2">
+<div id="printPage" align="center">
+        <table border="2" style="background-color:#FFF9E2;">
+            <tbody align="center">
+                <tr align="center">
+                    <th colspan="2">
+                        <h2 style="margin-bottom:5px">BOOKING DETAILS</h2>
+                        <h5><strong>Booking ID: <b>{{book.Booking_ID}}</b></strong></h5>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="row">Booking Time</th>
+                    <td>{{book.Booking_Time | IST}}</td>
+                </tr>
+                {% if book.Status == "Not Admit Still Now" %}
+                <tr>
+                    <th scope="row">Expire Time</th>
+                    <td>
+                        {{book.Expire_Time | IST}}
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th scope="row">Status</th>
+                    <td>{{book.Status}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Booked By</th>
+                    {% if book.Booked_By == "Hospital Authority" %}
+                    <td>{{book.Booked_By}}</td>
+                    {% else %}
+                    <td>{{book.user.username}}</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th scope="row">Bed No</th>
+                    <td>{{book.Bed_No}}</td>
+                </tr>
+                {% if book.Status != "Not Admit Still Now" %}
+                <tr>
+                    <th scope="row">Admitted</th>
+                    <td>{{book.Admit_Time | IST}}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th colspan="2" align="center"><h5>PATIENT'S DETAILS</h5></th>
+                </tr>
+                <tr>
+                    <th scope="row">Patient's Name</th>
+                    <td>{{book.Patient_Name}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Patient's Gender</th>
+                    <td>{{book.Gender}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Patient's Age</th>
+                    <td>{{book.Age}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email</th>
+                    <td>{{book.Email}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Mobile No</th>
+                    <td>{{book.Mobile}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Alternative Mobile No</th>
+                    <td>{{book.Alternative_Mobile}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Address</th>
+                    <td>{{book.Address}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">State</th>
+                    <td>{{book.State}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">District</th>
+                    <td>{{book.District}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Area Pin</th>
+                    <td>{{book.Pin}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Sub-Division</th>
+                    <td>{{book.Subdivision}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2"><h5>HOSPITAL DETAILS</h5></th>
+                </tr>
+                <tr>
+                    <th scope="row">Hospital Name</th>
+                    <td>{{book.Hospital_Name.Name}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Contact No</th>
+                    <td>{{book.Hospital_Name.Contact}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Address</th>
+                    <td>{{book.Hospital_Name.Address}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">State</th>
+                    <td>{{book.Hospital_Name.State}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">District</th>
+                    <td>{{book.Hospital_Name.District}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Subdivision</th>
+                    <td>{{book.Hospital_Name.Subdivision}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Pin</th>
+                    <td>{{book.Hospital_Name.Pin}}</td>
+                </tr>
+                {% if book.Status != "Not Admit Still Now" %}
+                    <tr>
+                        <th colspan="2"><h5>DISEASE</h5></th>
+                    </tr>
+                    <tr>
+                    <th scope="row">Disease</th>
+                    <td>{{book.Disease}}</td>
+                    </tr>
+                    {% endif %}
+            </tbody>
+        </table><br>
+    {% if book.Booked_By == "Hospital Authority" %}
+    <p>This Booking is done by Hospital Authority.<br>Mobile Number Verification is not done in that type of Booking.</p>
+    {% endif %}
+</div>
+        <button type="submit" class="btn btn-primary" onclick="printInfo(this)" id="print">
+            <i class="fad fa-print"></i>
+            Print This Page
+        </button>
+
+
+    <br><a href="{% url 'project-Home' %}" style="color:blue"><i class="fad fa-home"></i>
+    Go to Home</a>
+{% endif %}
+</div>
+<div class="col-md"></div>
+</div>
+</center>
+
+
+</body>
+</html>
+{%endblock%}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Emergency Number</title>
+</head>
+<body style="padding:2px">
+{% for i in emergency %}
+<table class="table table-hover" border="#0018FF">
+    <thead>
+    <tr align="center">
+      <th colspan="2" bgcolor="#4D4FFF" scope="col" style="color:white">{{i.Office}}</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr align="center" bgcolor="#FFC4FF">
+        <th scope="row">Person</th>
+        <td>{{i.Person}}</td>
+    </tr>
+    <tr align="center" bgcolor="#D9FFBE">
+        <th scope="row">Person's Designation</th>
+        <td>{{i.Person_Designation}}</td>
+    </tr>
+    <tr align="center" bgcolor="#FFFFD1">
+        <th scope="row">State</th>
+        <td>{{i.State}}</td>
+    </tr>
+    <tr align="center" bgcolor="#C8FFFF">
+        <th scope="row">District</th>
+        <td>{{i.District}}</td>
+    </tr>
+    <tr align="center" bgcolor="#FFCD9F">
+        <th scope="row">Subdivision</th>
+        <td>{{i.Subdivision}}</td>
+    </tr>
+    <tr align="center" bgcolor="#BFA5FF">
+        <th scope="row">Contact</th>
+        <td>{{i.Contact}}</td>
+    </tr>
+    <tr align="center" bgcolor="#F6FFA8">
+        <th scope="row">Contact 1</th>
+        <td>{{i.Contact_1}}</td>
+    </tr>
+    <tr align="center" bgcolor="#FFACB3">
+        <th scope="row">Contact 2</th>
+        <td>{{i.Contact_2}}</td>
+    </tr>
+    <tr align="center" bgcolor="#EEFFB4">
+        <th scope="row">Contact 3</th>
+        <td>{{i.Contact_3}}</td>
+    </tr>
+    <tr align="center" bgcolor="#9AFF97">
+        <th scope="row">Contact 4</th>
+        <td>{{i.Contact_4}}</td>
+    </tr>
+    <tr align="center" bgcolor="#B8B3FF">
+        <th scope="row">Contact 5</th>
+        <td>{{i.Contact_5}}</td>
+    </tr>
+    </tbody>
+</table>
+<br><br>
+{% endfor %}
+</body>
+</html>
+{%endblock%}

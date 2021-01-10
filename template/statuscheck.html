@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+{% load custom_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Status Check</title>
+</head>
+<body>
+<div class="row">
+    <div class="col-md-3 ml-2">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-book-tab" data-toggle="pill" href="#v-pills-book" role="tab"
+               aria-controls="v-pills-book" aria-selected="true">Bed Book Status</a>
+            <a class="nav-link" id="v-pills-complaint-tab" data-toggle="pill" href="#v-pills-complaint" role="tab"
+               aria-controls="v-pills-complaint" aria-selected="false">Complaint Status</a>
+        </div>
+    </div>
+    <div class="col-md-8 ml-2">
+        <div class="tab-content" id="v-pills-tabContent">
+            <br>
+            {% if type != "Complaint" %}
+            <div class="tab-pane fade show active" id="v-pills-book" role="tabpanel" aria-labelledby="v-pills-book-tab">
+            {% else %}
+            <div class="tab-pane fade" id="v-pills-book" role="tabpanel" aria-labelledby="v-pills-book-tab">
+            {% endif %}
+                <form id="bookstatusCheck" action="{% url 'StatusCheck' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group-inline">
+                        <label for="bookId"><strong>Enter Your Booking ID: &nbsp;</strong></label>
+                        <input type="text" name="id" id="bookId" maxlength="10" form="bookstatusCheck"
+                               placeholder="Booking ID">
+                        <button type="submit" name="type" value="Bed_Book" class="btn btn-success"
+                                form="bookstatusCheck">Check Status
+                        </button>
+                    </div>
+                </form>
+                <br><br>
+                {% if book == "no" %}
+                <span style="color:red"><h3> Booking Not Found!</h3>
+                <p>May be Patient of this booking has been released from the hospital or Patient was not admitted within the time or No booking was done with this Id. </p>
+                </span>
+                {% endif %}
+            </div>
+
+            {% if type == "Complaint" %}
+            <div class="tab-pane fade show active" id="v-pills-complaint" role="tabpanel" aria-labelledby="v-pills-complaint-tab">
+            {% else %}
+            <div class="tab-pane fade" id="v-pills-complaint" role="tabpanel" aria-labelledby="v-pills-complaint-tab">
+            {% endif %}
+                <form id="complaintstatusCheck" action="{% url 'StatusCheck' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group-inline">
+                        <label for="bookId"><strong>Enter Your Complaint ID: &nbsp;</strong></label>
+                        <input type="text" name="id" id="complaintId" maxlength="5" form="complaintstatusCheck"
+                               placeholder="Complaint ID">
+                        <button type="submit" name="type" value="Complaint" class="btn btn-success"
+                                form="complaintstatusCheck">Check Status
+                        </button>
+                    </div>
+                </form>
+                <br><br>
+                {% if comp == 'no' %}
+                <span style="color:red"><h3> Complaint Not Found!</h3>
+                <p>May be you type wrong Complaint ID or Your complaint is already resolved many days ago.</p>
+                </span>
+                {% elif comp == 'yes' %}
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="container bg-light">
+                            <div class="row">
+                                <div class="col-md"></div>
+                                <div class="col-md-5" align="center">
+                                    <h4>Complaint ID: {{complaint.Complain_Id}}</h4>
+                                </div>
+                                <div class="col-md-5" align="right">
+                                    <h6>Date: {{complaint.Complaint_Time | IST}}</h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md"></div>
+                                <div class="col-md" align="center">
+                                    <h6>Status: {{complaint.Status|upper}}</h6>
+                                    <br>
+                                </div>
+                                <div class="col-md"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" align="center">
+                                    <h5>By Whom: {{complaint.Name}}</h5>
+                                    <hr style="background-color:black">
+                                </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" align="left">
+                                    <h5>Email: {{complaint.Email}}</h5>
+                                </div>
+                                <div class="col-md">
+                                </div>
+                                <div class="col-md-5" align="left">
+                                    <h5>Contact: {{complaint.Phone}}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md"></div>
+                                <div class="col-md-7" align="center">
+                                    <h5>Address: </h5>
+                                    <p>{{complaint.Address}}</p>
+                                    <br>
+                                </div>
+                                <div class="col-md"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5" align="left">
+                                    <h5>State: {{complaint.State}}</h5>
+                                    <br>
+                                </div>
+                                <div class="col-md"></div>
+                                <div class="col-md-5" align="left">
+                                    <h5>District: {{complaint.District}}</h5>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5" align="left">
+                                    <h5>City: {{complaint.City}}</h5>
+                                    <br>
+                                </div>
+                                <div class="col-md"></div>
+                                <div class="col-md-5" align="left">
+                                    <h5>Pin: {{complaint.Pin}}</h5>
+                                </div>
+                            </div>
+                        <hr>
+                            <div class="row">
+                                <div class="col-md"></div>
+                                <div class="col-md-10" align="center">
+                                    {% if complaint.Attachment %}
+                                    <h5>Attachment:</h5><a href="{{complaint.Attachment.url}}" target="_blank">{{complaint.Attachment}}</a>
+                                    {% else %}
+                                    <h5>Attachment: None</h5>
+                                    {% endif %}
+                                    <br><br>
+                                </div>
+                                <div class="col-md"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md"></div>
+                                <div class="col-md-7" align="center">
+                                    <h5>My Complaint:</h5>
+                                    <p align="left">{{complaint.Complain}}</p>
+                                    <br>
+                                </div>
+                                <div class="col-md"></div>
+                            </div>
+                            {% if complaint.Status != "Pending" %}
+                            <div class="row">
+                                <div class="col-md"></div>
+                                <div class="col-md-7" align="center">
+                                    <h5>Reply:</h5>
+                                    <p align="left">{{complaint.Reply}}</p>
+                                    <br>
+                                </div>
+                                <div class="col-md"></div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md"></div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{%endblock%}

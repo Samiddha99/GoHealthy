@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body style="min-height:100%;background-image: url('{% static 'media/images/login background.jpg' %}');
+            background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
+<center>
+    <br>
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md ml-3 mr-3">
+            <div class="container bg-light"
+                 style="padding:20px;padding-bottom:30px;border-bottom-left-radius:50px;border-bottom-right-radius:50px;border-top-left-radius:50px;border-top-right-radius:50px;">
+                <img src="{% static 'media/images/logo.png' %}" width="200" height="80"><br><br>
+                <form id="login" method="post" action="{% url 'LoginMain' %}">
+                    {% csrf_token %}
+                        <input type="text" maxlength="15" aria-label="username" autocomplete="off" name="username" form="login" placeholder="&#xf007; Username" class="form-control" style="font-family:Arial, FontAwesome; width:70%" required/>
+                    <br>
+                    <input type="password" aria-label="password" autocomplete="off" minlength="15" name="password" form="login" class="form-control" placeholder="&#xf084; Password" style="font-family:Arial, FontAwesome; width:70%" required>
+                    <div style="color:red"><b>{{message}}</b></div><br>
+                    <input type="checkbox" form="login" id="remember1" name="remember">
+                    <input type="hidden" name="next" value="{{request.GET.next}}" form="login">
+                    <label for="remember1"><b>Keep me Logged In</b></label>
+                    <br><br>
+                    <h6><a href="{% url 'ResetPassword' %}" style="color:red">Forget Password?</a></h6>
+                    <h6>Don't have any account? <a href="{% url 'Register' %}">Register Now</a></h6>
+                    <br>
+                    <button type="submit" class="btn btn-primary" name="loginsubmit" form="login" style="width:100%">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md"></div>
+    </div>
+</center>
+</body>
+</html>
+{%endblock%}

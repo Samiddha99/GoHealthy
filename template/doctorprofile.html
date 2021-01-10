@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+{% load custom_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{person.Username.username}} - Profile</title>
+</head>
+<body class="bg-light">
+<center>
+    <h2 class="text-primary">{{person.Name|upper}}</h2><br>
+    {% if error %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:50%">
+        <strong>Error!</strong><br>{{message}}.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-4 ml-5 mr-5">
+            <h4>Username: <span class="text-primary">{{person.Username.username}}</span></h4>
+            {% if request.user.User_Type == "Doctor" %}
+            <h3 style="color:blue">Doctor</h3>
+            {% elif request.user.User_Type == "Blood Donor & Doctor" %}
+            <h3 style="color:blue">Doctor & Blood Donor</h3>
+            {% endif %}
+            <img src="{{person.Image.url}}" class="rounded-lg" height="250" width="250" border="primary" style="border-color:blue">
+            <form id="photo" method="post" action="{% url 'DoctorProfile' %}" enctype='multipart/form-data'>
+                {% csrf_token %}
+                <input type="file" name="picture" id="picture" form="photo" accept="image/*" required
+                       style="margin-top:2px">
+                <br><br>
+                <button type="submit" form="photo" class="btn btn-primary" name="action" value="image">Upload Profile
+                    Picture
+                </button>
+            </form>
+            <br>
+            <h4 class="text-danger"><span id="showgroup">Blood Group: {{person.Blood_Group}}</span>
+                <button type="button" class="btn" onclick="editgroup()" id="groupbtn"
+                        style="background-color:none;border:none"><i class="fad fa-pencil text-primary"></i></button>
+            </h4>
+            <form id="editgroupform" method="post">
+                {% csrf_token %}
+                <div id="editgroupfield" style="display:none">
+                    <select form='editgroupform' class='form-control' id='bloodGroup' name='bloodGroup' required style='width:45%'>
+                        <option label='Select Blood Group'>
+                        </option><option label='A+' value='A+'>A+</option>
+                        <option label='A-' value='A-'>A-</option>
+                        <option label='B+' value='B+'>B+</option>
+                        <option label='B-' value='B-'>B-</option>
+                        <option label='O+' value='O+'>O+</option>
+                        <option label='O-' value='O-'>O-</option>
+                        <option label='AB+' value='AB+'>AB+</option>
+                        <option label='AB-' value='AB-'>AB-</option>
+                    </select>
+                    <button type='submit' onclick='updategroup()' form='editgroupform' class='btn btn-danger' style='margin-top:2px'>Update</button>
+                </div>
+            </form>
+            <span id="groupmessage"></span>
+            <br>
+            <ul class="list-group">
+          <li class="list-group-item active" aria-current="true">IDENTIFICATION</li>
+          <li class="list-group-item">
+              <span style="float:left">Registration Number</span>
+              <span style="float:right">{{person.Registration_Number}}</span>
+          </li>
+        </ul>
+            <br>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span style="float:left">Profile Created</span>
+                    <span style="float:right">{{person.Username.date_joined | IST}}</span>
+                </li>
+                <li class="list-group-item">
+                    <span style="float:left">Last Login</span>
+                    <span style="float:right">{{person.Username.last_login | IST}}</span>
+                </li>
+                <li class="list-group-item">
+                    <span style="float:left">Last Profile Update</span>
+                    <span style="float:right">{{person.Last_Update | IST}}</span>
+                </li>
+            </ul>
+            <br><br>
+        </div>
+        <div class="col-md"></div>
+        <div class="col-md-6 ml-5 mr-5">
+            {% if request.user.User_Type != "Blood Donor & Doctor" %}
+            <form id="upgradeform" method="post" action="{% url 'Profile-Upgrade'%}">
+                {% csrf_token %}
+                <button class="btn btn-danger" type="submit" form="upgradeform">
+                    <b>Become A Blood Donor</b>
+                </button>
+            </form>
+            {% endif %}
+
+
+
+            <br><br>
+            <h3 class="bg-secondary text-light" style="padding:2px">GENERAL INFORMATION
+                <span style="float:right">
+                    <button type="button" id="genbtn" class="btn"
+                            style="border:none;background-color:none;font-size:20px" onclick="GenEdit()"><i
+                            class="fad fa-edit" style="color:white"></i></button>
+                </span>
+            </h3>
+            <div id="gen_data">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span style="float:left"><b>Name: </b></span>
+                        <span>{{person.Name}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="float:left"><b>Gender: </b></span>
+                        <span>{{person.Gender}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="float:left"><b>Degree: </b></span>
+                        <span>{{person.Degree}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="float:left"><b>Speciality: </b></span>
+                        <span>{{person.Special}}</span>
+                    </li>
+                </ul>
+                <br>
+            </div>
+            <div id="gen_edit" style="display:none">
+                <form id="geneditform" method="post" action="{% url 'DoctorProfile' %}">
+                    {% csrf_token %}
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span style="float:left"><b>Name: </b></span>
+                            <input type="text" class="form-control" name="name" id="name" form="geneditform"
+                                   value="{{person.Name}}" required style="width:50%">
+                        </li>
+                        <li class="list-group-item">
+                            <span style="float:left"><b>Gender: </b></span>
+                            <span id="gender_id">
+                        {% if person.Gender == "Male" %}
+                        <input type="radio" name="gender" id="male" form="geneditform" value="Male" checked required>
+                        {% else %}
+                        <input type="radio" name="gender" id="male" form="geneditform" value="Male" required>
+                        {% endif %}
+                        <label for="male">Male</label>
+
+                        {% if person.Gender == "Female" %}
+                        <input type="radio" name="gender" id="female" form="geneditform" value="Female" checked
+                               required>
+                        {% else %}
+                        <input type="radio" name="gender" id="female" form="geneditform" value="Female" required>
+                        {% endif %}
+                        <label for="female">Female</label><br>
+
+                        {% if person.Gender == "I not prefered to say" %}
+                        <input type="radio" name="gender" id="nosay" form="geneditform" value="I not prefered to say"
+                               checked required>
+                        {% else %}
+                        <input type="radio" name="gender" id="nosay" form="geneditform" value="I not prefered to say"
+                               required>
+                        {% endif %}
+                        <label for="nosay">I not prefered to say</label>
+
+                        {% if person.Gender == "Other" %}
+                        <input type="radio" name="gender" id="other" form="geneditform" value="Other" checked required>
+                        {% else %}
+                        <input type="radio" name="gender" id="other" form="geneditform" value="Other" required>
+                        {% endif %}
+                        <label for="other">Other</label>
+                    </span>
+                        </li>
+                    </ul>
+                    <button type="submit" form="geneditform" name="action" value="GeneralUpdate" class="btn btn-success"
+                            style="margin-top:2px;margin-bottom:10px;width:100%">Update
+                    </button>
+                </form>
+            </div>
+            <h3 class="bg-secondary text-light" style="padding:2px">CONTACT INFO
+                <span style="float:right">
+                    <button type="button" id="contactbtn" class="btn"
+                            style="border:none;background-color:none;font-size:20px" onclick="ContactEdit()"><i
+                            class="fad fa-edit" style="color:white"></i></button>
+                </span>
+            </h3>
+            <div id="contact_data">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span style="float:left"><b>Contact: </b></span>
+                        <span>{{person.Contact}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="float:left"><b>Email: </b></span>
+                        <span>{{person.Username.email}}</span>
+                    </li>
+                </ul>
+                <br>
+            </div>
+            <form id="contacteditform" method="post">
+                {% csrf_token %}
+                <div id="contact_edit" style="display:none">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span style="float:left"><b>Contact: </b></span>
+                            <input type="tel" onkeyup="detectchange()" class="form-control" id="contact"
+                                   form="contacteditform" value="{{person.Contact}}" maxlength="10" required
+                                   style="width:50%">
+                        </li>
+                        <li class="list-group-item">
+                            <span style="float:left"><b>Email: </b></span>
+                            <input type="email" onkeyup="detectchange()" class="form-control" id="email"
+                                   form="contacteditform" value="{{person.Username.email}}" required style="width:50%">
+                        </li>
+                        <li class="list-group-item">
+                            <div id="mobile-otp" style="display:none">
+                                <input type="text" onkeyup="showSubmit()" maxlength="6"
+                                       placeholder="OTP Sent to New Mobile No" class="form-control" id="mobileotp"
+                                       form="contacteditform" style="width:37%"><br>
+                            </div>
+                            <div id="email-otp" style="display:none">
+                                <input type="text" onkeyup="showSubmit()" maxlength="6"
+                                       placeholder="OTP Sent to New Email" class="form-control" id="emailotp"
+                                       form="contacteditform" style="width:37%">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <span id="message"></span>
+                <div id="otp-send" style="display:none">
+                    <button type="submit" form="contacteditform" id="otpbtn" onclick="otpsend()" class="btn btn-success"
+                            style="margin-top:2px;margin-bottom:5px">Send OTP
+                    </button>
+                </div>
+                <div id="sending" style="display:none">
+                    <button class="btn btn-success" type="button" disabled style="margin-top:2px;margin-bottom:5px">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Sending...
+                    </button>
+                </div>
+                <div id="submit" style="display:none">
+                    <button type="submit" form="contacteditform" onclick="contactSubmit()" class="btn btn-success"
+                            style="margin-top:2px;margin-bottom:5px;width:100%">Submit
+                    </button>
+                </div>
+            </form>
+            <div id="contactmessage"></div>
+
+            <br>
+            <h3 class="bg-secondary text-light" style="padding:2px">ADDRESS
+                <span style="float:right">
+                    <button type="button" id="addressbtn" class="btn"
+                            style="border:none;background-color:none;font-size:20px" onclick="AddressEdit()"><i
+                            class="fad fa-edit" style="color:white"></i></button>
+                </span>
+            </h3>
+            <div id="address_data">
+                <ul class="list-group">
+                    <li class="list-group-item"><span
+                            style="float:left"><b>Address:</b> </span><span>{{person.Address}}</span></li>
+                    <li class="list-group-item">
+                        <span style="float:left"><b>Pin:</b> </span>
+                        <span>{{person.Pin}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="float:left"><b>State:</b> </span>
+                        <span>{{person.State}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="float:left"><b>District:</b> </span>
+                        <span>{{person.District}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="float:left"><b>City:</b> </span>
+                        <span>{{person.City}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="float:left"><b>Subdivision:</b> </span>
+                        <span>{{person.Subdivision}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div id="address_edit" style="display:none">
+                <form id="addressform" method="post" action="{% url 'DoctorProfile' %}">
+                    {% csrf_token %}
+                    <ul class="list-group">
+                        <li class="list-group-item"><span
+                                style="float:left"><b>Address:</b> </span>
+                            <span>
+                        <textarea name="address" id="address" form="addressform" required class="form-control" rows="5"
+                                  style="width:50%">{{person.Address}}</textarea>
+                    </span>
+                        </li>
+                        <li class="list-group-item">
+                            <span style="float:left"><b>Pin:</b> </span>
+                            <span>
+                        <input type="text" name="pin" id="pin" onkeyup="loadAddress()" class="form-control"
+                               value="{{person.Pin}}" form="addressform" required maxlength="6" style="width:50%">
+                    </span>
+                            <div id="pinLoading"></div>
+                        </li>
+                        <li class="list-group-item">
+                            <span style="float:left"><b>State:</b> </span>
+                            <span>
+                        <select name="state" class="form-control" onchange="loadDistrict()" id="state"
+                                form="addressform" required
+                                style="width:50%">
+                                    <option value="{{person.State}}" selected>{{person.State}}</option>
+                                    <optgroup label="States">
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                        <option value="Assam">Assam</option>
+                                        <option value="Bihar">Bihar</option>
+                                        <option value="Chhattisgarh">Chhattisgarh</option>
+                                        <option value="Goa">Goa</option>
+                                        <option value="Gujarat">Gujarat</option>
+                                        <option value="Haryana">Haryana</option>
+                                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                        <option value="Jharkhand">Jharkhand</option>
+                                        <option value="Karnataka">Karnataka</option>
+                                        <option value="Kerala">Kerala</option>
+                                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                        <option value="Maharashtra">Maharashtra</option>
+                                        <option value="Manipur">Manipur</option>
+                                        <option value="Meghalaya">Meghalaya</option>
+                                        <option value="Mizoram">Mizoram</option>
+                                        <option value="Nagaland">Nagaland</option>
+                                        <option value="Odisha">Odisha</option>
+                                        <option value="Punjab">Punjab</option>
+                                        <option value="Rajasthan">Rajasthan</option>
+                                        <option value="Sikkim">Sikkim</option>
+                                        <option value="Tamil Nadu">Tamil Nadu</option>
+                                        <option value="Telangana">Telangana</option>
+                                        <option value="Tripura">Tripura</option>
+                                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                        <option value="Uttarakhand">Uttarakhand</option>
+                                        <option value="West Bengal">West Bengal</option>
+                                    </optgroup>
+                                    <optgroup label="Union Teritory">
+                                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                        <option value="Chandigarh">Chandigarh</option>
+                                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli
+                                            and
+                                            Daman and Diu
+                                        </option>
+                                        <option value="Delhi">Delhi</option>
+                                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                        <option value="Ladakh">Ladakh</option>
+                                        <option value="Lakshadweep">Lakshadweep</option>
+                                        <option value="Puducherry">Puducherry</option>
+                                    </optgroup>
+                                </select>
+                    </span>
+                        </li>
+                        <li class="list-group-item">
+                            <span style="float:left"><b>District:</b> </span>
+                            <span>
+                        <select id="district" class="form-control" name="district" form="addressform" required
+                                style="width:50%">
+                            {% for i in districts %}
+                            {% if i == person.district %}
+                            <option value="{{i}}" selected>{{i}}</option>
+                            {% else %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </span>
+                        </li>
+                        <li class="list-group-item">
+                            <span style="float:left"><b>City:</b> </span>
+                            <span>
+                        <input type="text" name="city" id="city" class="form-control" value="{{person.City}}"
+                               form="addressform" required style="width:50%">
+                    </span>
+                        </li>
+                        <li class="list-group-item">
+                            <span style="float:left"><b>Subdivision:</b> </span>
+                            <span>
+                        <input type="text" name="subdivision" id="subdivision" class="form-control"
+                               value="{{person.Subdivision}}" form="addressform" required style="width:50%">
+                    </span>
+                        </li>
+                    </ul>
+                    <button type="submit" name="action" value="AddressUpdate" form="addressform" class="btn btn-success"
+                            style="margin-top:2px;width:100%">Update
+                    </button>
+                </form>
+            </div>
+            <br>
+        </div>
+    </div>
+</center>
+</body>
+<script>
+    function upgradePro()
+    {
+
+    function upgradeHandler(e) {
+    e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'Profile-Upgrade' %},
+            data:{
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                if (response.error)
+                {
+                alert('Profile Has been Upgraded')
+                location.replace({% url 'Profile' %})
+                }
+            },
+            error: function(response)
+            {
+                document.getElementById("upgrademessage").innerHTML = "<strong style='color:red'>Failed!</strong>"
+            },
+        });
+   }
+    }
+</script>
+<script>
+    function loadDistrict()
+    {
+    state = $('#state').val();
+    var select_option_dist = {}
+    var select_dist = document.getElementById("district");
+
+    $.ajax({
+        url:{% url 'LoadDistrict' %},
+        data:{
+            'state':state,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+         $('#subdivision').val(response.division);
+
+        var dc = Number(response.districtcount);
+        select_dist.options.length = 0;
+        for(i=0; i<dc; i++)
+        {
+        select_option_dist[response.district[i]] = response.district[i];
+        }
+        for(index in select_option_dist)
+        {
+        select_dist.options[select_dist.options.length] = new Option(select_option_dist[index], index);
+        }
+        },
+    });
+    }
+</script>
+<script>
+    function loadAddress()
+    {
+    document.getElementById("pinLoading").innerHTML = "<button class='btn btn-primary' type='button' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Fetching Address...</button>"
+    pin = $('#pin').val();
+    var select_option_state = {}
+    var select_state = document.getElementById("state");
+
+
+    var select_option_dist = {}
+    var select_dist = document.getElementById("district");
+
+
+    $.ajax(
+    {
+        url: {% url 'LoadAddress' %},
+        data:{
+            'pin':pin,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+        document.getElementById("pinLoading").innerHTML = ""
+        $('#city').val(response.city);
+            $('#subdivision').val(response.division);
+
+            $('#state').val(response.state);
+
+            var dc = Number(response.districtcount);
+            select_dist.options.length = 0;
+            for(i=0; i<dc; i++)
+            {
+            select_option_dist[response.districts[i]] = response.districts[i];
+            }
+            for(index in select_option_dist)
+            {
+            select_dist.options[select_dist.options.length] = new Option(select_option_dist[index], index);
+            }
+
+        },
+        error: function(response)
+        {
+        document.getElementById("pinLoading").innerHTML = ""
+        },
+    });
+    }
+
+
+
+</script>
+<script>
+    function GenEdit()
+    {
+    document.getElementById('gen_data').style.display = "none"
+    document.getElementById('gen_edit').style.display = "block"
+    document.getElementById('genbtn').setAttribute("onclick", "GenShow()");
+    }
+
+
+</script>
+<script>
+    function GenShow()
+    {
+    document.getElementById('gen_data').style.display = "block"
+    document.getElementById('gen_edit').style.display = "none"
+    document.getElementById('genbtn').setAttribute("onclick", "GenEdit()");
+    }
+
+
+</script>
+<script>
+    function AddressEdit()
+    {
+    document.getElementById('address_data').style.display = "none"
+    document.getElementById('address_edit').style.display = "block"
+    document.getElementById('addressbtn').setAttribute("onclick", "AddressShow()");
+    }
+
+
+</script>
+<script>
+    function AddressShow()
+    {
+    document.getElementById('address_data').style.display = "block"
+    document.getElementById('address_edit').style.display = "none"
+    document.getElementById('addressbtn').setAttribute("onclick", "AddressEdit()");
+    }
+
+
+</script>
+<script>
+    function ContactEdit()
+    {
+    document.getElementById('contact_data').style.display = "none"
+    document.getElementById('contact_edit').style.display = "block"
+    document.getElementById('otp-send').style.display = "none"
+    document.getElementById("sending").style.display = "none"
+    document.getElementById('mobile-otp').style.display = "none"
+    document.getElementById('email-otp').style.display = "none"
+    document.getElementById('submit').style.display = "none"
+    document.getElementById('contactbtn').setAttribute("onclick", "ContactShow()");
+    document.getElementById("message").innerHTML = ""
+    }
+
+
+</script>
+<script>
+    function ContactShow()
+    {
+    document.getElementById('contact_data').style.display = "block"
+    document.getElementById('contact_edit').style.display = "none"
+    document.getElementById('otp-send').style.display = "none"
+    document.getElementById("sending").style.display = "none"
+    document.getElementById('mobile-otp').style.display = "none"
+    document.getElementById('email-otp').style.display = "none"
+    document.getElementById('submit').style.display = "none"
+    document.getElementById('contactbtn').setAttribute("onclick", "ContactEdit()");
+    document.getElementById("message").innerHTML = ""
+    }
+
+
+</script>
+<script>
+    function detectchange()
+    {
+    document.getElementById('otp-send').style.display = "none"
+    document.getElementById("sending").style.display = "none"
+    document.getElementById("submit").style.display = "none"
+    document.getElementById('mobile-otp').style.display = "none"
+    document.getElementById('email-otp').style.display = "none"
+    document.getElementById("message").innerHTML = ""
+    var email = $('#email').val()
+    var contact = $('#contact').val()
+    $.ajax({
+    url: {% url 'Detect-Change' %},
+    data: {
+        'email':email,
+        'contact':contact,
+        },
+        dataType: 'json',
+        success: function(data)
+        {
+        if(data.change === "yes")
+        {
+            document.getElementById('otp-send').style.display = "block"
+        }
+        else
+        {
+        document.getElementById('otp-send').style.display = "none"
+        }
+        },
+   });
+    }
+</script>
+<script>
+    function otpsend()
+    {
+     document.getElementById("message").innerHTML = ""
+    document.getElementById('otp-send').style.display = "none"
+    document.getElementById("sending").style.display = 'block'
+
+     const form = document.getElementById('contacteditform');
+    form.addEventListener("submit", otpsendHandler);
+
+    function otpsendHandler(e) {
+    e.preventDefault();
+        document.getElementById("otpbtn").disabled = true
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'Edit-Opt-Send' %},
+            data:{
+                contact:$('#contact').val(),
+                email:$('#email').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            { document.getElementById("sending").style.display = 'none'
+            document.getElementById("otpbtn").disabled = false
+            if (response.emailChange == "yes")
+            {
+            document.getElementById('email-otp').style.display = "block"
+            }
+            if (response.mobileChange == "yes")
+            {
+            document.getElementById('mobile-otp').style.display = "block"
+            }
+
+            },
+            error: function(response)
+            { document.getElementById("otpbtn").disabled = false
+              document.getElementById("message").innerHTML = "<strong style='color:red'>OTP Send Failed!</strong>"
+            },
+        });
+   }
+    }
+
+
+</script>
+<script>
+    function showSubmit()
+    {
+    var eotp = $('#emailotp').val().length;
+    var motp = $('#mobileotp').val().length;
+    var m = Number(motp)
+    e = Number(eotp)
+    if (m == 6 || e == 6)
+    {
+    document.getElementById('submit').style.display = "block"
+    }
+    else
+    {
+    document.getElementById('submit').style.display = "none"
+    }
+    }
+
+
+</script>
+<script>
+    function contactSubmit()
+    {
+     const form = document.getElementById('contacteditform');
+    form.addEventListener("submit", contactHandler);
+
+    function contactHandler(e) {
+    e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'Edit-Contact' %},
+            data:{
+                contact:$('#contact').val(),
+                email:$('#email').val(),
+                emailotp:$('#emailotp').val(),
+                mobileotp:$('#mobileotp').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                if (response.error == "0")
+                {
+                location.reload()
+                }
+                else if (response.error == "1")
+                {
+                document.getElementById("contactmessage").innerHTML = "<strong style='color:red'>Invalid OTP!</strong>"
+                }
+                else if (response.error == "2")
+                {
+                document.getElementById("contactmessage").innerHTML = "<strong style='color:red'>Failed!</strong>"
+                }
+            },
+            error: function(response)
+            {
+                document.getElementById("contactmessage").innerHTML = "<strong style='color:red'>Failed!</strong>"
+            },
+        });
+   }
+    }
+</script>
+<script>
+    function editgroup()
+    {
+      document.getElementById('editgroupfield').style.display = "block"
+    document.getElementById('groupbtn').setAttribute("onclick", "hidegroup()");
+    }
+
+
+
+</script>
+<script>
+    function hidegroup()
+    {
+    document.getElementById('editgroupfield').style.display = "none"
+    document.getElementById('groupbtn').setAttribute("onclick", "editgroup()");
+    }
+
+
+
+</script>
+<script>
+    function updategroup()
+    {
+    const form = document.getElementById('editgroupform');
+    form.addEventListener("submit", groupHandler);
+
+    function groupHandler(e) {
+    var group = $('#bloodGroup').val();
+    e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'Edit-BloodGroup' %},
+            data:{
+                bloodGroup:$('#bloodGroup').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+            document.getElementById("showgroup").innerHTML = "Blood Group: "+group+""
+            document.getElementById('editgroupfield').innerHTML = ""
+            document.getElementById('groupbtn').setAttribute("onclick", "editgroup()");
+            },
+            error: function(response)
+            {
+                document.getElementById("groupmessage").innerHTML = "<strong style='color:red'>Failed!</strong>"
+            },
+        });
+   }
+    }
+
+
+
+</script>
+</html>
+{%endblock%}

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}   <!--This is to include the content of base.html to this page-->
+{% load static %}
+{% load custom_tags %}
+{% load tz %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body style="background-image: url('{% static 'media/images/dot.png' %}');
+             background-size: 100% 100%;background-repeat:no-repeat;background-attachment:fixed;">
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Under Working</h5>
+                </div>
+                <div class="modal-body">
+                    <strong>Comming Soon......</strong><br>
+                     Currently Chat Support is not available. At now this page is in Working State.<br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" onclick="location.href='{% url 'project-Home' %}'">Go Back to Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 ml-3 mr-3" align="right">
+            <div id="openmychat" style="display:none">
+                <button type="button" class="btn btn-info w-100" onclick="openMyChat()">
+                    <i class="fas fa-bars fa-2x" style="float:left"></i><b>Open My Chats</b>
+                </button>
+                <br>
+            </div>
+            <div class="container bg-info" id="mychat"
+                 style="padding:0px;padding-left:10px;padding-top:10px;display:block;">
+                <div class="bg-light mb-1" style="padding:20px;margin-right:10px">
+                    <img align="left" src="{{myself.Image.url}}" class="rounded-circle" height="50" width="50">
+                    <button type="button" class="btn" onclick="location.reload()" title="Refresh" style="border:none;background-color:none">
+                        <i class="fas fa-sync-alt text-primary" style="font-size:20px"></i>
+                    </button>
+
+                    <button type="button" title="Close My Chats Section" onclick="closeMyChat()" id="close"
+                            class="btn btn-danger" style=""><i class="fas fa-times"></i></button>
+                </div>
+                <form id="allchatsearchform" method="post" action="" style="margin-right:10px">
+                    {% csrf_token %}
+                    <input type="search" name="chatsearch" required class="form-control" placeholder="Search Chats">
+                    <button type="submit" class="btn btn-success" form="allchatsearchform"
+                            style="border-color:white;float:right;margin-top:5px;width:50%"><i
+                            class="fad fa-search"></i>&nbsp Search
+                    </button>
+                    <br>
+                </form>
+                <br>
+                <div id="messages" style="height:410px;overflow-x: scroll;overflow: auto;display:block">
+                    {% for i in mychats %}
+                    <form id="userchat" method="post" action="{% url 'Chat' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-info" style="border:none;width:100%" form="userchat">
+                            {% if i.From == request.user %}
+                            <input type="hidden" name="chatwith" value="{{i.To.username}}">
+                            <span style="float:right;color:blue">{{i.Time | localtime}}</span>
+                            <span style="float:left" class="text-light"><img
+                                    src="/media/{{i.To.username | UserData:'Image'}}"
+                                    class="rounded-circle" height="40" width="40">
+                            &nbsp;<b>{{i.To.username | UserData:'Name'}}</b>
+                        </span>
+                            {% elif i.To == request.user %}
+                            <input type="hidden" name="chatwith" value="{{i.From.username}}">
+                            <span style="float:right;color:blue">{{i.Time | localtime}}</span>
+                            <span><img src="/media/{{i.From.username|UserData:'Image'}}" class="rounded-circle"
+                                       height="40"
+                                       width="40">&nbsp;<b>{{i.From.username | UserData:'Name'}}</b></span>
+                            {% endif %}
+                            <br><br>
+                        </button>
+                        <hr>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
+        </div>
+
+        <div class="col-md-6 ml-4 mr-3 bg-secondary" style="padding:0px">
+            {% if person == 'N/A' %}
+            <h1 class="text-light" align="center"><i class="fad fa-comment-smile fa-5x"></i></h1>
+            <h1 class="text-light" align="center">Select a chat from My Chats</h1>
+            {% else %}
+            <div class="w-100" style="background-color:#D0D3D3;padding:15px;padding-left:20px">
+                <div class="row">
+                    <div class="col-md-7">
+                    <span><img src="{{data.Image.url}}" class="rounded-circle" height="40" width="40">
+                        <b class="text-muted" style="font-size:17px">{{data.Name}}</b>
+                        <button class="btn" type="button" data-toggle="collapse"
+                                data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="border:none;background-color:none">
+                        <i class="fad fa-chevron-square-down fa-2x"></i>
+                      </button>
+                    </span>
+                    </div>
+                    <div class="col-md" align="right">
+                        <div align="right">
+                            <form id="chatform" method="post" action="">
+                                {% csrf_token %}
+                                <div class="form-inline" align="right">
+                                    <div class="row">
+                                    <input type="search" name="chatsearch" class="form-control" form="chatform"
+                                           id="chatsearch" placeholder="Search Chat Here">
+                                    <button type="submit" class="btn btn-primary" form="chatform" name="action"
+                                            value="searchchat"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body bg-light">
+                    <h5 align="center">{{person.User_Type}}</h5>
+                    <h6>Mobile: {{data.Contact}}</h6>
+                    <h6>Email: {{person.email}}</h6>
+                    <h6>State: {{data.State}}</h6>
+                    <h6>District: {{data.District}}</h6>
+                    <h6>Subdivision: {{data.Subdivision}}</h6>
+                    <h6>State: {{data.State}}</h6>
+                    <h6>Pin: {{data.Pin}}</h6>
+                    <h6>Address: {{data.Address}}</h6>
+                </div>
+            </div>
+            <div style="background-image: url('{% static 'media/images/b0.jpg' %}');
+            background-size: 100% 100%;background-repeat:no-repeat;
+            height:500px;padding:10px;overflow-x: scroll;overflow: auto;box-sizing: content-box;">
+                {% for i in chats %}
+                {% if i.To == request.user %}
+                <div align="left">
+                    <div
+                         style="padding:10px;padding-bottom:0px;background-color:white;width:60%;border-top-right-radius:10px;border-bottom-right-radius:10px;border-bottom-left-radius:10px;">
+                        <p>{{i.Message}}</p>
+                        <p class="text-muted" align="right">{{i.Time | localtime}}</p>
+                    </div>
+                </div>
+                {% elif i.From == request.user %}
+                <div align="right">
+                    <div style="padding:10px;padding-bottom:0px;background-color:#A7FF8C;width:60%;border-top-right-radius:10px;border-top-left-radius:10px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;">
+                        <p>{{i.Message}}</p>
+                        <p class="text-muted">{{i.Time | localtime}}</p>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div style="padding:10px;background-color:#C2C5C5">
+                <form id="sendchat" method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-inline">
+                        <input type="text" autocomplete="off" name="chat" id="chat" form="sendchat" class="form-control"
+                                  placeholder="Type Your Message" style="width:100%">
+                        <span id="sendchatmessage" style="display:none"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md" style="background-color:white"></div>
+        </div>
+    </div>
+
+    <script type="module">
+         $('#exampleModal').modal('show')
+    </script>
+    <script>
+        function sendChat()
+        {
+        document.getElementById("sendchatmessage").style.display = "none"
+    function sendOTPHandler(e) {
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'OTPSendReg' %},
+            data:{
+                chat:$('#chat').val(),
+                action:"ChatSend",
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                document.getElementById("otpsedmessage").innerHTML = "<strong style='color:red'>OTP Send Failed!</strong>"
+            },
+            error: function(response)
+                document.getElementById("sendchatmessage").style.display = "block"
+                document.getElementById("sendchatmessage").innerHTML = "<p style='color:red'>Message Send Failes</strong>"
+            },
+        });
+   }
+   }
+    </script>
+    <script>
+    function closeMyChat()
+    {
+    document.getElementById('mychat').style.display = "none"
+    document.getElementById('openmychat').style.display = "block"
+    }
+    </script>
+    <script>
+    function openMyChat()
+    {
+    document.getElementById('openmychat').style.display = "none"
+    document.getElementById('mychat').style.display = "block"
+    }
+
+
+    </script>
+</body>
+</html>
+{%endblock%}

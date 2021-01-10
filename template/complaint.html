@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+<html lang="en">
+<head style="min-width:100px;min-height-100px">
+    <meta charset="UTF-8">
+    <title>Go Healthy | Complaint</title>
+</head>
+<body style="background-image: url('{% static 'media/images/complaint back.jpg' %}');
+             background-size: 100% 100%;background-repeat:no-repeat;background-attachment:fixed; backdrop-filter: blur(3px);min-height:100%">
+<!--Make a background-->
+
+<center>
+    <h1 style="color:yellow;font-weight:bold; text-shadow:-4px 4px black">DROP YOUR COMPLAINT HERE</h1>
+
+    <!--Create a Message-->
+    <div class="alert alert-success" role="alert"
+         style="margin-bottom:10px;margin-left:10px;margin-right:10px;background-color:orange">
+        <h4 class="alert-heading" style="color:brown;font-size:50px">Provide Correct Details!</h4>
+        <p style="color:white">This page is to do complaint against any services. If you face any unwanted situation or
+            any other problem
+            then pleace inform us with correct details.
+            <br>If we find that your entered details in incorrect then we can't
+            resolve your issues. To Solve your problem we should have proper information about the complainer.</p>
+        <hr>
+        <p class="mb-0" style="color:blue;font-size:30px">Remember! We never share your data to anyone expact the
+            authority.</p>
+    </div>
+
+
+    {% if success is 1 %} <!--error function is defined in views.py-->
+    <div class="alert alert-success alert-dismissible fade show" role="alert" style="width:50%">
+        <strong>Success!</strong><br>We Successfully Submit Your Complaint! We will contact you if needed<br>
+        <h6>Your Complaint ID: <b>{{complaintId}}</b></h6>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% elif success is 0 %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:50%">
+        <strong>Error!</strong> {{message}}.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md-7 ml-3 mr-1">
+            <div class="container" style="background-color:white;opacity:0.9;padding:10px;border-radius:25px;">
+                <img src="{% static 'media/images/complaint.jpg' %}" width="100%"
+                     style="margin-bottom:40px;border-top-left-radius:25px;border-top-right-radius:25px;opacity:1">
+                <h6 style="color:red">All <b>*</b> Fields are Mandatory</h6><br>
+                <form action="{% url 'project-Complain' %}" method="post" id="complainForm"
+                      enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    <div class="fieldWrapper">
+                        <div class="row">
+                            <div class="col-md"></div>
+                            <div class="col-md-6 ml-3" align="left">
+                                <label style="font-size:21px;">Name:<b style="color:red">*</b></label>
+                                <input type="text" class="form-control" name="name" value="{{Name}}" form="complainForm" required>
+                                <br><br>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md ml-3" align="left">
+                                <label style="font-size:21px;">Email:<b style="color:red">*</b></label>
+                                <input type="email" class="form-control" name="email" value="{{Email}}" form="complainForm" required>
+                                <br><br>
+                            </div>
+                            <div class="col-md ml-3" align="left">
+                                <label style="font-size:21px;">Contact:<b style="color:red">*</b></label>
+                                <input type="tel" maxlength="10" class="form-control" name="phone" value="{{Phone}}" form="complainForm" required>
+                                <br><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md"></div>
+                            <div class="col-md-7 ml-3" align="left">
+                                <label style="font-size:21px;">Address:<b style="color:red">*</b></label>
+                                <textarea name="address" class="form-control" rows="5" form="complainForm" required>{{Address}}</textarea>
+                                <br><br>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md"></div>
+                            <div class="col-md-5 ml-3" align="left">
+                                <label style="font-size:21px;">Pin:<b style="color:red">*</b></label>
+                                <input type="text" name="pin" class="form-control" maxlength="6" id="pin" value="{{Pin}}" form="complainForm" required>
+                                <br><br>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md ml-3" align="left">
+                                <label style="font-size:21px;">Sub-Division:<b style="color:red">*</b></label>
+                                <input type="text" name="subdivision" class="form-control" id="subdivision" value="{{Subdivision}}" form="complainForm" required>
+                                <br><br>
+                            </div>
+                            <div class="col-md ml-3" align="left">
+                                <label style="font-size:21px;">City:<b style="color:red">*</b></label>
+                                <input type="text" name="city" id="city" class="form-control" value="{{City}}" form="complainForm" required>
+                                <br><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md ml-3" align="left">
+                                <label style="font-size:21px;">State:<b style="color:red">*</b></label>
+                                <select name="state" id="state" class="form-control" onchange="loadDistrict()" form="complainForm" required>
+                                    <option label="Select State"></option>
+                            <optgroup label="States">
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                            </optgroup>
+                            <optgroup label="Union Teritory">
+                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                <option value="Chandigarh">Chandigarh</option>
+                                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli
+                                    and Daman and Diu
+                                </option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                <option value="Ladakh">Ladakh</option>
+                                <option value="Lakshadweep">Lakshadweep</option>
+                                <option value="Puducherry">Puducherry</option>
+                            </optgroup>
+                                </select><br><br>
+                            </div>
+                            <div class="col-md ml-3" align="left">
+                                <label style="font-size:21px;">District:<b style="color:red">*</b></label>
+                                <select name="district" class="form-control" id="district" form="complainForm" required>
+                                </select>
+                                <br><br>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md"></div>
+                            <div class="col-md-10">
+                                <label style="font-size:21px;">Attachment (If any):</label><br>
+                                <input type="file" name="attachment" form="complainForm">
+                                <br>
+                                <p class="text-muted">If you have any document or proof regarding your complaint, then please attach it.</p>
+                                <br><br>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md"></div>
+                            <div class="col-md-9">
+                                <label style="font-size:21px;">Complaint:<b style="color:red">*</b></label>
+                                <textarea name="complaint" class="form-control" form="complainForm" rows="8" placeholder="Write Your Complaint..." required></textarea>
+                                <br><br><br>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+
+                        <button type="submit" form="complainForm" class="btn btn-success" id="submit"
+                                style="width:130px;font-family:bold;font-size:20px;margin-bottom:30px">
+                            Submit
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md"></div>
+    </div>
+</center>
+{% if success is 1 %}
+<script>
+        alert('We Successfully Submit Your Complaint! We will contact you if needed.\n See Your Booking ID bellow.);
+</script>
+{% endif %}
+<script>
+    function loadDistrict()
+    {
+    state = $('#state').val();
+    var select_option_dist = {}
+    var select_dist = document.getElementById("district");
+
+    $.ajax({
+        url:{% url 'LoadDistrict' %},
+        data:{
+            'state':state,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+        var dc = Number(response.districtcount);
+        select_dist.options.length = 0;
+        for(i=0; i<dc; i++)
+        {
+        select_option_dist[response.district[i]] = response.district[i];
+        }
+        for(index in select_option_dist)
+        {
+        select_dist.options[select_dist.options.length] = new Option(select_option_dist[index], index);
+        }
+        },
+    });
+    }
+</script>
+</body>
+</html>
+{%endblock%}

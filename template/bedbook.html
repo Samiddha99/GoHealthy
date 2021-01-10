@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bed Book in {{Hospital}}</title>
+
+<body style="background-image: url('{% static 'media/images/water.jpg' %}');
+             background-size: 100% 100%;background-repeat:no-repeat;background-attachment:fixed;">
+
+<div align="center">
+    {% if noHospital %}
+    <img src="{% static 'media/images/logo.png'%}" width="500" height="100"><br><br>
+    <h1 style="color:white">Error 404</h1>
+    <h4 style="color:red">
+        Hospital Not Found!<br>
+        You doesn't book bed in any non-existing hospital.
+    </h4>
+    <br><br>
+    <h5 style="color:lime">Click <a href="{% url 'project-Hospital' %}">Here</a> to Find a Hospital in Your Locality
+    </h5>
+    <h5 style="color:white">Go Back to <a href="{% url 'project-Home'%}">Home</a></h5>
+    {% elif noBed %}
+    <img src="{% static 'media/images/logo.png'%}" width="500" height="100"><br><br>
+    <h1 style="color:white">Invalid Request</h1>
+    <h4 style="color:red">
+        Booking not Possible!<br>
+        At the moment this Hospital has not any available bed.
+    </h4>
+    <br><br>
+    <h5 style="color:lime">Click <a href="{% url 'project-Hospital' %}">Here</a> to Find other Hospital in Your Locality
+    </h5>
+    <h5 style="color:white">Go Back to <a href="{% url 'project-Home'%}">Home</a></h5>
+    {% else %}
+    {% if error %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:50%">
+        <strong>Error!<br></strong> {{message}}.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <h1 style="color:white">Book Bed in {{Hospital.Name}} </h1><br><br>
+    {% if NoBook %}
+    <h5 style="color:red">Sorry to say that...<br>At the moment no beds are available in the Hospital.</h5>
+    {% else %}
+    <div class="col-lg"></div>
+    <div class="col-lg-6 ml-2 mr-2">
+        <div class="container" id="cont" style="background-color:yellow;padding:10px">
+            <form method="post" id="bookbed" name="bookbed"
+                  action="{% url 'bedbook' hospitalID=Hospital.Hospital_Id %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="hospital"><b>HOSPITAL</b></label>
+                    </div>
+                    <div class="col-lg">
+                        <input type="text" name="hospital" id="hospital" form="bookbed" value="{{Hospital.Name}}"
+                               readonly="readonly" required style="width:100%">
+                    </div>
+                </div>
+                <hr style="background-color:red">
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="patientName"><b>Enter Patient's Name </b><span
+                                style="color:red"><b>*</b></span></label>
+                    </div>
+                    <div class="col-lg">
+                        <input type="text" name="patientName" value="{{patientName}}" id="patientName" form="bookbed"
+                               maxlength="100"
+                               placeholder="Patient's Name" required style="width:100%">
+                    </div>
+                </div>
+                <hr style="background-color:red">
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="patientName"><b>Enter Patient's Age </b><span
+                                style="color:red"><b>*</b></span></label>
+                    </div>
+                    <div class="col-lg">
+                        <input type="number" name="age" max="{{ageAllow}}" value="{{age}}" id="age" form="bookbed"
+                               placeholder="Patient's Age" required style="width:100%">
+                    </div>
+                </div>
+                {% if ageAllow <= 10 %}
+                <p style="color:red">At now only Child Ward has available bed. So you can only book a bed for Child
+                    Patient(age must be less than or equal to 10)</p>
+                {% endif %}
+                <hr style="background-color:red">
+                <div class="row">
+                    <div class="col-lg">
+                        <label><b>Select Patient's Gender </b><span style="color:red"><b>*</b></span></label>
+                    </div>
+                    <div class="col-lg">
+                        {% if gen == "Male" %}
+                        <input type="radio" id="male" value="Male" name="gender" form="bookbed" checked required>
+                        <label for="male">Male</label>
+                        <input type="radio" id="female" disabled required>
+                        <label for="female">Female</label>
+                        <input type="radio" id="other" disabled required>
+                        <label for="other">Other</label>
+                        {% elif gen == "Female" %}
+                        <input type="radio" id="male" disabled required>
+                        <label for="male">Male</label>
+                        <input type="radio" id="female" value="Female" name="gender" form="bookbed" checked required>
+                        <label for="female">Female</label>
+                        <input type="radio" id="other" disabled required>
+                        <label for="other">Other</label>
+                        {% else %}
+                        {% if gender == "Male" %}
+                        <input type="radio" id="male" value="Male" name="gender" form="bookbed" checked required>
+                        {% else %}
+                        <input type="radio" id="male" value="Male" name="gender" form="bookbed" required>
+                        {% endif %}
+                        <label for="male">Male</label>
+                        {% if gender == "Female" %}
+                        <input type="radio" id="female" value="Female" name="gender" form="bookbed" checked required>
+                        {% else %}
+                        <input type="radio" id="female" value="Female" name="gender" form="bookbed" required>
+                        {% endif %}
+                        <label for="female">Female</label>
+                        {% if gender == "Other" %}
+                        <input type="radio" id="other" value="Other" name="gender" form="bookbed" checked required>
+                        {% else %}
+                        <input type="radio" id="other" value="Other" name="gender" form="bookbed" required>
+                        {% endif %}
+                        <label for="other">Other</label>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if gen == "Male" %}
+                <p style="color:red">At now only Men Ward has available bed. So you can only book a bed for Male
+                    Patient.</p>
+                {% elif gen == "Female" %}
+                <p style="color:red">At now only Women Ward has available bed. So you can only book a bed for Female
+                    Patient.</p>
+                {% endif %}
+                <hr style="background-color:red">
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="email"><b>Enter Your Email</b></label>
+                    </div>
+                    <div class="col-lg">
+                        <input type="email" maxlength="100" value="{{email}}" autocomplete="off" name="email" id="email"
+                               form="bookbed"
+                               placeholder="example@gmail.com" style="width:100%">
+                    </div>
+                </div>
+                <hr style="background-color:red">
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="mobile"><b>Enter Your Mobile No </b><span style="color:red"><b>*</b></span></label>
+                    </div>
+                    <div class="col-lg">
+                        <input type="tel" name="mobile" value="{{mobile}}" autocomplete="off" id="mobile" maxlength="10"
+                               form="bookbed" onkeyup="mobilechange()"
+                               placeholder="10 digit Mobile No" required style="width:100%">
+                    </div>
+                </div>
+                <hr style="background-color:red">
+
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="altmobile"><b>Enter your Alternative Mobile No</b></label>
+                    </div>
+                    <div class="col-lg">
+                        <input type="tel" name="altmobile" value="{{altmobile}}" id="altmobile" autocomplete="off"
+                               maxlength="10"
+                               form="bookbed"
+                               placeholder="10 digit Mobile No" style="width:100%">
+                    </div>
+                </div>
+                <hr style="background-color:red">
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="address"><b>Enter Your Address </b><span style="color:red"><b>*</b></span></label>
+                    </div>
+                    <div class="col-lg">
+                    <textarea name="address" form="bookbed" id="address" placeholder="Your Full Address"
+                              required style="width:100%">{{address}}</textarea>
+                    </div>
+                </div>
+                <hr style="background-color:red">
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="pin"><b>Enter your Pin Code </b><span style="color:red"><b>*</b></span></label>
+                    </div>
+                    <div class="col-lg">
+                        <input type="tel" onkeyup="loadAddress()" id="pin" value="{{pin}}" name="pin"
+                               placeholder="Pin Code" maxlength="6"
+                               form="bookbed"
+                               required style="width:100%">
+                    </div>
+                </div>
+                <b style="color:blue">If your entered Pin is correct, then State, District and Sub-division will be
+                    detect automatically.<br>You can manually edit these fields.</b>
+                <hr style="background-color:red">
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="state"><b>Select State </b><span style="color:red"><b>*</b></span></label>
+                    </div>
+                    <div class="col-lg">
+                        <select name="state" id="state" onchange="loadDistrict()" form="bookbed" required
+                                style="width:100%">
+                            <option label="Select State"></option>
+                            <optgroup label="States">
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                            </optgroup>
+                            <optgroup label="Union Teritory">
+                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                <option value="Chandigarh">Chandigarh</option>
+                                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli
+                                    and
+                                    Daman and Diu
+                                </option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                <option value="Ladakh">Ladakh</option>
+                                <option value="Lakshadweep">Lakshadweep</option>
+                                <option value="Puducherry">Puducherry</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+                <hr style="background-color:red">
+
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="district"><b>Enter Your District </b><span style="color:red"><b>*</b></span></label>
+                    </div>
+                    <div class="col-lg">
+                        <select name="district" id="district" form="bookbed" required style="width:100%">
+                            <option label="Select District" style="width:100%"></option>
+                        </select>
+                    </div>
+                </div>
+                <hr style="background-color:red">
+
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="district"><b>Enter Your Sub-Division: </b><span
+                                style="color:red"><b>*</b></span></label>
+                    </div>
+                    <div class="col-lg">
+                        <input type="text" maxlength="100" value="{{subdivision}}" id="subdivision" name="subdivision"
+                               placeholder="Sub-division"
+                               form="bookbed" required style="width:100%">
+                    </div>
+                </div>
+                <hr style="background-color:red">
+            </form>
+            <div class="row">
+                <div class="col-lg"></div>
+                <div class="col-lg">
+                    <div class="send" id="sendotp" style="display:block">
+                        <form id="send-otp" method="post">
+                            <button type='submit' onclick='otpsend()' form='send-otp' name='send_otp'
+                                    class='btn btn-success' id='otpbtn'>Send OTP
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg"></div>
+            </div>
+            <div id="loading" style="display:none">
+                <div class='spinner-border text-primary' role='status'></div>
+                <span style='color:white'><b class="text-primary">Sending OTP........</b></span>
+            </div>
+            <div id="otpsedmessage" style="display:none"></div>
+            <div id="otpveifymessage" style="display:none"></div>
+            <div id="verifyotpId" style="display:none">
+                <hr style="background-color:red">
+                <div class="row">
+                    <div class="col-lg"></div>
+                    <div class="col-lg-5">
+                        <form id="verifyform" method="post">
+                            {% csrf_token %}
+                            <label for='otp'><strong><b>OTP </b><span
+                                    style="color:red"><b>* </b></span></strong></label>
+                            <input type='text' name='otp' id='otp' form='verifyform' maxlength='6'
+                                   placeholder='OTP that sent to you' required>
+                            <button type="submit" class="btn btn-info" onclick="verifyOTP()" id="verifybtn"
+                                form="verifyform">Verify OTP
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-lg"></div>
+                </div>
+                <span id="verifymessage" style="display:none"></span>
+            </div>
+            <div id="submitId" style="display:none">
+                <hr style="background-color:red">
+                <div class="form-inline">
+                    <input type="checkbox" name="declaration" form='bookbed' id="declaration" required>
+                    <label for="declaration"><b>I hereby declare that all the above mentioned information is true and
+                        correct.</b></label>
+                </div>
+                <div class="form-inline">
+                    <input type="checkbox" name="bookdec" form='bookbed' id="bookdec" required>
+                    <label for="bookdec"><b>I booking bed for a patient, not for unnecessary reason.</b></label>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg">
+                        <div class="sub">
+                            <button type="submit" class="btn btn-success" form="bookbed" id="submit"
+                                    style="margin:bottom:10px">Submit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg">
+                        <button type="reset" class="btn btn-danger" form="bookbed" id="reset" style="">Reset Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg"></div>
+    {% endif %}
+    {% endif %}
+</div>
+</body>
+<script>
+    function loadDistrict()
+    {
+    state = $('#state').val();
+    var select_option_dist = {}
+    var select_dist = document.getElementById("district");
+
+    $.ajax({
+        url:{% url 'LoadDistrict' %},
+        data:{
+            'state':state,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+        var dc = Number(response.districtcount);
+        select_dist.options.length = 0;
+        for(i=0; i<dc; i++)
+        {
+        select_option_dist[response.district[i]] = response.district[i];
+        }
+        for(index in select_option_dist)
+        {
+        select_dist.options[select_dist.options.length] = new Option(select_option_dist[index], index);
+        }
+        },
+    });
+    }
+</script>
+<script>
+    function loadAddress()
+    {
+    pin = $('#pin').val();
+    var select_option_state = {}
+    var select_state = document.getElementById("state");
+
+
+    var select_option_dist = {}
+    var select_dist = document.getElementById("district");
+
+
+    $.ajax(
+    {
+        url: {% url 'LoadAddress' %},
+        data:{
+            'pin':pin,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+            $('#subdivision').val(response.city);
+            $('#state').val(response.state);
+
+
+            var dc = Number(response.districtcount);
+            select_dist.options.length = 0;
+            for(i=0; i<dc; i++)
+            {
+            select_option_dist[response.districts[i]] = response.districts[i];
+            }
+            for(index in select_option_dist)
+            {
+            select_dist.options[select_dist.options.length] = new Option(select_option_dist[index], index);
+            }
+
+        },
+    });
+    }
+
+
+</script>
+
+<script>
+function otpsend()
+{
+    const form = document.getElementById('send-otp');
+    form.addEventListener("submit", sendOTPHandler);
+    function sendOTPHandler(e) {
+
+    e.preventDefault();
+    document.getElementById("verifyotpId").style.display = "none"
+    document.getElementById("otpsedmessage").style.display = "none"
+    document.getElementById("otpveifymessage").style.display = "none"
+    document.getElementById("submitId").style.display = "none"
+    document.getElementById("loading").style.display = "block"
+    document.getElementById("otpbtn").disabled = true
+     document.getElementById("verifymessage").innerHTML = ""
+     $('#otp').val('');
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'OTPSendBook' %},
+            data:{
+                mobile:$("#mobile").val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {   document.getElementById("loading").style.display = "none"
+            document.getElementById("otpbtn").disabled = false
+                if(response.error === "0")
+                {
+                document.getElementById("otpsedmessage").style.display = "Block"
+                document.getElementById("otpsedmessage").innerHTML = "<p style='color:green'>OTP Sent to <b>"+response.mobile+"</b></p><p class='text-primary'>If you didn't get the OTP within 3 Minutes then Send OTP Again.</p>";
+                document.getElementById("verifyotpId").style.display = "Block"
+                document.getElementById("verifybtn").disabled = false
+                }
+                else
+                {
+                document.getElementById("otpsedmessage").style.display = "Block"
+                document.getElementById("otpsedmessage").innerHTML = "<strong style='color:red'>OTP Send Failed!</strong>"
+                }
+            },
+            error: function(response)
+            {   document.getElementById("otpbtn").disabled = false
+                document.getElementById("loading").style.display = "none"
+                document.getElementById("otpsedmessage").style.display = "Block"
+                document.getElementById("otpsedmessage").innerHTML = "<strong style='color:red'>Error! OTP Send Failed!</strong>"
+            },
+        });
+   }
+   }
+
+</script>
+<script>
+    function verifyOTP()
+    {
+        const form = document.getElementById('verifyform');
+    form.addEventListener("submit", verifyOTPHandler);
+    function verifyOTPHandler(e) {
+
+    e.preventDefault();
+    document.getElementById("otpveifymessage").style.display = "none"
+    document.getElementById("submitId").style.display = "none"
+     document.getElementById("verifybtn").disabled = true
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'BookOTPVerify' %},
+            data:{
+                mobile:$('#mobile').val(),
+                otp:$("#otp").val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                if(response.error === "0")
+                {
+                document.getElementById("verifymessage").style.display = "Block"
+                document.getElementById("verifymessage").innerHTML = "<p style='color:green'><b>OTP Verified</b></p>";
+                document.getElementById("verifybtn").disabled = true
+                document.getElementById("submitId").style.display = "Block"
+                }
+                else if(response.error === "1")
+                {
+                document.getElementById("verifybtn").disabled = false
+                document.getElementById("verifymessage").style.display = "Block"
+                document.getElementById("verifymessage").innerHTML = "<strong style='color:red'>Invalid OTP!</strong>"
+                }
+            },
+            error: function(response)
+            {   document.getElementById("verifybtn").disabled = false
+                document.getElementById("verifymessage").style.display = "Block"
+                document.getElementById("verifymessage").innerHTML = "<strong style='color:red'>Error! OTP Verification Failed!</strong>"
+            },
+        });
+   }
+    }
+
+</script>
+<script>
+    function mobilechange()
+    {
+    document.getElementById("otpsedmessage").style.display = "none"
+    document.getElementById("otpveifymessage").style.display = "none"
+    document.getElementById("submitId").style.display = "none"
+    document.getElementById("loading").style.display = "none"
+    document.getElementById("verifyotpId").style.display = "none"
+    }
+
+</script>
+</html>
+{%endblock%}

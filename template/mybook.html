@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+{% load custom_tags %}
+{% load tz %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Bookings</title>
+</head>
+<body>
+<center>
+
+    <h2 class="text-info">MY BOOKINGS</h2>
+    <br>
+    <div style="padding:10px;overflow-y: scroll;overflow:auto;box-sizing: content-box;">
+        <table class="table table-hover table-primary">
+            <thead>
+            <tr>
+                <th scope="col">Booking ID</th>
+                <th scope="col">Patient's Name</th>
+                <th scope="col">Hospital</th>
+                <th scope="col">Mobile</th>
+                <th scope="col">Status</th>
+                <th scope="col">Booking Date</th>
+                <th scope="col">Expire</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in bookings %}
+            <tr id="{{i.Booking_ID}}">
+                <th scope="row"><a href="{% url 'BookStatus' id=i.Booking_ID %}">{{i.Booking_ID}}</a></th>
+                <td>{{i.Patient_Name}}</td>
+                <td>{{i.Hospital_Name.Name}}</td>
+                <td>{{i.Mobile}}</td>
+                <td>{{i.Status}}</td>
+                <td>{{i.Booking_Time | IST}}</td>
+                <td>{{i.Expire_Time | IST}}</td>
+                <td>
+                    {% if i.Status == "Not Admit Still Now" %}
+                    <form id="deletebook" method="post">
+                        <input type="hidden" name="bookId" id="bookId" value="{{i.Booking_ID}}" required form="deletebook">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                          Cancel
+                        </button>
+                    </form>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Cancel Booking</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                            <div class="modal-body">
+                                <h6>Booking ID: {{i.Booking_ID}}</h6>
+                                <h6>Patient's Name: {{i.Patient_Name}}</h6>
+                                <h6>Hospital: {{i.Hospital_Name.Name}}</h6>
+                                <h6>Mobile: {{i.Mobile}}</h6>
+                                <h6>Status: {{i.Status}}</h6>
+                                <h6>Booking Time: {{i.Booking_Time | IST}}</h6>
+                                <h6>Expire: {{i.Expire_Time | IST}}</h6>
+                              </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" form="deletebook" class="btn btn-danger" onclick="cancelBook()">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</center>
+<script>
+    function cancelBook()
+    {
+    const form = document.getElementById('deletebook');
+    form.addEventListener("submit", deleteOTPHandler);
+
+    function deleteOTPHandler(e) {
+    var id = $('#bookId').val()
+    e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'MyBookings' %},
+            data:{
+                bookId:$('#bookId').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                if(response.error === "0")
+                {
+                location.reload();
+                }
+            },
+        });
+   }
+    }
+</script>
+</body>
+</html>
+{%endblock%}

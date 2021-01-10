@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Go Healthy | Home</title>
+
+    <style>
+        .card:hover .card-inner
+        {
+        transform: rotateY(180deg);
+        }
+
+
+
+    </style>
+    <style>
+        .zoom:hover {
+  transform: scale(1.15); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+    </style>
+
+</head>
+<body>
+
+<center>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Declaration</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    At now this website is in developing mode. All the details regarding Hospitals, Doctors and Blood
+                    Donors are anonymous. And the contact details are not true.<br>
+                    Images used in this webpage are collected from internet; some of the images are copyright free and some of images are not copyright free; that is some copyright images are used in this webpage. The Images are edited by photoshop.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">I Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"
+         style="border-style:groove;border-color:blue;border-width:7px;">
+        <ol class="carousel-indicators" touch="true">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        </ol>
+        <div class="carousel-inner" style="height:40vw">
+            <div class="carousel-item active">
+                    <img src="{% static 'media/images/welcome.png' %}" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'media/images/logo banner.png' %}" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+
+    <br><br>
+    <div class="row">
+        <div class="col-md ml-4 mr-4">
+            <div class="card"
+                 style="border-width:7px;margin-bottom:10px;text-align:center;background-color:blue;width:100%;height:360px;">
+                <h2 style="color:white;font-family:Cursive"><b>HOSPITALS</b></h2>
+
+                <div class="card-inner"
+                     style="position: relative; text-align: center;transition: transform 1.5s;transform-style: preserve-3d;">
+                    <div class="card-front" style="position: absolute;backface-visibility: hidden;">
+                        <!-- adding picture in the card -->
+                        <img src="{% static 'media/images/hospital.png' %}" style="width:100%;height:310px;">
+                        <button class="btn btn-primary" style="margin-top:-130px"><b>Click Me</b></button>
+                    </div>
+                    <!-- Decorate card back side -->
+                    <div class="card-back" style="backface-visibility: hidden; transform: rotateY(180deg);">
+                        <h3 style="color:white"><br>Find Hospitals in Your Location.
+                            <br>And Book Bed for Patient</h3>
+                        <br><br>
+                        <a class="btn btn-secondary" href="{%url 'project-Hospital'%}"
+                           style="font-size:25px;color:white">
+                            Show Hospitals
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <div align="left">
+                <i class="fad fa-user-injured fa-4x" style="color:blue"></i>
+                <hr style="background-color:blue">
+                <h3 align="left" style="color:black;"><b>No bed in Hospital</b></h3>
+                <hr style="background-color:blue">
+                <p style="color:blue" class="text-muted" align="left">
+                    Every day many patient died just for not getting bed in Hospital within right time. Patient families
+                    runs from one hospital to another hospital to admit the patient and hospitals replies We don't have
+                    no more bed. Every moment of time is important for a patient, if there is delay to provide treatment
+                    to patient, that means the patient death is certain. Everyday in everywhere this are happening. Why
+                    this will happen? The death of the patients are not a normal death, it is a murder by the Healthcare
+                    System.
+                    <br>We should solve the problem. The problem will totally solved when Government focus on this
+                    issue. But since long decade any government never focus on that issue seriously.
+                    <br>At the moment we may have a scope to try to dealing with the issue.
+                    <br>To help that victims of the poor healthcare system, we try to provide a platform, where anybody
+                    can see which hospital has avaiable bed.
+                    <br>If a person easily can see which hospital of his locality has available bed and also can book a
+                    bed in advance, then the person don't need to run in serveral hospitals to admit the patient. The
+                    person just need to go to that hospital, in which hospital he/she saw, there are available bed using
+                    the platform. It will save the time. And save of time means, more chances of patient's recovery.
+                    Here by providing Hospital Searching and Bed Booking Features we try to help the people.</p>
+                <div align="center">
+                    <a class="btn btn-primary" href="{%url 'project-Hospital'%}" style="width:80%">Search Hospitals</a>
+                </div>
+                <hr style="background-color:blue;height:3px">
+            </div>
+            <br><br>
+        </div>
+
+        <div class="col-md ml-4 mr-4">
+
+            <div class="card"
+                 style="border-width:7px;margin-bottom:10px;text-align:center;background-color:blue;width:100%;height:360px;">
+                <h2 style="color:white;font-family:Cursive"><b>DOCTORS</b></h2>
+
+                <div class="card-inner"
+                     style="position: relative; text-align: center;transition: transform 1.5s;transform-style: preserve-3d;">
+                    <div class="card-front" style="position: absolute;backface-visibility: hidden;">
+                        <!-- adding picture in the card -->
+                        <img src="{% static 'media/images/doctor.png' %}" style="width:100%;height:310px;">
+                        <button class="btn btn-primary" style="margin-top:-130px"><b>Click Me</b></button>
+                    </div>
+                    <!-- Decorate card back side -->
+                    <div class="card-back" style="backface-visibility: hidden; transform: rotateY(180deg);">
+                        <h3 style="color:white"><br>Find Doctors in Your Location.
+                            <br>And Contact them for Emargency</h3>
+                        <br><br>
+                        <a class="btn btn-secondary" href="{%url 'project-Doctor'%}" style="font-size:25px;color:white">
+                            Show Doctors
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div align="left">
+                <i class="fad fa-stethoscope fa-4x" style="color:blue"></i>
+                <hr style="background-color:blue">
+                <h3 align="left" style="color:black;"><b>Insufficient Doctor in India</b></h3>
+                <hr style="background-color:blue">
+                <p style="color:blue" class="text-muted" align="left">
+                    WHO recommended ratio of Doctor and people in a country must be 1:1000. But unfortunately India
+                    doesn't reach the ratio till now.<br>
+                    Result of that is death of patient due to not get medical assistance at right time. People those who
+                    are live far from hospitals for them it is almost impossible to get medical support immediately. If
+                    they try to reach to the hospital to give treatment to the patient, it may cause death of patient;
+                    because it make delay in treatment. Specially rural people facing the problem; so in that case one
+                    solution is contact to a doctor immediately to get medical assistance.
+                    <br>But most of the people can't contact to a doctor to get a medical help. Because they don't know
+                    any doctors, they have no inormation of any doctor. How they will able to connect to a doctor in
+                    this case?
+                    <br>The first and important solution is establish Primary Healthcare Center in every villages and
+                    provide sufficient doctors to that center.
+                    <br>But what the instant solution of that?
+                    <br>In that case to help the people, we provide a platform to the people, from where they can
+                    contact to a doctor anytime anywhere. By that platform we can deliver all the essential information
+                    about the doctors. People can find doctors of their locality and cotact to the doctor.
+                </p>
+                <div align="center">
+                    <a class="btn btn-primary" href="{%url 'project-Doctor'%}" style="width:80%">Search Doctors</a>
+                </div>
+                <hr style="background-color:blue;height:3px">
+            </div>
+            <br><br>
+        </div>
+
+        <div class="col-md ml-4 mr-4">
+            <div class="card"
+                 style="border-width:7px;text-align:center;background-color:blue;width:100%;height:360px;">
+                <h2 style="color:white;font-family:Cursive"><b>BLOOD DONORS</b></h2>
+
+                <div class="card-inner"
+                     style="position: relative; text-align: center;transition: transform 1.5s;transform-style: preserve-3d;">
+                    <div class="card-front" style="position: absolute;backface-visibility: hidden;">
+                        <!-- adding picture in the card -->
+                        <img src="{% static 'media/images/blood donor.png' %}" style="width:100%;height:310px;">
+                        <button class="btn btn-primary" style="margin-top:-130px"><b>Click Me</b></button>
+                    </div>
+                    <!-- Decorate card back side -->
+                    <div class="card-back" style="backface-visibility: hidden; transform: rotateY(180deg);">
+                        <h3 style="color:white"><br>Find Blood Donors in Your Location.
+                            <br>And Contact them if you need Blood</h3>
+                        <br><br>
+                        <a class="btn btn-secondary" href="{%url 'project-Blood'%}" style="font-size:25px;color:white">
+                            Show Blood Donors
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div align="left">
+                <i class="fad fa-hand-holding-water fa-4x" style="color:blue"></i>
+                <hr style="background-color:blue">
+                <h3 align="left" style="color:black;"><b>No enough blood in Blood Bank</b></h3>
+                <hr style="background-color:blue">
+                <p style="color:blue" class="text-muted" align="left">
+                    In the country, blood banks have not sufficient blood. And for a common person it is almost
+                    impossible to
+                    collect blood within time. A patient need blood imedeately, delay in giving blood to a patient
+                    means, certain death of patient.
+                    <br>Instead of that, there are no enough blood in blood banks, even there are no data available
+                    about blood donors in the blood banks.
+                    <br>How will we get blood if needed? Will we call to everybody and ask them what is your blood
+                    group, can you give blood?
+                    It will waste lots of time, and in treatment waste of treatment waste of time is a biggest mistake,
+                    it will push the patient to the death.
+                    <br>One solution is provide a platform to the people, in which platform contact information of blood
+                    donor will be given. When needed a person
+                    can contact to the blood donors. It will help the people. And in this case there are no question of
+                    time waste;
+                    it will save a lots of time. And saving in time means, donate a good time to the patient.</p>
+                <div align="center">
+                    <a class="btn btn-primary" href="{%url 'project-Blood'%}" style="width:80%">Search Blood Donors</a>
+                </div>
+                <hr style="background-color:blue;height:3px">
+            </div>
+            <br><br>
+        </div>
+    </div>
+    <br>
+    <div class="row ml-3 mr-3"
+         style="background-color:#ECECEC;padding:5px;border-bottom-left-radius:50px;border-bottom-right-radius:50px;border-top-left-radius:70px;border-top-right-radius:50px;">
+        <div class="col-md-8">
+            <div class="container">
+                <h2 style="color:blue;margin-top:10%;">
+                    <i class="fad fa-quote-left" style="float:left"></i><br>
+                    Healthcare must be consider as a Right of each person,<br>NOT a Business or NOT a Privilege.
+                </h2>
+            </div>
+        </div>
+        <div class="col-md" align="right">
+            <img src="{% static 'media/images/Healthcare Right.png' %}" width="100%" height="300"
+                 style="border-radius: 100px 50px;">
+        </div>
+    </div>
+    <br>
+    <div class="row ml-3 mr-3"
+         style="background-color:#ECECEC;border-bottom-left-radius:50px;border-bottom-right-radius:50px;border-top-left-radius:70px;border-top-right-radius:50px;">
+        <div class="col-md ml-5" align="left">
+            <img src="{% static 'media/images/healthcare disaster.jpg' %}" width="100%" height="300">
+        </div>
+        <div class="col-md-8 ml-3 mr-3">
+            <h2 style="color:blue;margin-top:10%;">
+                <i class="fad fa-quote-left" style="float:left"></i><br>
+                The lack of true natural healthcare system is man-made disaster that is causing unneeded pain, suffering
+                and death.
+            </h2>
+            <h5 align="right">-- Deborah Burger</h5>
+        </div>
+    </div>
+    <br><br><br>
+    <h3 style="color:blue;margin-left:30px" align="left">Explore More</h3>
+    <div class="row">
+        <div class="col">
+            <div class="zoom" style="transition: transform .2s;">
+                <a href="{% url 'project-Firstaid' %}" style="text-decoration:none;">
+                    <div class="card" style="width: 80%;height:150px;background-color:red">
+                        <i class="fad fa-first-aid fa-7x" style="color:white"></i>
+                        <h4 class="card-title"
+                            style="color:white;font-family:Comic Sans MS, Comic Sans, cursive;font-variant: small-caps">
+                            <b>First Aid</b></h4>
+                    </div>
+                </a>
+                <br>
+            </div>
+        </div>
+        <div class="col">
+            <div class="zoom" style="transition: transform .2s;">
+                <a href="{% url 'BMI-Answer' %}" style="text-decoration:none;">
+                    <div class="card" style="width: 80%;height:150px;background-color:orange;padding:5px">
+                        <i class="fad fa-child fa-7x" style="color:white"></i>
+                        <h5 class="card-title"
+                            style="color:white;font-family:Comic Sans MS, Comic Sans, cursive;font-variant: small-caps">
+                            <b>BMI</b></h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md">
+
+        </div>
+        <div class="col-md">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7 ml-5 mr-5">
+
+            <hr>
+            <h2><strong>About</strong></h2>
+            <h6 align="center">We are here to Help you. Our aim is provide medical support to all the
+                people. We are a non-profit organization.</h6>
+            <p class="text-muted">
+                If you looking for a good platform for you to provide you a good Heath service, then you are now in
+                right place. We look forwards a time, when nobody die due to insufficiency of Healthcare Service In
+                India. India ranked 145 out of 195 countries in Healthcare Access and Quality Index. But since
+                Independent no serious effective action has been taken to improve the healthcare system. As a result a
+                huge number of people are depriving from healthcare service. We believe that it is everybody's right to
+                get health services. Many people loos their life because they don't get bed in hospital, don't get
+                Blood, don't get medical support. So we are here to make a initiative to give you live to live update
+                about the bed availability in hospital; even you can book bed for patient previously to avoid harassment
+                in hospital to getting bed. And here can contact with any Doctors in your locality. Not only that you
+                can also contact with blood donors in your locality, because many patients lose their life because they
+                did not get blood in right time. So to make a good future we are here with you to help you.............
+            </p>
+            <a class="btn btn-primary" href="{% url 'project-About' %}">See More</a>
+            <hr>
+            <br>
+        </div>
+        <div class="col-md ml-3 mr-3">
+            <!--align="right" style="border:2px solid black;background-color:white;width:25%;height:10%;margin-bottom:2%"-->
+            <div class="bg-light" style="width:100%;">
+                <header style="font-size:25px;background-color:#00C0FF;color:white">NOTIFICATIONS
+                </header>
+                <main style="overflow-y: auto;height:150px">
+                    <div>
+                        <marquee behavior="scroll" scrolldelay="100" truespeed direction="up"
+                                 onmouseover="this.stop()"
+                                 onmouseout="this.start()">
+                            <ol>
+                                {% for i in notice %}
+                                <li><a href="{{ i.File.url }}" target="_blank">{{i.Name}}</a></li>
+                                {% endfor %}
+                            </ol>
+                        </marquee>
+                    </div>
+                </main>
+                <footer align="center" style="background-color:#707BFF;width:100%">
+                    <a href="{% url 'Notice' %}" style="color:white">See more</a>
+                </footer>
+            </div>
+            <br><br>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-4 ml-3 mr-3" align="center">
+            <br><br><br>
+            <img src="{% static 'media/images/contact home.jpg' %}"
+                 style="position:relative;height:150px;width:100%;height:100px"/>
+
+            <h3 style="margin-bottom:20px;color:red">Contact Us</h3>
+
+
+            <span>
+                <i class="fas fa-mobile-android-alt fa-2x" style="color:blue"></i>
+                    <a href="tel: 9089696617" style="color:green;font-size:25px;">&nbsp;9089696617</a>
+                    </span>
+            <br>
+
+            <span>
+                    <i class="fas fa-envelope fa-2x" style="color:blue"></i>
+                    <a href="mailto: gohealthymail@gmail.com" style="color:Indigo;font-size:25px">&nbsp;gohealthymail@gmail.com</a>
+                </span>
+            <br><br>
+            <h5 style="color:blue">Social Media:</h5>
+            <a href="" style="font-size:20px;color:blue"><i class="fab fa-facebook"></i> Facebook</a>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="" style="font-size:20px;color:#6EC0FF"><i class="fab fa-twitter"></i> Twitter</a>
+
+
+            <hr style="background-color:blue;height:2px;">
+            <br>
+        </div>
+        <div class="col-md"></div>
+        <div class="col-md-5">
+            <img src="{% static 'media/images/home contact.png' %}"
+                 style="position:relative;height:650px;width:100%;padding:5px;margin-left:-10px"/>
+            <div style="position:relative;margin-top:-550px;margin-bottom:150px">
+                <span id="errormessage">
+                    <b style='visibility:hidden'>Query Submit Message!<br>Query Submit Message!</b>
+                </span>
+                <h3 style="color:red">Reach Us</h3><br>
+                <form id="contactform" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="name" id="name" form="contactform" placeholder="Name" required
+                           style="border:none;width:40%"><br><br>
+                    <input type="tel" name="phone" id="phone" form="contactform" placeholder="10 digit mobile no"
+                           maxlength="10" required style="border:none;width:40%"><br><br>
+                    <input type="email" name="email" id="email" form="contactform" placeholder="Email Id" required
+                           style="border:none;width:40%"><br><br>
+                    <textarea name="message" id="contactmessage" form="contactform"
+                              placeholder="Leave Your Message Here...." required
+                              style="border:none;width:40%"></textarea><br><br>
+                    <button type="submit" title="Send the Message" onclick="sendmessage()" form="contactform"
+                            style="background:none;border:none">
+                        <i class="fad fa-paper-plane fa-3x" style="color:red"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</center>
+<script type="module">
+    $('#exampleModal').modal('show')
+
+</script>
+<script>
+    function sendmessage()
+    {
+        document.getElementById("errormessage").style.visibility = "hidden"
+    const form = document.getElementById('contactform');
+    form.addEventListener("submit", messageHandler)
+
+    function messageHandler(e) {
+
+    e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'Ajaxcontact' %},
+            data:{
+                name:$('#name').val(),
+                email:$('#email').val(),
+                phone:$('#phone').val(),
+                message:$('#contactmessage').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {   document.getElementById("errormessage").style.visibility = "visible"
+                if(response.success === "1")
+                {
+                document.getElementById("errormessage").innerHTML = "<b style='color:green'>Query Submited!<br>We will contact you if needed.</b>"
+                $('#name').val('');
+                $('#email').val('');
+                $('#phone').val('');
+                $('#contactmessage').val('');
+                }
+            },
+            error: function(response)
+            {   document.getElementById("errormessage").style.visibility = "visible"
+                document.getElementById("errormessage").innerHTML = "<b style='color:red'>Failed to Send Message!</b>"
+            },
+        });
+   }
+    }
+
+
+</script>
+</body>
+</html>
+{%endblock%}

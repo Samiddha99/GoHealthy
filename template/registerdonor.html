@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+
+<center>
+    {% if error == "-0" %}
+    <div class="card" style="width: 70%;">
+        <div class="card-header">
+            <strong><h4>REGISTERED</h4></strong>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title"><b>Registration Successful</b></h5>
+            <h6 class="card-subtitle mb-2 text-muted">You have successfully registered as {{username}}</h6>
+            <p class="card-text"> We will verify your data. If we see that all of your given information is correct than
+                we will active your account.</p>
+        </div>
+        <div class="card-footer">
+            <button type="button" onclick="location.href='{% url 'project-Home' %}'" class="btn btn-primary">Go Back to
+                Home
+            </button>
+        </div>
+    </div>
+    {% else %}
+    {% if error == "5" %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Input Error!</strong> {{message1}}<br>{{message2}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% elif error == "-1" %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>OTP Verification Error!</strong> OTP didn't verify! Please Verify The OTP.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% elif error == "-2" %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>OTP Sending Error!</strong> You didn't send OTP! Please Click on <b>SEND OTP</b> and Verify the OTP.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <div class="card text-center">
+        <div class="card-header" style="background-color:#FFFB88">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <button type="button" onclick="location.href='{% url 'Register' %}'"
+                                class="btn btn-success btn-lg"
+                                style="background-color:green;color:white">Normal Registration
+                        </button>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active">
+                        <button type="button" onclick="location.href='{% url 'Register-Donor' %}'"
+                                class="btn btn-danger btn-lg"
+                                style="background-color:red;color:white">I Want To Be A Blood Donor
+                        </button>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <button type="button" onclick="location.href='{% url 'Register-Doctor' %}'"
+                                class="btn btn-primary btn-lg"
+                                style="background-color:blue;color:white">I Am A
+                            Doctor
+                        </button>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-9 ml-4 mr-3 bg-light">
+                    <form method="post" id="donorform" enctype='multipart/form-data'
+                          action="{% url 'Register-Donor' %}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md" align="left">
+                                {% if error == "1" %}
+                                <label for="username"><b>Username:</b></label><br>
+                                <input type="text" class="form-control is-invalid" maxlength="15" id="username"
+                                       minlength="5" autofocus
+                                       onkeyup="UsernameChack()" value="{{username}}" name="username"
+                                       form="donorform" required style="width:100%"
+                                       aria-describedby="usernamevalidation">
+                                <div id="usernamevalidation" class="invalid-feedback">
+                                    This Username already taken!
+                                </div>
+                                <br>
+                                {% else %}
+                                <label for="username"><b>Username:</b></label><br>
+                                <input type="text" class="form-control" maxlength="15" id="username" minlength="5"
+                                       onchange="UsernameChack()"
+                                       name="username"
+                                       form="donorform" required style="width:100%"
+                                       aria-describedby="usernamevalidation">
+                                <div id="usernamevalidation" class="feedback">
+
+                                </div>
+                                <br>
+                                {% endif %}
+                                <small id="usernameHelpBlock" class="form-text text-muted">
+                                    Username will be maximum 15 characters long and minimum 5 characters long. Letters,
+                                    digits and @/./+/-/_ only aplicable.
+                                </small><br>
+                            </div>
+                            <div class="col-md" align="left">
+                                {% if error == "2" %}
+                                <label for="email"><b>Email:</b></label><br>
+                                <input type="text" class="form-control is-invalid" maxlength="100" autofocus
+                                       value="{{email}}" onchange="emailcheck()"
+                                       id="email" name="email"
+                                       form="donorform"
+                                       placeholder="example@gmail.com" required style="width:100%"
+                                       aria-describedby="emailvalidation">
+                                <div id="emailvalidation" class="invalid-feedback">
+                                    User with this Email already exists!
+                                </div>
+                                <br>
+                                {% else %}
+                                <label for="email"><b>Email:</b></label><br>
+                                <input type="text" class="form-control" maxlength="100" onchange="emailcheck()"
+                                       id="email" name="email"
+                                       form="donorform"
+                                       placeholder="example@gmail.com" required style="width:100%"
+                                       aria-describedby="emailvalidation">
+                                <div id="emailvalidation" class="feedback">
+
+                                </div>
+                                <br>
+                                {% endif %}
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md" align="left">
+                                <label for="password1"><b>Password:</b></label><br>
+                                <input type="password" class="form-control" id="password1" minlength="15"
+                                       autocomplete
+                                       form="donorform"
+                                       name="password1" onkeyup="passwordmatch()" required style="width:100%"><br><br>
+                            </div>
+                            <div class="col-md" align="left">
+                                {% if error == "3" %}
+                                <label for="password2"><b>Confirm Password:</b></label><br>
+                                <input type="password" class="form-control is-invalid" id="password2" minlength="15"
+                                       autocomplete form="donorform"
+                                       name="password2"
+                                       placeholder="Enter Password Again" autofocus onkeyup="passwordmatch()" required
+                                       style="width:100%" aria-describedby="passwordcheck">
+                                <div id="passwordcheck" class="invalid-feedback">
+                                    Password and Confirm Password didn't match!
+                                </div>
+                                <br>
+                                {% else %}
+                                <label for="password2"><b>Confirm Password:</b></label><br>
+                                <input type="password" class="form-control" id="password2" minlength="15" autocomplete
+                                       form="donorform"
+                                       name="password2"
+                                       placeholder="Enter Password Again" onkeyup="passwordmatch()" required
+                                       style="width:100%" aria-describedby="passwordcheck">
+                                <div id="passwordcheck" class="feedback">
+
+                                </div>
+                                <br>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <small id="passwordHelpBlock" class="form-text text-muted">
+                            <p style="color:red">Your password can’t be too similar to your other personal information.
+                                <br>Your password must contain at least 15 characters.
+                                <br>Your password can’t be a commonly used password.
+                                <br>Your password can’t be entirely numeric or alphabetic.</p>
+                        </small>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md" align="left">
+                                <label for="name" class="form-label"><b>Name:</b></label><br>
+                                <input type="text" class="form-control" maxlength="50" value="{{name}}" name="name"
+                                       id="name"
+                                       form="donorform"
+                                       required style="width:100%"><br><br>
+                            </div>
+                            <div class="col-md" align="left">
+                                <label for="contact"><b>Contact:</b></label><br>
+                                <input type="tel" class="form-control" name="contact" id="contact" value="{{contact}}"
+                                       minlength="10"
+                                       maxlength="10"
+                                       onkeyup="mobilechange()"
+                                       form="donorform"
+                                       placeholder="10 digit mobile No" required style="width:100%"><br><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md" align="left">
+                                <label><b>Gender:</b></label><br>
+                                <input type="radio" name="gender" id="male" form="donorform" value="Male" required>
+                                <label for="male">Male</label>
+                                <input type="radio" name="gender" id="female" form="donorform" value="Male" required>
+                                <label for="female">Female</label><br>
+                                <input type="radio" name="gender" id="nosay" form="donorform"
+                                       value="I not prefered to say"
+                                       required>
+                                <label for="nosay">I not prefered to say</label>
+                                <input type="radio" name="gender" id="other" form="donorform" value="Other" required>
+                                <label for="other">Other</label>
+                                <br><br>
+                            </div>
+                            <div class="col-md" align="left">
+                                <label for="dob"><b>Date of Birth:</b></label><br>
+                                <input type="date" class="form-control" onchange="ageCheck()" value="{{dob}}" name="dob"
+                                       id="dob"
+                                       form="donorform"
+                                       required style="width:80%" aria-describedby="dobMessage">
+                                <div id="dobMessage" class="feedback">
+
+                                </div>
+                                <br><br>
+                            </div>
+                            <div class="col-md" align="left">
+                                <label for="bloodGroup"><b>Blod Group:</b></label>
+                                <select form="donorform" class="form-control" id="bloodGroup" name="bloodGroup" required
+                                        style="width:100%">
+                                    <option label="Select Blood Group"></option>
+                                    <option label="A+" value="A+">A+</option>
+                                    <option label="A-" value="A-">A-</option>
+                                    <option label="B+" value="B+">B+</option>
+                                    <option label="B-" value="B-">B-</option>
+                                    <option label="O+" value="O+">O+</option>
+                                    <option label="O-" value="O-">O-</option>
+                                    <option label="AB+" value="AB+">AB+</option>
+                                    <option label="AB-" value="AB-">AB-</option>
+                                </select>
+                                <br><br>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md" align="left">
+                                <label><b>ID Type:</b></label><br>
+                                <select name="idType" class="form-control" id="idType" form="donorform" required
+                                        style="width:100%">
+                                    <option value="Aadhaar">Aadhaar</option>
+                                    <option value="Voter Card">Voter Card</option>
+                                    <option value="PAN">PAN</option>
+                                </select>
+                                <br><br><br>
+                            </div>
+                            <div class="col-md" align="left">
+                                <label for="idNumber"><b>ID Number:</b></label><br>
+                                <input type="text" class="form-control" name="idNumber" id="idNumber" form="donorform"
+                                       required
+                                       style="width:100%"><br><br>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md" align="center">
+                                <label for="address"><b>Address:</b></label><br>
+                                <textarea name="address" class="form-control" id="address" maxlength="70" rows="5"
+                                          form="donorform"
+                                          placeholder="Enter Your Full Address" required
+                                          style="width:90%">{{address}}</textarea><br><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md" align="center">
+                                <label for="pin"><b>PIN:</b></label><br>
+                                <input type="tel" class="form-control" onkeyup="loadAddress()" value="{{pin}}"
+                                       maxlength="6" minlength="6"
+                                       name="pin" id="pin" form="donorform" required style="width:25%">
+                                <br>
+                                <div id="pinLoading">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md" align="left">
+                                <label for="subdivision"><b>City:</b></label><br>
+                                <input type="text" class="form-control" id="city" value="{{city}}" name="city"
+                                       form="donorform"
+                                       required style="width:100%">
+                            </div>
+                            <div class="col-md" align="left">
+                                <label for="subdivision"><b>Sub-Division:</b></label><br>
+                                <input type="text" class="form-control" id="subdivision" name="subdivision"
+                                       value="{{subdivision}}"
+                                       form="donorform"
+                                       required style="width:100%"><br><br>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md" align="left">
+                                <label for="state"><b>State:</b></label><br>
+                                <select name="state" class="form-control" onchange="loadDistrict()" id="state"
+                                        form="donorform" required
+                                        style="width:100%">
+                                    <option label="Select State"></option>
+                                    <optgroup label="States">
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                        <option value="Assam">Assam</option>
+                                        <option value="Bihar">Bihar</option>
+                                        <option value="Chhattisgarh">Chhattisgarh</option>
+                                        <option value="Goa">Goa</option>
+                                        <option value="Gujarat">Gujarat</option>
+                                        <option value="Haryana">Haryana</option>
+                                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                        <option value="Jharkhand">Jharkhand</option>
+                                        <option value="Karnataka">Karnataka</option>
+                                        <option value="Kerala">Kerala</option>
+                                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                        <option value="Maharashtra">Maharashtra</option>
+                                        <option value="Manipur">Manipur</option>
+                                        <option value="Meghalaya">Meghalaya</option>
+                                        <option value="Mizoram">Mizoram</option>
+                                        <option value="Nagaland">Nagaland</option>
+                                        <option value="Odisha">Odisha</option>
+                                        <option value="Punjab">Punjab</option>
+                                        <option value="Rajasthan">Rajasthan</option>
+                                        <option value="Sikkim">Sikkim</option>
+                                        <option value="Tamil Nadu">Tamil Nadu</option>
+                                        <option value="Telangana">Telangana</option>
+                                        <option value="Tripura">Tripura</option>
+                                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                        <option value="Uttarakhand">Uttarakhand</option>
+                                        <option value="West Bengal">West Bengal</option>
+                                    </optgroup>
+                                    <optgroup label="Union Teritory">
+                                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                        <option value="Chandigarh">Chandigarh</option>
+                                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli
+                                            and
+                                            Daman and Diu
+                                        </option>
+                                        <option value="Delhi">Delhi</option>
+                                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                        <option value="Ladakh">Ladakh</option>
+                                        <option value="Lakshadweep">Lakshadweep</option>
+                                        <option value="Puducherry">Puducherry</option>
+                                    </optgroup>
+                                </select>
+                                <br><br>
+                            </div>
+                            <div class="col-md" align="left">
+                                <label for="district"><b>District:</b></label><br>
+                                <select id="district" class="form-control" name="district" form="donorform" required
+                                        style="width:100%">
+                                    <option label="Select District"></option>
+                                </select><br><br>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md" align="center">
+                                <label for="picture"><b>Upload Your Photo:</b></label><br>
+                                <img id="img_id" src="#" alt="your image" width="200" height="200"/><br><br>
+                                {% if error == "4" %}
+                                <input type="file" form="donorform" name="picture" accept="image/*" required
+                                       id="picture"
+                                       onchange="upload_img(this)">
+                                <span id="imageError"><strong
+                                        style='color:red'>Invalid File! Select an Image File.</strong></span>
+                                {% else %}
+                                <input type="file" form="donorform" name="picture" accept="image/*" required
+                                       id="picture"
+                                       onchange="upload_img(this)">
+                                <span id="imageError"></span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <br>
+                    </form>
+                </div>
+                <div class="col-md"></div>
+            </div>
+            <form id="sendotpform" class="mt-2" method="post">
+                {% csrf_token%}
+                <div class="row">
+                    <div class="col-md" id="sendotp" style="display:block">
+                        <button type="submit" name="done" id="otpbtn" onclick="otpsend()" class="btn btn-primary"
+                                value="SEND OTP">SEND OTP
+                        </button>
+                    </div>
+                </div>
+                <div id="otpsedmessage" style="display:none"></div>
+            </form>
+            <div id="loading" style="display:none">
+                <div class='spinner-border' role='status' style='color:blue'></div>
+                <span style='color:blue'><b>Sending OTP........</b></span>
+            </div>
+            <form id='verifyform' method='post'>
+                {% csrf_token %}
+                <div class="typeOTPidClass" id="typeOTPid" style="display:none">
+                    <div class='row'>
+                        <div class='col-md'>
+                            <label for='mobileotp'><b>OTP Sent To Mobile:</b></label>
+                            <input type='text' name='mobileotp' id='mobileotp' maxlength='6' form='verifyform' required>
+                        </div>
+                        <div class='col-md'>
+                            <label for='emailotp' id='emaillabel'><b>OTP Sent To Email:</b></label>
+                            <input type='text' name='emailotp' id='emailotp' maxlength='6' form='verifyform' required>
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col-md'>
+                            <button type='submit' name='verify' id='verifybtn' class='btn btn-danger'
+                                    onclick='otpverify()'>Verify OTP
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+
+                        <div id="otpveifymessage" style="display:none"></div>
+                        <div id="verifing" style="display:none">
+                            <div class='spinner-grow text-warning' role='status'></div>
+                            <span style='color:red'>Verifing........</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="submitClass" id="submitId" style="display:none">
+                <div class='row'>
+                    <div class='col-md'>
+                        <button type='submit' form='donorform' name='submit' id='submit' class='btn btn-success'
+                                style='font-size:20px;width:50%'><b>Submit</b></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+</center>
+</body>
+
+<script>
+function otpsend()
+{
+    document.getElementById("loading").style.display = "block"
+const form = document.getElementById('sendotpform');
+ $('#mobileotp').val('');
+    $('#emailotp').val('');
+    document.getElementById("otpveifymessage").innerHTML = ""
+    form.addEventListener("submit", sendOTPHandler);
+
+    function sendOTPHandler(e) {
+
+    e.preventDefault();
+    document.getElementById("otpsedmessage").style.display = "none"
+    document.getElementById("typeOTPid").style.display = "none"
+    document.getElementById("otpveifymessage").style.display = "none"
+     document.getElementById("otpbtn").disabled = true
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'OTPSendReg' %},
+            data:{
+                contact:$('#contact').val(),
+                email:$('#email').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+
+                if(response.error === "1")
+                {
+                document.getElementById("otpbtn").disabled = false
+                document.getElementById("loading").style.display = "none"
+                document.getElementById("otpsedmessage").style.display = "block"
+                document.getElementById("otpsedmessage").innerHTML = "<strong style='color:red'>OTP Send Failed!</strong>"
+                }
+                else if(response.error === "0")
+                {
+                document.getElementById("otpbtn").disabled = false
+                document.getElementById("loading").style.display = "none"
+                document.getElementById("otpsedmessage").style.display = "block"
+                document.getElementById("otpsedmessage").innerHTML = "<p style='color:green'>OTP Sent to <b>"+response.contact+"</b> and <b>"+response.email+"</b></p><p style='color:blue'>If you didn't get the OTP within 3 Minutes then Send OTP Again."
+                document.getElementById("typeOTPid").style.display = "block"
+                document.getElementById("verifybtn").disabled = false
+                }
+            },
+            error: function(response)
+            {   document.getElementById("otpbtn").disabled = false
+                document.getElementById("loading").style.display = "none"
+                document.getElementById("otpsedmessage").style.display = "block"
+                document.getElementById("otpsedmessage").innerHTML = "<strong style='color:red'>OTP Send Failed!</strong>"
+            },
+        });
+   }
+   }
+
+</script>
+<script>
+    function otpverify()
+    {
+    const form = document.getElementById('verifyform');
+    form.addEventListener("submit", verifyOTPHandler)
+
+    function verifyOTPHandler(e) {
+    e.preventDefault();
+    document.getElementById("verifing").style.display = "block"
+    document.getElementById("otpveifymessage").style.display = "none"
+    document.getElementById("verifybtn").disabled = true
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'OTPVerifyReg' %},
+            data:{
+                mobileotp:$('#mobileotp').val(),
+                emailotp:$('#emailotp').val(),
+                email:$('#email').val(),
+                contact:$('#contact').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {document.getElementById("verifing").style.display = "none"
+
+                if(response.error === "1")
+                { document.getElementById("verifybtn").disabled = false
+                document.getElementById("otpveifymessage").style.display = "block"
+                document.getElementById("otpveifymessage").innerHTML = "<strong style='color:red'>Invalid OTP!</strong>"
+                }
+                else if(response.error === "0")
+                {
+                document.getElementById("sendotp").style.display = "none"
+                document.getElementById("otpsedmessage").style.display = "none"
+                document.getElementById("typeOTPid").style.display = "none"
+                document.getElementById("otpveifymessage").style.display = "block"
+                document.getElementById("otpveifymessage").innerHTML = "<p style='color:green'>OTP Verified</p><input type='hidden' name='verified' value='verified' form='doctorform'>"
+                document.getElementById("submitId").style.display = "block"
+                }
+            },
+            error: function(response)
+            {document.getElementById("verifing").style.display = "none"
+            document.getElementById("verifybtn").disabled = false
+                document.getElementById("otpveifymessage").style.display = "block"
+                document.getElementById("otpveifymessage").innerHTML = "<strong style='color:red'>OTP Verification Failed!</strong>"
+            },
+        });
+   }
+    }
+</script>
+<script>
+function UsernameChack(){
+    user = $("#username").val()
+    $.ajax({
+    url: {% url 'username-validation' %},
+    data: {
+        'username':user
+        },
+        dataType: 'json',
+        success: function(data)
+        {
+        if(data.is_exists === "1")
+        {
+        document.getElementById('usernamevalidation').innerHTML = "<strong style='color:red'>This Username already taken!</strong>"
+        document.getElementById("sendotp").style.display = "none"
+        document.getElementById("submitId").style.display = "none"
+        document.getElementById('typeOTPid').style.display = "none"
+        document.getElementById('otpsedmessage').style.display = "none"
+        document.getElementById('otpveifymessage').style.display = "none"
+        document.getElementById('loading').style.display = "none"
+        }
+        else{
+        document.getElementById('usernamevalidation').innerHTML = "<strong style='color:green'>Valid Username</strong>"
+        document.getElementById("sendotp").style.display = "block"
+        }
+        },
+    });
+    }
+
+</script>
+<script>
+    function emailcheck(){
+    email = $("#email").val()
+
+        document.getElementById('typeOTPid').style.display = "none"
+        document.getElementById('otpsedmessage').style.display = "none"
+        document.getElementById('otpveifymessage').style.display = "none"
+        document.getElementById('loading').style.display = "none"
+        document.getElementById("submitId").style.display = "none"
+    $.ajax({
+    url: {% url 'email-validation' %},
+    data: {
+        'email':email
+        },
+        dataType: 'json',
+        success: function(data){
+        if(data.is_exists === "1"){
+        document.getElementById('emailvalidation').innerHTML = "<strong style='color:red'>User with this Email already exists!</strong>"
+        document.getElementById("sendotp").style.display = "none"
+        document.getElementById("submitId").style.display = "none"
+        document.getElementById('typeOTPid').style.display = "none"
+        document.getElementById('otpsedmessage').style.display = "none"
+        document.getElementById('otpveifymessage').style.display = "none"
+        document.getElementById('loading').style.display = "none"
+        }
+        else{
+        document.getElementById('emailvalidation').innerHTML = "<strong style='color:green'>It's Okay</strong>"
+        document.getElementById("sendotp").style.display = "block"
+        }
+        },
+    });
+    }
+
+</script>
+<script>
+    function mobilechange()
+    {
+        document.getElementById("submitId").style.display = "none"
+        document.getElementById('typeOTPid').style.display = "none"
+        document.getElementById('otpsedmessage').style.display = "none"
+        document.getElementById('otpveifymessage').style.display = "none"
+        document.getElementById('loading').style.display = "none"
+    }
+</script>
+<script>
+    function passwordmatch()
+    {
+    password1 = $('#password1').val()
+    password2 = $('#password2').val()
+
+    document.getElementById('passwordcheck').innerHTML = ""
+    document.getElementById('typeOTPid').style.display = "none"
+    document.getElementById('otpsedmessage').style.display = "none"
+    document.getElementById('otpveifymessage').style.display = "none"
+    document.getElementById('loading').style.display = "none"
+
+    if(password1 === '' || password2 === '')
+    {
+    document.getElementById('passwordcheck').innerHTML = ""
+    document.getElementById('typeOTPid').style.display = "none"
+    document.getElementById('otpsedmessage').style.display = "none"
+    document.getElementById('otpveifymessage').style.display = "none"
+    document.getElementById('loading').style.display = "none"
+    }
+    else if(password1 === password2)
+    {
+    document.getElementById('passwordcheck').innerHTML = "<b style='color:green'>Password and Confirm Password matched!</b>"
+    document.getElementById("sendotp").style.display = "block"
+    }
+    else if(password1 !== password2)
+    {
+    document.getElementById('passwordcheck').innerHTML = "<b style='color:red'>Password and Confirm Password didn't match!</b>"
+    document.getElementById("sendotp").style.display = "none"
+    document.getElementById("submitId").style.display = "none"
+    document.getElementById('typeOTPid').style.display = "none"
+    document.getElementById('otpsedmessage').style.display = "none"
+    document.getElementById('otpveifymessage').style.display = "none"
+    document.getElementById('loading').style.display = "none"
+    }
+    }
+
+</script>
+<script type="text/javascript">
+
+        function upload_img(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img_id').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+</script>
+<script>
+    function loadDistrict()
+    {
+    state = $('#state').val();
+    var select_option_dist = {}
+    var select_dist = document.getElementById("district");
+
+    $.ajax({
+        url:{% url 'LoadDistrict' %},
+        data:{
+            'state':state,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+         $('#subdivision').val(response.division);
+
+        var dc = Number(response.districtcount);
+        select_dist.options.length = 0;
+        for(i=0; i<dc; i++)
+        {
+        select_option_dist[response.district[i]] = response.district[i];
+        }
+        for(index in select_option_dist)
+        {
+        select_dist.options[select_dist.options.length] = new Option(select_option_dist[index], index);
+        }
+        },
+    });
+    }
+
+
+
+
+</script>
+<script>
+    function loadAddress()
+    {
+    document.getElementById("pinLoading").innerHTML = "<button class='btn btn-primary' type='button' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Fetching Address...</button>"
+    pin = $('#pin').val();
+    var select_option_state = {}
+    var select_state = document.getElementById("state");
+
+
+    var select_option_dist = {}
+    var select_dist = document.getElementById("district");
+
+
+    $.ajax(
+    {
+        url: {% url 'LoadAddress' %},
+        data:{
+            'pin':pin,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+        document.getElementById("pinLoading").innerHTML = ""
+        $('#city').val(response.city);
+            $('#subdivision').val(response.division);
+
+            $('#state').val(response.state);
+
+            var dc = Number(response.districtcount);
+            select_dist.options.length = 0;
+            for(i=0; i<dc; i++)
+            {
+            select_option_dist[response.districts[i]] = response.districts[i];
+            }
+            for(index in select_option_dist)
+            {
+            select_dist.options[select_dist.options.length] = new Option(select_option_dist[index], index);
+            }
+        },
+        error: function(response)
+        {
+        document.getElementById("pinLoading").innerHTML = ""
+        },
+    });
+    }
+
+
+
+
+</script>
+<script>
+    function ageCheck()
+    {
+    document.getElementById("dobMessage").innerHTML = ""
+    dob = $('#dob').val()
+    $.ajax({
+    url: {% url 'AgeCheck' %},
+    data: {
+        'dob':dob
+        },
+        dataType: 'json',
+        success: function(data)
+        {
+        if(data.error === "0")
+        {
+        document.getElementById("dobMessage").innerHTML = "<b style='color:green'>Age Okay</b>"
+        document.getElementById("sendotp").style.display = "block"
+        document.getElementById("submitId").style.display = "none"
+        document.getElementById('typeOTPid').style.display = "none"
+        document.getElementById('otpsedmessage').style.display = "none"
+        document.getElementById('otpveifymessage').style.display = "none"
+        document.getElementById('loading').style.display = "none"
+        }
+        else
+        {
+        document.getElementById("dobMessage").innerHTML = "<b style='color:red'>You are not eligible. Age must be equal or greater than 18. Your current age "+data.age+"</b>"
+        document.getElementById("sendotp").style.display = "none"
+        document.getElementById("submitId").style.display = "none"
+        document.getElementById('typeOTPid').style.display = "none"
+        document.getElementById('otpsedmessage').style.display = "none"
+        document.getElementById('otpveifymessage').style.display = "none"
+        document.getElementById('loading').style.display = "none"
+        }
+        },
+   });
+    }
+
+</script>
+</html>
+{%endblock%}

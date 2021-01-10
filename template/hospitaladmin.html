@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+{% load custom_tags %}
+{% load tz %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{hospital.Name}}</title>
+</head>
+<body>
+{% if errorImg %}
+<script>
+    alert("It is not a vaild Image File!");
+</script>
+{% endif %}
+
+<center>
+    <h2 style="color:blue">{{hospital.Name | upper}}</h2><br><br>
+
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col">
+            <form class="form-inline" id="statusform" method="post" action="{% url 'HospitalAdmin'%}">
+                {% csrf_token %}
+                <input type="text" autocomplete="off" maxlength="10" name="bookid" form="statusform" id="bookid"
+                       required
+                       placeholder="Booking ID" style="margin-bottom:5px">
+                <button type="submit" class="btn btn-primary" name="action" value="getBook" form="statusform"
+                        style="margin-left:2px">
+                    Fetch Data
+                </button>
+            </form>
+            <br>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row" align="center">
+        <div class="col-md-8 ml-4" align="center">
+            <div class="bookingresult" id="id_bookingresult">
+                {% if exists == "0" %}
+                <br><br>
+                <h3 style="color:red">No Result Found!</h3>
+                {% elif noAdmit == "yes" %}
+                <br><br>
+                <h3 style="color:green">Status changed to <b>Don't Need to Admit</b></h3>
+                {% elif release == "yes" %}
+                <br><br>
+                <h3 style="color:blue">Patient has been Released</h3>
+                {% else %}
+                <div class="container">
+                    <div class="row">
+                        <h4 style="color:green">BOOKING DETAILS</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md" style="background-color:#ADC2CB">
+                            <h6 style="color:black">Booking ID: {{book.Booking_ID}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md" style="background-color:blue">
+                            <h6 style="color:white">Booking Status:- {{book.Status}}</h6>
+                        </div>
+                        <div class="col-md">
+                            <h6 style="color:54761A">Bed:- {{book.Bed_No}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md" style="background-color:#9BFF9F">
+                            <h6 style="color:#7B0006">Booking Date:- {{book.Booking_Time | IST}}</h6>
+                        </div>
+                        <div class="col-md" style="background-color:red">
+                            <h6 style="color:yellow">Expired Date:- {{book.Expire_Time | IST}}</h6>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <h4 style="color:red">PATIENT DETAILS</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md" style="background-color:#7BFDFF">
+                            <h6 style="color:blue">Patient's Name:- {{book.Patient_Name}}</h6>
+                        </div>
+                        <div class="col-md" style="background-color:yellow">
+                            <h6 style="color:#A61101">Email:- {{book.Email}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md" style="background-color:#EA4CDD">
+                            <h6 style="color:white">Mobile:- {{book.Mobile}}</h6>
+                        </div>
+                        <div class="col-md" style="background-color:#219994">
+                            <h6 style="color:#FFFBC7">Alternative Mobile:- {{book.Alternative_Mobile}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md" style="background-color:#FF92BD">
+                            <h6 style="color:#711200">State:- {{book.State}}</h6>
+                        </div>
+                        <div class="col-md" style="background-color:#98FF75">
+                            <h6 style="color:#B90031">District:- {{book.District}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md" style="background-color:#FFEAD7">
+                            <h6>Address:- {{book.Address}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md" style="background-color:#B59BFF">
+                            <h6 style="color:black">Pin:- {{book.Pin}}</h6>
+                        </div>
+                        <div class="col-md-6" style="background-color:#9C000A">
+                            <h6 style="color:white">Sub-Division:- {{book.Subdivision}}</h6>
+                        </div>
+                        <div class="col-md" style="background-color:#FFA15B">
+                            <h6 style="color:white">Gender:- {{book.Gender}}</h6>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                {% if same == "0" %}
+                <h6 style="color:blue">Booking is not refers to this Hospital</h6>
+                {% else %}
+                <form method="post" id="statusUpdateForm" action="{% url 'HospitalAdmin' %}">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{book.Booking_ID}}" name="bookid" form="statusUpdateForm">
+                <div class="dropdown">
+                  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Change Status
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      {% if book.Status == 'Not Admit Still Now' %}
+                    <a class="dropdown-item">
+                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                data-target="#admit">
+                            Admit
+                        </button>
+                    </a>
+                    <a class="dropdown-item">
+                        <button type="button" data-toggle="modal" class="btn btn-success" data-target="#noAdmitModal">
+                               Patient Don't need to Admit
+                            </button>
+                    </a>
+                      {% elif book.Status == 'Admited' %}
+                       <a class="dropdown-item">
+                          <button type="button" data-toggle="modal" class="btn btn-warning" data-target="#realeseModal">
+                                Release
+                            </button>
+                            </a>
+                      {% endif %}
+                  </div>
+                </div>
+                </form>
+                {% endif %}
+                {% endif %}
+            </div>
+
+
+            <div class="modal fade" id="noAdmitModal" tabindex="-1" aria-labelledby="noAdmitModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="noAdmitModalLabel">Patient Don't need to Admit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" form="statusUpdateForm" name="status" value="Don't Need to Admit">
+                        Confirm
+                        </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal fade" id="realeseModal" tabindex="-1" aria-labelledby="realeseModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="realeseModalLabel">Release Patient</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" form="statusUpdateForm" name="status" value="Release">
+                        Confirm
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <form method="post" id="statusAdmitForm" action="{% url 'HospitalAdmin' %}">
+                    {% csrf_token %}
+                <input type="hidden" value="{{book.Booking_ID}}" name="bookid" form="statusAdmitForm">
+            <div class="modal fade" id="admit" data-backdrop="static" data-keyboard="false"
+                 tabindex="-1" aria-labelledby="admitLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="admitLabel">Admit Patient</h5>
+                            <button type="button" class="close" data-dismiss="modal"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="admit-disease"><b>Disease: </b></label><br>
+                            <input type="text" name="disease" id="admit-disease" form="statusAdmitForm" required>
+                            <br><br>
+                            <label for="admit-room"><b>Ward: </b></label><br>
+                            <select onchange="wardChange()" name="room" id="admit-room" form="statusAdmitForm"
+                                    required>
+                                <option value="{{book.Booking_ID|pendingBed:'ward'}}">{{book.Booking_ID|pendingBed:"ward"}}</option>
+                                {% for i in room %}
+                                {% if i != book.Booking_ID|pendingBed:"ward" %}
+                                <option value="{{i}}">{{i}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select><br><br>
+                            <label for="admit-Bed_No"><b>Select Bed: </b></label><br>
+                            <select name="Bed_Id" id="admit-Bed_No" form="statusAdmitForm" required>
+                            <option value="{{book.Booking_ID|pendingBed:'id'}}">
+                                BED NO: {{book.Booking_ID|pendingBed:"bed"}} , BUILDING: {{book.Booking_ID|pendingBed:"building"}} , FLOOR: {{book.Booking_ID|pendingBed:"floor"}}
+                            </option>
+                                {% for i in bed %}
+                                {% if i.Room == book.Booking_ID|pendingBed:'ward' and i.Availability == "Available" and i.id != book.Booking_ID|pendingBed:'id' %}
+                                <option value="{{i.id}}">
+                                    BED NO: {{i.Bed_No}} , BUILDING: {{i.Building}} , FLOOR: {{i.Flor}}
+                                </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" name="status" value="Admit" class="btn btn-primary"
+                                    form="statusAdmitForm"
+                                    style="border:none;background-color:red;color:white">Admit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+
+            <br><br><br><br><br><br>
+            <h4 style="background-color:#4AFFFD;color:blue;width:100%">BOOK & ADMIT PATIENT</h4>
+            <div class="container bg-warning" style="padding:5px;padding-left:80px;padding-right:80px">
+                <form id="newAdmit" method="post" action="{% url 'NewBook' %}" target="_blank">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md"></div>
+                        <div class="col-md-6">
+                            <input type="text" name="patientName" form="newAdmit" maxlength="100"
+                                   placeholder="Patient's Name" autocomplete="off" required style="width:70%">
+                            <br><br>
+                        </div>
+                        <div class="col-md"></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md">
+                            <input type="number" placeholder="Age" name="age" id="age" required form="newAdmit" style="width:70%">
+                        </div>
+                        <div class="col-md">
+                            <input type="radio" id="male" value="Male" name="gender" form="newAdmit" required>
+                            <label for="male"><b>Male</b> &nbsp; &nbsp; &nbsp;</label>
+                            <input type="radio" id="female" value="Female" name="gender" form="newAdmit" required>
+                            <label for="female"><b>Female</b> &nbsp; &nbsp; &nbsp;</label>
+                            <input type="radio" id="other" value="Other" name="gender" form="newAdmit" required>
+                            <label for="other"><b>Other</b></label>
+                            <br><br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md"></div>
+                        <div class="col-md-6">
+                            <input type="email" maxlength="100" name="email" form="newAdmit"
+                                   placeholder="Email Id (optional)" autocomplete="off" style="width:70%">
+                            <br><br>
+                        </div>
+                        <div class="col-md"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <input type="tel" name="mobile" id="mobile" maxlength="10" autocomplete="off"
+                                   form="newAdmit"
+                                   placeholder="10 digit Mobile No" required style="width:70%">
+                            <br><br>
+                        </div>
+                        <div class="col-md">
+                            <input type="tel" name="altmobile" autocomplete="off" maxlength="10" form="newAdmit"
+                                   placeholder="Alternative Mobile No (optional)" style="width:70%">
+                            <br><br>
+                        </div>
+                    </div>
+                    <hr style="background:white">
+                    <div class="row">
+                        <div class="col-md"></div>
+                        <div class="col-md-6">
+                        <textarea name="address" form="newAdmit" rows="5" placeholder="Patient's Full Address"
+                                  required style="width:100%"></textarea>
+                            <br><br>
+                        </div>
+                        <div class="col-md"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <input type="text" name="pin" maxlength="6" id="patient-pin" onkeyup="loadAddress()" placeholder="Pin" form="newAdmit" required style="width:70%">
+                            <br><br>
+                        </div>
+                        <div class="col-md">
+                            <input type="text" name="subdivision" id="Patient-subdivision" placeholder="Sub-Division" form="newAdmit" required style="width:70%">
+                            <br><br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <select name="state" id="patient-state" form="newAdmit" onchange="loadDistrict()" required style="width:100%">
+                                <option label="Select State"></option>
+                                    <optgroup label="States">
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                        <option value="Assam">Assam</option>
+                                        <option value="Bihar">Bihar</option>
+                                        <option value="Chhattisgarh">Chhattisgarh</option>
+                                        <option value="Goa">Goa</option>
+                                        <option value="Gujarat">Gujarat</option>
+                                        <option value="Haryana">Haryana</option>
+                                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                        <option value="Jharkhand">Jharkhand</option>
+                                        <option value="Karnataka">Karnataka</option>
+                                        <option value="Kerala">Kerala</option>
+                                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                        <option value="Maharashtra">Maharashtra</option>
+                                        <option value="Manipur">Manipur</option>
+                                        <option value="Meghalaya">Meghalaya</option>
+                                        <option value="Mizoram">Mizoram</option>
+                                        <option value="Nagaland">Nagaland</option>
+                                        <option value="Odisha">Odisha</option>
+                                        <option value="Punjab">Punjab</option>
+                                        <option value="Rajasthan">Rajasthan</option>
+                                        <option value="Sikkim">Sikkim</option>
+                                        <option value="Tamil Nadu">Tamil Nadu</option>
+                                        <option value="Telangana">Telangana</option>
+                                        <option value="Tripura">Tripura</option>
+                                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                        <option value="Uttarakhand">Uttarakhand</option>
+                                        <option value="West Bengal">West Bengal</option>
+                                    </optgroup>
+                                    <optgroup label="Union Teritory">
+                                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                        <option value="Chandigarh">Chandigarh</option>
+                                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli
+                                            and Daman and Diu
+                                        </option>
+                                        <option value="Delhi">Delhi</option>
+                                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                        <option value="Ladakh">Ladakh</option>
+                                        <option value="Lakshadweep">Lakshadweep</option>
+                                        <option value="Puducherry">Puducherry</option>
+                                    </optgroup>
+                            </select>
+                            <br><br>
+                        </div>
+                        <div class="col-md">
+                            <select name="district" id="patient-district" form="newAdmit" required style="width:70%">
+                            </select>
+                            <br><br>
+                        </div>
+                    </div>
+                    <hr style="background-color:white">
+                    <div class="row">
+                        <div class="col-md"></div>
+                        <div class="col-md-6">
+                            <input type="text" name="disease" placeholder="Disease" form="newAdmit" required
+                                    style="width:70%">
+                            <br><br>
+                        </div>
+                        <div class="col-md"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select onchange="BookwardChange()" name="room" id="book-room" form="newAdmit" required style="width:100%">
+                                <option label="Select Ward"></option>
+                                {% for i in room %}
+                                <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                            </select>
+                            <br><br>
+                        </div>
+                        <div class="col-md">
+                            <select name="Bed_Id" id="book-Bed_No" form="newAdmit" required style="width:100%">
+                            </select>
+                            <br><br>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="action" value="newBook" form="newAdmit"
+                            style="width:200px;border:2px solid white"><b>Done</b>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="col">
+            <div class="card" style="width: 300px;">
+                <div class="card-header">
+                    <strong><i style="color:blue" class="fas fa-bed fa-3x"></i></strong>
+                </div>
+
+                <img src="{{hospital.Image.url}}" class="card-img-top" alt="...">
+                <br><h5 style="background-color:#FF6500;color:white">
+                <i class="fad fa-clinic-medical"></i>
+                General Ward</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <i class="fad fa-bed-empty fa-2x" style="color:green;float:left"></i>
+                        Available Bad
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{general_avail}}</span></li>
+                    <li class="list-group-item">
+                        <i class="fad fa-bed fa-2x" style="color:red;float:left"></i>
+                        Used Bad
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{general_used}}</span></li>
+                    <li class="list-group-item">
+                        <i class="fad fa-clock fa-2x" style="color:blue;float:left"></i>
+                        Admit Pending
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{general_book}}</span>
+                    </li>
+                    <li class="list-group-item"><b>Total Bad</b>
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{general}}</span></li>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SeeGeneralBeds">
+                        See Beds
+                    </button>
+                    <br>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="SeeGeneralBeds" data-backdrop="static" data-keyboard="false"
+                         tabindex="-1" aria-labelledby="SeeGeneralBedsLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="SeeGeneralBedsLabel">
+                                        General Ward Beds</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5 style="background-color:green;color:white">Available Beds</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Available" and i.Room == "General Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                    <h5 style="background-color:red;color:white">Used Beds</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Used" and i.Room == "General Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <h5 style="background-color:blue;color:white">Pending</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Contact</th>
+                                            <th scope="col">Booked</th>
+                                            <th scope="col">Expired</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Book" and i.Room == "General Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                            <td>{{i.Booking_Id|Book:"Name"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Contact"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Booked"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Expired"}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+
+                <h5 style="background-color:#FF6500;color:white">
+                    <i class="fas fa-female"></i>
+                    Women Ward</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <i class="fad fa-bed-empty fa-2x" style="color:green;float:left"></i>
+                        Available Bad
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{women_avail}}</span></li>
+                    <li class="list-group-item">
+                        <i class="fad fa-bed fa-2x" style="color:red;float:left"></i>
+                        Used Bad
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{women_used}}</span></li>
+                    <li class="list-group-item">
+                        <i class="fad fa-clock fa-2x" style="color:blue;float:left"></i>
+                        Admit Pending
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{women_book}}</span>
+                    </li>
+                    <li class="list-group-item"><b>Total Bad</b>
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{women}}</span></li>
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SeeWomenBeds">
+                        See Beds
+                    </button>
+                    <br>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="SeeWomenBeds" data-backdrop="static" data-keyboard="false"
+                         tabindex="-1" aria-labelledby="SeeWomenBedsLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="SeeWomenBedsLabel">Women Ward Beds</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5 style="background-color:green;color:white">Available Beds</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Available" and i.Room == "Women Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <h5 style="background-color:red;color:white">Used Beds</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Used" and i.Room == "Women Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <h5 style="background-color:blue;color:white">Pending</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Contact</th>
+                                            <th scope="col">Booked</th>
+                                            <th scope="col">Expired</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Book" and i.Room == "Women Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                            <td>{{i.Booking_Id|Book:"Name"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Contact"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Booked"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Expired"}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+
+                <h5 style="background-color:#FF6500;color:white">
+                    <i class="fas fa-male"></i>
+                    Men Ward</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <i class="fad fa-bed-empty fa-2x" style="color:green;float:left"></i>
+                        Available Bad
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{men_avail}}</span></li>
+                    <li class="list-group-item">
+                        <i class="fad fa-bed fa-2x" style="color:red;float:left"></i>
+                        Used Bad
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{men_used}}</span></li>
+                    <li class="list-group-item">
+                        <i class="fad fa-clock fa-2x" style="color:blue;float:left"></i>
+                        Admit Pending
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{men_book}}</span>
+                    </li>
+                    <li class="list-group-item"><b>Total Bad</b>
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{men}}</span></li>
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SeeMenBeds">
+                        See Beds
+                    </button>
+                    <br>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="SeeMenBeds" data-backdrop="static" data-keyboard="false"
+                         tabindex="-1" aria-labelledby="SeeMenBedsLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="SeeMenBedsLabel">
+                                        Men Ward Beds</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5 style="background-color:green;color:white">Available Beds</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Available" and i.Room == "Men Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <h5 style="background-color:red;color:white">Used Beds</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Used" and i.Room == "Men Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <h5 style="background-color:blue;color:white">Pending</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Contact</th>
+                                            <th scope="col">Booked</th>
+                                            <th scope="col">Expired</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Book" and i.Room == "Men Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                            <td>{{i.Booking_Id|Book:"Name"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Contact"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Booked"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Expired"}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+
+                <h5 style="background-color:#FF6500;color:white">
+                    <i class="fas fa-baby"></i>
+                    Child Ward</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <i class="fad fa-bed-empty fa-2x" style="color:green;float:left"></i>
+                        Available Bad
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{child_avail}}</span></li>
+                    <li class="list-group-item">
+                        <i class="fad fa-bed fa-2x" style="color:red;float:left"></i>
+                        Used Bad
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{child_used}}</span></li>
+                    <li class="list-group-item">
+                        <i class="fad fa-clock fa-2x" style="color:blue;float:left"></i>
+                        Admit Pending
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{child_book}}</span>
+                    </li>
+                    <li class="list-group-item"><b>Total Bad</b>
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{child}}</span></li>
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SeeChildBeds">
+                        See Beds
+                    </button>
+                    <br>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="SeeChildBeds" data-backdrop="static" data-keyboard="false"
+                         tabindex="-1" aria-labelledby="SeeChildBedsLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="SeeChildBedsLabel">Child Ward Beds</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5 style="background-color:green;color:white">Available Beds</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Available" and i.Room == "Child Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <h5 style="background-color:red;color:white">Used Beds</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Used" and i.Room == "Child Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <h5 style="background-color:blue;color:white">Pending</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Contact</th>
+                                            <th scope="col">Booked</th>
+                                            <th scope="col">Expired</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Book" and i.Room == "Child Ward" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                            <td>{{i.Booking_Id|Book:"Name"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Contact"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Booked"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Expired"}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+
+                <h5 style="background-color:#FF6500;color:white">
+                    <i class="fas fa-procedures"> </i>
+                    ICU</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <i class="fad fa-bed-empty fa-2x" style="color:green;float:left"></i>
+                        Available Bad
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{icu_avail}}</span></li>
+                    <li class="list-group-item">
+                        <i class="fad fa-bed fa-2x" style="color:red;float:left"></i>
+                        Used Bad
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{icu_used}}</span></li>
+                    <li class="list-group-item">
+                        <i class="fad fa-clock fa-2x" style="color:blue;float:left"></i>
+                        Admit Pending
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{men_book}}</span>
+                    </li>
+                    <li class="list-group-item"><b>Total Bad</b>
+                        <span class="badge badge-primary badge-pill"
+                              style="float:right">{{icu}}</span></li>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SeeICUBeds">
+                        See Beds
+                    </button>
+                    <br>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="SeeICUBeds" data-backdrop="static" data-keyboard="false"
+                         tabindex="-1" aria-labelledby="SeeICUBedsLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="SeeICUBedsLabel">
+                                        ICU Beds</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5 style="background-color:green;color:white">Available Beds</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Available" and i.Room == "ICU" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <h5 style="background-color:red;color:white">Used Beds</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Used" and i.Room == "ICU" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <h5 style="background-color:Blue;color:white">Pending</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Bed No</th>
+                                            <th scope="col">Building</th>
+                                            <th scope="col">Flor</th>
+                                            <th scope="col">Ward</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Contact</th>
+                                            <th scope="col">Booked</th>
+                                            <th scope="col">Expired</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in bed %}
+                                        {% if i.Availability == "Book" and i.Room == "ICU" %}
+                                        <tr>
+                                            <th scope="row">{{i.Bed_No}}</th>
+                                            <td>{{i.Building}}</td>
+                                            <td>{{i.Flor}}</td>
+                                            <td>{{i.Room}}</td>
+                                            <td>{{i.Booking_Id|Book:"Name"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Contact"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Booked"}}</td>
+                                            <td>{{i.Booking_Id|Book:"Expired"}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                    data-target="#staticBackdrop1">
+                                <i class="fas fa-plus-square"></i>
+                                Add Bad
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop1" data-backdrop="static" data-keyboard="false"
+                                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-success" style="color:white">
+                                            <h5 class="modal-title" id="staticBackdropLabel1"><strong>Add Bad</strong>
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true" style="color:white">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <span id="addbedmeesage"></span><br><br>
+                                            <form method="post" id="addBedForm">
+                                                {% csrf_token %}
+                                                <input type="number" name="Bed_No" id="Bed_No" form="addBedForm"
+                                                       placeholder="Bed No" required><br><br>
+                                                <label for="room">In Which Room?</label>
+                                                <select name="room" id="room" form="addBedForm" required>
+                                                    {% for i in room %}
+                                                    <option value="{{i}}">{{i}}</option>
+                                                    {% endfor %}
+                                                </select><br><br>
+                                                <label for="flor">In Which Flor?</label>
+                                                <select name="flor" id="flor" form="addBedForm" required>
+                                                    {% for i in flor %}
+                                                    <option value="{{i}}">{{i}}</option>
+                                                    {% endfor %}
+                                                </select><br><br>
+                                                <input type="text" name="building" id="building" form="addBedForm"
+                                                       placeholder="In Which Building?" required>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="submit" id="addBadSubmit" onclick="addBed()" form="addBedForm"
+                                                    class="btn btn-success">Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-danger" data-toggle="modal"
+                                    data-target="#staticBackdrop2">
+                                Remove Bad
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop2" data-backdrop="static" data-keyboard="false"
+                                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background-color:red;color:white">
+                                            <h5 class="modal-title" id="staticBackdropLabel2"><strong>Remove
+                                                Bad</strong></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true" style="color:white">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <span id="removebedmeesage"></span><br><br>
+                                            <form method="post" id="removeBedForm">
+                                                {% csrf_token %}
+                                                <input type="number" name="Bed_No" id="Remove-Bed_No"
+                                                       form="removeBedForm"
+                                                       placeholder="Bed No" required><br><br>
+                                                <label for="room">In Which Room?</label>
+                                                <select name="room" id="Remove-room" form="removeBedForm" required>
+                                                    {% for i in room %}
+                                                    <option value="{{i}}">{{i}}</option>
+                                                    {% endfor %}
+                                                </select><br><br>
+                                                <label for="flor">In Which Flor?</label>
+                                                <select name="flor" id="Remove-flor" form="removeBedForm" required>
+                                                    {% for i in flor %}
+                                                    <option value="{{i}}">{{i}}</option>
+                                                    {% endfor %}
+                                                </select><br><br>
+                                                <input type="text" name="building" id="Remove-building"
+                                                       form="removeBedForm"
+                                                       placeholder="In Which Building?" required>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="submit" name="removeBadSubmit" id="removeBadSubmit"
+                                                    form="removeBedForm" onclick="removeBed()" class="btn btn-danger">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <h4 style="background-color:yellow;color:red">Admitted Patients</h4>
+    <form id="admitFilter" method="post" action="{% url 'HospitalAdmin' %}">
+        {% csrf_token %}
+        <div class="row ml-5 mr-5">
+            <div class="col-md">
+                <input type="text" class="form-control" value="{{bookId}}" autocomplete="off" name="bookingId" placeholder="Booking Id" form="admitFilter">
+                <br>
+            </div>
+            <div class="col-md">
+                <input type="text" class="form-control" value="{{name}}" autocomplete="off" name="name" placeholder="Patient Name" form="admitFilter">
+                <br>
+            </div>
+            <div class="col-md">
+                <input type="tel" class="form-control" value="{{mobile}}" autocomplete="off" name="mobile" placeholder="Mobile No" maxlength="10"
+                       form="admitFilter">
+                <br>
+            </div>
+        </div>
+        <div class="row ml-5 mr-5">
+            <div class="col-md">
+                <input type="text" class="form-control" value="{{building}}" autocomplete="off" name="building" placeholder="Building" form="admitFilter">
+                <br>
+            </div>
+            <div class="col-md">
+                <select class="form-control" autocomplete="off" name="ward" form="admitFilter">
+                    <option label="Select Ward"></option>
+                    {% if ward == 'General Ward' %}
+                    <option value="General Ward" selected>General Ward</option>
+                    {% else %}
+                    <option value="General Ward">General Ward</option>
+                    {% endif %}
+                    {% if ward == 'Men Ward' %}
+                    <option value="Men Ward" selected>Men Ward</option>
+                    {% else %}
+                    <option value="Men Ward">Men Ward</option>
+                    {% endif %}
+                    {% if ward == 'Women Ward' %}
+                    <option value="Women Ward" selected>Women Ward</option>
+                    {% else %}
+                    <option value="Women Ward">Women Ward</option>
+                    {% endif %}
+                    {% if ward == 'Child Ward' %}
+                    <option value="Child Ward" selected>Child Ward</option>
+                    {% else %}
+                    <option value="Child Ward">Child Ward</option>
+                    {% endif %}
+                    {% if ward == 'ICU' %}
+                    <option value="ICU" selected>ICU</option>
+                    {% else %}
+                    <option value="ICU">ICU</option>
+                    {% endif %}
+                </select>
+                <br>
+            </div>
+            <div class="col-md">
+                <input type="tel" class="form-control" value="{{bedNo}}" autocomplete="off" name="bedNo" placeholder="Bed No" maxlength="10"
+                       form="admitFilter">
+            </div>
+        </div>
+        <button type="submit" name="action" value="search" class="btn btn-success" form="admitFilter">
+            <i class="fas fa-search"></i>
+            Search
+        </button>
+        <button type="button" class="btn btn-danger" onclick="location.href='{% url 'HospitalAdmin' %}'">
+            Clear
+        </button>
+    </form>
+    <br>
+    <button type="button" onclick="refreshTable()" title="Refresh the Data" class="btn btn-primary" style="float:left;margin:5px"><i
+            class="fad fa-sync-alt fa-spin"></i> Refresh
+    </button>
+    <br>
+
+    <div class="wrapper" align="center" style="overflow:scroll;width:99%;height:560px">
+        <table class="table table-bordered table-hover">
+            <thead style="background-color:green;color:white">
+            <tr>
+                <th scope="col">Sl No</th>
+                <th scope="col">Booking ID</th>
+                <th scope="col">Patient Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Mobile</th>
+                <th scope="col">Alternative Mobile</th>
+                <th scope="col">State</th>
+                <th scope="col">District</th>
+                <th scope="col">Pin</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Bed No</th>
+                <th scope="col">Ward</th>
+                <th scope="col">Flor</th>
+                <th scope="col">Buiding</th>
+                <th scope="col">Admitted Date</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in admitBook %}
+            <tr id="{{i.Booking_ID}}">
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{i.Booking_ID}}</td>
+                <td>{{i.Patient_Name}}</td>
+                <td>{{i.Email}}</td>
+                <td>{{i.Mobile}}</td>
+                <td>{{i.Alternative_Mobile}}</td>
+                <td>{{i.State}}</td>
+                <td>{{i.District}}</td>
+                <td>{{i.Pin}}</td>
+                <td>{{i.Gender}}</td>
+                <td>{{i.Bed_No.Bed_No}}</td>
+                <td>{{i.Bed_No.Room}}</td>
+                <td>{{i.Bed_No.Flor}}</td>
+                <td>{{i.Bed_No.Building}}</td>
+                <td>{{i.Admit_Time | IST}}</td>
+                <td>
+                    <form id="patientReleaseForm" method="post" action="{% url 'PatientEdit' %}">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{i.Booking_ID}}" id="releasebookid" name="bookid"
+                               form="patientReleaseForm" required>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                          Release
+                        </button>
+                    </form>
+                    <br><br>
+
+
+                    <!-- Button trigger modal -->
+
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Release Patient</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" onclick="patientRelease()" class="btn btn-success" name="status" id="status" value="Release"
+                                form="patientReleaseForm">
+                            Release
+                        </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Button trigger modal -->
+                    <button class="bg-primary" type="button" data-toggle="modal" data-target="#chagebed"
+                            style="color:white;border:none">
+                        Change Bed
+                    </button>
+                    <form id="patientEdit" method="post" action="{% url 'PatientEdit' %}">
+                        <!-- Modal -->
+                        <div class="modal fade" id="chagebed" data-backdrop="static" data-keyboard="false"
+                             tabindex="-1" aria-labelledby="chagebedLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-md">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary" style="color:white">
+                                        <h5 class="modal-title" id="chagebedLabel"><strong style="color:white">Change
+                                            Bed</strong></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true" style="color:white">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" align="center">
+                                        <h4 style="color:#7900FF"> Change Bed for <b>{{i.Patient_Name}}</b></h4><br>
+                                        <label for="change-room"><b>Ward: </b></label><br>
+                                        <select onchange="wardChangeEdit()" name="room" id="change-room"
+                                                form="patientEdit"
+                                                required style="width:100%">
+                                            <option label="Select Ward"></option>
+                                            {% for j in room %}
+                                            <option value="{{j}}">{{j}}</option>
+                                            {% endfor %}
+                                        </select><br><br>
+                                        <label for="change-Bed_No"><b>Select Bed: </b></label><br>
+                                        <select name="Bed_Id" id="change-Bed_No" form="patientEdit" required style="width:100%">
+                                        </select>
+                                        <input type="hidden" name="bookid" id="Editbookid" value="{{i.Booking_ID}}"
+                                               form="patientEdit">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                        <button type="submit" class="btn bg-primary" onclick="patientChange()" name="status"
+                                                id="editSub" value="edit" form="patientEdit"
+                                                style="border:none;color:white">
+                                            Change Bed
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <br><br>
+
+    <ul class="nav nav-pills mb-3 ml-5" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="pills-general-tab" data-toggle="pill" href="#pills-general" role="tab"
+               aria-controls="pills-general" aria-selected="true">Update General Info</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+               aria-controls="pills-contact" aria-selected="false">Update Contact Info</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-general" role="tabpanel" aria-labelledby="pills-general-tab">
+            <div class="row">
+                <div class="col-md">
+                    <form id="imageForm" method="post" enctype='multipart/form-data' action="{% url 'HospitalAdmin' %}">
+                        {% csrf_token %}
+                        <img src="{{hospital.Image.url}}" height="250" width="250">
+                        <br><br>
+                        <input type="file" name="picture" id="picture" form="imageForm" accept="image/*" required>
+                        <br><br>
+                        <button type="submit" class="btn btn-warning" name="action" value="ImageUpload" form="imageForm">Upload Picture</button>
+
+                        <span id="imageError"></span>
+                        <br>
+                        <div id="button">
+
+                        </div>
+                    </form>
+                    <br><br>
+                </div>
+                <div class="col-md-8 ml-2 mr-2">
+                    <form id="generalForm" method="post" action="{% url 'HospitalGeneralEdit' %}">
+                        {% csrf_token %}
+                        <span id="saveChangeMessage"></span><br>
+
+                        <h5 class="bg-secondary" style="padding:5px;color:white">Hospital Type</h5>
+                        <div class="row">
+                            <div class="col-md"></div>
+                            <div class="col-md-9" align="center">
+                                <select form="generalForm" name="type" id="type" required style="width:50%">
+                                    <option label="Hospital Type"></option>
+                                    {% if hospital.Type == "Government" %}
+                                    <option value="Government" selected>Government</option>
+                                    <option value="Private">Private</option>
+                                    {% elif hospital.Type == "Private" %}
+                                    <option value="Government" >Government</option>
+                                    <option value="Private" selected>Private</option>
+                                    {% else %}
+                                    <option value="Government">Government</option>
+                                    <option value="Private">Private</option>
+                                    {% endif %}
+                                </select>
+                                <br><br><br><br>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <h5 class="bg-secondary" style="padding:5px;color:white">Hospital Name</h5>
+                        <div class="row">
+                            <div class="col-md"></div>
+                            <div class="col-md-7" align="center">
+                                <input type="text" form="generalForm" id="name" name="name" placeholder="Hospital Name" value="{{hospital.Name}}" required style="width:100%">
+                                <br><br>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <h5 class="bg-secondary" style="padding:5px;color:white">Address</h5>
+                        <div class="row">
+                            <div class="col-md"></div>
+                            <div class="col-md-10" align="center">
+                                <textarea name="address" id="address" form="generalForm" placeholder="Address" rows="3" required style="width:100%">{{hospital.Address}}</textarea>
+                                <br><br>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <input type="text" form="generalForm" id="gen-pin" onkeyup="loadAddress1()" name="pin" placeholder="Pin" maxlength="6" value="{{hospital.Pin}}" required style="width:70%">
+                                <br><br>
+                            </div>
+                            <div class="col-md">
+                                <input type="text" form="generalForm" id="gen-subdivision" name="subdivision" placeholder="Sub-Division" value="{{hospital.Subdivision}}" required style="width:100%">
+                                <br><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md" align="center">
+                                <select form="generalForm" name="state" onchange="loadDistrict1()" id="gen-state" required style="width:100%">
+                                    <option value="{{hospital.State}}" selected>{{hospital.State}}</option>
+                                    <optgroup label="States">
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                        <option value="Assam">Assam</option>
+                                        <option value="Bihar">Bihar</option>
+                                        <option value="Chhattisgarh">Chhattisgarh</option>
+                                        <option value="Goa">Goa</option>
+                                        <option value="Gujarat">Gujarat</option>
+                                        <option value="Haryana">Haryana</option>
+                                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                        <option value="Jharkhand">Jharkhand</option>
+                                        <option value="Karnataka">Karnataka</option>
+                                        <option value="Kerala">Kerala</option>
+                                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                        <option value="Maharashtra">Maharashtra</option>
+                                        <option value="Manipur">Manipur</option>
+                                        <option value="Meghalaya">Meghalaya</option>
+                                        <option value="Mizoram">Mizoram</option>
+                                        <option value="Nagaland">Nagaland</option>
+                                        <option value="Odisha">Odisha</option>
+                                        <option value="Punjab">Punjab</option>
+                                        <option value="Rajasthan">Rajasthan</option>
+                                        <option value="Sikkim">Sikkim</option>
+                                        <option value="Tamil Nadu">Tamil Nadu</option>
+                                        <option value="Telangana">Telangana</option>
+                                        <option value="Tripura">Tripura</option>
+                                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                        <option value="Uttarakhand">Uttarakhand</option>
+                                        <option value="West Bengal">West Bengal</option>
+                                    </optgroup>
+                                    <optgroup label="Union Teritory">
+                                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                        <option value="Chandigarh">Chandigarh</option>
+                                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli
+                                            and
+                                            Daman and Diu
+                                        </option>
+                                        <option value="Delhi">Delhi</option>
+                                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                        <option value="Ladakh">Ladakh</option>
+                                        <option value="Lakshadweep">Lakshadweep</option>
+                                        <option value="Puducherry">Puducherry</option>
+                                    </optgroup>
+                                </select>
+                                <br><br>
+                            </div>
+                            <div class="col-md" align="center">
+                                <select form="generalForm" id="gen-district" name="district" required style="width:70%">
+                                    <option value="{{hospital.District}}" selected>{{hospital.District}}</option>
+                                </select>
+                                <br><br>
+                            </div>
+                        </div>
+                        <hr class="bg-secondary">
+                        <button type="submit" class="btn btn-success" onclick="generalChange()" form="generalForm">Save Change</button>
+                        <br><span id="saveChangeMessage1"></span>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+            <div class="row">
+                <div class="col-md">
+                    <form id="imageForm1" method="post" enctype='multipart/form-data' action="{% url 'HospitalAdmin' %}">
+                        {% csrf_token %}
+                        <img src="{{hospital.Image.url}}" height="250" width="250">
+                        <br><br>
+                        <input type="file" name="picture" form="imageForm1" accept="image/*" required>
+                        <br><br>
+                        <button type="submit" class="btn btn-warning" name="action" value="ImageUpload" form="imageForm1">Upload Picture</button>
+                    </form>
+                    <br><br>
+                </div>
+                <div class="col-md-8 ml-2 mr-2">
+                    <form id="contactForm" method="post" action="{% url 'HospitalContactEdit' %}">
+                        {% csrf_token %}
+                        <h5 class="bg-secondary" style="padding:5px;color:white">Contact Info</h5>
+
+                        <div class="row">
+                            <div class="col-md-4 ml-3 mr-3" align="center">
+                               <input type="tel" maxlength="10" form="contactForm" onkeyup="contactChange()" id="contact" name="contact" value="{{hospital.Contact}}" required placeholder="10 digit Mobile No" style="width:100%">
+                                <br><br>
+                            </div>
+                            <div class="col-md"></div>
+                            <div class="col-md-4 ml-3 mr-3" align="center">
+                                <input type="email" form="contactForm" onkeyup="contactChange()" id="email" name="email" placeholder="Email ID" value="{{hospital.Username.email}}" required style="width:100%">
+                                <br><br>
+                            </div>
+                        </div>
+                        <hr class="bg-secondary">
+                    </form>
+                    <form id="otpSendForm" method="post">
+                        {% csrf_token %}
+                        <button type="submit" id="otpbtn" class="btn btn-success" onclick="otpsend()" form="otpSendForm">SEND OTP</button>
+                        <br>
+                        <span id="otpsedmessage"></span>
+                    </form>
+                    <form id="verifyform" method="post">
+                    <div id="typeOTPid" style="display:none">
+                    <div class='row'> <div class='col'> <input type='text' name='mobileotp' id='mobileotp' maxlength='6' form='verifyform' placeholder='OTP Sent to Mobile' required> </div> <div class='col'> <input type='text' name='emailotp' id='emailotp' maxlength='6' form='verifyform' placeholder='OTP Sent to Email' required> </div> </div> <hr class='bg-secondary'> <div class='row'> <div class='col'> <button type='submit' name='verify' id='verifybtn' class='btn btn-success' onclick='otpverify()'>Verify OTP</button> </div> </div> <hr class='bg-secondary'>
+                    </div>
+                    </form>
+                    <div id="otpveifymessage"></div>
+                    <div id="submitId" style="display:none">
+                        <br><hr class='bg-secondary'><button type='submit' class='btn btn-success' onclick='contactUpdate()' form='contactForm'>Update</button><hr class='bg-secondary'>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</center>
+</body>
+<script>
+    function loadDistrict1()
+    {
+    state = $('#gen-state').val();
+    var select_option_dist = {}
+    var select_dist = document.getElementById("gen-district");
+
+    $.ajax({
+        url:{% url 'LoadDistrict' %},
+        data:{
+            'state':state,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+        var dc = Number(response.districtcount);
+        select_dist.options.length = 0;
+        for(i=0; i<dc; i++)
+        {
+        select_option_dist[response.district[i]] = response.district[i];
+        }
+        for(index in select_option_dist)
+        {
+        select_dist.options[select_dist.options.length] = new Option(select_option_dist[index], index);
+        }
+        },
+    });
+    }
+</script>
+<script>
+    function loadAddress1()
+    {
+    pin = $('#gen-pin').val();
+    var select_option_state = {}
+    var select_state = document.getElementById("gen-state");
+
+
+    var select_option_dist = {}
+    var select_dist = document.getElementById("gen-district");
+
+
+    $.ajax(
+    {
+        url: {% url 'LoadAddress' %},
+        data:{
+            'pin':pin,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+            $('#gen-subdivision').val(response.city);
+            $('#gen-state').val(response.state);
+
+            var dc = Number(response.districtcount);
+            select_dist.options.length = 0;
+            for(i=0; i<dc; i++)
+            {
+            select_option_dist[response.districts[i]] = response.districts[i];
+            }
+            for(index in select_option_dist)
+            {
+            select_dist.options[select_dist.options.length] = new Option(select_option_dist[index], index);
+            }
+
+        },
+    });
+    }
+</script>
+<script>
+    function loadDistrict()
+    {
+    state = $('#patient-state').val();
+    var select_option_dist = {}
+    var select_dist = document.getElementById("patient-district");
+
+    $.ajax({
+        url:{% url 'LoadDistrict' %},
+        data:{
+            'state':state,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+        var dc = Number(response.districtcount);
+        select_dist.options.length = 0;
+        for(i=0; i<dc; i++)
+        {
+        select_option_dist[response.district[i]] = response.district[i];
+        }
+        for(index in select_option_dist)
+        {
+        select_dist.options[select_dist.options.length] = new Option(select_option_dist[index], index);
+        }
+        },
+    });
+    }
+</script>
+<script>
+    function loadAddress()
+    {
+    pin = $('#patient-pin').val();
+    var select_option_state = {}
+    var select_state = document.getElementById("patient-state");
+
+
+    var select_option_dist = {}
+    var select_dist = document.getElementById("patient-district");
+
+
+    $.ajax(
+    {
+        url: {% url 'LoadAddress' %},
+        data:{
+            'pin':pin,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+            $('#Patient-subdivision').val(response.city);
+            $('#patient-state').val(response.state);
+
+            var dc = Number(response.districtcount);
+            select_dist.options.length = 0;
+            for(i=0; i<dc; i++)
+            {
+            select_option_dist[response.districts[i]] = response.districts[i];
+            }
+            for(index in select_option_dist)
+            {
+            select_dist.options[select_dist.options.length] = new Option(select_option_dist[index], index);
+            }
+
+        },
+    });
+    }
+</script>
+<script>
+    function refreshTable()
+    {
+    location.reload();
+    }
+</script>
+<script>
+    function contactChange()
+    {
+    document.getElementById("otpsedmessage").innerHTML = ""
+    document.getElementById("typeOTPid").style.display = "none"
+    document.getElementById("otpveifymessage").innerHTML = ""
+    document.getElementById("submitId").style.display = "none"
+    }
+</script>
+<script>
+function otpsend()
+{
+    document.getElementById("otpsedmessage").innerHTML = "<div class='spinner-border' role='status' style='color:blue'></div><span style='color:blue'><b>Sending OTP........</b></span>"
+    document.getElementById("typeOTPid").style.display = "none"
+    document.getElementById("otpveifymessage").innerHTML = ""
+    document.getElementById("submitId").style.display = "none"
+
+    const form = document.getElementById('otpSendForm');
+    form.addEventListener("submit", sendOTPHandler);
+
+    function sendOTPHandler(e) {
+
+    e.preventDefault();
+    document.getElementById("otpbtn").disabled = true
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'OTPSendReg' %},
+            data:{
+                contact:$('#contact').val(),
+                email:$('#email').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                if(response.error === "1")
+                {
+                document.getElementById("otpbtn").disabled = false
+                document.getElementById("otpsedmessage").innerHTML = "<strong style='color:red'>OTP Send Failed!</strong>"
+                }
+                else if(response.error === "0")
+                {
+                document.getElementById("otpbtn").disabled = false
+                document.getElementById("otpsedmessage").innerHTML = "<p style='color:green'>OTP Sent to <b>"+response.contact+"</b> and <b>"+response.email+"</b></p><p style='color:blue'>If you didn't get the OTP within 3 Minutes then Send OTP Again."
+                document.getElementById("typeOTPid").style.display = "block"
+                document.getElementById("verifybtn").disabled = false
+                }
+            },
+            error: function(response)
+            {   document.getElementById("otpbtn").disabled = false
+                document.getElementById("otpsedmessage").innerHTML = "<strong style='color:red'>OTP Send Failed!</strong>"
+            },
+        });
+   }
+   }
+
+</script>
+<script>
+    function otpverify()
+    {
+    document.getElementById("submitId").style.display = "none"
+
+    const form = document.getElementById('verifyform');
+    form.addEventListener("submit", verifyOTPHandler)
+
+    function verifyOTPHandler(e) {
+    e.preventDefault();
+    document.getElementById("otpveifymessage").innerHTML = "<div class='spinner-grow text-warning' role='status'></div> <span style='color:red'>Verifing........</span>"
+    document.getElementById("verifybtn").disabled = true
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'OTPVerifyReg' %},
+            data:{
+                mobileotp:$('#mobileotp').val(),
+                emailotp:$('#emailotp').val(),
+                email:$('#email').val(),
+                contact:$('#contact').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                if(response.error === "1")
+                {
+                document.getElementById("verifybtn").disabled = false
+                document.getElementById("otpveifymessage").innerHTML = "<strong style='color:red'>Invalid OTP!</strong>"
+                }
+                else if(response.error === "0")
+                {
+                document.getElementById("otpsedmessage").innerHTML = ""
+                document.getElementById("typeOTPid").style.display = "none"
+                document.getElementById("otpveifymessage").innerHTML = "<p style='color:green'>OTP Verified</p><input type='hidden' name='verified' value='verified' form='doctorform'>"
+                document.getElementById("submitId").style.display = "block"
+                }
+            },
+            error: function(response)
+            {   document.getElementById("verifybtn").disabled = false
+                document.getElementById("otpveifymessage").innerHTML = "<strong style='color:red'>OTP Verification Failed!</strong>"
+            },
+        });
+   }
+    }
+</script>
+<script>
+    function contactUpdate()
+    {
+    document.getElementById("typeOTPid").style.display = "none"
+    document.getElementById("otpveifymessage").innerHTML = ""
+    document.getElementById("otpsedmessage").innerHTML = ""
+
+    const form = document.getElementById('contactForm');
+    form.addEventListener("submit", updateHandler)
+
+    function updateHandler(e)
+    {
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'HospitalContactEdit' %},
+            data:{
+                email:$('#email').val(),
+                contact:$('#contact').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                if(response.error === "1")
+                {
+                alert("You need to verify your Contact info with OTP.\nYou can't verify Contact info without verification!");
+                }
+                else if(response.error === "0")
+                {
+                alert("Contact Information Successfully Updated.");
+                location.reload();
+                }
+            },
+            error: function(response)
+            {
+              alert("Failed to Update Contact Info!");
+            },
+        });
+    }
+    }
+</script>
+<script>
+    function generalChange()
+    {
+    const form = document.getElementById('generalForm');
+    form.addEventListener("submit", generalEditHandler)
+
+    function generalEditHandler(e) {
+    e.preventDefault();
+
+    $.ajax({
+    type:'POST',
+    url:{% url 'HospitalGeneralEdit' %},
+    data:{
+        type:$('#type').val(),
+        name:$('#name').val(),
+        address:$('#address').val(),
+        state:$('#genState').val(),
+        district:$('#district').val(),
+        subdivision:$('#subdivision').val(),
+        pin:$('#pin').val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        },
+        dataType: 'json',
+        success:function(response)
+        {
+            if(response.success === "1")
+            {
+            alert('Save Changed Success');
+            location.reload();
+            }
+            else if(response.success === "0")
+            {
+            alert('Save Changed Fail!');
+            }
+        },
+        error:function(response)
+        {
+        alert('Failed to Save Change');
+        }
+
+    });
+    }
+    }
+</script>
+<script>
+function patientRelease()
+{
+    const form = document.getElementById('patientReleaseForm');
+    form.addEventListener("submit", patientEditHandler)
+    id= $('#Editbookid').val();
+    function patientEditHandler(e) {
+    e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'PatientEdit' %},
+            data:{
+                bookid:$('#releasebookid').val(),
+                Bed_Id:$('#change-Bed_No').val(),
+                status:$('#status').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                if(response.success === "release")
+                {
+                location.reload();
+
+                }
+            },
+            error:function(response)
+            {
+            alert('Failed');
+            }
+        });
+   }
+}
+
+
+</script>
+<script>
+function patientChange()
+{
+    const form = document.getElementById('patientEdit');
+    form.addEventListener("submit", patientEditHandler)
+
+    var msg = 'None'
+    id= $('#Editbookid').val();
+    function patientEditHandler(e) {
+    e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'PatientEdit' %},
+            data:{
+                bookid:$('#Editbookid').val(),
+                Bed_Id:$('#change-Bed_No').val(),
+                status:$('#editSub').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                if(response.success === "change")
+                {
+                msg = "Patient Name: "+response.name+"\n\nBed Changed to -\nBed No: "+response.bedno+"\nWard: "+response.ward+"\nBuilding: "+response.building+"\nFloor: "+response.floor;
+                alert(msg);
+                location.reload();
+                }
+            },
+            error:function(response)
+            {
+            alert('Failed');
+            },
+        });
+   }
+}
+
+</script>
+<script>
+    function wardChange()
+    {
+    var select_option = {}
+    var select = document.getElementById("admit-Bed_No");
+    select.options.length = 0;
+    roomVal = $('#admit-room').val()
+    $.ajax(
+    {
+        url: {% url 'WardChange' %},
+        data:{
+            'room':roomVal,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+            var c = Number(response.count);
+            for(i=0; i<c; i++)
+            {
+            select_option[response.bedId[i]] = "BED NO: "+response.bedNo[i]+" , BUILDING: "+response.building[i]+" , FLOOR: "+response.floor[i];
+            }
+            for(index in select_option)
+            {
+            select.options[select.options.length] = new Option(select_option[index], index);
+            }
+        },
+    });
+
+    }
+
+
+</script>
+<script>
+    function BookwardChange()
+    {
+    var select_option = {}
+    var select = document.getElementById("book-Bed_No");
+    select.options.length = 0;
+    roomVal = $('#book-room').val()
+    $.ajax(
+    {
+        url: {% url 'WardChange' %},
+        data:{
+            'room':roomVal,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+            var c = Number(response.count);
+            for(i=0; i<c; i++)
+            {
+            select_option[response.bedId[i]] = "BED NO: "+response.bedNo[i]+" , BUILDING: "+response.building[i]+" , FLOOR: "+response.floor[i];
+            }
+            for(index in select_option)
+            {
+            select.options[select.options.length] = new Option(select_option[index], index);
+            }
+        },
+    });
+
+    }
+
+
+</script>
+<script>
+    function wardChangeEdit()
+    {
+    var select_option = {}
+    var select = document.getElementById("change-Bed_No");
+    select.options.length = 0;
+    roomVal = $('#change-room').val()
+    $.ajax(
+    {
+        url: {% url 'WardChange' %},
+        data:{
+            'room':roomVal,
+        },
+        dataType: 'json',
+        success: function(response)
+        {
+            var c = Number(response.count);
+            for(i=0; i<c; i++)
+            {
+            select_option[response.bedId[i]] = "BED NO: "+response.bedNo[i]+" , BUILDING: "+response.building[i]+" , FLOOR: "+response.floor[i];
+            }
+            for(index in select_option)
+            {
+            select.options[select.options.length] = new Option(select_option[index], index);
+            }
+        },
+    });
+
+    }
+
+
+</script>
+<script>
+    function addBed()
+    {
+    document.getElementById("addbedmeesage").innerHTML = ""
+    const form = document.getElementById('addBedForm');
+    form.addEventListener("submit", addBedHandler)
+
+    function addBedHandler(e) {
+    e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'AddBed' %},
+            data:{
+                Bed_No:$('#Bed_No').val(),
+                room:$('#room').val(),
+                flor:$('#flor').val(),
+                building:$('#building').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                if(response.error === "0")
+                {
+                document.getElementById("addbedmeesage").innerHTML = "<b style='color:green'>New Bed Added</b>"
+                }
+                else if(response.error === "exists")
+                {
+                document.getElementById("addbedmeesage").innerHTML = "<b style='color:red'>Data Already Exists!</b>"
+                }
+            },
+            error: function(response)
+            {
+                document.getElementById("addbedmeesage").innerHTML = "<b style='color:red'>Failed to Add New Bed!</b>"
+            },
+        });
+   }
+    }
+
+
+</script>
+<script>
+    function removeBed()
+    {
+    document.getElementById("removebedmeesage").innerHTML = ""
+    const form = document.getElementById('removeBedForm');
+    form.addEventListener("submit", removeBedHandler)
+
+    function removeBedHandler(e) {
+    e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'RemoveBed' %},
+            data:{
+                Bed_No:$('#Remove-Bed_No').val(),
+                room:$('#Remove-room').val(),
+                flor:$('#Remove-flor').val(),
+                building:$('#Remove-building').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+            dataType: 'json',
+            success:function(response)
+            {
+                if(response.error === "0")
+                {
+                document.getElementById("removebedmeesage").innerHTML = "<b style='color:orange'>Bed Remove Request sent to Administrator.<br>Administrator will verify it.</b>"
+                }
+                else if(response.error === "noexists")
+                {
+                document.getElementById("removebedmeesage").innerHTML = "<b style='color:red'>Data Don't Exists!</b>"
+                }
+                else if(response.error === 'used')
+                {
+                document.getElementById("removebedmeesage").innerHTML = "<b style='color:red'>You can't remove this bed!<br>A patient is admit in the bed.</b>"
+                }
+            },
+            error: function(response)
+            {
+                document.getElementById("removebedmeesage").innerHTML = "<b style='color:red'>Failed to Remove Bed!</b>"
+            },
+        });
+   }
+    }
+
+
+</script>
+{%endblock%}
+</html>

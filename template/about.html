@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}   <!--This is to include the content of base.html to this page-->
+{% load static %} <!--To use the files under static folder we have to load the static in that page-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Go Healthy | About</title>
+</head>
+<body style="background-image: linear-gradient(to right, DarkRed, yellow);min-height:100%;">
+<!--It creates a gradient background with combination of Dark red and Yellow color-->
+<center>
+    <h1 style="color:blue;font-size:600%;font-family:Garamond bold;font-weight:500%; text-shadow:-3px 3px white">Who Are
+        We?</h1>
+
+    <!--Display the About Message-->
+    <div class="jumbotron" style="margin:20px">
+        <h1 class="display-4" style="">About Us</h1>
+        <p class="lead" style="">We are here to Help you. Our aim is to provide medical
+            support to all the people. We are a
+            non-profit organization.</p>
+        <hr class="my-4" style="">
+        <p>If you looking for a good platform for you to provide you a good Heath service, then you are now in right
+            place. We look forwards a time, when nobody die due to insufficiency of Healthcare Service In India. India ranked 145 out
+            of 195 countries in Healthcare Access and Quality Index. But since Independent no serious effective action has been taken
+            to improve the healthcare system. As a result a huge number of people are depriving from healthcare service. We believe
+            that it is everybody's right to get health services. Many people loos their life because they don't get bed
+            in hospital, don't get Blood, don't get medical support. So we are here to make a initiative to give you live to live update about the bed availability
+            in
+            hospital; even you can book bed for patient previously to avoid harassment in hospital to getting bed. And
+            here can contact with any Doctors in your locality. Not only that you can also contact with blood donors in your locality, because many patients lose their life because they did not
+            get blood in right time. So to make a good future we are here with you to help you.........</p>
+        <hr> <!--It create a horizental role/line between the paragraph-->
+        <h1>Why This Website?</h1>
+        <p>Health service is one of the most essential thing in our life. Without that we can’t imagine a good Human
+            society. And there are some objects that run the Healthcare system; those are Hospitals, Doctors, Blood
+            Donors and First Aid.
+            So when we able to connect to them easily at any time then we will get a better Healthcare system. So to
+            connect the people to them this website can become a platform.
+            Patients and their family doing struggle to get bed in Hospital, sometimes patients are died due not get
+            admit in Hospital at right time because shortage of bed;
+            and sometimes patient are died due to not collect the blood donor at right time – It is real picture that we
+            have seeing since a long decade. And we also see that many people died in accident spot because of late
+            medical support. If we provide a first aid within the time, we may save several life.
+            So to resolve that we make that website to give all the update about bed availability in Hospital, Doctors,
+            Blood Donors and First Aid instructions.
+            When and patient’s family have information that which hospital has available bed, then they have not to run
+            several hospital to get bed. And finally to provide information about First Aid we add a section where user
+            can see the videos to learn first aid.
+        </p>
+
+    </div>
+<div class="row">
+    <div class="col-md ml-2 mr-2">
+    <img src="{% static 'media/images/logo banner.png' %}" style="width:100%">
+    <!--An image will be shown bellow the About message-->
+    </div>
+</div>
+</center>
+
+
+</body>
+</html>
+{%endblock%}

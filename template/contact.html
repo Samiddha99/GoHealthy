@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{%block project%}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Go Healthy | Contact</title>
+</head>
+<body style="min-height:100%;background-image: url('{% static 'media/images/background contact.jpg' %}');
+             background-size: 100% 100%;background-repeat:no-repeat;background-attachment:fixed">
+
+<center>
+
+    <h1 style="font-size:50px;text-shadow:5px 5px red; color:gold;font-family:Garamond bold">CONTACT US</h1>
+    <div class="row ml-5 mr-5">
+        <div class="col-md" align="left">
+            <div class="container">
+                <h2 style="color:OrangeRed;font-family:Garamond bold">Phone:</h2>
+                <h3>
+                    <a href="tel: 9089696617" style="color:#00A109;">+91 9089696617</a>
+                </h3>
+                <h2 style="color:#A21100;font-family:Garamond bold">Email Address:</h2>
+                <h3>
+                    <a href="mailto: gohealthymail@gmail.com" style="color:Indigo;">gohealthymail@gmail.com</a>
+                </h3>
+            </div>
+            <br>
+        </div>
+        <div class="col-md"></div>
+        <div class="col-md ml-5 mr-5" align="center">
+            <div class="container">
+                <h4 style="color:red;margin-bottom:12px" align="center">FOLLOW US</h4>
+                <h4 style="color:blue">
+                    <a href="" style="color:blue"><i class="fab fa-facebook"></i> Facebook</a>
+                </h4>
+                <h4 style="color:blue">
+                    <a href=""><i class="fab fa-twitter"></i> Twitter</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+    <br>
+    {% if success is 1 %} <!--error function is defined in views.py-->
+    <div class="alert alert-success alert-dismissible fade show" role="alert" style="width:50%">
+        <strong>Success! </strong>{{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% elif success is 0 %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:50%">
+        <strong>Error!</strong> {{message}}. <br>If you don't submit any query then ignore this Message
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md-6 ml-2">
+            <div class="wrapper" style="background-color:#82F7FF;padding:10px;border-radius:25px;">
+                <img src="{%static 'media/images/contact us.jpg' %}" width="100%"
+                     style="margin-bottom:40px;border-top-left-radius:25px;border-top-right-radius:25px;">
+                <form action="{% url 'project-Contact' %}" method="post" id="contactform">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md"></div>
+                        <div class="col-md-7 ml-3 mr-3" align="left">
+                            <label for="name" class="text-primary"
+                                   style="font-size:20px;"><strong>Name:</strong></label><br>
+                            <input type="text" placeholder="Your Name" name="name" id="name" form="contactform"
+                                   class="form-control" value="{{Name}}" required>
+                            <br>
+                        </div>
+                        <div class="col-md"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md ml-3 mr-3" align="left">
+                            <label for="email" class="text-primary"
+                                   style="font-size:20px"><strong>Email:</strong></label><br>
+                            <input type="email" name="email" id="email" form="contactform"
+                                   placeholder="example@gmail.com" class="form-control" value="{{Email}}" required>
+                            <br>
+                        </div>
+                        <div class="col-md ml-3 mr-3" align="left">
+                            <label for="phone" class="text-primary"
+                                   style="font-size:20px"><strong>Contact:</strong></label><br>
+                            <input type="tel" placeholder="10 digit Mobile No" name="phone" id="phone"
+                                   form="contactform" class="form-control" maxlength="10" value="{{Phone}}" required>
+                            <br>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md">
+
+                        </div>
+                        <div class="col-md-8 ml-3 mr-3">
+                            <label for="message" class="text-primary" style="font-size:20px;"><strong>Message:</strong></label><br>
+                            <textarea name="message" rows="5" class="form-control" form="contactform"
+                                      placeholder="Leave Your Message Here..." id="message"
+                                      required>{{Message}}</textarea>
+                        </div>
+                        <div class="col-md"></div>
+                    </div>
+                    <button type="submit" title="Send the Message" form="contactform" class="btn btn-submit" id="submit">
+                        <img src="{%static 'media/images/send button.png'%}" width="150" height="50" align="center">
+                    </button>
+
+
+                </form>
+            </div>
+        </div>
+        <div class="col-md"></div>
+    </div>
+</center>
+</body>
+</html>
+{%endblock%}
