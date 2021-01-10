@@ -180,8 +180,7 @@ class complaint(models.Model):
     Subdivision = models.CharField(max_length=100, default="")
     City = models.CharField(max_length=100)
     Pin = models.CharField(max_length=6)
-    Attachment = models.FileField(null=True, blank=True,
-                                  help_text='If you have any document or proof regarding your complaint, then please attach it.')
+    Attachment = models.FileField(null=True, blank=True, upload_to='documents\complaint', help_text='If you have any document or proof regarding your complaint, then please attach it.')
     Complain = models.TextField()
     Status = models.CharField(max_length=50, choices=complaint_status_ch, default='Pending')
     Reply = models.TextField(default='N/A')
@@ -238,7 +237,7 @@ cat = [("Notification", "Notification"), ("News", "News"), ("Event", "Event")]
 class Notification_Notice_and_Event(models.Model):
     Catagory = models.CharField(max_length=100, choices=cat)
     Name = models.CharField(max_length=500)
-    File = models.FileField(upload_to="document/Notice", )
+    File = models.FileField(upload_to="documents/Notice", )
 
 
 class Emargency_Number(models.Model):

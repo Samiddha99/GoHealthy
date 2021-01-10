@@ -126,4 +126,8 @@ dmypy.json
 
 #Database
 db.sqlite3
-static/
+static/media/documents/
+static/media/images/blood donors/
+static/media/images/doctors/
+static/media/images/hospitals/
+static/media/images/normal users/
