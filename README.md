@@ -73,6 +73,8 @@ In India Every day many patients died due to not get first aid treatment at righ
 This solution will solve the **fifth problem** - that is ***The accident victims die due to not getting medical help at the right time.***
 
 
+<h6>NOTE:</h6>The features on the website is not able to solve the whole problem totally. The features just give a relief to the people and help the people. And may reduce the number of death at a lower rate.<br>When Government will focus on these issues, only then the problem will solve totally.
+
 # Work Flow
 ## Work Flow 1
 ![Work Flow 1](WorkFlow-1.png)
