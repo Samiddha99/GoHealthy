@@ -95,4 +95,4 @@ Do you have any better suggestion?
         
 Do You need any help?
 
-Email us: gohealthymail@gmail.com
+Email us: <a href="mailto:gohealthymail@gmail.com">gohealthymail@gmail.com</a>
