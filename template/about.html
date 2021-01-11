@@ -10,8 +10,7 @@
 <body style="background-image: linear-gradient(to right, DarkRed, yellow);min-height:100%;">
 <!--It creates a gradient background with combination of Dark red and Yellow color-->
 <center>
-    <h1 style="color:blue;font-size:600%;font-family:Garamond bold;font-weight:500%; text-shadow:-3px 3px white">Who Are
-        We?</h1>
+    <h1 style="color:blue;font-size:600%;font-family:Garamond bold;font-weight:500%; text-shadow:-3px 3px white">You Should Know</h1>
 
     <!--Display the About Message-->
     <div class="jumbotron" style="margin:20px">
@@ -62,7 +61,7 @@
             <hr> <!--It create a horizental role/line between the paragraph-->
             <h2 align="center"> Problems in the Healthcare System</h2>
 
-            <h5>
+            <h5 id="Patients-died-due-to-not-being-admitted-to-the-Hospital-within-right-time">
                 <li>Patients died due to not being admitted to the Hospital within right time:</li>
             </h5>
             <p>If you read news each day, you find such news that the patient died due to not getting bed in hospital.
@@ -71,7 +70,7 @@
                 patient didn’t admit to the hospital, then how he’ll receive treatment? We also see that in many
                 hospitals
                 due to long admission process, it wastes the times.</p>
-            <h5>
+            <h5 id="Snake-Bite-Patients-died-due-to-not-get-Vaccine-at-right-time">
                 <li>Snake Bite Patients died due to not get Vaccine at right time:</li>
             </h5>
             <p>In India every day average 200 people died due to Snake Bite, more than half of the death are caused by
@@ -80,7 +79,7 @@
                 snake
                 bitten patient it spends so many valuable times to find a hospital which hospital has Antivenom
                 vaccine.</p>
-            <h5>
+            <h5 id="People-do-not-able-to-contact-doctor-in-emergency-in-many-cases">
                 <li>People do not able to contact doctor in emergency in many cases:</li>
             </h5>
             <p>India doesn’t have sufficient doctors. As a result many people can’t contact to the doctors at the right
@@ -88,7 +87,7 @@
                 quickly. In that case they need to contact/ consult with a doctor to get medical support. But if they
                 don’t
                 have any such platform how do they do it? </p>
-            <h5>
+            <h5 id="Patients-died-due-to-not-receive-Blood-within-right-time">
                 <li>Patients died due to not receive Blood within right time:</li>
             </h5>
             <p>Every day many patients are losing theirs life just for not being able to collect blood. In India Blood
@@ -99,7 +98,7 @@
                 group and request them to donate blood? If patient’s family do that, it will waste the time; and waste
                 of
                 time means the patient is certain to die.</p>
-            <h5>
+            <h5 id="The-accident-victims-die-due-to-not-getting-medical-help-at-the-right-time">
                 <li>The accident victims die due to not getting medical help at the right time:</li>
             </h5>
             <p>In India each second accidents are happening. In most of the cases victims are died just for delay in
@@ -128,8 +127,8 @@
             you a bed compare to offline booking.
             <br>
             Hence, if patient family easily can see which hospital has available bed, and easily can book a bed for
-                patient, it will solve the <b>first problem</b> we mentioned – that is <b>Patients died due to not being
-                    admitted to the Hospital within right time.</b></p>
+                patient, it will solve the <a href="#Patients-died-due-to-not-being-admitted-to-the-Hospital-within-right-time" style="color:black"><b>first problem</b></a> we mentioned – that is <a href="#Patients-died-due-to-not-being-admitted-to-the-Hospital-within-right-time" style="color:black"><b>Patients died due to not being
+                    admitted to the Hospital within right time.</b></a></p>
 
             <h5><a href="{% url 'project-Hospital' %}"><li>Search Hospitals in your locality for Antivenom:</li></a></h5>
             <p>In most of the case, the cause of the snake bitten patient is delay in treatment or not getting vaccine
@@ -139,8 +138,8 @@
             hospital to another hospital to find a hospital which have vaccine. In this website we developed, any people
             can see which hospital has Antivenom.
             <br>
-                So this solution will solve the <b>second problem</b> - that is <b>Snake Bite Patients died due to not get
-                    Vaccine at right time.</b></p>
+                So this solution will solve the <a href="#Snake-Bite-Patients-died-due-to-not-get-Vaccine-at-right-time" style="color:black"><b>second problem</b></a> - that is <a href="#Snake-Bite-Patients-died-due-to-not-get-Vaccine-at-right-time" style="color:black"><b>Snake Bite Patients died due to not get
+                    Vaccine at right time.</b></a></p>
 
             <h5><a href="{% url 'project-Doctor' %}"><li>Contact a Doctors in your locality:</li></a></h5>
             <p>In Problem Statement we already see that it is a challenge for the common people to contact a doctor in
@@ -151,8 +150,8 @@
             then easily you can get a medical advice when you are living far from hospital. And a Medical Advice can
             save a life.
             <br>
-                Hence, this solution will solve the <b>third problem</b> - that is <b>People do not able to contact a doctor in
-                    emergency in many cases.</b></p>
+                Hence, this solution will solve the <a href="#People-do-not-able-to-contact-doctor-in-emergency-in-many-cases" style="color:black"><b>third problem</b></a> - that is <a href="#People-do-not-able-to-contact-doctor-in-emergency-in-many-cases" style="color:black"><b>People do not able to contact a doctor in
+                    emergency in many cases.</b></a></p>
 
             <h5><a href="{% url 'project-Blood' %}"><li>Contact a Blood Donors in your locality:</li></a></h5>
             <p>In the mentioned problems, we see that common people facing problems to collect Blood. To solve this problem
@@ -161,8 +160,8 @@
             patient family successfully connect to a blood donor quickly, then the patient will receive blood quickly
             and early blood transfusion means reduced the risk of death.
             <br>
-                So, this will solve the <b>fourth problem</b> - that is <b>Patients died due to not receive Blood within right
-                    time.</b></p>
+                So, this will solve the <a href="#Patients-died-due-to-not-receive-Blood-within-right-time" style="color:black"><b>fourth problem</b></a> - that is <a href="#Patients-died-due-to-not-receive-Blood-within-right-time" style="color:black"><b>Patients died due to not receive Blood within right
+                    time.</b></a></p>
 
             <h5><a href="{% url 'project-Firstaid' %}"><li>Learn First Aid:</li></a></h5>
             <p>In India Every day many patients died due to not get first aid treatment at right time - it already
@@ -173,19 +172,24 @@
             multi-language learning platform, from where a common people can learn First Aid. When almost every people
             get the knowledge of first aid, then it will save the life of so many accident’s victims.
             <br>
-                This solution will solve the <b>fifth problem</b> - that is <b>The accident victims die due to not getting
-                    medical help at the right time.</b></p>
+                This solution will solve the <a href="#The-accident-victims-die-due-to-not-getting-medical-help-at-the-right-time" style="color:black"><b>fifth problem</b></a> - that is <a href="#The-accident-victims-die-due-to-not-getting-medical-help-at-the-right-time" style="color:black"><b>The accident victims die due to not getting
+                    medical help at the right time.</b></a></p>
+            <h6>NOTE:</h6>
+            <p>The features on the website is not able to solve the whole problem totally. The features just give a relief to the people and help the people. And may reduce the number of death at a lower rate.
+                <br>When Government will focus on these issues, only then the problem will solve totally.</p>
         </div>
     </div>
     <div class="row">
         <div class="col-md ml-2 mr-2">
-            <img src="{% static 'media/images/logo banner.png' %}" style="width:100%">
+            <img src="{% static 'media/images/logo banner.png' %}" usemap="#logomap" style="width:100%">
             <!--An image will be shown bellow the About message-->
+            <map name="logomap">
+              <area shape="rect" coords="322,35,984,259" alt="Home" href="{% url 'project-Home' %}">
+                <area shape="poly" coords="147,35,205,17,290,100,149,276,8,100,95,17" alt="Logo" href="{% url 'project-Home' %}">
+            </map>
         </div>
     </div>
 </center>
-
-
 </body>
 </html>
 {%endblock%}
