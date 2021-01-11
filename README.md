@@ -41,7 +41,7 @@ In India each second accidents are happening. In most of the cases victims are d
 
 So we are trying to develop a website to help the people those who are victim of the problems. To make a good future we are here with you to help you......
 
-## Features on the Website to deal with the problems
+## Features on the Website to Deal with the Problems
 
 #### See number of available bed in hospital and Book bed:
 Imagine what happen, if you will know in advance, which hospital has a bed? Then you don’t need to run in several hospitals to admit the patient, you won’t get the reply, sorry sir we have no more bed. You don’t need to waste your time to travel in several hospitals. Just go to that hospital, which hospital have bed you already know from the site. It will save your time and save of time means the risk of death is low.
