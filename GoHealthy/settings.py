@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import environ
-
+import django_heroku
 env = environ.Env()
 # reading .env file
 environ.Env.read_env()
@@ -27,8 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
-
+SECRET_KEY = env.str("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -37,24 +36,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'Go_Healthy_App.apps.GoHealthyAppConfig',
-    'background_task',
-    'django_crontab',
-    'embed_video',
-    'django_filters',
-    'django.forms',
-    'crispy_forms',
-    'template_forms',
-    'geoposition',
+INSTALLED_APPS = env.str("INSTALLED_APPS").split("', '")
 
-]
 
 CRONJOBS = [
     ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.deleteOTP'),
@@ -73,15 +56,7 @@ BACKGROUND_TASK_RUN_ASYNC = True
 GEOPOSITION_GOOGLE_MAPS_API_KEY = env("GEOPOSITION_GOOGLE_MAPS_API_KEY")
 FAST2SMAS_API_KEY = env("FAST2SMAS_API_KEY")
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+MIDDLEWARE = env.str("MIDDLEWARE").split("', '")
 
 ROOT_URLCONF = 'GoHealthy.urls'
 
@@ -163,13 +138,19 @@ MEDIA_URL = '/media/'
 
 #For Mail Sending
 ADMINS = [
-    ('GoHealthyAdmin', 'gohealthymail@gmail.com'), #send error to this mail
+    (env("USERNAME"), env("EMAIL_HOST_USER")), #send error to this mail
 ]
 MANAGERS = ADMINS
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
+EMAIL_BACKEND = env("EMAIL_BACKEND")
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
+EMAIL_PORT = env.int("EMAIL_PORT")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+
+
+ADMIN_URL = env('ADMIN_URL')
+
+django_heroku.settings(locals())
+
