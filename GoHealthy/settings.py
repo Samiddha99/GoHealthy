@@ -139,7 +139,7 @@ STATIC_ROOT = BASE_DIR/ 'staticfiles'
 STATIC_URL = '/static/'
 MEDIA_ROOT = BASE_DIR / 'static/media'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-MEDIA_URL = '/static/media/'
+MEDIA_URL = '/media/'
 
 
 #For Mail Sending
