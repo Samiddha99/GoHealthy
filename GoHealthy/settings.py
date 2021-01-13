@@ -188,5 +188,3 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
 ADMIN_URL = config('ADMIN_URL')
 django_heroku.settings(locals())
-
-print(config('ADMIN_URL'))
