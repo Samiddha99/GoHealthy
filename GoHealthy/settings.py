@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 
-SECRET_KEY = env.str("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = False
 
@@ -71,8 +71,8 @@ CRONJOBS = [
 
 BACKGROUND_TASK_RUN_ASYNC = True
 
-GEOPOSITION_GOOGLE_MAPS_API_KEY = env("GEOPOSITION_GOOGLE_MAPS_API_KEY")
-FAST2SMAS_API_KEY = env("FAST2SMAS_API_KEY")
+GEOPOSITION_GOOGLE_MAPS_API_KEY = os.environ.get("GEOPOSITION_GOOGLE_MAPS_API_KEY")
+FAST2SMAS_API_KEY = os.environ.get("FAST2SMAS_API_KEY")
 
 #MIDDLEWARE = env.str("MIDDLEWARE").split("', '")
 MIDDLEWARE = [
@@ -123,7 +123,7 @@ DATABASES = {
         'PORT': env("DATABASE_PORT"),
     }
 }
-DATABASE_URL=env("DATABASE_URL")
+DATABASE_URL=os.environ.get("DATABASE_URL")
 AUTH_USER_MODEL = 'Go_Healthy_App.Users'
 
 # Password validation
@@ -173,17 +173,17 @@ MEDIA_URL = '/media/'
 
 #For Mail Sending
 ADMINS = [
-    (env("USERNAME"), env("EMAIL_HOST_USER")), #send error to this mail
+    (os.environ.get("USERNAME"), os.environ.get("EMAIL_HOST_USER")), #send error to this mail
 ]
 MANAGERS = ADMINS
 
-EMAIL_BACKEND = env("EMAIL_BACKEND")
-EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND")
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
 EMAIL_PORT = env.int("EMAIL_PORT")
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 
-ADMIN_URL = env('ADMIN_URL')
+ADMIN_URL = os.environ.get('ADMIN_URL')
 django_heroku.settings(locals())
