@@ -166,7 +166,7 @@ USE_TZ = True
 
 DEFAULT_FILE_STORAGE = 'django_dropbox_storage.storage.DropboxStorage'
 DROPBOX_OAUTH2_TOKEN = config('DROPBOX_OAUTH2_TOKEN')
-DROPBOX_ROOT_FOLDER = '/static/'
+DROPBOX_ROOT_FOLDER = ''
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_ROOT = BASE_DIR/ 'staticfiles'
