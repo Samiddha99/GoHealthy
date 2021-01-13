@@ -186,3 +186,4 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 
 ADMIN_URL = env('ADMIN_URL')
+django_heroku.settings(locals())
