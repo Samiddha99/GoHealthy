@@ -14,11 +14,12 @@ from pathlib import Path
 import os
 import environ
 import django_heroku
+from decouple import config
+"""
 env = environ.Env()
 # reading .env file
 environ.Env.read_env()
-
-from decouple import config
+"""
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY")
 
 DEBUG = False
 
@@ -71,8 +72,8 @@ CRONJOBS = [
 
 BACKGROUND_TASK_RUN_ASYNC = True
 
-GEOPOSITION_GOOGLE_MAPS_API_KEY = os.environ.get("GEOPOSITION_GOOGLE_MAPS_API_KEY")
-FAST2SMAS_API_KEY = os.environ.get("FAST2SMAS_API_KEY")
+GEOPOSITION_GOOGLE_MAPS_API_KEY = config("GEOPOSITION_GOOGLE_MAPS_API_KEY")
+FAST2SMAS_API_KEY = config("FAST2SMAS_API_KEY")
 
 #MIDDLEWARE = env.str("MIDDLEWARE").split("', '")
 MIDDLEWARE = [
@@ -115,15 +116,15 @@ WSGI_APPLICATION = 'GoHealthy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': env("DATABASE_ENGINE"),
-        'NAME': env("DATABASE_NAME"),
-        'USER': env("DATABASE_USER"),
-        'PASSWORD': env("DATABASE_PASSWORD"),
-        'HOST': env("DATABASE_HOST"),
-        'PORT': env("DATABASE_PORT"),
+        'ENGINE': config("DATABASE_ENGINE"),
+        'NAME': config("DATABASE_NAME"),
+        'USER': config("DATABASE_USER"),
+        'PASSWORD': config("DATABASE_PASSWORD"),
+        'HOST': config("DATABASE_HOST"),
+        'PORT': config("DATABASE_PORT"),
     }
 }
-DATABASE_URL=os.environ.get("DATABASE_URL")
+DATABASE_URL=config("DATABASE_URL")
 AUTH_USER_MODEL = 'Go_Healthy_App.Users'
 
 # Password validation
@@ -173,17 +174,19 @@ MEDIA_URL = '/media/'
 
 #For Mail Sending
 ADMINS = [
-    (os.environ.get("USERNAME"), os.environ.get("EMAIL_HOST_USER")), #send error to this mail
+    (config("USERNAME"), config("EMAIL_HOST_USER")), #send error to this mail
 ]
 MANAGERS = ADMINS
 
-EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND")
-EMAIL_HOST = os.environ.get("EMAIL_HOST")
-EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
-EMAIL_PORT = env.int("EMAIL_PORT")
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_BACKEND = config("EMAIL_BACKEND")
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_USE_TLS = True
+EMAIL_PORT = int(config("EMAIL_PORT"))
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
 
-ADMIN_URL = os.environ.get('ADMIN_URL')
+ADMIN_URL = config('ADMIN_URL')
 django_heroku.settings(locals())
+
+print(config('ADMIN_URL'))
