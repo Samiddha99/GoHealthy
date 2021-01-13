@@ -11,7 +11,7 @@ from background_task import background
 
 
 def deleteOTP():
-    OTP.objects.all().delete()
+    OTP.objects.filter(Expire_Time__lte=timezone.now()).delete()
 
 
 
