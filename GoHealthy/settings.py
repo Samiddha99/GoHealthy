@@ -36,8 +36,26 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
-INSTALLED_APPS = env.str("INSTALLED_APPS").split("', '")
-
+#INSTALLED_APPS = env.str("INSTALLED_APPS").split("', '")
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'Go_Healthy_App.apps.GoHealthyAppConfig',
+    'background_task',
+    'django_crontab',
+    'embed_video',
+    'django_filters',
+    'django.forms',
+    'crispy_forms',
+    'template_forms',
+    'geoposition',
+    'storages',
+    'boto'
+]
 
 CRONJOBS = [
     ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.deleteOTP'),
@@ -56,7 +74,18 @@ BACKGROUND_TASK_RUN_ASYNC = True
 GEOPOSITION_GOOGLE_MAPS_API_KEY = env("GEOPOSITION_GOOGLE_MAPS_API_KEY")
 FAST2SMAS_API_KEY = env("FAST2SMAS_API_KEY")
 
-MIDDLEWARE = env.str("MIDDLEWARE").split("', '")
+#MIDDLEWARE = env.str("MIDDLEWARE").split("', '")
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+]
+
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -158,5 +187,5 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 ADMIN_URL = env('ADMIN_URL')
 
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
 
