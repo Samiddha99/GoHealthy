@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'template_forms',
     'geoposition',
+    'django_dropbox_storage',
     'storages',
     'boto'
 ]
@@ -162,15 +163,17 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-DROPBOX_OAUTH2_TOKEN = config('DROPBOX_OAUTH2_TOKEN')
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-STATIC_ROOT = BASE_DIR/ 'staticfiles'
-STATIC_URL = '/static/'
-MEDIA_ROOT = BASE_DIR / 'static/media'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-MEDIA_URL = '/media/'
+if DEBUG == False:
+    DEFAULT_FILE_STORAGE = 'django_dropbox_storage.storage.DropboxStorage'
+    DROPBOX_OAUTH2_TOKEN = config('DROPBOX_OAUTH2_TOKEN')
+    DROPBOX_ROOT_FOLDER = '/static/'
+    #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+else:
+    STATIC_ROOT = BASE_DIR/ 'staticfiles'
+    STATIC_URL = '/static/'
+    MEDIA_ROOT = BASE_DIR / 'static/media'
+    STATICFILES_DIRS = [BASE_DIR / 'static']
+    MEDIA_URL = '/media/'
 
 
 #For Mail Sending
@@ -188,4 +191,5 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
 
 ADMIN_URL = config('ADMIN_URL')
-django_heroku.settings(locals())
+if DEBUG == False:
+    django_heroku.settings(locals())
