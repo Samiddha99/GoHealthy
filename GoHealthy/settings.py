@@ -87,7 +87,7 @@ MIDDLEWARE = [
 ]
 
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'GoHealthy.urls'
 
@@ -186,6 +186,3 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 
 ADMIN_URL = env('ADMIN_URL')
-
-#django_heroku.settings(locals())
-
