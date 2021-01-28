@@ -141,4 +141,27 @@ def IST(value):
     if type(value) != str:
         return value + timedelta(hours=5.5)
     else:
-        return True
+        return None
+
+@register.filter
+def newChat(value, arg):
+    sender = Users.objects.get(username=value)
+    receiver = Users.objects.get(username=arg)
+    num = Chat.objects.filter(From=sender, To=receiver, Delivered=False).count()
+    return num
+
+
+@register.filter
+def totalNewChat(arg):
+    user = Users.objects.get(username=arg)
+    num = Chat.objects.filter(To=user, Delivered=False).count()
+    return num
+
+
+@register.filter
+def string(arg):
+    try:
+        s = str(arg)
+        return s
+    except:
+        return 'none'
