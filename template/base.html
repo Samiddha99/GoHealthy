@@ -337,7 +337,15 @@
                                 <b>Change Password</b>
                             </button>
                         </a>
-                        <a class="dropdown-item text-info" href="{% url 'MyBookings' %}"><b>My Bookings</b></a>
+                        <a class="dropdown-item text-warning" href="{% url 'MyBookings' %}"><b>My Bookings</b></a>
+                        <a class="dropdown-item text-info" href="{% url 'Chat' %}">
+                            <b>My Chats</b>
+                            {% if user.username|totalNewChat != 0 %}
+                        <span class="badge badge-primary badge-pill" style="float:right">
+                                {{user.username|totalNewChat}}
+                        </span>
+                        {% endif %}
+                        </a>
                         <a class="dropdown-item text-danger" href="{% url 'Logout' %}"><b>Log Out</b></a>
                     </div>
                 </li>
@@ -439,8 +447,8 @@
     </form>
     <!-- Right to Left Scrolling Text -->
     <marquee behavior="scroll" direction="left"
-             style="font-size:50px;text-shadow:-2px 1px yellow;color:red;margin-top:-20px">
-        Go Healthy....Health is Your Right
+             style="font-size:30px;text-shadow:-2px 1px yellow;color:red;margin-top:-10px">
+        We look forwards a time, when nobody dies due to insufficiency of Healthcare Service In India.
     </marquee>
 
 </div>
@@ -642,10 +650,7 @@ function topFunction()
 <script>
     function PasswordChange()
     {
-    const form = document.getElementById('changePassword');
-    form.addEventListener("submit", changePasswordHandler)
-
-    function changePasswordHandler(e) {
+    $('#changePassword').one('submit',function(e) {
     e.preventDefault();
     document.getElementById("message").innerHTML = "<span style='color:green;float:right'>LOADING........</span>"
         $.ajax(
@@ -684,14 +689,15 @@ function topFunction()
                 alert('Password Change Success. Login with Your New Password');
                 location.replace({% url 'LoginMain' %});
                 }
+                return false;
             },
             error: function(response)
             {document.getElementById("verifing").innerHTML = ""
-
                 document.getElementById("message").innerHTML = "<strong style='color:red'>Password Change Failed!</strong>"
+            return false;
             },
         });
-   }
+   });
     }
 
 
