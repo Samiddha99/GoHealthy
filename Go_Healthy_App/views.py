@@ -405,10 +405,136 @@ def Home(request):
     }
     return render(request, 'home.html', context)
 
+
+@login_required(login_url="/login/")
+def ChatSearch(request):
+    chat = request.POST.get('chat')
+    receiver = request.POST.get('receiver')
+    receiver = Users.objects.get(username=receiver)
+    sender = request.POST.get('sender')
+    sender = Users.objects.get(username=sender)
+    chats = Chat.objects.filter(Q(From=sender) & Q(To=receiver) | Q(From=receiver) & Q(To=sender)).filter(Message__icontains=chat)
+    id = []
+    for i in chats:
+        id.append(i.id)
+
+    data = {
+        'chat_id':id,
+        'num':chats.count(),
+    }
+    return JsonResponse(data)
+
+
+@login_required(login_url="/login/")
+def TotalChat(request):
+    user = request.POST.get('user')
+    user = Users.objects.get(username=user)
+    who = request.POST.get('with')
+    who = Users.objects.get(username=who)
+    forDelete = request.POST.get('forDelete')
+    last = None
+    if who.is_online == True:
+        is_online = 'True'
+    else:
+        is_online = 'False'
+        last = who.last_seen + timedelta(hours=5.50)
+        last = last.strftime("%b %d %y, %I:%M %p")
+
+    if forDelete == 'Deleted':
+        chat = Chat.objects.filter(Q(From=user) & Q(To=who) | Q(From=who) & Q(To=user)).filter(Deleted=True)
+    else:
+        chat = Chat.objects.filter(Q(From=user) & Q(To=who) | Q(From=who) & Q(To=user)).filter(Deleted=False)
+    lis = []
+    for i in chat:
+        lis.append(i.id)
+    data = {
+        'ids':lis,
+        'is_online':is_online,
+        'last':last,
+    }
+    return JsonResponse(data)
+
+@login_required(login_url="/login/")
+def DeleteChat(request):
+    id = request.POST.get('id')
+    print(id)
+    error = None
+    try:
+        Chat.objects.filter(id=id).update(Message='', Deleted=True)
+        error = "0"
+    except:
+        error = "1"
+    finally:
+        data = {
+            "error":error,
+        }
+        return JsonResponse(data)
+
 @login_required(login_url="/login/")
 def ChatView(request):
+    who = request.POST.get('chatwith', 'N/A')
+    person = request.POST.get('chatwith', 'N/A')
     me = Users.objects.get(username=request.user.username)
-    mychats = Chat.objects.filter(Q(From=me) | Q(To=me))
+    mychats = Chat.objects.filter(Q(From=me) | Q(To=me)).filter(Deleted=False).order_by('-Time')
+    action = request.POST.get('action')
+    chatwith = []
+    user = None
+    profile = None
+    c = 0
+    checked_user = []
+    mychatsearch = request.POST.get('mychatsearch')
+    if action == 'SearchMyChat':
+        searchPerson = []
+        searchUser = []
+        searchAdmin = Admin.objects.filter(Name__icontains=mychatsearch)
+        for i in searchAdmin:
+            searchPerson.append(i.Username)
+        searchNormal = NormalUser.objects.filter(Name__icontains=mychatsearch)
+        for i in searchNormal:
+            searchPerson.append(i.Username)
+        searchHospital = Hospital.objects.filter(Name__icontains=mychatsearch)
+        for i in searchHospital:
+            searchPerson.append(i.Username)
+        searchDonor = Blood_Donar.objects.filter(Name__icontains=mychatsearch)
+        for i in searchDonor:
+            searchPerson.append(i.Username)
+        searchDoctor = Doctor.objects.filter(Name__icontains=mychatsearch)
+        for i in searchDoctor:
+            searchPerson.append(i.Username)
+        if len(searchPerson) > 0:
+            for i in searchPerson:
+                searchUser.append(Users.objects.get(username=i))
+        mychats = Chat.objects.filter(Q(From=me) | Q(To=me)).filter(
+            Q(Message__icontains=mychatsearch) | Q(From__in=searchUser) | Q(To__in=searchUser)).filter(Deleted=False).order_by('-Time')
+    for i in mychats:
+        if i.From != request.user:
+            user = i.From
+        elif i.To != request.user:
+            user = i.To
+        if user != None:
+            if user.User_Type == "Blood Donor":
+                profile = Blood_Donar.objects.get(Username=user)
+            elif user.User_Type == "Doctor" or user.User_Type == "Blood Donor & Doctor":
+                profile = Doctor.objects.get(Username=user)
+            elif user.User_Type == "Normal":
+                profile = NormalUser.objects.get(Username=user)
+            elif user.User_Type == "Hospital":
+                profile = Hospital.objects.get(Username=user)
+            elif user.User_Type == "Admin":
+                profile = Admin.objects.get(Username=user)
+            new = Chat.objects.filter(From=user, To=me, Delivered=False).count()
+
+            if checked_user.count(user) == 0:
+                data = [user.username, profile.Name, profile.Image, i.Time, new, i.Message]
+                chatwith.append([])
+                for j in data:
+                    chatwith[c].append(j)
+                checked_user.append(user)
+                if action == 'SearchMyChat':
+                    if mychatsearch in i.Message:
+                        chatwith[c][5] = i.Message
+                c += 1
+
     myself = None
     if request.user.User_Type == "Blood Donor":
         myself = Blood_Donar.objects.get(Username=me)
@@ -418,41 +544,130 @@ def ChatView(request):
         myself = Hospital.objects.get(Username=me)
     elif request.user.User_Type == "Normal":
         myself = NormalUser.objects.get(Username=me)
-    person = 'N/A'
-    if request.method == "POST":
-        person = request.POST.get('chatwith', 'N/A')
-        person = Users.objects.get(username=person)
-        personType = person.User_Type
-        data = None
-        if personType == "Blood Donor":
-            data = Blood_Donar.objects.get(Username=person)
-        elif personType == "Doctor" or personType == "Blood Donor & Doctor":
-            data = Doctor.objects.get(Username=person)
-        elif personType == "Normal":
-            data = NormalUser.objects.get(Username=person)
-        elif personType == "Hospital":
-            data = Hospital.objects.get(Username=person)
+    elif request.user.User_Type == "Admin":
+        myself = Admin.objects.get(Username=me)
 
-        chats1 = Chat.objects.filter(From=person, To=me)
-        chats2 = Chat.objects.filter(From=me, To=person)
-        chats = sorted(chain(chats1, chats2), key=attrgetter('Time'))
-        context = {
-            "chats": chats,
-            "person": person,
-            "mychats":mychats,
-            "me":me,
-            "data":data,
-            "myself": myself,
-        }
-        return render(request, 'chat.html', context)
+    if request.method == "POST":
+        if Users.objects.filter(username=person).exists():
+            person = Users.objects.get(username=person)
+            personType = person.User_Type
+            data = None
+            if personType == "Blood Donor":
+                data = Blood_Donar.objects.get(Username=person)
+            elif personType == "Doctor" or personType == "Blood Donor & Doctor":
+                data = Doctor.objects.get(Username=person)
+            elif personType == "Normal":
+                data = NormalUser.objects.get(Username=person)
+            elif personType == "Hospital":
+                data = Hospital.objects.get(Username=person)
+            elif personType == "Admin":
+                myself = Admin.objects.get(Username=me)
+            Chat.objects.filter(Q(From=person) & Q(To=me)).update(Delivered=True)
+            chats = Chat.objects.filter(Q(From=person) & Q(To=me) | Q(From=me) & Q(To=person))
+
+            if action == 'SearchMyChat':
+                context = {
+                    "chats": chats,
+                    "person": person,
+                    "chatwith": chatwith,
+                    "me": me,
+                    "has_chat": mychats.count(),
+                    "myself": myself,
+                    "data":data,
+                    "with":who,
+                    'searchMychat': True,
+                }
+                return render(request, 'chat.html', context)
+            elif action == 'doChat':
+                context = {
+                    "chats": chats,
+                    "person": person,
+                    "chatwith": chatwith,
+                    "me": me,
+                    "has_chat": mychats.count(),
+                    "data": data,
+                    "with": who,
+                    "myself": myself,
+                }
+                return render(request, 'chat.html', context)
+        else:
+            context = {
+                "person": 'N/A',
+                "chatwith": chatwith,
+                "me": me,
+                "has_chat": mychats.count(),
+                "myself": myself,
+                "with": who,
+                'searchMychat': True,
+            }
+            return render(request, 'chat.html', context)
     else:
         context = {
-            "person": person,
-            "mychats": mychats,
+            "person": 'N/A',
+            "chatwith": chatwith,
             "me":me,
+            "has_chat": mychats.count(),
             "myself":myself,
         }
         return render(request, 'chat.html', context)
+
+
+
+@login_required(login_url="/login/")
+def SendChat(request):
+    me = Users.objects.get(username=request.user.username)
+    chat = request.POST.get('chat')
+    receiver = request.POST.get('receiver')
+    receiver = Users.objects.get(username=receiver)
+    now = timezone.now() + timedelta(hours=5.50)
+    now = now.strftime("%b, %d, %Y, %I:%M %p")
+    c = Chat.objects.create(From=me, To=receiver, Message=chat, Time=now, Delivered=False)
+    c.save()
+    c = c.id
+    data = {
+        "chat": chat,
+        "id":c,
+        "time":now,
+        "Del":'False',
+    }
+    return JsonResponse(data)
+
+def FetchChat(request):
+    sender = request.POST.get('sender')
+    try:
+        sender = Users.objects.get(username=sender)
+        chats = Chat.objects.filter(Q(From=sender) & Q(To=request.user) & ~Q(Delivered=True)).order_by('Time')
+        count = chats.count()
+        chat = []
+        now = []
+        id = []
+        for i in chats:
+            chat.append(i.Message)
+            id.append(i.id)
+            now.append((i.Time + timedelta(hours=5.50)).strftime("%b, %d, %Y, %I:%M %p"))
+        checks = Chat.objects.filter(Q(From=request.user) & Q(To=sender) & Q(Delivered=True)).order_by('Time')
+        check_count = checks.count()
+        check = []
+        for i in checks:
+            check.append(i.id)
+        data = {
+            'error':'0',
+            'check':check,
+            'check_count':check_count,
+            'chat':chat,
+            'id':id,
+            'time':now,
+            'count':count,
+        }
+        chats.update(Delivered=True)
+        Users.objects.filter(username=request.user.username).update(is_online=True, last_seen=timezone.now())
+        return JsonResponse(data, safe=False)
+    except:
+        data = {
+            'error':"1",
+        }
+        return JsonResponse(data, safe=False)
+
 
 def AjaxContact(request):
     if request.method == 'POST':  # ContactUs Form
