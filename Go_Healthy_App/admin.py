@@ -9,6 +9,11 @@ class UsersAdmin(admin.ModelAdmin):
 admin.site.register(Users, UsersAdmin)
 
 
+class UserAdmin(admin.ModelAdmin):
+    list_display = ['Username', 'Name', 'Contact']
+admin.site.register(Admin, UserAdmin)
+
+
 class NormalUserAdmin(admin.ModelAdmin):
     list_display = ['Username', 'Name', 'Contact']
 admin.site.register(NormalUser, NormalUserAdmin)
@@ -61,11 +66,6 @@ class EmargencyAdmin(admin.ModelAdmin):
 admin.site.register(Emargency_Number, EmargencyAdmin)
 
 
-class OTPAdmin(admin.ModelAdmin):
-    list_display = ['EmailOTP']
-admin.site.register(OTP, OTPAdmin)
-
-
 class BedNoAdmin(admin.ModelAdmin):
     list_display = ['Hospital', 'Bed_No', 'Flor', 'Room', 'Building', 'Availability']
 admin.site.register(BedNo, BedNoAdmin)
@@ -74,13 +74,6 @@ class BedRemoveAdmin(admin.ModelAdmin):
     list_filter = ['Hospital', 'Bed']
 admin.site.register(BedRemove, BedRemoveAdmin)
 
-"""
-class ResetPasswordAdmin(admin.ModelAdmin):
-    list_display = ['Username']
-admin.site.register(ResetPasswordCode, ResetPasswordAdmin)
-"""
-"""
 class ChatAdmin(admin.ModelAdmin):
-    list_display = ['From']
+    list_display = ["From", "To"]
 admin.site.register(Chat, ChatAdmin)
-"""
