@@ -180,8 +180,9 @@
                             <div class="col">
                         <form id="chat" method="post" action="{% url 'Chat' %}">
                             {% csrf_token %}
-                        <button type="submit" class="btn btn-success" form="chat" name="chatwith" value="{{i.Username.username}}"
+                        <button type="submit" class="btn btn-success" form="chat" name="action" value="doChat"
                            style="font-size:20px;width:150px;border-color:white">
+                            <input type="hidden" name="chatwith" value="{{i.Username.username}}" form="chat">
                             <i class="fad fa-user-md-chat"></i>
                             Chat</button>
                                 </form>
