@@ -614,10 +614,7 @@
     document.getElementById('otp-send').style.display = "none"
     document.getElementById("sending").style.display = 'block'
 
-     const form = document.getElementById('contacteditform');
-    form.addEventListener("submit", otpsendHandler);
-
-    function otpsendHandler(e) {
+    $('#contacteditform').one('submit',function(e) {
     e.preventDefault();
         document.getElementById("otpbtn").disabled = true
         $.ajax(
@@ -648,7 +645,7 @@
               document.getElementById("message").innerHTML = "<strong style='color:red'>OTP Send Failed!</strong>"
             },
         });
-   }
+   });
     }
 
 
@@ -675,10 +672,8 @@
 <script>
     function contactSubmit()
     {
-     const form = document.getElementById('contacteditform');
-    form.addEventListener("submit", contactHandler);
 
-    function contactHandler(e) {
+    $('#contacteditform').one('submit',function(e) {
     e.preventDefault();
         $.ajax(
         {
@@ -712,7 +707,7 @@
                 document.getElementById("contactmessage").innerHTML = "<strong style='color:red'>Failed!</strong>"
             },
         });
-   }
+   });
     }
 </script>
 <script>
@@ -738,10 +733,9 @@
 <script>
     function updategroup()
     {
-    const form = document.getElementById('editgroupform');
-    form.addEventListener("submit", groupHandler);
 
-    function groupHandler(e) {
+
+    $('#editgroupform').one('submit',function(e) {
     var group = $('#bloodGroup').val();
     e.preventDefault();
         $.ajax(
@@ -764,7 +758,7 @@
                 document.getElementById("groupmessage").innerHTML = "<strong style='color:red'>Failed!</strong>"
             },
         });
-   }
+   });
     }
 
 
