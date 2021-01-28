@@ -426,18 +426,15 @@
 <script>
 function otpsend()
 {
-    const form = document.getElementById('send-otp');
-    form.addEventListener("submit", sendOTPHandler);
-    function sendOTPHandler(e) {
-
+    $('#send-otp').one('submit',function(e){
     e.preventDefault();
-    document.getElementById("verifyotpId").style.display = "none"
-    document.getElementById("otpsedmessage").style.display = "none"
-    document.getElementById("otpveifymessage").style.display = "none"
-    document.getElementById("submitId").style.display = "none"
-    document.getElementById("loading").style.display = "block"
-    document.getElementById("otpbtn").disabled = true
-     document.getElementById("verifymessage").innerHTML = ""
+        document.getElementById("verifyotpId").style.display = "none"
+        document.getElementById("otpsedmessage").style.display = "none"
+        document.getElementById("otpveifymessage").style.display = "none"
+        document.getElementById("submitId").style.display = "none"
+        document.getElementById("loading").style.display = "block"
+        document.getElementById("otpbtn").disabled = true
+         document.getElementById("verifymessage").innerHTML = ""
      $('#otp').val('');
         $.ajax(
         {
@@ -471,16 +468,13 @@ function otpsend()
                 document.getElementById("otpsedmessage").innerHTML = "<strong style='color:red'>Error! OTP Send Failed!</strong>"
             },
         });
+   });
    }
-   }
-
 </script>
 <script>
     function verifyOTP()
     {
-        const form = document.getElementById('verifyform');
-    form.addEventListener("submit", verifyOTPHandler);
-    function verifyOTPHandler(e) {
+    $('#verifyform').one('submit',function(e){
 
     e.preventDefault();
     document.getElementById("otpveifymessage").style.display = "none"
@@ -518,7 +512,7 @@ function otpsend()
                 document.getElementById("verifymessage").innerHTML = "<strong style='color:red'>Error! OTP Verification Failed!</strong>"
             },
         });
-   }
+   });
     }
 
 </script>
