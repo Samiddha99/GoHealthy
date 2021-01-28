@@ -1592,6 +1592,16 @@
 </center>
 </body>
 <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            var scrollpos = localStorage.getItem('scrollpos');
+            if (scrollpos) window.scrollTo(0, scrollpos);
+        });
+
+        window.onbeforeunload = function(e) {
+            localStorage.setItem('scrollpos', window.scrollY);
+        };
+</script>
+<script>
     function loadDistrict1()
     {
     state = $('#gen-state').val();
@@ -1750,11 +1760,7 @@ function otpsend()
     document.getElementById("otpveifymessage").innerHTML = ""
     document.getElementById("submitId").style.display = "none"
 
-    const form = document.getElementById('otpSendForm');
-    form.addEventListener("submit", sendOTPHandler);
-
-    function sendOTPHandler(e) {
-
+    $('#otpSendForm').one('submit',function(e) {
     e.preventDefault();
     document.getElementById("otpbtn").disabled = true
         $.ajax(
@@ -1787,7 +1793,7 @@ function otpsend()
                 document.getElementById("otpsedmessage").innerHTML = "<strong style='color:red'>OTP Send Failed!</strong>"
             },
         });
-   }
+   });
    }
 
 </script>
@@ -1796,10 +1802,7 @@ function otpsend()
     {
     document.getElementById("submitId").style.display = "none"
 
-    const form = document.getElementById('verifyform');
-    form.addEventListener("submit", verifyOTPHandler)
-
-    function verifyOTPHandler(e) {
+    $('#verifyform').one('submit',function(e) {
     e.preventDefault();
     document.getElementById("otpveifymessage").innerHTML = "<div class='spinner-grow text-warning' role='status'></div> <span style='color:red'>Verifing........</span>"
     document.getElementById("verifybtn").disabled = true
@@ -1835,7 +1838,7 @@ function otpsend()
                 document.getElementById("otpveifymessage").innerHTML = "<strong style='color:red'>OTP Verification Failed!</strong>"
             },
         });
-   }
+   });
     }
 </script>
 <script>
@@ -1845,11 +1848,8 @@ function otpsend()
     document.getElementById("otpveifymessage").innerHTML = ""
     document.getElementById("otpsedmessage").innerHTML = ""
 
-    const form = document.getElementById('contactForm');
-    form.addEventListener("submit", updateHandler)
 
-    function updateHandler(e)
-    {
+    $('#contactForm').one('submit',function(e) {
         e.preventDefault();
         $.ajax(
         {
@@ -1878,16 +1878,14 @@ function otpsend()
               alert("Failed to Update Contact Info!");
             },
         });
-    }
+    });
     }
 </script>
 <script>
     function generalChange()
     {
-    const form = document.getElementById('generalForm');
-    form.addEventListener("submit", generalEditHandler)
 
-    function generalEditHandler(e) {
+    $('#generalForm').one('submit',function(e) {
     e.preventDefault();
 
     $.ajax({
@@ -1922,16 +1920,14 @@ function otpsend()
         }
 
     });
-    }
+    });
     }
 </script>
 <script>
 function patientRelease()
 {
-    const form = document.getElementById('patientReleaseForm');
-    form.addEventListener("submit", patientEditHandler)
     id= $('#Editbookid').val();
-    function patientEditHandler(e) {
+    $('#patientReleaseForm').one('submit',function(e) {
     e.preventDefault();
         $.ajax(
         {
@@ -1957,7 +1953,7 @@ function patientRelease()
             alert('Failed');
             }
         });
-   }
+   });
 }
 
 
@@ -1965,12 +1961,10 @@ function patientRelease()
 <script>
 function patientChange()
 {
-    const form = document.getElementById('patientEdit');
-    form.addEventListener("submit", patientEditHandler)
 
     var msg = 'None'
     id= $('#Editbookid').val();
-    function patientEditHandler(e) {
+     $('#patientEdit').one('submit',function(e) {
     e.preventDefault();
         $.ajax(
         {
@@ -1997,7 +1991,7 @@ function patientChange()
             alert('Failed');
             },
         });
-   }
+   });
 }
 
 </script>
@@ -2101,10 +2095,8 @@ function patientChange()
     function addBed()
     {
     document.getElementById("addbedmeesage").innerHTML = ""
-    const form = document.getElementById('addBedForm');
-    form.addEventListener("submit", addBedHandler)
 
-    function addBedHandler(e) {
+    $('#addBedForm').one('submit',function(e) {
     e.preventDefault();
         $.ajax(
         {
@@ -2134,7 +2126,7 @@ function patientChange()
                 document.getElementById("addbedmeesage").innerHTML = "<b style='color:red'>Failed to Add New Bed!</b>"
             },
         });
-   }
+   });
     }
 
 
@@ -2143,10 +2135,8 @@ function patientChange()
     function removeBed()
     {
     document.getElementById("removebedmeesage").innerHTML = ""
-    const form = document.getElementById('removeBedForm');
-    form.addEventListener("submit", removeBedHandler)
 
-    function removeBedHandler(e) {
+    $('#removeBedForm').one('submit',function(e) {
     e.preventDefault();
         $.ajax(
         {
@@ -2180,7 +2170,7 @@ function patientChange()
                 document.getElementById("removebedmeesage").innerHTML = "<b style='color:red'>Failed to Remove Bed!</b>"
             },
         });
-   }
+   });
     }
 
 
