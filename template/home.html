@@ -423,10 +423,8 @@
     function sendmessage()
     {
         document.getElementById("errormessage").style.visibility = "hidden"
-    const form = document.getElementById('contactform');
-    form.addEventListener("submit", messageHandler)
 
-    function messageHandler(e) {
+    $('#contactform').one('submit',function(e) {
 
     e.preventDefault();
         $.ajax(
