@@ -4,6 +4,7 @@ from django.conf import settings
 import time
 from timeloop import Timeloop
 from datetime import timedelta
+from django.db.models import Q
 import requests
 from django.contrib import messages
 from background_task import background
@@ -17,22 +18,14 @@ def deleteOTP():
 
 def expireBooking():
     book = Bed_Book.objects.filter(Expire_Time__lte = timezone.now(), Status = 'Not Admit Still Now')
+    Bed_Book.objects.filter(Expire_Time__lte = timezone.now(), Status = 'Not Admit Still Now').update(Status='Expired')
     for i in book:
-        if BedNo.objects.filter(Booking_Id=i.Booking_ID).exists():
-            bed = BedNo.objects.get(Booking_Id=i.Booking_ID)
-            bed.Book_by = None
-            bed.Availability = 'Available'
-            bed.Booking_Id = None
-            bed.save()
-            b = Bed_Book.objects.get(Booking_ID=i.Booking_ID)
-            b.Status = 'Expired'
-            b.save()
+        BedNo.objects.filter(Booking_Id=i.Booking_ID).update(Book_by = None, vailability = 'Available', Booking_Id = None)
 
 
 
 def deleteExpireBooking():
-    time_now = timezone.now()
-    delete_when = time_now - timedelta(hours=100)
+    delete_when = timezone.now() - timedelta(hours=100)
     Bed_Book.objects.filter(Expire_Time__lte=delete_when, Status='Expired').delete()
 
 
@@ -95,26 +88,25 @@ def deleteResetLink():
 
 
 def bookExpireAlert():
-    book = Bed_Book.objects.filter(Status="Not Admit Still Now")
+    remain = timezone.now() + timedelta(minutes=30.0)
+    book = Bed_Book.objects.filter(Status="Not Admit Still Now", Expire_Time__lte=remain)
     for i in book:
-        remain = i.Expire_Time - timedelta(minutes=30)
-        if remain <= timezone.now():
-            url = "https://www.fast2sms.com/dev/bulk"
-            payload = {
-                'sender_id': 'FSTSMS',
-                'message': "42459",
-                'language': 'english',
-                'route': 'qt',
-                'numbers': i.Mobile,
-                'variables': "{#BB#}",
-                'variables_values': i.Booking_ID,
-            }
-            headers = {
-                'authorization': settings.FAST2SMAS_API_KEY,
-                'Content-Type': "application/x-www-form-urlencoded",
-                'Cache-Control': "no-cache",
-            }
-            requests.request("POST", url, data=payload, headers=headers)
+        url = "https://www.fast2sms.com/dev/bulk"
+        payload = {
+            'sender_id': 'FSTSMS',
+            'message': "42459",
+            'language': 'english',
+            'route': 'qt',
+            'numbers': i.Mobile,
+            'variables': "{#BB#}",
+            'variables_values': i.Booking_ID,
+        }
+        headers = {
+            'authorization': settings.FAST2SMAS_API_KEY,
+            'Content-Type': "application/x-www-form-urlencoded",
+            'Cache-Control': "no-cache",
+        }
+        requests.request("POST", url, data=payload, headers=headers)
 
 
 def deleteRealese():
@@ -125,17 +117,8 @@ def deleteRealese():
 
 
 def deleteNonVerifyUser():
-    the_user = Users.objects.filter(is_verified=False)
-    insts = []
-    n = 0
-    for i in the_user:
-        join = i.date_joined
-        join = join + timedelta(days=30)
-        if join <= timezone.now():
-            insts[n] =i.username
-            n += 1
-    for i in insts:
-        Users.objects.filter(username=insts[i]).delete()
+    del_time = timezone.now() - timedelta(days=30)
+    Users.objects.filter(is_verified=False, date_joined__lte=del_time).delete()
 
 
 
@@ -143,11 +126,7 @@ def changeBedNo():
     bed = BedNo.objects.exclude(Booking_Id=None)
     for i in bed:
         if Bed_Book.objects.filter(Booking_ID=i.Booking_Id).exists() == False:
-            b= BedNo.objects.get(Booking_Id=i.Booking_Id)
-            b.Availability = 'Available'
-            b.Book_by = None
-            b.Booking_Id = None
-            b.save()
+            BedNo.objects.filter(Booking_Id=i.Booking_Id).update(Availability = 'Available', Book_by = None, Booking_Id = None)
         else:
             book = Bed_Book.objects.get(Booking_ID=i.Booking_Id)
             if book.Status == 'Expired':
@@ -156,3 +135,7 @@ def changeBedNo():
                 b.Book_by = None
                 b.Booking_Id = None
                 b.save()
+
+def userOnline():
+    check_time = timezone.now() + timedelta(minutes=1)
+    Users.objects.filter(is_online=True, last_seen__lt=check_time).update(is_online=False)
