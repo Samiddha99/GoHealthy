@@ -22,9 +22,28 @@ class Users(AbstractUser):
     pass
     User_Type = models.CharField(max_length=20, choices=user_type_ch)
     is_verified = models.BooleanField(default=False)
+    is_online = models.BooleanField(default=False)
+    last_seen = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):
         return self.username
+
+class Admin(models.Model):
+    Username = models.OneToOneField(Users, on_delete=models.CASCADE, max_length=20, unique=True)
+    Name = models.CharField(max_length=100)
+    Gender = models.CharField(max_length=30, choices=gender_ch)
+    ID_Type = models.CharField(max_length=100, choices=id_type, default='Aadhaar')
+    ID_Number = models.CharField(max_length=100, default='')
+    Contact = models.CharField(max_length=10)
+    Address = models.TextField()
+    State = models.CharField(max_length=100, choices=states)
+    City = models.CharField(max_length=200, default="")
+    Subdivision = models.CharField(max_length=100)
+    District = models.CharField(max_length=100)
+    Pin = models.CharField(max_length=6)
+    Image = models.ImageField(upload_to='images/adminuser users/')
+    Created_at = models.DateTimeField(auto_now_add=True, )
+    Last_Update = models.DateTimeField(auto_now=True, )
 
 class NormalUser(models.Model):
     Username = models.OneToOneField(Users, on_delete=models.CASCADE, max_length=20, unique=True)
@@ -267,8 +286,10 @@ class DoctorUpgrade(models.Model):
 class Chat(models.Model):
     From = models.ForeignKey(Users, on_delete=models.SET_DEFAULT, default='This User Account has been deleted', related_name='From')
     To = models.ForeignKey(Users, on_delete=models.SET_DEFAULT, default='This User Account has been deleted', related_name='To')
-    Message = models.CharField(null=True, blank=True, max_length=500, default='')
+    Message = models.TextField(null=True, blank=True, max_length=500, default='')
+    Delivered = models.BooleanField(default=False, auto_created=False)
     Time = models.DateTimeField(auto_now_add=True, )
+    Deleted = models.BooleanField(default=False)
     class Meta:
         ordering = ['Time',]
 
