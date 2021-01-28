@@ -219,10 +219,7 @@
     function bmires()
     {
 
-    const form = document.getElementById('calbmi');
-    form.addEventListener("submit", bmiResHandler)
-
-    function bmiResHandler(e) {
+    $('#calbmi').one('submit',function(e) {
     e.preventDefault();
         $.ajax(
         {
@@ -278,7 +275,7 @@
                 document.getElementById("otpveifymessage").innerHTML = "<h5 style='color:red'>Error!</h3>"
             },
         });
-   }
+   });
     }
 
 
