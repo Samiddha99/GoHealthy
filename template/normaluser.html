@@ -765,10 +765,8 @@
 <script>
     function upgradePro()
     {
-    const form = document.getElementById('upgradeform');
-    form.addEventListener("submit", upgradeHandler);
 
-    function upgradeHandler(e) {
+    $('#upgradeform').one('submit',function(e) {
     e.preventDefault();
         $.ajax(
         {
@@ -794,7 +792,7 @@
                 document.getElementById("upgrademessage").innerHTML = "<strong style='color:red'>Failed!</strong>"
             },
         });
-   }
+   });
     }
 
 
@@ -832,17 +830,6 @@
         },
     });
     }
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function loadSpeciality()
@@ -883,17 +870,6 @@
         },
     });
     }
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function loadAddress()
@@ -941,20 +917,6 @@
         },
     });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function GenEdit()
@@ -963,19 +925,6 @@
     document.getElementById('gen_edit').style.display = "block"
     document.getElementById('genbtn').setAttribute("onclick", "GenShow()");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function GenShow()
@@ -984,19 +933,6 @@
     document.getElementById('gen_edit').style.display = "none"
     document.getElementById('genbtn').setAttribute("onclick", "GenEdit()");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function AddressEdit()
@@ -1005,19 +941,6 @@
     document.getElementById('address_edit').style.display = "block"
     document.getElementById('addressbtn').setAttribute("onclick", "AddressShow()");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function AddressShow()
@@ -1026,19 +949,6 @@
     document.getElementById('address_edit').style.display = "none"
     document.getElementById('addressbtn').setAttribute("onclick", "AddressEdit()");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function ContactEdit()
@@ -1053,19 +963,6 @@
     document.getElementById('contactbtn').setAttribute("onclick", "ContactShow()");
     document.getElementById("message").innerHTML = ""
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function ContactShow()
@@ -1080,19 +977,6 @@
     document.getElementById('contactbtn').setAttribute("onclick", "ContactEdit()");
     document.getElementById("message").innerHTML = ""
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function detectchange()
@@ -1125,17 +1009,6 @@
         },
    });
     }
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function otpsend()
@@ -1144,10 +1017,7 @@
     document.getElementById('otp-send').style.display = "none"
     document.getElementById("sending").style.display = 'block'
 
-     const form = document.getElementById('contacteditform');
-    form.addEventListener("submit", otpsendHandler);
-
-    function otpsendHandler(e) {
+    $('#contacteditform').one('submit',function(e) {
     e.preventDefault();
     document.getElementById("otpbtn").disabled = true
         $.ajax(
@@ -1178,21 +1048,8 @@
               document.getElementById("message").innerHTML = "<strong style='color:red'>OTP Send Failed!</strong>"
             },
         });
-   }
+   });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function showSubmit()
@@ -1210,27 +1067,12 @@
     document.getElementById('submit').style.display = "none"
     }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function contactSubmit()
     {
-     const form = document.getElementById('contacteditform');
-    form.addEventListener("submit", contactHandler);
 
-    function contactHandler(e) {
+    $('#contacteditform').one('submit',function(e) {
     e.preventDefault();
         $.ajax(
         {
@@ -1264,19 +1106,8 @@
                 document.getElementById("contactmessage").innerHTML = "<strong style='color:red'>Failed!</strong>"
             },
         });
-   }
+   });
     }
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function editgroup()
@@ -1284,20 +1115,6 @@
       document.getElementById('editgroupfield').innerHTML = "<select form='editgroupform' class='form-control' id='bloodGroup' name='bloodGroup' required style='width:45%'><option label='Select Blood Group'></option><option label='A+' value='A+'>A+</option><option label='A-' value='A-'>A-</option><option label='B+' value='B+'>B+</option><option label='B-' value='B-'>B-</option><option label='O+' value='O+'>O+</option><option label='O-' value='O-'>O-</option><option label='AB+' value='AB+'>AB+</option><option label='AB-' value='AB-'>AB-</option></select><button type='submit' onclick='updategroup()' form='editgroupform' class='btn btn-danger' style='margin-top:2px'>Update</button>"
     document.getElementById('groupbtn').setAttribute("onclick", "hidegroup()");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script>
     function hidegroup()
@@ -1305,16 +1122,6 @@
     document.getElementById('editgroupfield').innerHTML = ""
     document.getElementById('groupbtn').setAttribute("onclick", "editgroup()");
     }
-
-
-
-
-
-
-
-
-
-
 </script>
 </html>
 {%endblock%}
