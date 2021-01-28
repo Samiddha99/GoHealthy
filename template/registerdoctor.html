@@ -480,10 +480,8 @@ function otpsend()
      $('#mobileotp').val('');
     $('#emailotp').val('');
     document.getElementById("otpveifymessage").innerHTML = ""
-    const form = document.getElementById('sendotpform');
-    form.addEventListener("submit", sendOTPHandler);
 
-    function sendOTPHandler(e) {
+    $('#sendotpform').one('submit',function(e) {
 
     e.preventDefault();
     $("#send").hide();
@@ -525,17 +523,15 @@ function otpsend()
                 document.getElementById("otpsedmessage").innerHTML = "<strong style='color:red'>OTP Send Failed!</strong>"
             },
         });
-   }
+   });
    }
 
 </script>
 <script>
     function otpverify()
     {
-    const form = document.getElementById('verifyform');
-    form.addEventListener("submit", verifyOTPHandler)
 
-    function verifyOTPHandler(e) {
+    $('#verifyform').one('submit',function(e) {
     e.preventDefault();
     document.getElementById("verifing").style.display = "block"
     document.getElementById("otpveifymessage").style.display = "none"
@@ -577,7 +573,7 @@ function otpsend()
                 document.getElementById("otpveifymessage").innerHTML = "<strong style='color:red'>OTP Verification Failed!</strong>"
             },
         });
-   }
+   });
     }
 
 
