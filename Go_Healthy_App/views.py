@@ -1930,7 +1930,7 @@ def UserNextBook(request):
         if timeZoneOffset >= 0:
             nexttime = nexttime - timedelta(minutes=timeZoneOffset)
         elif timeZoneOffset < 0:
-            nexttime =  nexttime - timedelta(minutes=timeZoneOffset)
+            nexttime =  nexttime + timedelta(minutes=timeZoneOffset)
         nexttime = nexttime.strftime("%B %d, %Y %H:%M:%S")
 
         response_data['message'] = "0"
