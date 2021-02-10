@@ -511,7 +511,7 @@ def ChatView(request):
             user = i.From
         elif i.To != request.user:
             user = i.To
-        if user != None:
+        if user is not None:
             if user.User_Type == "Blood Donor":
                 profile = Blood_Donar.objects.get(Username=user)
             elif user.User_Type == "Doctor" or user.User_Type == "Blood Donor & Doctor":
@@ -756,7 +756,7 @@ def ComplaintView(request):
             newcom.Complain_Id = comId
             newcom.Status = 'Pending'
             newcom.save()
-            if attachment != None:
+            if attachment is not None:
                 comp = complaint.objects.get(Complain_Id=comId)
                 comp.Attachment = attachment
                 comp.save()
@@ -1018,7 +1018,7 @@ def OTPSendEdit(request):
     if request.method == 'POST':
         emailOTP = None
         mobileOTP = None
-        if (email == None or contact == None) or (email == '' or contact == ''):
+        if (email is None or contact is None) or (email == '' or contact == ''):
             response_data['error'] = "1"
         else:
             cur_time = timezone.now()
@@ -1138,7 +1138,7 @@ def ContactUpdate(request):
                 person2 = Blood_Donar.objects.get(Username=request.user)
             person.Contact = contact
             person.save()
-            if person2 != None:
+            if person2 is not None:
                 person2.Contact = contact
                 person2.save()
             user = Users.objects.get(username=request.user.username)
@@ -1795,7 +1795,7 @@ def HospitalAdmin(request):
                 hos.save()
                 return HttpResponseRedirect(reverse(HospitalAdmin,))
 
-        elif status != None or status != "":
+        elif status is not None or status != "":
             if BedNo.objects.filter(Booking_Id=bookid).exists():
                 b = BedNo.objects.get(Booking_Id=bookid)
                 b.Availability = "Available"
@@ -2400,7 +2400,7 @@ def OTPSendReg(request):
     contact = request.POST.get('contact')
     response_data = {}
     if request.method == 'POST':
-        if (email == None or contact == None) or (email == '' or contact == ''):
+        if (email is None or contact is None) or (email == '' or contact == ''):
             response_data['error'] = "1"
         else:
             e = str(secrets.randbits(20))
@@ -2454,7 +2454,7 @@ def OTPVerifyReg(request):
     response_data = {}
     if request.method == 'POST':
         response_data['error'] = "1"
-        if emailotp == None or mobileotp == None or emailotp == '' or mobileotp == '' or email == '' or email == None or contact == '' or contact == None:
+        if emailotp is None or mobileotp is None or emailotp == '' or mobileotp == '' or email == '' or email is None or contact == '' or contact is None:
             response_data['error'] = "1"
             return JsonResponse(response_data)
         else:
@@ -2479,7 +2479,7 @@ def OTPSendBook(request):
     response_data = {}
     response = None
     if request.method == 'POST':
-        if (mobile == None or mobile == ''):
+        if (mobile is None or mobile == ''):
             response_data['error'] = "1"
         else:
             m = str(secrets.randbits(20))
@@ -2574,11 +2574,11 @@ def Passwordcheck(request):
     password1 = request.GET.get('password1')
     password2 = request.GET.get('password2')
     match = '5'
-    if (password1 == '' and password2 == '') or (password1 == None and password2 == None):
+    if (password1 == '' and password2 == '') or (password1 is None and password2 is None):
         match = '5'
-    elif (password1 == password2) and (password1 != '' or password2 != '' or password1 != None or password2 != None):
+    elif (password1 == password2) and (password1 != '' or password2 != '' or password1 is not None or password2 is not None):
         match = '1'
-    elif (password1 != password2) and (password1 != '' or password2 != '' or password1 != None or password2 != None):
+    elif (password1 != password2) and (password1 != '' or password2 != '' or password1 is not None or password2 is not None):
         match = '0'
     data = {
         'match': match,
@@ -2609,7 +2609,7 @@ def PasswordChange(request):
         error = "2"
     elif new_password1 == old_password:
         error = "3"
-    elif validation_errors['password'] != None:
+    elif validation_errors['password'] is not None:
         error = "4"
     else:
         data = {
@@ -2668,7 +2668,7 @@ def ResetPassword(request, code):
                 except exceptions.ValidationError as e:
                     validation_errors['password'] = list(e.messages)
 
-                if validation_errors['password'] != None:
+                if validation_errors['password'] is not None:
                     error = "4"
                 else:
                     user.set_password(password1)
@@ -3086,7 +3086,7 @@ def Login(request):
         if user is not None:
             if user.is_verified:
                 if user.is_active:
-                    if remember == None:
+                    if remember is None:
                         request.session.set_expiry(0)
                     login(request, user)
                     data = {
@@ -3130,7 +3130,7 @@ def LoginMain(request):
         if user is not None:
             if user.is_verified:
                 if user.is_active:
-                    if remember == None:
+                    if remember is None:
                         request.session.set_expiry(0)
                     login(request, user)
                     context = {
