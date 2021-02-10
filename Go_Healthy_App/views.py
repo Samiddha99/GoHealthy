@@ -1430,11 +1430,8 @@ def StatusChange(request):
             book.Bed_No = bed
             book.Disease = disease
             book.save()
-        elif status == "Release":
+        elif status == "Release" or status == "Don't Need to Admit":
             book.delete()
-        elif status == "Don't Need to Admit":
-            book.delete()
-
     else:
         return redirect(Home)
 
