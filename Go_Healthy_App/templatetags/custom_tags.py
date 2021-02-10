@@ -45,13 +45,7 @@ def isBed(value):
     value = str(value)
     hospital = Hospital.objects.get(Hospital_Id=value)
     ret = False
-    if BedNo.objects.filter(Hospital=hospital, Availability="Available", Room="General Ward").count() > 0:
-        ret = True
-    elif BedNo.objects.filter(Hospital=hospital, Availability="Available", Room="Women Ward").count() > 0:
-        ret = True
-    elif BedNo.objects.filter(Hospital=hospital, Availability="Available", Room="Men Ward").count() > 0:
-        ret = True
-    elif BedNo.objects.filter(Hospital=hospital, Availability="Available", Room="Child Ward").count() > 0:
+    if (BedNo.objects.filter(Hospital=hospital, Availability="Available", Room="General Ward").count() > 0) or (BedNo.objects.filter(Hospital=hospital, Availability="Available", Room="Women Ward").count() > 0) or (BedNo.objects.filter(Hospital=hospital, Availability="Available", Room="Men Ward").count() > 0) or (BedNo.objects.filter(Hospital=hospital, Availability="Available", Room="Child Ward").count() > 0):
         ret = True
 
     return ret
