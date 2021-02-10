@@ -37,10 +37,7 @@ def multipleBookingWarning():
     userid = []
     if count > 0:
         for i in Booking:
-            if j == 0:
-                userid.append(i.user)
-                j += 1
-            elif userid[j-1] != i.user:
+            if j == 0 or userid[j-1] != i.user:
                 userid.append(i.user)
                 j += 1
         p = None

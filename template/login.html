@@ -24,7 +24,7 @@
                     <input type="password" aria-label="password" autocomplete="off" minlength="15" name="password" form="login" class="form-control" placeholder="&#xf084; Password" style="font-family:Arial, FontAwesome; width:70%" required>
                     <div style="color:red"><b>{{message}}</b></div><br>
                     <input type="checkbox" form="login" id="remember1" name="remember">
-                    <input type="hidden" name="next" value="{{request.GET.next}}" form="login">
+                    <input type="hidden" name="tonext" value="{{request.GET.next}}" form="login">
                     <label for="remember1"><b>Keep me Logged In</b></label>
                     <br><br>
                     <h6><a href="{% url 'ResetPassword' %}" style="color:red">Forget Password?</a></h6>

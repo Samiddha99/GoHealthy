@@ -11,7 +11,6 @@ import django
 from datetime import datetime, timedelta
 #from geoposition.fields import GeopositionField
 #from django.contrib.gis.db import models
-from django.utils import timezone
 from django.contrib.auth.models import User, AbstractUser
 
 user_type_ch = [('Normal','Normal'), ('Hospital', 'Hospital'), ('Doctor', 'Doctor'), ('Blood Donor', 'Blood Donor'), ('Admin', 'Admin'), ('Blood Donor & Doctor', 'Blood Donor & Doctor')]
