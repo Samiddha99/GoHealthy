@@ -3120,7 +3120,7 @@ def Login(request):
     else:
         return render(request, 'login.html',)
 
-def LoginMain(request, next=None):
+def LoginMain(request):
     next = request.POST.get('next', '')
     if request.method == 'POST':
         remember = request.POST.get('remember')
