@@ -3118,7 +3118,7 @@ def Login(request):
         return render(request, 'login.html',)
 
 def LoginMain(request):
-    redirect_to = request.POST.get('next', '')
+    redirect_user_to = request.POST.get('tonext', '')
     if request.method == 'POST':
         remember = request.POST.get('remember')
         username = request.POST.get('username')
@@ -3133,10 +3133,10 @@ def LoginMain(request):
                     context = {
                         "error": "0",
                     }
-                    if redirect_to == '':
+                    if redirect_user_to == '':
                         return redirect(UserProfile)
                     else:
-                        return redirect(redirect_to)
+                        return redirect(redirect_user_to)
 
 
                 else:
