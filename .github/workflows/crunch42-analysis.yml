@@ -29,12 +29,12 @@ on:
     - cron: '16 12 * * 1'
 
 jobs:
-  rest-api-static-security-testing:
+  api_audit_job:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: 42Crunch REST API Static Security Testing
+      - name: 4Audit OpenAPI files
         uses: 42Crunch/api-security-audit-action@v1
         with:
           # Please create free account at https://platform.42crunch.com/register
