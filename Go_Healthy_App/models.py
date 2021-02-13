@@ -199,6 +199,7 @@ class complaint(models.Model):
     City = models.CharField(max_length=100)
     Pin = models.CharField(max_length=6)
     Attachment = models.FileField(null=True, blank=True, upload_to='documents\complaint', help_text='If you have any document or proof regarding your complaint, then please attach it.')
+    Subject = models.CharField(max_length=100, default='')
     Complain = models.TextField()
     Status = models.CharField(max_length=50, choices=complaint_status_ch, default='Pending')
     Reply = models.TextField(default='N/A')
