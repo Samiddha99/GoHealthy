@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 import time
 from timeloop import Timeloop
-from datetime import timedelta
+from django.utils import timezone
 from django.db.models import Q
 import requests
 from django.contrib import messages
