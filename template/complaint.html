@@ -24,7 +24,7 @@
             <br>If we find that your entered details in incorrect then we can't
             resolve your issues. To Solve your problem we should have proper information about the complainer.</p>
         <hr>
-        <p class="mb-0" style="color:blue;font-size:30px">Remember! We never share your data to anyone expact the
+        <p class="mb-0" style="color:blue;font-size:30px">Remember! We never share your data to anyone expect the
             authority.</p>
     </div>
 
@@ -180,9 +180,31 @@
                         <div class="row">
                             <div class="col-md"></div>
                             <div class="col-md-9">
+                                <label style="font-size:21px;">Subject:<b style="color:red">*</b></label><br>
+                                <select name="subject" class="form-control" required id="subject" form="complainForm" onchange="otherSubjectType()">
+                                    <option label="Choose A Subject"></option>
+                                    <option value="The Hospital Refused To Admit Patient Despite Having I Booked A Bed">The Hospital Refused To Admit Patient Despite I Booked A Bed</option>
+                                    <option value="The Website showed Hospital Has Available Beds But Hospital Did Not Admit Patient">The Website showed Hospital Has Available Beds But Hospital Did Not Admit Patient</option>
+                                    <option value="Blood Donor Said He Would Give Blood, But He Didn't Come To Give Blood">Blood Donor Said He Would Give Blood, But He Didn't Come To Give Blood</option>
+                                    <option value="I Am Not Satisfied with Doctor's Instruction">I Am Not Satisfied with Doctor's Instruction</option>
+                                    <option value="In The Site There Have Wrong Information About A Hospital">In The Site There Have Wrong Information About A Hospital</option>
+                                    <option value="I Found Wrong Information About A Doctor">I Found Wrong Information About A Doctor</option>
+                                    <option value="I Found Wrong Information About An Blood Donor">I Found Wrong Information About An Blood Donor</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <br>
+                                <input type="text" name="otherSubject" id="otherSubjectId" class="form-control" placeholder="Type Your Subject" value="Null" form="complainForm" required style="display:none">
+                                <br>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md"></div>
+                            <div class="col-md-9">
                                 <label style="font-size:21px;">Complaint:<b style="color:red">*</b></label>
-                                <textarea name="complaint" class="form-control" form="complainForm" rows="8" placeholder="Write Your Complaint..." required></textarea>
-                                <br><br><br>
+                                <textarea name="complaint" class="form-control" form="complainForm" rows="8" placeholder="Write Your Complaint with proper details......." required></textarea>
+                                <br>
                             </div>
                             <div class="col-md"></div>
                         </div>
@@ -204,6 +226,21 @@
         alert('We Successfully Submit Your Complaint! We will contact you if needed.\n See Your Booking ID bellow.);
 </script>
 {% endif %}
+<script>
+    function otherSubjectType()
+    {
+        var val = $('#subject').val();
+        if(val == 'Other')
+        {
+            document.getElementById('otherSubjectId').style.display = 'block';
+            $('#otherSubjectId').val('');
+        }
+        else
+        {
+            document.getElementById('otherSubjectId').style.display = 'none';
+        }
+    }
+</script>
 <script>
     function loadDistrict()
     {
