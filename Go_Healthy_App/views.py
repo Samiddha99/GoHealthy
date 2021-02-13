@@ -11,6 +11,7 @@ import requests
 from dateutil import tz
 from django.core import exceptions
 from django.contrib.auth.hashers import check_password
+from django.utils import timezone
 from itertools import chain
 from operator import attrgetter
 import base64
@@ -730,6 +731,11 @@ def ComplaintView(request):
         complain = request.POST.get('complaint')
         state = request.POST.get('state')
         subdivision = request.POST.get('subdivision')
+        subject = request.POST.get('subject')
+        otherSubject = request.POST.get('otherSubject')
+
+        if subject == 'Other':
+            subject = otherSubject
 
         data = {
             "Name":name,
@@ -741,6 +747,7 @@ def ComplaintView(request):
             "State":state,
             "District":district,
             "Pin":pin,
+            "Subject":subject,
             "Complain":complain,
         }
         form = ComplaintForm(data)
@@ -1748,6 +1755,7 @@ def HospitalAdmin(request):
                     "imageForm": imageForm,
                 }
                 return render(request, 'hospitaladmin.html', context)
+
         elif action == "ImageUpload":
             pic = request.FILES.get('picture')
             cont_type = str(pic.content_type)
@@ -1793,96 +1801,91 @@ def HospitalAdmin(request):
                 return HttpResponseRedirect(reverse(HospitalAdmin,))
 
         elif status is not None or status != "":
-            if BedNo.objects.filter(Booking_Id=bookid).exists():
-                b = BedNo.objects.get(Booking_Id=bookid)
-                b.Availability = "Available"
-                b.Book_by = None
-                b.Booking_Id = None
-                b.save()
+            if book.Status != 'Expired':
+                BedNo.objects.filter(Booking_Id=bookid).update(Availability='Available', Book_by=None, Booking_Id=None)
 
+                if status == 'Admit':
+                    disease = request.POST.get('disease')
+                    Bed_Id = request.POST.get('Bed_Id')
+                    b = BedNo.objects.get(id=Bed_Id)
+                    b.Availability = "Used"
+                    b.Booking_Id = book.Booking_ID
+                    b.Book_by = book.user
+                    b.save()
+                    b = BedNo.objects.get(id=Bed_Id)
+                    book.Bed_No = b
+                    book.Disease = disease
+                    book.Status = 'Admited'
+                    book.Admit_Time = timezone.now()
+                    book.save()
 
-            if status == 'Admit':
-                disease = request.POST.get('disease')
-                Bed_Id = request.POST.get('Bed_Id')
-                b = BedNo.objects.get(id=Bed_Id)
-                b.Availability = "Used"
-                b.Booking_Id = book.Booking_ID
-                b.Book_by = book.user
-                b.save()
-                b = BedNo.objects.get(id=Bed_Id)
-                book.Bed_No = b
-                book.Disease = disease
-                book.Status = 'Admited'
-                book.Admit_Time = timezone.now()
-                book.save()
+                    return HttpResponseRedirect(reverse(BedBookView, args=(bookid,)))
 
-                return HttpResponseRedirect(reverse(BedBookView, args=(bookid,)))
-
-            elif status == "Don't Need to Admit":
-                book.delete()
-                context = {
-                    "hospital": hospital,
-                    "admitBook": admitBook,
-                    "general":general,
-                    "general_avail":general_available,
-                    "general_used":general_used,
-                    "women":women,
-                    "women_avail": women_available,
-                    "women_used": women_used,
-                    "men":men,
-                    "men_avail": men_available,
-                    "men_used": men_used,
-                    "child":child,
-                    "child_avail": child_available,
-                    "child_used": child_used,
-                    "icu":icu,
-                    "icu_avail": icu_available,
-                    "icu_used": icu_used,
-                    "general_book": general_book,
-                    "women_book": women_book,
-                    "men_book": men_book,
-                    "child_book": child_book,
-                    "room": room_list,
-                    "flor": flor_list,
-                    "bed": bed,
-                    "noAdmit":"yes",
-                    "states": state_list,
-                    "imageForm": imageForm,
-                }
-                return HttpResponseRedirect(reverse(HospitalAdmin,))
-            elif status == "Release":
-                book.Status = "Released"
-                book.save()
-                context = {
-                    "hospital": hospital,
-                    "admitBook": admitBook,
-                    "general":general,
-                    "general_avail":general_available,
-                    "general_used":general_used,
-                    "women":women,
-                    "women_avail": women_available,
-                    "women_used": women_used,
-                    "men":men,
-                    "men_avail": men_available,
-                    "men_used": men_used,
-                    "child":child,
-                    "child_avail": child_available,
-                    "child_used": child_used,
-                    "icu":icu,
-                    "icu_avail": icu_available,
-                    "icu_used": icu_used,
-                    "general_book": general_book,
-                    "women_book": women_book,
-                    "men_book": men_book,
-                    "child_book": child_book,
-                    "room": room_list,
-                    "flor": flor_list,
-                    "bed": bed,
-                    "release":"yes",
-                    "states": state_list,
-                    "imageForm": imageForm,
-                }
-                return HttpResponseRedirect(reverse(HospitalAdmin,))
+                elif status == "Don't Need to Admit":
+                    book.delete()
+                    context = {
+                        "hospital": hospital,
+                        "admitBook": admitBook,
+                        "general":general,
+                        "general_avail":general_available,
+                        "general_used":general_used,
+                        "women":women,
+                        "women_avail": women_available,
+                        "women_used": women_used,
+                        "men":men,
+                        "men_avail": men_available,
+                        "men_used": men_used,
+                        "child":child,
+                        "child_avail": child_available,
+                        "child_used": child_used,
+                        "icu":icu,
+                        "icu_avail": icu_available,
+                        "icu_used": icu_used,
+                        "general_book": general_book,
+                        "women_book": women_book,
+                        "men_book": men_book,
+                        "child_book": child_book,
+                        "room": room_list,
+                        "flor": flor_list,
+                        "bed": bed,
+                        "noAdmit":"yes",
+                        "states": state_list,
+                        "imageForm": imageForm,
+                    }
+                    return HttpResponseRedirect(reverse(HospitalAdmin,))
+                elif status == "Release":
+                    book.Status = "Released"
+                    book.save()
+                    context = {
+                        "hospital": hospital,
+                        "admitBook": admitBook,
+                        "general":general,
+                        "general_avail":general_available,
+                        "general_used":general_used,
+                        "women":women,
+                        "women_avail": women_available,
+                        "women_used": women_used,
+                        "men":men,
+                        "men_avail": men_available,
+                        "men_used": men_used,
+                        "child":child,
+                        "child_avail": child_available,
+                        "child_used": child_used,
+                        "icu":icu,
+                        "icu_avail": icu_available,
+                        "icu_used": icu_used,
+                        "general_book": general_book,
+                        "women_book": women_book,
+                        "men_book": men_book,
+                        "child_book": child_book,
+                        "room": room_list,
+                        "flor": flor_list,
+                        "bed": bed,
+                        "release":"yes",
+                        "states": state_list,
+                        "imageForm": imageForm,
+                    }
+                    return HttpResponseRedirect(reverse(HospitalAdmin,))
 
     else:
         context = {
@@ -1918,23 +1921,25 @@ def HospitalAdmin(request):
 
 def UserNextBook(request):
     response_data = {}
-    timeZoneOffset = request.GET.get('timeZoneOffset')
-    timeZoneOffset = float(timeZoneOffset)
-    if Bed_Book.objects.filter(user=request.user, Status='Not Admit Still Now').exists():
-        userbook = Bed_Book.objects.get(user=request.user,Status='Not Admit Still Now')
-        nexttime = userbook.Expire_Time
-        nexttime = nexttime.astimezone(timezone.utc)
-        if timeZoneOffset >= 0:
-            nexttime = nexttime - timedelta(minutes=timeZoneOffset)
-        elif timeZoneOffset < 0:
-            nexttime =  nexttime + timedelta(minutes=timeZoneOffset)
-        nexttime = nexttime.strftime("%B %d, %Y %H:%M:%S")
+    if request.user.is_authenticated:
+        timeZoneOffset = request.GET.get('timeZoneOffset')
+        timeZoneOffset = float(timeZoneOffset)
+        if Bed_Book.objects.filter(user=request.user, Status='Not Admit Still Now').exists():
+            userbook = Bed_Book.objects.get(user=request.user,Status='Not Admit Still Now')
+            nexttime = userbook.Expire_Time
+            nexttime = nexttime.astimezone(timezone.utc)
+            if timeZoneOffset >= 0:
+                nexttime = nexttime - timedelta(minutes=timeZoneOffset)
+            elif timeZoneOffset < 0:
+                nexttime =  nexttime + timedelta(minutes=timeZoneOffset)
+            nexttime = nexttime.strftime("%B %d, %Y %H:%M:%S")
 
-        response_data['message'] = "0"
-        response_data['nexttime'] = nexttime
+            response_data['message'] = "0"
+            response_data['nexttime'] = nexttime
+        else:
+            response_data['message'] = "1"
     else:
         response_data['message'] = "1"
-
 
     return JsonResponse(response_data)
 
