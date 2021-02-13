@@ -15,11 +15,11 @@ import os
 import environ
 import django_heroku
 from decouple import config
-"""
+
 env = environ.Env()
 # reading .env file
 environ.Env.read_env()
-"""
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,10 +27,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+DEBUG = False
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = ['subdomain.example.com']
 
-SECRET_KEY = config("SECRET_KEY")
+if not DEBUG:
+    SECRET_KEY = config("SECRET_KEY")
+else:
+    SECRET_KEY = env("SECRET_KEY")
 
-DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -54,7 +61,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'template_forms',
     'geoposition',
-    'django_dropbox_storage',
     'storages',
     'boto'
 ]
@@ -64,6 +70,7 @@ CRONJOBS = [
     ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.deleteResetLink'),
     ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.bookExpireAlert'),
     ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.changeBedNo'),
+    ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.userOnline'),
     ('*/5 * * * *', 'Go_Healthy_App.scheduletasks.tasks.expireBooking'),
     ('* */3 * * *', 'Go_Healthy_App.scheduletasks.tasks.multipleBookingWarning'),
     ('* */24 * * *', 'Go_Healthy_App.scheduletasks.tasks.deleteExpireBooking'),
@@ -73,8 +80,12 @@ CRONJOBS = [
 
 BACKGROUND_TASK_RUN_ASYNC = True
 
-GEOPOSITION_GOOGLE_MAPS_API_KEY = config("GEOPOSITION_GOOGLE_MAPS_API_KEY")
-FAST2SMAS_API_KEY = config("FAST2SMAS_API_KEY")
+if not DEBUG:
+    GEOPOSITION_GOOGLE_MAPS_API_KEY = config("GEOPOSITION_GOOGLE_MAPS_API_KEY")
+    FAST2SMAS_API_KEY = config("FAST2SMAS_API_KEY")
+else:
+    GEOPOSITION_GOOGLE_MAPS_API_KEY = env("GEOPOSITION_GOOGLE_MAPS_API_KEY")
+    FAST2SMAS_API_KEY = env("FAST2SMAS_API_KEY")
 
 #MIDDLEWARE = env.str("MIDDLEWARE").split("', '")
 MIDDLEWARE = [
@@ -113,17 +124,29 @@ WSGI_APPLICATION = 'GoHealthy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': config("DATABASE_ENGINE"),
-        'NAME': config("DATABASE_NAME"),
-        'USER': config("DATABASE_USER"),
-        'PASSWORD': config("DATABASE_PASSWORD"),
-        'HOST': config("DATABASE_HOST"),
-        'PORT': config("DATABASE_PORT"),
+if not DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': config('DATABASE_ENGINE'),
+            'NAME': config('DATABASE_NAME'),
+            'USER': config('DATABASE_USER'),
+            'PASSWORD': config('DATABASE_PASSWORD'),
+            'HOST': config('DATABASE_HOST'),
+            'PORT': config('DATABASE_PORT'),
+        }
     }
-}
-DATABASE_URL=config("DATABASE_URL")
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': env('DATABASE_ENGINE'),
+            'NAME': env('DATABASE_NAME'),
+            'USER': env('DATABASE_USER'),
+            'PASSWORD': env('DATABASE_PASSWORD'),
+            'HOST': env('DATABASE_HOST'),
+            'PORT': env('DATABASE_PORT'),
+        }
+    }
+#DATABASE_URL=config("DATABASE_URL")
 AUTH_USER_MODEL = 'Go_Healthy_App.Users'
 
 # Password validation
@@ -163,18 +186,20 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-DROPBOX_OAUTH2_TOKEN = config('DROPBOX_OAUTH2_TOKEN')
-STATICFILES_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-DROPBOX_ROOT_FOLDER = '/static/'
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-"""
-SFTP_STORAGE_HOST = "https://www.dropbox.com"
-SFTP_STORAGE_ROOT = "home/Apps/GoHealthy/static"
-SFTP_STORAGE_INTERACTIVE = False
-"""
+if not DEBUG:
+    DROPBOX_OAUTH2_TOKEN = config('DROPBOX_OAUTH2_TOKEN')
+    #STATICFILES_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+    #DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+    DROPBOX_ROOT_FOLDER = '/static/'
+    #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATIC_ROOT = BASE_DIR/ 'staticfiles'
+    """
+    SFTP_STORAGE_HOST = "https://www.dropbox.com"
+    SFTP_STORAGE_ROOT = "home/Apps/GoHealthy/static"
+    SFTP_STORAGE_INTERACTIVE = False
+    """
+#ROOT_DIR = "www.dropbox.com/home/Apps/GoHealthy/"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = '/static/'
 MEDIA_ROOT = BASE_DIR / 'static/media'
 STATICFILES_DIRS = [BASE_DIR / 'static',]
@@ -183,19 +208,34 @@ MEDIA_URL = '/media/'
 
 
 #For Mail Sending
-ADMINS = [
-    (config("USERNAME"), config("EMAIL_HOST_USER")), #send error to this mail
-]
-MANAGERS = ADMINS
+if not DEBUG:
+    ADMINS = [
+        (config("USERNAME"), config("EMAIL_HOST_USER")), #send error to this mail
+    ]
+    MANAGERS = ADMINS
 
-EMAIL_BACKEND = config("EMAIL_BACKEND")
-EMAIL_HOST = config("EMAIL_HOST")
-EMAIL_USE_TLS = True
-EMAIL_PORT = int(config("EMAIL_PORT"))
-EMAIL_HOST_USER = config("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+    EMAIL_BACKEND = config("EMAIL_BACKEND")
+    EMAIL_HOST = config("EMAIL_HOST")
+    EMAIL_USE_TLS = True
+    EMAIL_PORT = int(config("EMAIL_PORT"))
+    EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+else:
+    ADMINS = [
+        (env("EMAIL_USERNAME"), env("EMAIL_HOST_USER")),  # send error to this mail
+    ]
+    MANAGERS = ADMINS
 
+    EMAIL_BACKEND = env("EMAIL_BACKEND")
+    EMAIL_HOST = env("EMAIL_HOST")
+    EMAIL_USE_TLS = True
+    EMAIL_PORT = int(env("EMAIL_PORT"))
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
-ADMIN_URL = config('ADMIN_URL')
+if not DEBUG:
+    ADMIN_URL = config('ADMIN_URL')
+else:
+    ADMIN_URL = env('ADMIN_URL')
 
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
