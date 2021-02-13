@@ -123,6 +123,8 @@
                 </div>
                 {% if same == "0" %}
                 <h6 style="color:blue">Booking is not refers to this Hospital</h6>
+                {% elif book.Status == "Expired" %}
+                <h6 style="color:red">Booking Has Been Expired!</h6>
                 {% else %}
                 <form method="post" id="statusUpdateForm" action="{% url 'HospitalAdmin' %}">
                     {% csrf_token %}
