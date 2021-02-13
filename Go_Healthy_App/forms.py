@@ -18,7 +18,7 @@ class ContactUsForm(forms.ModelForm):
 class ComplaintForm(forms.ModelForm):
     class Meta:
         model = complaint #Link the complaint Model here
-        fields = ("Name", "Email", "Phone", "Address", "City", 'Subdivision', 'State', 'District', "Pin", "Complain")
+        fields = ("Name", "Email", "Phone", "Address", "City", 'Subdivision', 'State', 'District', "Pin", "Subject", "Complain")
         help_texts = {'Attachment': "If you have any document or proof regarding your complaint, then please attach it.", }
         Name = forms.CharField(max_length=50, widget = forms.TextInput(attrs={'placeholder':'Your Name'})),
 
