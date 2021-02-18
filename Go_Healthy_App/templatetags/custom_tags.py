@@ -1,6 +1,7 @@
 from django import template
 from Go_Healthy_App.models import *
 from datetime import datetime, timedelta
+from django.utils import timezone as zonetime
 
 register = template.Library()
 
