@@ -18,7 +18,7 @@
         <div class="card-body">
             <h5 class="card-title"><b>Registration Successful</b></h5>
             <h6 class="card-subtitle mb-2 text-muted">You have successfully registered as {{username}}</h6>
-            <p class="card-text"> We will verify your data. If we see that all of your given information is correct than
+            <p class="card-text"> We will verify your data. If we see that all of your given information is correct then
                 we will active your account.</p>
         </div>
         <div class="card-footer">
@@ -156,16 +156,20 @@
                         <div class="row">
                             <div class="col-md" align="left">
                                 <label for="password1"><b>Password:</b></label><br>
-                                <input type="password" class="form-control" id="password1" minlength="15"
-                                       onkeyup="passwordmatch()"
+                                <input type="password" class="form-control" id="password1" minlength="8"
+                                       onkeyup="passwordmatch(); PasswordValidation()"
                                        autocomplete
                                        form="registerform"
-                                       name="password1" required style="width:100%"><br><br>
+                                       name="password1" required style="width:100%" aria-describedby="checkpassword">
+                                <div id="checkpassword">
+
+                                </div>
+                                <br><br>
                             </div>
                             <div class="col-md" align="left">
                                 {% if error == "3" %}
                                 <label for="password2"><b>Confirm Password:</b></label><br>
-                                <input type="password" class="form-control is-invalid" id="password2" minlength="15"
+                                <input type="password" class="form-control is-invalid" id="password2" minlength="8"
                                        autocomplete form="registerform"
                                        name="password2"
                                        placeholder="Enter Password Again" aria-describedby="passwordcheck" autofocus
@@ -176,7 +180,7 @@
                                 <br>
                                 {% else %}
                                 <label for="password2"><b>Confirm Password:</b></label><br>
-                                <input type="password" class="form-control" id="password2" minlength="15" autocomplete
+                                <input type="password" disabled class="form-control" id="password2" minlength="8" autocomplete
                                        form="registerform"
                                        name="password2" placeholder="Enter Password Again" onkeyup="passwordmatch()"
                                        required style="width:100%" aria-describedby="passwordcheck">
@@ -189,9 +193,10 @@
                         </div>
                         <small id="passwordHelpBlock" class="form-text text-muted">
                             <p style="color:red">Your password can’t be too similar to your other personal information.
-                                <br>Your password must contain at least 15 characters.
+                                <br>Your password must contain at least 8 characters.
                                 <br>Your password can’t be a commonly used password.
-                                <br>Your password can’t be entirely numeric or alphabetic.</p>
+                                <br>Your password can’t be entirely numeric or alphabetic.
+                                <br>Your password mus contain atleast one uppercase letter, one lowercase letter and one digit.</p>
                         </small>
                         <hr>
                         <div class="row">
@@ -551,9 +556,11 @@ function otpsend()
 function UsernameChack(){
     user = $("#username").val()
     $.ajax({
+    type:'POST',
     url: {% url 'username-validation' %},
     data: {
-        'username':user
+        'username':user,
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
         },
         dataType: 'json',
         success: function(data)
@@ -561,6 +568,36 @@ function UsernameChack(){
         if(data.is_exists === "1")
         {
         document.getElementById('usernamevalidation').innerHTML = "<strong style='color:red'>This Username already taken!</strong>"
+        document.getElementById("sendotp").style.display = "none"
+        document.getElementById("submitId").style.display = "none"
+        document.getElementById('typeOTPid').style.display = "none"
+        document.getElementById('otpsedmessage').style.display = "none"
+        document.getElementById('otpveifymessage').style.display = "none"
+        document.getElementById('loading').style.display = "none"
+        }
+        else if(data.is_space == "1")
+        {
+        document.getElementById('usernamevalidation').innerHTML = "<strong style='color:red'>Space is not allow!</strong>"
+        document.getElementById("sendotp").style.display = "none"
+        document.getElementById("submitId").style.display = "none"
+        document.getElementById('typeOTPid').style.display = "none"
+        document.getElementById('otpsedmessage').style.display = "none"
+        document.getElementById('otpveifymessage').style.display = "none"
+        document.getElementById('loading').style.display = "none"
+        }
+        else if(data.length == "max")
+        {
+        document.getElementById('usernamevalidation').innerHTML = "<strong style='color:red'>Length must be maximum 15!</strong>"
+        document.getElementById("sendotp").style.display = "none"
+        document.getElementById("submitId").style.display = "none"
+        document.getElementById('typeOTPid').style.display = "none"
+        document.getElementById('otpsedmessage').style.display = "none"
+        document.getElementById('otpveifymessage').style.display = "none"
+        document.getElementById('loading').style.display = "none"
+        }
+        else if(data.length == "min")
+        {
+        document.getElementById('usernamevalidation').innerHTML = "<strong style='color:red'>Length must be minimum 5!</strong>"
         document.getElementById("sendotp").style.display = "none"
         document.getElementById("submitId").style.display = "none"
         document.getElementById('typeOTPid').style.display = "none"
@@ -587,9 +624,11 @@ function UsernameChack(){
         document.getElementById('loading').style.display = "none"
         document.getElementById("submitId").style.display = "none"
     $.ajax({
+    type:'POST',
     url: {% url 'email-validation' %},
     data: {
-        'email':email
+        'email':email,
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
         },
         dataType: 'json',
         success: function(data){
@@ -662,6 +701,42 @@ function UsernameChack(){
 
 </script>
 
+
+<script>
+    function PasswordValidation()
+    {
+    	document.getElementById("password2").disabled = true;
+        document.getElementById('checkpassword').innerHTML = "";
+        $.ajax({
+            type:'POST',
+            url: {% url 'CheckPassword' %},
+            data: {
+                password:$('#password1').val(),
+                username:$('#username').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            dataType: 'json',
+            success: function(response)
+	        {
+	            if(response.password == '0')
+	            {
+		            document.getElementById("password2").disabled = false;
+                }
+                else
+                {
+                    document.getElementById('checkpassword').innerHTML = "<b style='color:red'>"+response.password+"</b>";
+                    document.getElementById("sendotp").style.display = "none"
+                    document.getElementById("submitId").style.display = "none"
+                    document.getElementById('typeOTPid').style.display = "none"
+                    document.getElementById('otpsedmessage').style.display = "none"
+                    document.getElementById('otpveifymessage').style.display = "none"
+                    document.getElementById('loading').style.display = "none"
+                }
+            },
+        });
+    }
+</script>
+
 <script type="text/javascript">
 
         function upload_img(input) {
@@ -713,8 +788,10 @@ function UsernameChack(){
 <script>
     function loadAddress()
     {
-    document.getElementById("pinLoading").innerHTML = "<button class='btn btn-primary' type='button' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Fetching Address...</button>"
     pin = $('#pin').val();
+    if(pin.length == 6)
+    {
+      document.getElementById("pinLoading").innerHTML = "<button class='btn btn-primary' type='button' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Fetching Address...</button>"
     var select_option_state = {}
     var select_state = document.getElementById("state");
 
@@ -756,7 +833,7 @@ function UsernameChack(){
         },
     });
     }
-
+}
 </script>
 </html>
 {%endblock%}
