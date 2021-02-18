@@ -643,11 +643,6 @@
         },
     });
     }
-
-
-
-
-
 </script>
 <script>
     function loadSpeciality2()
@@ -688,11 +683,6 @@
         },
     });
     }
-
-
-
-
-
 </script>
 <script>
     function ageCheck1()
@@ -700,9 +690,11 @@
     document.getElementById("dobMessage1").innerHTML = ""
     dob = $('#dob1').val()
     $.ajax({
+    type:'POST',
     url: {% url 'AgeCheck' %},
     data: {
-        'dob':dob
+        'dob':dob,
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
         },
         dataType: 'json',
         success: function(data)
@@ -734,9 +726,11 @@
     document.getElementById("dobMessage2").innerHTML = ""
     dob = $('#dob2').val()
     $.ajax({
+    type:'POST',
     url: {% url 'AgeCheck' %},
     data: {
-        'dob':dob
+        'dob':dob,
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
         },
         dataType: 'json',
         success: function(data)
@@ -874,8 +868,10 @@
 <script>
     function loadAddress()
     {
-    document.getElementById("pinLoading").innerHTML = "<button class='btn btn-primary' type='button' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Fetching Address...</button>"
     pin = $('#pin').val();
+    if(pin.length == 6)
+    {
+     document.getElementById("pinLoading").innerHTML = "<button class='btn btn-primary' type='button' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Fetching Address...</button>"
     var select_option_state = {}
     var select_state = document.getElementById("state");
 
@@ -916,6 +912,7 @@
         document.getElementById("pinLoading").innerHTML = ""
         },
     });
+    }
     }
 </script>
 <script>
@@ -990,10 +987,12 @@
     var email = $('#email').val()
     var contact = $('#contact').val()
     $.ajax({
+    type:'POST',
     url: {% url 'Detect-Change' %},
     data: {
         'email':email,
         'contact':contact,
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
         },
         dataType: 'json',
         success: function(data)
