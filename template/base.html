@@ -22,7 +22,6 @@
 
     <link rel="icon" href="{% static 'media/images/favicon.png' %}" type="image/png">
 
-
 </head>
 
 <body>
@@ -403,7 +402,7 @@
                             <div class="col-md">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon2"><i class="fas fa-key-skeleton"></i></span>
-                                    <input type="password" minlength="15" autocomplete="off" name="new_password1"
+                                    <input type="password" minlength="8" autocomplete="off" name="new_password1"
                                            id="new_password1" required onkeyup="newpasswordmatch()" class="form-control"
                                            placeholder="New Password" aria-label="New Password"
                                            aria-describedby="basic-addon2">
@@ -412,7 +411,7 @@
                             <div class="col-md">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon3"><i class="fas fa-key-skeleton"></i></span>
-                                    <input type="password" minlength="15" autocomplete="off" name="new_password2"
+                                    <input type="password" minlength="8" autocomplete="off" name="new_password2"
                                            id="new_password2" required onkeyup="newpasswordmatch()" class="form-control"
                                            placeholder="Confirm New Password" aria-label="Confirm New Password"
                                            aria-describedby="basic-addon3">
@@ -422,20 +421,21 @@
                         <span id="newpasswordcheck"></span>
                         <p style="color:red">
                             Your password can’t be too similar to your other personal information.
-                            <br>Your password must contain at least 15 characters.
+                            <br>Your password must contain at least 8 characters.
                             <br>Your password can’t be a commonly used password.
                             <br>Your password can’t be entirely numeric or alphabetic.
+                            <br>Your password mus contain atleast one uppercase letter, one lowercase letter and one digit.
                         </p>
-                        <b>After Update your Password you will be log out. You have to log in again with new
+                        <b>After Update your Password you will be log out. You have to log in again with the new
                             password.</b>
                         <br>
-                        <span id="message"></span>
+                        <div align="right"><span id="message"></span></div>
                     </div>
                     <div class="modal-footer bg-light">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
                         </button>
                         <div id="changeSub">
-                            <button type="submit" class="btn bg-success" onclick="PasswordChange()"
+                            <button type="button" class="btn bg-success" onclick="PasswordChange()"
                                     form="changePassword" style="color:white">
                                 Save
                             </button>
@@ -644,23 +644,45 @@ function topFunction()
     $('#changeSub').hide();
     }
     }
-
-
 </script>
+
+<script>
+    function PasswordValidation1()
+    {
+        $.ajax(
+        {
+            type:'POST',
+            url: {% url 'CheckPassword' %},
+            data:{
+                password:$('#new_password1').val(),
+            },
+            dataType: 'json',
+            success:function(response)
+            {
+
+            },
+        });
+    }
+</script>
+
 <script>
     function PasswordChange()
     {
-    $('#changePassword').one('submit',function(e) {
-    e.preventDefault();
+    var old_password = $('#old_password').val();
+    var new_password1 = $('#new_password1').val();
+    var new_password2 = $('#new_password2').val();
+    if(old_password.length >= 8 && new_password1.length >= 8 && new_password2.length >= 8)
+    {
+    document.getElementById('newpasswordcheck').innerHTML = "";
     document.getElementById("message").innerHTML = "<span style='color:green;float:right'>LOADING........</span>"
         $.ajax(
         {
             type:'POST',
             url: {% url 'ChangePassword' %},
             data:{
-                old_password:$('#old_password').val(),
-                new_password1:$('#new_password1').val(),
-                new_password2:$('#new_password2').val(),
+                old_password:old_password,
+                new_password1:new_password1,
+                new_password2:new_password2,
                 csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
                 },
             dataType: 'json',
@@ -697,9 +719,8 @@ function topFunction()
             return false;
             },
         });
-   });
     }
-
+}
 
 </script>
 </body>
