@@ -21,7 +21,7 @@
                     {% csrf_token %}
                         <input type="text" maxlength="15" aria-label="username" autocomplete="off" name="username" form="login" placeholder="&#xf007; Username" class="form-control" style="font-family:Arial, FontAwesome; width:70%" required/>
                     <br>
-                    <input type="password" aria-label="password" autocomplete="off" minlength="15" name="password" form="login" class="form-control" placeholder="&#xf084; Password" style="font-family:Arial, FontAwesome; width:70%" required>
+                    <input type="password" aria-label="password" autocomplete="off" minlength="8" name="password" form="login" class="form-control" placeholder="&#xf084; Password" style="font-family:Arial, FontAwesome; width:70%" required>
                     <div style="color:red"><b>{{message}}</b></div><br>
                     <input type="checkbox" form="login" id="remember1" name="remember">
                     <input type="hidden" name="tonext" value="{{request.GET.next}}" form="login">
