@@ -456,8 +456,10 @@
 <script>
     function loadAddress()
     {
-    document.getElementById("pinLoading").innerHTML = "<button class='btn btn-primary' type='button' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Fetching Address...</button>"
     pin = $('#pin').val();
+    if(pin.length == 6)
+    {
+      document.getElementById("pinLoading").innerHTML = "<button class='btn btn-primary' type='button' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Fetching Address...</button>"
     var select_option_state = {}
     var select_state = document.getElementById("state");
 
@@ -499,7 +501,7 @@
         },
     });
     }
-
+}
 
 
 </script>
@@ -587,10 +589,12 @@
     var email = $('#email').val()
     var contact = $('#contact').val()
     $.ajax({
+    type:'POST',
     url: {% url 'Detect-Change' %},
     data: {
         'email':email,
         'contact':contact,
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
         },
         dataType: 'json',
         success: function(data)
