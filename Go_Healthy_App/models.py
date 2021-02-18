@@ -21,6 +21,7 @@ class Users(AbstractUser):
     pass
     User_Type = models.CharField(max_length=20, choices=user_type_ch)
     is_verified = models.BooleanField(default=False)
+    is_book_allow = models.BooleanField(default=True)
     is_online = models.BooleanField(default=False)
     last_seen = models.DateTimeField(default=django.utils.timezone.now)
 
