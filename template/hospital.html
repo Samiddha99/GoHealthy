@@ -79,9 +79,9 @@
                 After confirm booking you will get a unique Booking ID. Carry this Booking ID with you for patient
                 admission.
                 <br>After a successful booking, you can't make any more booking before you reached to the hospital.
-                <br>If you don't go to the Hospital within 3 hours after confirm booking, then automatically your booking
+                <br>If you don't go to the Hospital with the patient within 3 hours after confirm booking, then automatically your booking
                 will be expired.
-                <br>In a day if you do more than one bookings, but you do not reach to the hospital in case of each bookings then your account will be deactivate.
+                <br>In a day if you do more than one bookings, but you do not reach to the hospital with the patient in case of each bookings then you will no longer be able to do any more Bed Booking.
                 <br>Please, Do not book bed if you don't need it!!
             </p>
         </div>
@@ -223,7 +223,7 @@
 
         <!--Create Cards-->
         <center>
-
+            <input type="hidden" id="islogin" value="{{user.username}}">
             {%for i in Hos%}
             {% if i.Username.is_verified %}
             <div class="row ml-3 mr-3" align="center" style="margin-bottom:30px">
@@ -301,7 +301,7 @@
                                             <h6 style="color:black;font-size:17px">Sub Division: {{i.Subdivision}},</h6>
                                             <h6 style="color:black;font-size:17px">District: {{i.District}},</h6>
                                             <h6 style="color:black;font-size:17px">Pin: {{i.Pin}}</h6>
-                                            <h6 style="color:black;font-size:17px">Address:<br>{{i.Address}}.</h6>
+                                            <h6 style="color:black;font-size:17px;white-space: pre-wrap">Address:<br>{{i.Address}}.</h6>
                                         </div>
                                 </div>
                                 <h6 class="text-muted">Last Update: {{i.Last_Update | IST}}</h6>
@@ -361,6 +361,9 @@
 
 <script>
 function timer()
+{
+var log = $('#islogin').val();
+if(log.length != 0)
 {
     $.ajax({
             url:{% url 'NextTime' %},
@@ -426,6 +429,7 @@ function timer()
             },
     });
 }
+}
 </script>
 <script>
     function resetVal()
@@ -472,6 +476,8 @@ function timer()
     function loadAddress()
     {
      pin = $('#Pin').val();
+     if(pin.length == 6)
+     {
      var district = "";
      var sub = "";
      var city = "";
@@ -494,7 +500,7 @@ function timer()
         },
     });
     }
-
+}
 </script>
 </html>
 {%endblock%}
