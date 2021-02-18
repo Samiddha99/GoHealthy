@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-DEBUG = False
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+DEBUG = True
+#CSRF_COOKIE_SECURE = True
+#SESSION_COOKIE_SECURE = True
 if not DEBUG:
     CSRF_TRUSTED_ORIGINS = ['subdomain.example.com']
 
@@ -39,7 +39,7 @@ else:
     SECRET_KEY = env("SECRET_KEY")
 
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -186,10 +186,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = '/static/'
+MEDIA_ROOT = BASE_DIR / 'static/media'
+STATICFILES_DIRS = [BASE_DIR / 'static',]
+MEDIA_URL = '/media/'
+
 if not DEBUG:
-    DROPBOX_OAUTH2_TOKEN = config('DROPBOX_OAUTH2_TOKEN')
-    #STATICFILES_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-    #DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+    DROPBOX_OAUTH2_TOKEN = env('DROPBOX_OAUTH2_TOKEN')
+    STATICFILES_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+    DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
     DROPBOX_ROOT_FOLDER = '/static/'
     #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -199,11 +205,6 @@ if not DEBUG:
     SFTP_STORAGE_INTERACTIVE = False
     """
 #ROOT_DIR = "www.dropbox.com/home/Apps/GoHealthy/"
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATIC_URL = '/static/'
-MEDIA_ROOT = BASE_DIR / 'static/media'
-STATICFILES_DIRS = [BASE_DIR / 'static',]
-MEDIA_URL = '/media/'
 
 
 
