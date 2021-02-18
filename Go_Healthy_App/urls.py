@@ -55,6 +55,7 @@ urlpatterns = [
     path('login-direct/', views.Login, name='Login'),
     path('login/', views.LoginMain, name='LoginMain'),
     path('change-password/', views.PasswordChange, name='ChangePassword'),
+    path('check-password/', views.Passwordcheck, name='CheckPassword'),
     path('reset-password/', views.ResetPasswordLink, name='ResetPassword'),
     path('reset-password/<code>', views.ResetPassword, name='ResetPasswordDone'),
     path('boo-otp-verify/', views.OTPVerifyBook, name='BookOTPVerify'),
