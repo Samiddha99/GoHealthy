@@ -186,7 +186,7 @@
                             <br>Sub Division: {{i.Subdivision}},
                             <br>District: {{i.District}},
                             <br>Pin: {{i.Pin}}</h6>
-                        <p class="card-text" style="color:white">Address: {{i.Address}}.</p>
+                        <p class="card-text" style="color:white;white-space: pre-wrap">Address: {{i.Address}}.</p>
                         <div class="row">
                             <div class="col">
                         <a href="tel: {{i.Contact}}" class="btn btn-success"
@@ -256,6 +256,8 @@
     function loadAddress()
     {
      pin = $('#Pin').val();
+     if(pin.length == 6)
+     {
      var district = "";
      var sub = "";
      var city = "";
@@ -277,6 +279,7 @@
         document.getElementById('city_options').innerHTML = city;
         },
     });
+    }
     }
 </script>
 </html>
