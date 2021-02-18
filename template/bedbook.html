@@ -10,6 +10,25 @@
 <body style="background-image: url('{% static 'media/images/water.jpg' %}');
              background-size: 100% 100%;background-repeat:no-repeat;background-attachment:fixed;">
 
+{% if nobook == '1' %}
+    <div class="card" style="width: 70%;">
+        <div class="card-header">
+            <strong><h4>Bed Booking is not allow</h4></strong>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title"><b>You can't do Bed Booking in any hospital from this web portal</b></h5>
+            <p class="card-text">As we see that you had done unnecessary Hospital Bed Bookings. It is the <span style="color:red">violation the Terms & Condition.</span>
+            <br>So we stop the Bed Booking feature for this account.</p>
+            <br>We have already informed you about this through email.
+        </div>
+        <div class="card-footer">
+            <button type="button" onclick="location.href='{% url 'project-Home' %}'" class="btn btn-primary">Go Back to
+                Home
+            </button>
+        </div>
+    </div>
+{% endif %}
+
 <div align="center">
     {% if noHospital %}
     <img src="{% static 'media/images/logo.png'%}" width="500" height="100"><br><br>
@@ -322,11 +341,11 @@
                 <hr style="background-color:red">
                 <h6 align="center">TERMS & CONDITIONS</h6>
                 <ul>
-                    <li> hereby declare that all the above mentioned information is true and correct.</li>
+                    <li>I hereby declare that all the above mentioned information is true and correct.</li>
                     <li>I booking bed for a patient, not for unnecessary reason.</li>
                     <li>After a successful booking, I can't make any more booking before reached to the hospital.</li>
-                    <li>If I don't go to the Hospital within 3 hours after confirm booking, then automatically my booking will be expired.</li>
-                    <li>In a day if I do more than one bookings, but I do not reach to the hospital in case of each bookings then my account will be deactivate.</li>
+                    <li>If I don't go to the Hospital with the patient within 3 hours after confirm booking, then automatically my booking will be expired.</li>
+                    <li>In a day if I do more than one bookings, but I do not reach to the hospital with the patient in case of each bookings then you will no longer be able to do any more Bed Booking.</li>
                 </ul>
                 <div class="form-inline">
                     <input type="checkbox" name="bookdec" form='bookbed' id="bookdec" required>
@@ -387,6 +406,8 @@
     function loadAddress()
     {
     pin = $('#pin').val();
+    if(pin.length == 6)
+    {
     var select_option_state = {}
     var select_state = document.getElementById("state");
 
@@ -422,7 +443,7 @@
         },
     });
     }
-
+}
 
 </script>
 
