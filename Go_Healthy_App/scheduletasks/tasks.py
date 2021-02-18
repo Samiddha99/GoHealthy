@@ -13,6 +13,7 @@ from background_task import background
 
 def deleteOTP():
     OTP.objects.filter(Expire_Time__lte=timezone.now()).delete()
+    return None
 
 
 
@@ -21,12 +22,14 @@ def expireBooking():
     Bed_Book.objects.filter(Expire_Time__lte = timezone.now(), Status = 'Not Admit Still Now').update(Status='Expired')
     for i in book:
         BedNo.objects.filter(Booking_Id=i.Booking_ID).update(Book_by = None, vailability = 'Available', Booking_Id = None)
+    return None
 
 
 
 def deleteExpireBooking():
     delete_when = timezone.now() - timedelta(hours=100)
     Bed_Book.objects.filter(Expire_Time__lte=delete_when, Status='Expired').delete()
+    return None
 
 
 
@@ -35,6 +38,7 @@ def multipleBookingWarning():
     count = Bed_Book.objects.filter(Status='Expired').count()
     j = 0
     userid = []
+    books = ''
     if count > 0:
         for i in Booking:
             if j == 0 or userid[j-1] != i.user:
@@ -42,10 +46,10 @@ def multipleBookingWarning():
                 j += 1
         p = None
         for i in range(0, j):
-            if Bed_Book.objects.filter(Status='Expired', user=userid[i]).count() >= 2 and Users.objects.get(username=userid[i].username).is_active == True:
+            if Bed_Book.objects.filter(Status='Expired', user=userid[i]).count() >= 2 and Users.objects.get(username=userid[i].username).is_book_allow == False:
                 theUser = Users.objects.get(username=userid[i].username)
                 theUser.session_set.all().delete()
-                theUser.is_active = False
+                theUser.is_book_allow = False
                 theUser.save()
                 userType = theUser.User_Type
                 if userType == 'Normal':
@@ -55,30 +59,26 @@ def multipleBookingWarning():
                 elif userType == 'Blood Donor':
                     p = Blood_Donar.objects.get(Username=userid[i])
 
-                subject = 'unnecessary Booking Happened'
+                file = open('Multiple_Booking_Alert.html')
+                mes = file.read()
+                file.close()
+                mes = mes.replace('myname', p.Name).replace('mybooks', books)
+                subject = 'Unnecessary Booking Happened'
                 body = ''
-                htmlMessage = "<html><body><h1 style='color:yellow'>Go Healthy</h1><h4 style='color:red'>You have violenced T&C</h4><h5>You have booked bed multiple times, but didn't go to the hospital.<br>We deactivated your account.</h5></body></html>"
+                htmlMessage = mes
                 sender = settings.EMAIL_HOST_USER
                 receiver = [theUser.email, ]
 
-                send_mail(subject=subject, message=body, from_email=sender, recipient_list=receiver,
+                send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
                           fail_silently=False,
                           html_message=htmlMessage)
-
-                subject = 'unnecessary Booking Happened'
-                body = ''
-                htmlMessage = "<html><body><h1 style='color:yellow'>Go Healthy</h1><h5>A user book bed multiple times but don't go to the hospital.<br>Username: "+str(theUser.username)+"<br>Name: "+str(p.Name)+"<br>User Type: "+str(theUser.User_Type)+"<br>Email: "+str(theUser.email)+"<br>Contact: "+str(p.Contact)+"</h5></body></html>"
-                sender = settings.EMAIL_HOST_USER
-                receiver = [settings.EMAIL_HOST_USER, ]
-
-                send_mail(subject=subject, message=body, from_email=sender, recipient_list=receiver,
-                          fail_silently=False,
-                          html_message=htmlMessage)
+    return None
 
 
 
 def deleteResetLink():
     ResetPasswordCode.objects.filter(Expire_Time__lte=timezone.now()).delete()
+    return None
 
 
 
@@ -104,11 +104,13 @@ def bookExpireAlert():
             'Cache-Control': "no-cache",
         }
         requests.request("POST", url, data=payload, headers=headers)
+    return None
 
 
 def deleteRealese():
     when_delete = timezone.now() - timedelta(days=60)
     Bed_Book.objects.filter(Status="Released", Admit_Time__lte = when_delete).delete()
+    return None
 
 
 
@@ -116,6 +118,7 @@ def deleteRealese():
 def deleteNonVerifyUser():
     del_time = timezone.now() - timedelta(days=30)
     Users.objects.filter(is_verified=False, date_joined__lte=del_time).delete()
+    return None
 
 
 
@@ -132,7 +135,9 @@ def changeBedNo():
                 b.Book_by = None
                 b.Booking_Id = None
                 b.save()
+    return None
 
 def userOnline():
     check_time = timezone.now() + timedelta(minutes=1)
     Users.objects.filter(is_online=True, last_seen__lt=check_time).update(is_online=False)
+    return None
