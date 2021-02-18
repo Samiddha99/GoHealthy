@@ -50,7 +50,7 @@ class ContactUsAdmin(admin.ModelAdmin):
 admin.site.register(ContactUs, ContactUsAdmin)
 
 class ComplaintAdmin(admin.ModelAdmin):
-    list_display = ['Name', 'Email', 'Phone', 'Address', 'State', 'District', 'City', 'Pin', 'Attachment', 'Complain', 'Complaint_Time']
+    list_display = ['Complain_Id', 'Name', 'Email', 'Phone', 'Address', 'State', 'District', 'City', 'Pin', 'Attachment', 'Subject', 'Complain', 'Complaint_Time']
 admin.site.register(complaint, ComplaintAdmin)
 
 class BedBookAdmin(admin.ModelAdmin):
