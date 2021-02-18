@@ -11,7 +11,7 @@ import requests
 from dateutil import tz
 from django.core import exceptions
 from django.contrib.auth.hashers import check_password
-from django.utils import timezone
+from django.utils import timezone as zonetime
 from itertools import chain
 from operator import attrgetter
 import base64
@@ -21,7 +21,7 @@ from functools import reduce
 import operator
 import json, urllib, urllib3
 from django.core.files.uploadedfile import SimpleUploadedFile, InMemoryUploadedFile
-from datetime import datetime, timedelta
+
 from django.db.models.query import QuerySet
 from django.contrib.auth import update_session_auth_hash
 import django.contrib.auth.password_validation
@@ -620,7 +620,7 @@ def SendChat(request):
     chat = request.POST.get('chat')
     receiver = request.POST.get('receiver')
     receiver = Users.objects.get(username=receiver)
-    now = timezone.now() + timedelta(hours=5.50)
+    now = zonetime.now() + timedelta(hours=5.50)
     now = now.strftime("%b, %d, %Y, %I:%M %p")
     c = Chat.objects.create(From=me, To=receiver, Message=chat, Time=now, Delivered=False)
     c.save()
@@ -661,7 +661,7 @@ def FetchChat(request):
             'count':count,
         }
         chats.update(Delivered=True)
-        Users.objects.filter(username=request.user.username).update(is_online=True, last_seen=timezone.now())
+        Users.objects.filter(username=request.user.username).update(is_online=True, last_seen=zonetime.now())
         return JsonResponse(data, safe=False)
     except:
         data = {
@@ -1014,6 +1014,8 @@ def OTPSendEdit(request):
     person = None
     if type == 'Normal':
         person = NormalUser.objects.get(Username=request.user)
+    elif type == 'Hospital':
+        person = Hospital.objects.get(Username=request.user)
     elif type == 'Doctor':
         person = Doctor.objects.get(Username=request.user)
     elif type == 'Blood Donor':
@@ -1028,7 +1030,7 @@ def OTPSendEdit(request):
         if (email is None or contact is None) or (email == '' or contact == ''):
             response_data['error'] = "1"
         else:
-            cur_time = timezone.now()
+            cur_time = zonetime.now()
             expire = cur_time + timedelta(minutes=10.0)
             OTP.objects.filter(Email=email).delete()
             OTP.objects.filter(Mobile=contact).delete()
@@ -1037,13 +1039,17 @@ def OTPSendEdit(request):
                 emailOTP = ''.join([secrets.choice(e) for i in range(6)])
                 OTP(Email=email, EmailOTP=emailOTP, Expire_Time=expire,
                     Is_Verified=False).save()
-                subject = 'OTP For Email Change'
+                file = open('Email_Update_otp.html')
+                mes = file.read()
+                file.close()
+                mes = mes.replace("myotp", emailOTP)
+                subject = 'OTP For Email Update'
                 body = ''
-                htmlMessage = "<html><body><h1 style='color:yellow'>Go Healthy</h1><h4 style='color:blue'>Use this OTP to verify your New Email: " + emailOTP + " </h6><p>OTP will be expired within 10 minutes.</p><h5 style='color:red'>If you didn't register then immediately Contact Us.</h5></body></html>"
+                htmlMessage = mes
                 sender = settings.EMAIL_HOST_USER
                 receiver = [email, ]
 
-                send_mail(subject=subject, message=body, from_email=sender, recipient_list=receiver,
+                send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
                           fail_silently=False,
                           html_message=htmlMessage)
                 response_data['error'] = "0"
@@ -1082,8 +1088,8 @@ def OTPSendEdit(request):
 
 @login_required(login_url="/login/")
 def DetectChange(request):
-    contact = request.GET.get('contact')
-    email = request.GET.get('email')
+    contact = request.POST.get('contact')
+    email = request.POST.get('email')
     type = request.user.User_Type
     data = {}
     data['change'] = "no"
@@ -1143,14 +1149,44 @@ def ContactUpdate(request):
             elif type == 'Blood Donor & Doctor':
                 person = Doctor.objects.get(Username=request.user)
                 person2 = Blood_Donar.objects.get(Username=request.user)
-            person.Contact = contact
-            person.save()
-            if person2 is not None:
+            if contact != person.Contact:
+                oldcontact = person.Contact
+                person.Contact = contact
+                person.save()
+                file = open('Contact_Update_Success.html')
+                mes = file.read()
+                file.close()
+                mes = mes.replace("oldcontact", oldcontact).replace("newcontact", contact)
+                subject = 'Contact Update Success'
+                body = ''
+                htmlMessage = mes
+                sender = settings.EMAIL_HOST_USER
+                receiver = [request.user.email, ]
+
+                send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
+                          fail_silently=False,
+                          html_message=htmlMessage)
+            if person2 is not None and contact != person2.Contact:
                 person2.Contact = contact
                 person2.save()
-            user = Users.objects.get(username=request.user.username)
-            user.email = email
-            user.save()
+            if email != request.user.email:
+                oldemail = request.user.email
+                user = Users.objects.get(username=request.user.username)
+                user.email = email
+                user.save()
+                file = open('Email_Update_Success.html')
+                mes = file.read()
+                file.close()
+                mes = mes.replace("oldemail", oldemail).replace("newemail", email)
+                subject = 'Email Update Success'
+                body = ''
+                htmlMessage = mes
+                sender = settings.EMAIL_HOST_USER
+                receiver = [request.user.email, ]
+
+                send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
+                          fail_silently=False,
+                          html_message=htmlMessage)
             data['error'] = "0"
         else:
             data['error'] = "1"
@@ -1816,7 +1852,7 @@ def HospitalAdmin(request):
                     book.Bed_No = b
                     book.Disease = disease
                     book.Status = 'Admited'
-                    book.Admit_Time = timezone.now()
+                    book.Admit_Time = zonetime.now()
                     book.save()
 
                     return HttpResponseRedirect(reverse(BedBookView, args=(bookid,)))
@@ -1927,7 +1963,7 @@ def UserNextBook(request):
         if Bed_Book.objects.filter(user=request.user, Status='Not Admit Still Now').exists():
             userbook = Bed_Book.objects.get(user=request.user,Status='Not Admit Still Now')
             nexttime = userbook.Expire_Time
-            nexttime = nexttime.astimezone(timezone.utc)
+            nexttime = nexttime.astimezone(zonetime.utc)
             if timeZoneOffset >= 0:
                 nexttime = nexttime - timedelta(minutes=timeZoneOffset)
             elif timeZoneOffset < 0:
@@ -1973,7 +2009,11 @@ def MyBookings(request):
 
 @login_required(login_url="/login/")
 def BedBook(request, hospitalID):
-
+    if not request.user.is_book_allow:
+        context = {
+            "nobook": "1",
+        }
+        return render(request, 'bedbook.html', context)
     if request.user.User_Type != "Hospital" and request.user.User_Type != "Admin" and Bed_Book.objects.filter(Q(user=request.user) & Q(Status='Not Admit Still Now')).exists():
         return redirect(Hospitals)
     if Hospital.objects.filter(Hospital_Id=hospitalID).exists() == False:
@@ -2074,7 +2114,7 @@ def BedBook(request, hospitalID):
             MobOtp = OTP.objects.get(Mobile=mobile)
             if MobOtp.Is_Verified == True:
                 refId = None
-                booktime = timezone.now()
+                booktime = zonetime.now()
                 expire = booktime + timedelta(hours=3.0)
                 while(1):
                     hosId = str(hospitalID)
@@ -2173,6 +2213,21 @@ def BedBook(request, hospitalID):
                     'Cache-Control': "no-cache",
                 }
                 requests.request("POST", url, data=payload, headers=headers)
+
+                file = open('New_Book_Mail.html')
+                mes = file.read()
+                file.close()
+                mes = mes.replace("myhospital", hospital).replace("mybookid", refId)
+                subject = 'Bed Book Confirmed'
+                body = ''
+                htmlMessage = mes
+                sender = settings.EMAIL_HOST_USER
+                receiver = [request.user.email, ]
+
+                send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
+                          fail_silently=False,
+                          html_message=htmlMessage)
+
                 return HttpResponseRedirect(reverse(BedBookView, args=(refId,)))
 
             else:
@@ -2277,59 +2332,60 @@ def LoadAddress(request):
     status = str(data_list[1])
     status = status.split(":")
     status = status[1]
-    status = status.replace("'", '')
+    status = str(status.replace("'", ''))
 
-    district = str(data_list[7])
-    district = district.split(":")
-    district = district[1]
-    district = district.replace("'", '')
-    district = district[1:]
+    if len(status) == 8:
+        district = str(data_list[7])
+        district = district.split(":")
+        district = district[1]
+        district = district.replace("'", '')
+        district = district[1:]
 
-    name = str(data_list[2])
-    name = name.split(":")
-    name = name[2]
-    name = name.replace("'", '')
-    name = name[1:]
+        name = str(data_list[2])
+        name = name.split(":")
+        name = name[2]
+        name = name.replace("'", '')
+        name = name[1:]
 
-    block = str(data_list[10])
-    block = block.split(":")
-    block = block[1]
-    block = block.replace("'", '')
-    block = block[1:]
+        block = str(data_list[10])
+        block = block.split(":")
+        block = block[1]
+        block = block.replace("'", '')
+        block = block[1:]
 
-    division = str(data_list[8])
-    division = division.split(":")
-    division = division[1]
-    division = division.replace("'", '')
-    division = division[1:]
+        division = str(data_list[8])
+        division = division.split(":")
+        division = division[1]
+        division = division.replace("'", '')
+        division = division[1:]
 
-    state = str(data_list[11])
-    state = state.split(":")
-    state = state[1]
-    state = state.replace("'", '')
-    state = state[1:]
+        state = str(data_list[11])
+        state = state.split(":")
+        state = state[1]
+        state = state.replace("'", '')
+        state = state[1:]
 
-    districts = getDistrict(state)
-    districts.insert(0, district)
+        districts = getDistrict(state)
+        districts.insert(0, district)
 
-    state_arr = state_list
-    state_arr.insert(0, state)
+        state_arr = state_list
+        state_arr.insert(0, state)
 
-    subdivision = 'Na'
-    if block == "NA":
-        subdivision = name
-    else:
-        subdivision = block
+        subdivision = 'Na'
+        if block == "NA":
+            subdivision = name
+        else:
+            subdivision = block
 
 
-    response_data['state'] = state
-    response_data['states'] = state_arr
-    response_data['city'] = name
-    response_data['division'] = subdivision
-    response_data['district'] = district
-    response_data['districts'] = districts
-    response_data['statecount'] = len(state_arr)
-    response_data['districtcount'] = len(districts)
+        response_data['state'] = state
+        response_data['states'] = state_arr
+        response_data['city'] = name
+        response_data['division'] = subdivision
+        response_data['district'] = district
+        response_data['districts'] = districts
+        response_data['statecount'] = len(state_arr)
+        response_data['districtcount'] = len(districts)
     return JsonResponse(response_data)
 
 def LoadDistrict(request):
@@ -2359,7 +2415,7 @@ def NewBook(request):
         room = request.POST.get('room')
         Bed_Id = request.POST.get('Bed_Id')
         hospital = Hospital.objects.get(Username=request.user)
-        booktime = timezone.now()
+        booktime = zonetime.now()
         expire = booktime + timedelta(hours=12.0)
         bed = BedNo.objects.get(id=Bed_Id)
 
@@ -2412,17 +2468,22 @@ def OTPSendReg(request):
             OTP.objects.filter(Email=email).delete()
             OTP.objects.filter(Mobile=contact).delete()
 
-            cur_time = timezone.now()
+            cur_time = zonetime.now()
             expire = cur_time + timedelta(minutes=10.0)
             OTP(Email=email, Mobile=contact, EmailOTP=emailOTP, MobileOTP=mobileOTP, Expire_Time=expire, Is_Verified=False).save()
 
-            subject = 'OTP For New Registration'
+            file = open('Registration_otp.html')
+            mes = file.read()
+            file.close()
+            mes = mes.replace("myotp", emailOTP)
+            subject = 'OTP For Registration'
             body = ''
-            htmlMessage = "<html><body><h1 style='color:yellow'>Go Healthy</h1><h3 style='color:green'>Thanks For Using Go-Healthy</h3><h4 style='color:blue'>Use this OTP to verify your Email: " + emailOTP + " to complete registration.</h4><h6>Never share this OTP to anybody.</h6><p>OTP will be expired within 10 minutes.</p><h5 style='color:red'>If you didn't register then immediately Contact Us.</h5></body></html>"
+            htmlMessage = mes
             sender = settings.EMAIL_HOST_USER
             receiver = [email, ]
 
-            send_mail(subject=subject, message=body, from_email=sender, recipient_list=receiver, fail_silently=False,
+            send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
+                      fail_silently=False,
                       html_message=htmlMessage)
 
             url = "https://www.fast2sms.com/dev/bulk"
@@ -2488,7 +2549,7 @@ def OTPSendBook(request):
             mobileOTP = ''.join([secrets.choice(m) for i in range(6)])
             OTP.objects.filter(Mobile=mobile).delete()
 
-            cur_time = timezone.now()
+            cur_time = zonetime.now()
             expire = cur_time + timedelta(minutes=10.0)
 
             OTP(Mobile=mobile, MobileOTP=mobileOTP, Expire_Time=expire, Is_Verified=False).save()
@@ -2532,18 +2593,29 @@ def OTPVerifyBook(request):
     return JsonResponse(response_data)
 
 def UsernameValid(request):
-    username = request.GET.get('username')
+    username = request.POST.get('username')
+    exists = None
+    space = None
+    length = None
     if Users.objects.filter(username=username).exists():
         exists = "1"
+    elif ' ' in username:
+        space = "1"
+    elif len(username) > 15:
+        length = "max"
+    elif len(username) < 5:
+        length = "min"
     else:
         exists = "2"
     data = {
         'is_exists':exists,
+        'is_space':space,
+        'length':length,
     }
     return JsonResponse(data)
 
 def EmailValid(request):
-    email = request.GET.get('email')
+    email = request.POST.get('email')
     if Users.objects.filter(email=email).exists():
         exists = "1"
     else:
@@ -2554,7 +2626,7 @@ def EmailValid(request):
     return JsonResponse(data)
 
 def AgeCheck(request):
-    dob = request.GET.get('dob')
+    dob = request.POST.get('dob')
     d = dob.split("-")
     today = date.today()
     year = int(d[0])
@@ -2573,19 +2645,52 @@ def AgeCheck(request):
     return JsonResponse(data)
 
 def Passwordcheck(request):
-    password1 = request.GET.get('password1')
-    password2 = request.GET.get('password2')
-    match = '5'
-    if (password1 == '' and password2 == '') or (password1 is None and password2 is None):
-        match = '5'
-    elif (password1 == password2) and (password1 != '' or password2 != '' or password1 is not None or password2 is not None):
-        match = '1'
-    elif (password1 != password2) and (password1 != '' or password2 != '' or password1 is not None or password2 is not None):
-        match = '0'
-    data = {
-        'match': match,
-    }
-    return JsonResponse(data)
+    password = str(request.POST.get('password'))
+    Username_with = request.POST.get('username')
+    validation_errors = dict()
+    validation_errors['password'] = "0"
+    exc = "0"
+    mes = ''
+    mes1 = ''
+    mes2 = ''
+    mes3 = ''
+    mes4 = ''
+    hasNumber = False
+    if Username_with in password:
+        mes = "Password must not be similar to Username<br>"
+    if password.isalpha():
+        mes1 = "This password is entirely alphabetic<br>"
+    hasNumber = any(char.isdigit() for char in password)
+    if not hasNumber and (' ' in password):
+        mes1 = "This password is entirely alphabetic<br>"
+    if not any(char.isupper() for char in password):
+        mes2 = "Password must contain atleast one uppercase letter<br>"
+    if not any(char.islower() for char in password):
+        mes3 = "Password must contain atleast one lowercase letter<br>"
+    if not any(char.isdigit() for char in password):
+        mes4 = "Password must contain atleast one digit<br>"
+    try:
+        # validate the password and catch the exception
+        validators.validate_password(password=password, user=Username_with)
+
+    # the exception raised here is different than serializers.ValidationError
+    except exceptions.ValidationError as e:
+        exc = "1"
+        message = str(e.messages)
+        message += mes
+        message += mes1
+        message += mes2
+        message += mes3
+        message += mes4
+        message = message.replace('.','<br>')
+        message = message.replace('[', '')
+        message = message.replace(']', '')
+        message = message.replace("'", '')
+        message = message.replace(",", '')
+        validation_errors['password'] = message
+    if exc == "0" and mes != '' or mes1 != '' or mes2 != '' or mes3 != '' or mes4 != '':
+        validation_errors['password'] = mes+mes1+mes2+mes3+mes4
+    return JsonResponse(validation_errors)
 
 @login_required(login_url="/login/")
 def PasswordChange(request):
@@ -2596,14 +2701,48 @@ def PasswordChange(request):
     matchPassword = check_password(old_password, request.user.password)
     error = "0"
     validation_errors = dict()
-    validation_errors['password'] = None
+    validation_errors['password'] = "0"
+    exc = "0"
+    mes = ''
+    mes1 = ''
+    mes2 = ''
+    mes3 = ''
+    mes4 = ''
+    hasNumber = False
+    if request.user.username in new_password1:
+        mes = "Password must not be similar to Username<br>"
+    if new_password1.isalpha():
+        mes1 = "This password is entirely alphabetic<br>"
+    hasNumber = any(char.isdigit() for char in new_password1)
+    if not hasNumber and (' ' in new_password1):
+        mes1 = "This password is entirely alphabetic<br>"
+    if not any(char.isupper() for char in new_password1):
+        mes2 = "Password must contain atleast one uppercase letter<br>"
+    if not any(char.islower() for char in new_password1):
+        mes3 = "Password must contain atleast one lowercase letter<br>"
+    if not any(char.isdigit() for char in new_password1):
+        mes4 = "Password must contain atleast one digit<br>"
     try:
         # validate the password and catch the exception
-        validators.validate_password(password=new_password1, user=request.user)
+        validators.validate_password(password=new_password1, user=request.user.username)
 
     # the exception raised here is different than serializers.ValidationError
     except exceptions.ValidationError as e:
-        validation_errors['password'] = list(e.messages)
+        exc = "1"
+        message = str(e.messages)
+        message += mes
+        message += mes1
+        message += mes2
+        message += mes3
+        message += mes4
+        message = message.replace('.', '<br>')
+        message = message.replace('[', '')
+        message = message.replace(']', '')
+        message = message.replace("'", '')
+        message = message.replace(",", '')
+        validation_errors['password'] = message
+    if exc == "0" and mes != '' or mes1 != '' or mes2 != '' or mes3 != '' or mes4 != '':
+        validation_errors['password'] = mes + mes1 + mes2 + mes3 + mes4
 
     if matchPassword == False:
         error = "1"
@@ -2611,7 +2750,7 @@ def PasswordChange(request):
         error = "2"
     elif new_password1 == old_password:
         error = "3"
-    elif validation_errors['password'] is not None:
+    elif validation_errors['password'] != '0':
         error = "4"
     else:
         data = {
@@ -2623,12 +2762,17 @@ def PasswordChange(request):
         if form.is_valid():
             new = form.save()
             update_session_auth_hash(request, new)
-            subject = 'Password Changed'
+            file = open('Password_Changed.html')
+            mes = file.read()
+            file.close()
+            subject = 'Password Has Been Changed'
             body = ''
-            htmlMessage = "<html><body><h1 style='color:yellow'>Go Healthy</h1><h4 style='color:blue'>Your Passeord has been changed.</h4><h5 style='color:red'>If you didn't register then immediately Contact Us.</h5></body></html>"
+            htmlMessage = mes
             sender = settings.EMAIL_HOST_USER
             receiver = [request.user.email, ]
-            send_mail(subject=subject, message=body, from_email=sender, recipient_list=receiver, fail_silently=False,
+
+            send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
+                      fail_silently=False,
                       html_message=htmlMessage)
 
             error = "0"
@@ -2676,12 +2820,16 @@ def ResetPassword(request, code):
                     user.set_password(password1)
                     user.save()
                     ResetPasswordCode.objects.filter(Code=code).delete()
-                    subject = 'Password Reset'
+                    file = open('Multiple_Booking_Alert.html')
+                    mes = file.read()
+                    file.close()
+                    subject = 'Reset Password Success'
                     body = ''
-                    htmlMessage = "<html><body><h1 style='color:yellow'>Go Healthy</h1><h4 style='color:blue'>Your Passeord has been reset.</h4><h5 style='color:red'>If you didn't register then immediately Contact Us.</h5></body></html>"
+                    htmlMessage = mes
                     sender = settings.EMAIL_HOST_USER
                     receiver = [user.email, ]
-                    send_mail(subject=subject, message=body, from_email=sender, recipient_list=receiver,
+
+                    send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
                               fail_silently=False,
                               html_message=htmlMessage)
                     Session.objects.filter(session_key=request.session.session_key).delete()
@@ -2715,17 +2863,21 @@ def ResetPasswordLink(request):
                 code = str(code)
                 ResetPasswordCode.objects.filter(Username=user).delete()
 
-                cur_time = timezone.now()
+                cur_time = zonetime.now()
                 expire = cur_time + timedelta(minutes=10.0)
                 link = 'https://gohealthy.pythonanywhere.com/reset-password/'+code
                 ResetPasswordCode(Username=user, Code=code, Expire_Time=expire).save()
-                subject = 'Reset Password'
+                file = open('Multiple_Booking_Alert.html')
+                mes = file.read()
+                file.close()
+                mes = mes.replace('mycode', code)
+                subject = 'Reset Password Link'
                 body = ''
-                htmlMessage = "<html><body><h1 style='color:yellow'>Go Healthy</h1><h2 style='color:green'>RESET YOUR PASSWORD</h2><br><h3>To Reset Your Password <a href='"+link+"'>Click Here</a></h3><h4 style='color:blue'>You can copy this link in your browser and Go to the Link<br>" + link + "</h4><h6>Never share this link to anybody.<br>It is an auto-generated link; you can use this link once.</h6><p>Link will be expired within 10 minutes.</p><h5 style='color:red'>If you didn't do that then immediately Contact Us.</h5></body></html>"
+                htmlMessage = mes
                 sender = settings.EMAIL_HOST_USER
                 receiver = [email, ]
 
-                send_mail(subject=subject, message=body, from_email=sender, recipient_list=receiver,
+                send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
                           fail_silently=False,
                           html_message=htmlMessage)
                 error = '0'
@@ -2826,13 +2978,17 @@ def RegisterDonor(request):
                         ID_Type=idType, ID_Number=idNumber, Address=address, State=state, City=city,
                         Subdivision=subdivision, District=district, Pin=pin, Image=pic).save()
 
-            subject = 'Registration Success'
+            file = open('Registration_Success_Mail.html')
+            mes = file.read()
+            file.close()
+            mes = mes.replace("myusername", username).replace("myemail", email).replace("mycontact", contact).replace("user", "Blood Donor")
+            subject = 'Registration Successful'
             body = ''
-            htmlMessage = "<html><body><h1 style='color:yellow'>Go Healthy</h1><h2 style='color:green'>Thanks for using Go Healthy</h2><br><h3 style='color:blue'>You have successfully registered as <b>Blood Donor</b> with username <b>" + username + "</b></h3><h4>We will verify your data, if we find your given information is true then we active your account.</h4><h5 style='color:red'>If you didn't do that then immediately Contact Us.</h5></body></html>"
+            htmlMessage = mes
             sender = settings.EMAIL_HOST_USER
             receiver = [email, ]
 
-            send_mail(subject=subject, message=body, from_email=sender, recipient_list=receiver,
+            send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
                       fail_silently=False,
                       html_message=htmlMessage)
 
@@ -2934,10 +3090,10 @@ def RegisterDoctor(request):
             new = formuser.save(commit=False)
             if donor == "BloodDonor":
                 type = 'Blood Donor & Doctor'
-                new.User_Type = 'Blood Donor & Doctor'
+                new.User_Type = type
             else:
                 type = 'Doctor'
-                new.User_Type = 'Doctor'
+                new.User_Type = type
             new.save()
             newuser = Users.objects.get(username=new.username)
             Doctor(Username=newuser, Name=name, Gender=gender, Blood_Group=bloodGroup,
@@ -2949,12 +3105,17 @@ def RegisterDoctor(request):
                 Blood_Donar(Username=usern,Name=name,Gender=gender,Blood_Group=bloodGroup,Contact=contact,ID_Type="Doctors's Registration",ID_Number=registrationNo,
                             Address=address,State=state,Subdivision=subdivision,District=district,Pin=pin,Image=pic).save()
 
-            subject = 'Registration Success'
+            file = open('Registration_Success_Mail.html')
+            mes = file.read()
+            file.close()
+            mes = mes.replace("myusername", username).replace("myemail", email).replace("mycontact", contact).replace("user", type)
+
+            subject = 'Registration Successful'
             body = ''
-            htmlMessage = "<html><body><h1 style='color:yellow'>Go Healthy</h1><h2 style='color:green'>Thanks for using Go Healthy</h2><br><h3 style='color:blue'>You have successfully registered as <b>"+type+"</b> with username <b>" + username + "</b></h3><h4>We will verify your data, if we find your given information is true then we active your account.</h4><h5 style='color:red'>If you didn't do that then immediately Contact Us.</h5></body></html>"
+            htmlMessage = mes
             sender = settings.EMAIL_HOST_USER
             receiver = [email, ]
-            send_mail(subject=subject, message=body, from_email=sender, recipient_list=receiver,
+            send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
                       fail_silently=False,
                       html_message=htmlMessage)
 
@@ -3051,12 +3212,17 @@ def NormalRegistration(request):
             newuser = Users.objects.get(username=new.username)
             NormalUser(Username=newuser, Name=name, ID_Type=idType, ID_Number=idNumber, Gender=gender, Contact=contact, Address=address, State=state, City=city, Subdivision=subdivision, District=district, Pin=pin, Image=pic).save()
 
-            subject = 'Registration Success'
+            file = open('Registration_Success_Mail.html')
+            mes = file.read()
+            file.close()
+            mes = mes.replace("myusername", username).replace("myemail", email).replace("mycontact", contact).replace("user", "Normal Registration")
+
+            subject = 'Registration Successful'
             body = ''
-            htmlMessage = "<html><body><h1 style='color:yellow'>Go Healthy</h1><h2 style='color:green'>Thanks for using Go Healthy</h2><br><h3 style='color:blue'>You have successfully registered as <b>Normal User</b> with username <b>" + username + "</b></h3><h4>We will verify your data, if we find your given information is true then we active your account.</h4><h5 style='color:red'>If you didn't do that then immediately Contact Us.</h5></body></html>"
+            htmlMessage = mes
             sender = settings.EMAIL_HOST_USER
             receiver = [email, ]
-            send_mail(subject=subject, message=body, from_email=sender, recipient_list=receiver,
+            send_mail(subject=subject, message=None, from_email=sender, recipient_list=receiver,
                       fail_silently=False,
                       html_message=htmlMessage)
 
