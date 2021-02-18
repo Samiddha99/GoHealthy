@@ -71,7 +71,7 @@
                 <br>
                 <h3 align="center" class="text-light">
                     <i class="fad fa-frown fa-3x"></i><br>
-                    No Chat Record Found !
+                    No Past Chat Record Found !
                 </h3>
                 {% else %}
                 {% for i in chatwith %}
@@ -194,7 +194,7 @@
                 <h6>Subdivision: {{data.Subdivision}}</h6>
                 <h6>State: {{data.State}}</h6>
                 <h6>Pin: {{data.Pin}}</h6>
-                <h6>Address: {{data.Address}}</h6>
+                <h6 style="white-space: pre-wrap">Address: {{data.Address}}</h6>
             </div>
         </div>
         <div style="background-image: url('{% static 'media/images/b0.png' %}'); background-size: 100% 100%;background-repeat:no-repeat;">
@@ -219,8 +219,6 @@
                                 <p id="{{i.id}}Message" style="margin-bottom:-1px;">{{i.Message}}</p>
                                 <p class="text-muted" id="{{i.id}}Time" align="right" style="margin-bottom:0px">{{i.Time | IST}}</p>
                                 <span id="{{i.id}}" style="display:none;">
-                                <button class="btn" onclick="deleteChat({{i.id}})"><i
-                                        class="fas fa-trash-alt text-danger"></i></button>
                             </span>
                                 {% endif %}
                             </div>
@@ -236,7 +234,7 @@
                                 <p style="margin-bottom:-1px;" align="right" class="text-muted">This Message Was
                                     Deleted</p>
                                 {% else %}
-                                <p id="{{i.id}}Message" style="margin-bottom:-1px;" align="left">{{i.Message}}</p>
+                                <p id="{{i.id}}Message" style="margin-bottom:-1px;white-space: pre-wrap" align="left">{{i.Message}}</p>
                                 <p class="text-muted" id="{{i.id}}Time" style="margin-bottom:0px">{{i.Time | IST}}
                                     <span id="check{{i.id}}">
                                 {% if i.Delivered %}
@@ -246,7 +244,7 @@
                                 {% endif %}
                             </span>
                                 </p>
-                                <span id="{{i.id}}" style="display:none">
+                                <span id="{{i.id}}" class="trash" style="display:none">
                                 <button class="btn" onclick="deleteChat({{i.id}})"><i
                                         class="fas fa-trash-alt text-danger"></i></button>
                             </span>
@@ -278,16 +276,18 @@
                 <input type="hidden" name="talkwith" form="sendchat" id="talkwith" value="{{person}}">
                 <input type="hidden" name="receiver" form="sendchat" id="receiver" value="{{user.username}}">
                 <div class="form-inline">
-                    <div style="width:100%">
-                        <input type="text" autocomplete="off" name="chat" id="chat" form="sendchat"
+                    <div style="width:90%">
+                        <textarea autocomplete="off" name="chat" id="chat" form="sendchat"
                                class="form-control w-100"
-                               placeholder="Type Your Message (Press Enter to Send)"
-                               style="height:50px;" required>
+                               placeholder="Type Your Message"
+                                  style="height:50px;" required></textarea>
                     </div>
-                    <div style="display:none">
-                        <button id="sendbtn" type="submit" form="sendchat" class="btn"
-                                onclick="sendChat();"
-                                style="border:none;background-color:none"></button>
+                    <div style="display:block">
+                        <button id="sendbtn" type="button" form="sendchat" class="btn"
+                                onclick="sendChat();" title="Send Message"
+                                style="border:none;background-color:none">
+                            <i class="fas fa-paper-plane fa-2x" style="color:#43FF00"></i>
+                        </button>
                     </div>
                 </div>
                 <span id="sendchatmessage" style="display:none"></span>
@@ -666,6 +666,10 @@
         $('#resultNum').val('');
         var v = $('#result').val();
 
+        $('.trash').css('display', 'none');
+        $('[id^="toChats"]').removeClass('bg-light');
+        $('[id^="sendChats"]').removeClass('bg-primary');
+
         $('[id^="toChats"]').css("background-color", "white");
         $('[id^="sendChats"]').css("background-color", "#00FFFC");
 
@@ -722,10 +726,11 @@
 
 <script>
     function sendChat(){
+        var mychat = $('#chat').val();
+        if(mychat.length != 0)
+        {
         document.getElementById("sendchatmessage").style.display = "none"
         var flag = 0;
-        $('#sendchat').one('submit', function(e){
-		    e.preventDefault();
 			document.getElementById("chat").disabled = true;
 			document.getElementById("sendbtn").disabled = true;
 			flag = flag + 1;
@@ -742,13 +747,13 @@
 				success:function(response)
 				{
 					document.getElementById("chat").disabled = false;
+					$('#chat').focus();
 					document.getElementById("sendbtn").disabled = false;
 					$('#chat').val('');
-					$("#conversation").append("<div id="+response.id+"click' onclick='ShowDel("+response.id+");'><div id='"+response.id+"sendChats' align='right'><input type='hidden' id='del"+response.id+"' value='False'><div class='mb-3' id='sendChats"+response.id+"' style='padding:5px;padding-bottom:0px;background-color:#00FFFC;width:60%;border-top-right-radius:10px;border-top-left-radius:10px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0.1px solid blue;'><p id='"+response.id+"Message' style='margin-bottom:-1px;' align='left'>"+response.chat+"</p><p class='text-muted' id='"+response.id+"Time' style='margin-bottom:0px'>"+response.time+"<span id='check"+response.id+"'><i class='fal fa-check'></i></span></p><span id='"+response.id+"' style='display:none'><button class='btn' onclick='deleteChat("+response.id+")'><i class='fas fa-trash-alt text-danger'></i></button></span></div></div></div>");
+					$("#conversation").append("<div id="+response.id+"click' onclick='ShowDel("+response.id+");'><div id='"+response.id+"sendChats' align='right'><input type='hidden' id='del"+response.id+"' value='False'><div class='mb-3' id='sendChats"+response.id+"' style='padding:5px;padding-bottom:0px;background-color:#00FFFC;width:60%;border-top-right-radius:10px;border-top-left-radius:10px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0.1px solid blue;'><p id='"+response.id+"Message' style='margin-bottom:-1px;white-space: pre-wrap' align='left'>"+response.chat+"</p><p class='text-muted' id='"+response.id+"Time' style='margin-bottom:0px'>"+response.time+"<span id='check"+response.id+"'><i class='fal fa-check'></i></span></p><span id='"+response.id+"' class='trash' style='display:none'><button class='btn' onclick='deleteChat("+response.id+")'><i class='fas fa-trash-alt text-danger'></i></button></span></div></div></div>");
 				    var objDiv = document.getElementById("chatting");
                     objDiv.scrollTop = objDiv.scrollHeight;
                     if(flag == 1) {
-                    //FetchNewChat();
                     fetchDelete();
                     }
                     return false;
@@ -756,6 +761,7 @@
 				error: function(response)
 				{
 					document.getElementById("chat").disabled = false;
+					$('#chat').focus();
 					document.getElementById("sendbtn").disabled = false;
 					document.getElementById("sendchatmessage").style.display = "block"
 					document.getElementById("sendchatmessage").innerHTML = "<p style='color:red'>Message Send Failed</strong>"
@@ -763,10 +769,9 @@
 				},
 			});
 			return false;
-		});
 		return false;
 	}
-
+}
 </script>
 
 <script>
