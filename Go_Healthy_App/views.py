@@ -2688,8 +2688,9 @@ def Passwordcheck(request):
         message = message.replace("'", '')
         message = message.replace(",", '')
         validation_errors['password'] = message
-    if exc == "0" and mes != '' or mes1 != '' or mes2 != '' or mes3 != '' or mes4 != '':
-        validation_errors['password'] = mes+mes1+mes2+mes3+mes4
+    if exc == "0":
+        if mes != '' or mes1 != '' or mes2 != '' or mes3 != '' or mes4 != '':
+            validation_errors['password'] = mes+mes1+mes2+mes3+mes4
     return JsonResponse(validation_errors)
 
 @login_required(login_url="/login/")
@@ -2944,6 +2945,7 @@ def RegisterDonor(request):
             return render(request, 'registerdonor.html', context)
         otp = OTP.objects.get(Email=email)
         if otp.Is_Verified == False:
+            OTP.objects.filter(Email=email).delete()
             error = "-1"
             context = {"error": error, }
             return render(request, 'registerdoctor.html', context)
@@ -3049,6 +3051,7 @@ def RegisterDoctor(request):
             return render(request, 'registerdoctor.html', context)
         otp = OTP.objects.get(Email=email)
         if otp.Is_Verified == False:
+            OTP.objects.filter(Email=email).delete()
             error = "-1"
             context = {"error": error, "degree":doctor_degree, }
             return render(request, 'registerdoctor.html', context)
@@ -3173,6 +3176,7 @@ def NormalRegistration(request):
             return render(request, 'normalregistration.html', context)
         otp = OTP.objects.get(Email=email)
         if otp.Is_Verified == False:
+            OTP.objects.filter(Email=email).delete()
             error = "-1"
             context = {"error": error, }
             return render(request, 'normalregistration.html', context)
