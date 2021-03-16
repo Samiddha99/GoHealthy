@@ -64,6 +64,6 @@ sqlparse==0.4.1
 stone==3.2.1
 timeloop==1.0.2
 tzlocal==2.1
-urllib3==1.26.2
+urllib3==1.26.4
 Werkzeug==1.0.1
 whitenoise==5.2.0
