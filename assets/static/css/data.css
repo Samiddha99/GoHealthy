@@ -1,0 +1,266 @@
+
+
+.data-hr{
+    height:1px;
+    background-color:#A7A7A7;
+    width:15%;
+    margin-top: -10px;
+    margin-bottom: 4px;
+}
+
+.data-info-text{
+    margin-top: 0px;
+    color: #585757;
+    font-size: 17px;
+
+}
+
+.live-data-container{
+    /* border: 7px double rgb(64, 197, 89); */
+    padding: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.graph-box{
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 1px rgb(192, 190, 190);
+    /* border: 2px dashed gray; */
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.container-graph{
+    text-align: center !important;
+    height: 480px;
+    margin: 0;
+    padding: 0;
+}
+@media only screen and (max-device-width : 792px){
+    .container-graph{
+        height: 380px;
+    }
+}
+
+.block-graph{
+    padding-top: 35px;
+    padding-bottom: 35px;
+    background-color: #f2f4f9;
+}
+.graph-input, .graph-buttons{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.graph-input label{
+    margin-bottom: -10px;
+    color: rgb(108, 107, 107);
+}
+.input-graph{
+    width: 100%;
+    border: 1px solid rgb(211, 210, 210);
+    color: #807f7f !important;
+    border-radius: 3px;
+    padding: 1px !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+.input-graph:focus{
+    border: 1px solid rgb(130, 129, 129) !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+.graph-heading{
+    text-align: center;
+    font-size: 21px;
+    font-weight: 500;
+    color: gray;
+}
+
+.l{
+    color: rgb(250, 157, 157);
+}
+.btn-graph-action{
+    outline: none;
+    border: 1px solid rgb(44, 44, 44);
+    background-color: #e0dfdf;
+    border-radius: 2px;
+    padding: 2px;
+    font-size: 11px;
+}
+.btn-graph-action:hover{
+    border: 1px solid rgb(99, 99, 99);
+    background-color: #d0cece;
+}
+
+.live-data-card{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 20px;
+    height: 110px;
+    margin-bottom: 6px;
+}
+.live-data-card .title{
+    font-size: 16px;
+    font-family:Garamond bold;
+    line-height: 17px;
+}
+.live-data-card .value{
+    font-size: 25px;
+    font-family:Garamond bold;
+    font-weight: bold;
+}
+.live-data-card .image-icon{
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+    box-shadow: 0px 3px 4px 2px rgb(170, 169, 169);
+}
+.image-icon.hospital-icon{
+    content: url("/static/images/hospital_icon.png");
+    background-color: white;
+}
+.live-data-card.card-1{
+    background-color: #e2f5f5;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e4e5e5;
+}
+.image-icon.blood-bank-icon{
+    content: url("/static/images/blood_bank_icon.png");
+    background-color: white;
+}
+.live-data-card.card-2{
+    background-color: #fad9d9;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.doctor-icon{
+    content: url("/static/images/doctor_icon.png");
+    background-color: white;
+}
+.live-data-card.card-3{
+    background-color: #cfd3fb;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.donor-icon{
+    content: url("/static/images/blood_donor_icon.png");
+    background-color: white;
+}
+.live-data-card.card-4{
+    background-color: #fbd3bb;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.total-beds-icon{
+    content: url("/static/images/total_beds_icon.png");
+    background-color: white;
+}
+.live-data-card.card-5{
+    background-color: #edc9fe;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.total-available-beds-icon{
+    content: url("/static/images/total_available_beds_icon.png");
+    background-color: white;
+}
+.live-data-card.card-6{
+    background-color: #bcf9c8;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.total-used-beds-icon{
+    content: url("/static/images/total_used_beds_icon.png");
+    background-color: white;
+}
+.live-data-card.card-7{
+    background-color: #fcb7f0;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.total-book-icon{
+    content: url("/static/images/total_book_today_icon.png");
+    background-color: white;
+}
+.live-data-card.card-8{
+    background-color: #f2f995;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.today-blood-donation-camp-icon{
+    content: url("/static/images/blood_donation_camp_icon.png");
+    background-color: white;
+}
+.live-data-card.card-9{
+    background-color: #abb0ff;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.total-blood-requests-icon{
+    content: url("/static/images/blood_request_icon.png");
+    background-color: white;
+}
+.live-data-card.card-10{
+    background-color: #fca9bb;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.total-blood-donated-icon{
+    content: url("/static/images/blood_donated_icon.png");
+    background-color: white;
+}
+.live-data-card.card-11{
+    background-color: #fde6a2;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.total-blood-collected-icon{
+    content: url("/static/images/blood_collected_icon.png");
+    background-color: white;
+}
+.live-data-card.card-12{
+    background-color: #cffda2;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.total-admitted-icon{
+    content: url("/static/images/admitted_patient_icon.png");
+    background-color: white;
+}
+.live-data-card.card-13{
+    background-color: #fd86bf;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.total-released-icon{
+    content: url("/static/images/patient_released_icon.png");
+    background-color: white;
+}
+.live-data-card.card-14{
+    background-color: #befbd1;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.total-referred-icon{
+    content: url("/static/images/patient_referred_icon.png");
+    background-color: white;
+}
+.live-data-card.card-15{
+    background-color: #fcf6c2;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+.image-icon.total-dead-count-icon{
+    content: url("/static/images/patient_died_icon.png");
+    background-color: white;
+}
+.live-data-card.card-16{
+    background-color: #fbcbc0;
+    color: black;
+    box-shadow: 0px 0px 5px 1px #e5e4e4;
+}
+@media only screen and (min-device-width : 793px){
+    .block-graph .no-gutters{
+        gap: 15px;
+    }
+}

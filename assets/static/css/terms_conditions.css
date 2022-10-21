@@ -1,0 +1,39 @@
+
+.tc-background{
+    padding: 30px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 0px 8px 6px #16131391;
+}
+.tc-heading{
+    font-family: 'Bitter', serif;
+    color: #1238ce;
+    border: 1px groove #01082345;
+    border-right: 5px solid #1238ce;
+    width: 400px;
+    padding: 10px;
+}
+.tc-heading-text{
+    position: relative !important;
+    top: -10px;
+}
+.tc-point{
+    margin-bottom: 5px !important;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Noto Serif', serif;
+}
+.tc-point-text{
+    margin-left: 40px;
+}
+.tc-point-text li{
+    margin-bottom: -10px;
+}
+.tc-footer-heading{
+    position: relative;
+    top: -38px;
+    text-align: center !important;
+}
+.tc-footer-heading-text{
+    background-color: white;
+}

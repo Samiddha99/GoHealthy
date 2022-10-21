@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    {% block meta %}
+    <meta name="title" content="Login | Go Healthy">
+    <meta name="description" content="Login now to access more features">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>Login | Go Healthy</title>
+    {% endblock title %}
+
+    {% block onesignal %}
+    
+    {% endblock onesignal %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    {% endblock style %}
+
+</head>
+{% block body %}
+<body style="min-height:100%;background-image: url('{% static 'images/GoHealthy_login page background.png' %}');
+            background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed">
+{% endblock body %}
+
+{% block content %}
+<div class="ml-2 mr-2">
+     
+            <div class="login-box text-center mt-4 mb-4">
+                <div class="login-body">
+                    <img src="{% static 'images/GoHealthy_logo main.png' %}" width="200" height="70"><br><br>
+                    <form id="login" method="post" action="{% url 'Go_Healthy_App:LoginMain' %}" autocomplete="off">
+                        {% csrf_token %}
+                            <div class="input-group mb-3">
+                                <span class="input-group-text input-group-text-username" id="basic-addon-username"><i class="fas fa-user"></i></span>
+                                <input aria-describedby="basic-addon-username" aria-label="username" autocomplete="off" name="username" form="login" placeholder="Username or Email Id" class="form-control input-sm input-login input-login-username" required>
+                            </div>
+                            <div class="input-group">
+                                <input type="password" aria-describedby="basic-addon-password" aria-label="password" autocomplete="off" minlength="8" id="login-password" name="password" form="login" class="form-control input-sm input-login input-login-password" placeholder="Password" required>
+                                <span class="input-group-text input-group-text-password" id="basic-addon-password"><i class="fas fa-key"></i></span>
+                            </div>
+                            <div class="text-left ml-3">
+                                <label for="showPassword"><input type="checkbox" form="login" id="showPassword" name="showPassword" value="show password"> Show Password</label>
+                            </div>
+
+                            <input type="hidden" name="tonext" value="{{request.GET.next}}" form="login">
+                            <p style="color:red" id="login-error-message" class="mb-2">
+                                &nbsp;
+                            </p>
+
+                        <label for="remember1" style="color: #0075ff;"><input type="checkbox" form="login" id="remember1" name="remember" checked> <b>Keep me Logged In</b></label>
+
+                        <br><br>
+                        <div class="row no-gutters">
+                            <div class="col text-left">
+                                <h6><a href="{% url 'Go_Healthy_App:ResetPassword' %}" style="color:red">Forget Password?</a></h6>
+                            </div>
+                            <div class="col text-right">
+                                <button type="submit" class="btn btn-login" id="id_loginsubmit" name="loginsubmit" form="login" style="width: 100%;">
+                                    Login
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div style="background-color:#15BED2;padding:10px;border-bottom-left-radius:30px;border-bottom-right-radius:30px;border:2px solid white;margin-top:0px">
+                        <h6 style="color:#5F005F">Don't have any account? <a href="{% url 'Go_Healthy_App:Register' %}" style="color:white">Register Now</a></h6>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="loginLocationAlert" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="loginLocationAlertLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginLocationAlertLabel">Alert</h5>
+                    </div>
+                    <div class="modal-body">
+                        We will store your geographic location in the server to prevent unauthorized logins.
+                        <br>But you have not allowed location permission and so we are unable to get your geographic location for secure login.
+                        <br>You have to <b>allow location permission</b> to log in to the site.
+                    </div>
+                </div>
+            </div>
+        </div>
+          
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/login.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

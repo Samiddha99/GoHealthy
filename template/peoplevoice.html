@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    {% block meta %}
+    <meta name="title" content="People's Voice | Go Healthy">
+    <meta name="description" content="Every day in every where people are facing critical situation in hospitals. But there are no one to listen the complaint of the people. Share the details of accident of faced in the healthcare system">
+    {% endblock meta %}
+    {% block title %}
+    <title>People's Voice | Go Healthy</title>
+    {% endblock title %}
+        
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/peoplevoice.css' %}">
+    {% endblock style %}
+
+</head>
+
+{% block body %}
+<body style="background-color:#050064">
+{% endblock body %}
+
+
+{% block content %}
+<div class="ml-1 mr-1">
+    <h4 align="center" class="mt-4" style="color:white">Every day everywhere thousands of people are facing critical situations in the hospitals and are deprived of their right to health.</h4>
+    <h3 align="center" style="color:white">BUT WHO CARE THEM?</h3>
+</div>
+
+
+<div class="row mt-4 mb-5">
+    <div class="col-md"></div>
+    <div class="col-md-3 ml-5 mr-5">
+        <button class="btn btn-light text-primary" id="open-nav" style="width:100%;font-size:20px"><b>Share Your Story</b></button>
+    </div>
+</div>
+
+<div id="Sidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" id="close-nav">&times;</a>
+    <div id="sideNavContent">
+        <div class="row">
+            <div class="col-md"></div>
+            <div class="col-md-6 ml-3 mr-3">
+                <h1 class="text-secondary text-center" style="font-family: 'Orelega One', cursive;">
+                    <i class="fa-thin fa-hand-fist"></i> Break The Silence <i class="fa-thin fa-hand-fist"></i>
+                </h1>
+                <h5 style="color:#050064" class="mt-2 mb-3" align="center">Never Suppress Your Voice</h5>
+                <div class="text-center mb-4" style="color:red; font-size: 20px; margin-top: -15px;">You have right to raise your voice in your own language</div>
+                <p class="text-dark">
+                    Have you ever faced any problem in a hospital or healthcare center? Have you been deprived of your right to health? Has anyone ever taken away your right to health? Have you noticed any inhuman or iligal activities regarding healthcare?
+                    <br> Let's reveal the incident here, maybe many people in the country have faced the incident, or maybe they are facing it, or maybe they will be faced it.
+                    Don't be silent, stand up against the injustice and stand up for your right.
+                </p>
+                <form id="voiceForm" action="{% url 'Go_Healthy_App:PeopleVoice' %}" method="post" style="padding:15px">
+                    {% csrf_token %}
+                    <label for="story_language" class="voice-input-label">In which language do you want to describe your story?*</label><br>
+                    <select class="voice-input" form="voiceForm" name="language" id="story_language" required>
+                        <option label="Select Language"></option>
+                        {% for i in languages %}
+                            <option value="{{i.Language}}">{{i.Language}} ({{i.Local_Script}})</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <label for="text" class="voice-input-label mt-3">Your Story*</label><br>
+                    <textarea form="voiceForm" class="voice-input" rows="6" name="text" id="text" placeholder="Describe how have you been deprived of your right to health..." required maxlength="5000"></textarea>
+                    <p>Your story must not contains any personal details and confidential details like your name, email id, contact number, address, booking id, username, password etc.</p>
+                    <div class="row">
+                        <div class="col-md">
+                            <label for="text" class="voice-input-label mt-3">In which hospital?</label><br>
+                            <div id="autocomplete-hospital" class="autocomplete">
+                                <input type="text" class="autocomplete-input dropdown-input voice-input" id="hospitalName" form="voiceForm" placeholder="Search Hospital">
+                                <ul class="autocomplete-result-list"></ul>
+                            </div>
+                            <input type="hidden" form="voiceForm" name="hospitalId" id="hospitalId">
+                            <div class="text-dark">If you have faced the problem in a hospital then mention the name of the hospital</div>
+                            <p style="color:red" id="hospitalError"></p>
+                        </div>
+                    </div>
+                    <div class="mt-5" align="center">
+                        <label>
+                            <input type="checkbox" name="agreement" required form="voiceForm">
+                            I give the permission to publish my story on the website
+                        </label><br>
+                        <div class="g-recaptcha mb-4 mt-1" data-sitekey="6Ld4QtwaAAAAAIF_KlE40NNOineo7HqrDgoghRkA"></div>
+                        <button type="submit" form="voiceForm" id="voiceFormSubmitBtn" name="voiceFormSubmit" class="btn btn-outline-primary">Submit</button>
+                        <p style="color:red" id="voiceFormError"></p>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md"></div>
+        </div>
+    </div>
+</div>
+
+<div class="col-card">
+    {% for i in voice %}
+    <div class="card" style="width:100%">
+        <div class="card-body" style="padding-top:5px; padding-bottom:1px">
+            <div class="text-right mb-2" style="font-weight: bold;">
+                <i class="bi bi-translate"></i> {{i.Language.Language}} ({{i.Language.Local_Script}})
+            </div>
+            <p class="card-text" style="white-space:pre-wrap">{{i.Text}}</p>
+            <p align="right">
+                <b>{{i.hospital.Name}}</b>
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/peoplevoice.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

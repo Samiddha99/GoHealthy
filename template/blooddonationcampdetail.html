@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% extends 'base.html' %}
+  {% load custom_tags %}
+  {% load static %} <!--To use the files under static folder we have to load the static in that page-->
+
+  <head>
+    {% block meta %}
+    <meta name="title" content="Blood Donation Camp Detail | Go Healthy">
+    <meta name="description" content="Look at the details of the blood bank">
+    {% endblock meta %}
+
+    {% block title %}
+      <title>Blood Donation Camp Detail | Go Healthy</title>
+    {% endblock title %}
+
+
+    {% block style %}
+      <link rel="stylesheet" href="{% static 'css/blooddonationcampdetail.css' %}">
+    {% endblock style %}
+
+    </head>
+
+    {% block body %}
+    {% if notFound %}
+    <body style="background-color: #febf56;">
+    {% else %}
+    <body>
+    {% endif %}
+    {% endblock body %}
+
+    {% block content %}
+    {% isEventEnded camp.Start_Time camp.Start_Date camp.End_Date as event_ended %}
+    {% if notFound %}
+        <div class="row">
+            <div class="col-md"></div>
+            <div class="col-md-7 ml-2 mr-2">
+                <div class="not-found-card">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <img src="{% static 'images/404-question.png' %}" width="100%">
+                        </div>
+                        <div class="col-md text-center">
+                            <h3 class="text-404">404</h3>
+                            <h6 class="heading-404">Event Not Found!</h6>
+                            <p class="message-404 text-left text-muted">
+                                Blood donation camp you are looking for is not found.
+                                May be the event has been ended or the organizer postponed the event due to some reason.
+                                <br>Go to the Search Blood Donation Camp page to find more blood donation camps in your area.
+                            </p>
+                            <div class="text-center mt-4">
+                                <a href="{% url 'Go_Healthy_App:BloodDonationCamps' %}" class="btn btn-primary">Search Blood Donation Camp</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md"></div>
+        </div>
+    {% else %}
+        <input type="hidden" id="time_start" value="{{camp.Start_Time}}">
+        <input type="hidden" id="time_end" value="{{camp.End_Time}}">
+        <input type="hidden" id="date_start" value="{{camp.Start_Date}}">
+        <input type="hidden" id="date_end" value="{{camp.End_Date}}">
+        <div class="wrapper banner" style="background-image: url('{% static 'images/camp-event-banner.png' %}'); background-repeat:no-repeat;background-size:100% 100%;">
+            <div class="event-date">
+                {% if camp.End_Date is not None %}
+                {{camp.Start_Date}} <span style="font-size: 23px;">to</span> {{camp.End_Date}}
+                {% else %}
+                {{camp.Start_Date}}
+                {% endif %}
+            </div>
+            <div class="event-time">
+                {{camp.Start_Time}} - {{camp.End_Time}}
+            </div>
+            <div class="event-title">
+                BLOOD DONATION CAMP
+            </div>
+            <div class="event-location">
+                <i class="fa-regular fa-location-dot"></i> {{camp.Landmark}}, {{camp.City}}, {{camp.State.Name}}, {{camp.Pin}}
+            </div>
+            <div class="event-organizer">
+                <div style="font-size: 20px;">Organized By:</div>
+                <div class="name">{{camp.Organizer}}</div>
+            </div>
+            {% if not event_ended %}
+                <button type="button" class="btn btn-reminder" data-toggle="modal" data-target="#setReminderModal">
+                    Set Reminder
+                </button>
+            {% endif %}
+        </div>
+        
+        <div class="row">
+            <div class="col-md"></div>
+            <div class="col-md-6 ml-5 mr-5 ml-md-2 mr-md-2">
+                <div class="wrapper timmer">
+                    <div class="text-center" style="font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
+                        Event will be start in
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-6 col-lg mt-2 mt-md-0">
+                            <div id="day-remain">00</div>
+                            <div class="timer-unit">Days</div>
+                        </div>
+                        <div class="col-1 col-lg-1 col-semicolon">
+                            <div>:</div>
+                        </div>
+                        <div class="col-6 col-lg mt-2 mt-md-0">
+                            <div id="hour-remain">00</div>
+                            <div class="timer-unit">Hours</div>
+                        </div>
+                        <div class="col-1 col-lg-1 col-semicolon">
+                            <div>:</div>
+                        </div>
+                        <div class="col-6 col-lg mt-2 mt-md-0">
+                            <div id="minute-remain">00</div>
+                            <div class="timer-unit">Minutes</div>
+                        </div>
+                        <div class="col-1 col-lg-1 col-semicolon">
+                            <div>:</div>
+                        </div>
+                        <div class="col-6 col-lg mt-2 mt-md-0">
+                            <div id="second-remain">00</div>
+                            <div class="timer-unit">Seconds</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md"></div>
+        </div>
+
+        <div class="row mt-5 ml-2 mr-2">
+            <div class="col-md col-info-card one">
+                <div class="wrapper info-card">
+                    <div class="header text-center">
+                        <i class="fa-regular fa-map-location-dot location-icon"></i>
+                        <br>
+                        WHERE
+                    </div>
+                    <div class="info-text text-left">
+                        <div class="info-state mb-2 text-center mt-2">{{camp.State.Name}}</div>
+                        <div class="mt-1">
+                            <div class="address-heading text-right">
+                                <p><b>District: </b></p>
+                            </div>
+                            <div class="address-value">
+                                <p>{{camp.District.Name}}</p>
+                            </div>
+                        </div>
+                        <div class="mt-0">
+                            <div class="address-heading text-right">
+                                <p><b>Subdivision: </b></p>
+                            </div>
+                            <div class="address-value">
+                                <p>{{camp.Subdivision}}</p>
+                            </div>
+                        </div>
+                        <div class="mt-0">
+                            <div class="address-heading text-right">
+                                <p><b>City:</b></p>
+                            </div>
+                            <div class="address-value">
+                                <p>{{camp.City}}</p>
+                            </div>
+                        </div>
+                        <div class="mt-0">
+                            <div class="address-heading text-right">
+                                <p><b>Pin:</b></p>
+                            </div>
+                            <div class="address-value">
+                                <p>{{camp.Pin}}</p>
+                            </div>
+                        </div>
+                        <div class="mt-0">
+                            <div class="address-heading text-right">
+                                <p><b>Landmark:</b></p>
+                            </div>
+                            <div class="address-value">
+                                <p>{{camp.Landmark}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md col-info-card two">
+                <div class="wrapper info-card">
+                    <div class="header text-center">
+                        <i class="fa-light fa-calendar-days location-icon"></i>
+                        <br>
+                        WHEN
+                    </div>
+                    <div class="info-text text-center mt-3">
+                        <div class="info-date">
+                            {% if camp.End_Date is not None %}
+                                {{camp.Start_Date}}
+                                <div style="font-size: 25px; margin-top: -8px; margin-bottom: -8px;">to</div>
+                                {{camp.End_Date}}
+                            {% else %}
+                                {{camp.Start_Date}}
+                            {% endif %}
+                        </div>
+                        <div class="info-time mt-3">
+                            {{camp.Start_Time}} - {{camp.End_Time}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md col-info-card three">
+                <div class="wrapper info-card">
+                    <div class="header text-center">
+                        <i class="fa-regular fa-circle-phone-hangup location-icon"></i>
+                        <br>
+                        CONTACT ORGANIZER
+                    </div>
+                    <div class="info-text text-center mt-3">
+                        <div class="info-contact mt-2">
+                            <p>{{camp.Organizer}}</p>
+                            <p>Call: {{camp.Organizer_Contact}}</p>
+                            <p>Email: {{camp.Email}}</p>
+                            {% if camp.Organizer_Website %}
+                            <p>Website: <a href="{{camp.Organizer_Website}}" target="__blank">{{camp.Organizer_Website}}</a></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center why-donate">
+            Why You Should Join The Event?
+        </div>
+        <div class="underline text-center" align="center">
+            <i class="fa-light fa-grip-lines" style="font-size: 50px; color: deeppink !important;"></i>
+        </div>
+        <div class="row ml-3 mr-3 ml-md-0 mr-md-0 mt-1">
+            <div class="col-md">
+                
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md">
+                        <div class="card card-why-donate" style="width: 100%">
+                            <div class="card-body">
+                              <h5 class="card-title">
+                                <i class="fa-light fa-hands-holding-heart card-title-icon"></i> Save Lives
+                                </h5>
+                              <p class="card-text">
+                                  Blood is many essential in our life. In many cases blood is needed for the patient to recover.
+                                  So if you join the event to donate blood, the your donated blood will be give to other patients and it will save the life of the patients.
+                              </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="card card-why-donate" style="width: 100%">
+                            <div class="card-body">
+                              <h5 class="card-title"><i class="fa-light fa-users card-title-icon"></i> Inspire Others</h5>
+                              <p class="card-text">
+                                  If you joint the event, then people surrounding you may motivated from you to save lives by donating blood.
+                                  <br>So you may be an inspiration to others. This inspiration will increase the number of blood donors and more donors means we can save more life.
+                              </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="card card-why-donate" style="width: 100%">
+                            <div class="card-body">
+                              <h5 class="card-title"><i class="fa-light fa-heart-pulse card-title-icon"></i> Healthy Life</h5>
+                              <p class="card-text">
+                                  Blood donation not only save others life it also beneficiary for you. 
+                                  Donating blood can reduce the risk of many health problems of the donors. Blood donation helps in maintaining the iron levels and lowering the risk of hemochromatosis, cancer, heart and liver diseases and, helps to loss weight for those who are obese and are at higher risk of cardiovascular diseases.
+                              </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+
+            </div>
+        </div>
+
+<!-- 
+        <div class="row no-gutters mb-5">
+           
+            <div class="col-md order-md-2 ml-1 mr-1">
+                <div class="address mt-3">
+                    <div class="address-header text-center">VENUE</div>
+                    <div class="address-state text-center">{{camp.State.Name}}</div>
+                </div>
+            </div>
+            <div class="col-md-2 order-md-1 ml-4 mr-4">
+                <div class="contact mt-3">
+                    <div class="contact-header">CONTACT</div>
+                    <div class="contact-text"><i class="fa-regular fa-circle-phone" style="font-size: 23px;"></i> <span style="font-size: 25px;">{{camp.Organizer_Contact}}</span></div>
+                    <div class="contact-text"><i class="fa-regular fa-circle-envelope" style="font-size: 23px;"></i> {{camp.Email}}</div>
+                    {% if camp.Organizer_Website is not None %}
+                    <div class="contact-text"><i class="fa-regular fa-earth-americas" style="font-size: 23px;"></i> {{camp.Organizer_Website}}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <br> -->
+
+
+        <div class="modal fade setReminderModal text-left" id="setReminderModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="setReminderModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title text-muted" id="reminderModalLabel">SET REMINDER</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="set-reminder-form" id="set-reminder-form" method="post">
+                            <input type="hidden" name="reminder_event" form="set-reminder-form" value="{{camp.camp_id}}">
+                            <div class="floating-label">
+                                <input type="tel" inputmode="tel" class="form-control input-sm reminder-input" name="reminder_mobile" id="reminder_mobile" form="set-reminder-form" minlength="10" maxlength="10" placeholder=" " required>
+                                <label for="reminder_mobile">
+                                    <span>Your mobile no</span>
+                                </label>
+                            </div>
+                            <div class="reminder-input-info">
+                                We will send a reminder to this number before the event starts
+                            </div>
+                            <label for="send-before" class="mt-3">Send Reminder Before</label>
+                            <div class="row no-gutters">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <input type="number" name="reminder_hh" id="set-before-hh" inputmode="numeric" step="1" min="00" max="24" class="form-control input-sm reminder-input set-before" form="set-reminder-form" placeholder="HH" value="01" aria-describedby="hh-addon" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text addon" id="hh-addon">HH</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col ml-1">
+                                    <div class="input-group mb-3">
+                                        <input type="number" name="reminder_mm" id="set-before-mm" inputmode="numeric" step="1" min="00" max="59" class="form-control input-sm reminder-input set-before" form="set-reminder-form" placeholder="MM" value="00" aria-describedby="mm-addon" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text addon" id="hh-addon">MM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3 ml-1">
+                                    <button type="submit" class="btn btn-primary set-reminder-form-submit" id="set-reminder-form-submit" form="set-reminder-form">
+                                        <i class="fa-thin fa-calendar-check"></i> <span id="set-reminder-form-submit-text">SET</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="set-before-error" class="set-before-error" style="color: red; font-size:14px; margin-top:-10px"></div>
+                            <div id="set-before-success" class="text-success set-before-success"></div>
+                        </form>
+                        <div class="text-center mt-3 add-to-calender-button-div" align="center" id="add-to-calender-button-div">
+                            <div title="Add to Calendar" class="addeventatc add-to-calender-button" data-intel="true" data-dropdown-x="auto" data-dropdown-y="auto" data-google-api="true">
+                                Add to Calendar
+                                <span class="start">{{camp.Start_Date|date:"m/d/Y"}} {{camp.Start_Time|date:"h:i A"}}</span>
+                                {% if camp.End_Date is not None %}
+                                    <span class="end">{{camp.End_Date|date:"m/d/Y"}} {{camp.End_Time|date:"h:i A"}}</span>
+                                {% else %}
+                                    <span class="end">{{camp.Start_Date|date:"m/d/Y"}} {{camp.End_Time|date:"h:i A"}}</span>
+                                {% endif %}
+                                <span class="date_format">MM/DD/YYYY</span>
+                                <span class="timezone">Asia/Calcutta</span>
+                                <span class="title">Blood Donation Camp</span>
+                                <span class="description">
+                                    Organized by: {{camp.Organizer}},
+                                    <br>Contact: {{camp.Organizer_Contact}},
+                                    <br>Email: {{camp.Email}},
+                                    <br><br>
+                                    <b>VENUE:</b>
+                                    <br>State: {{camp.State.Name}}
+                                    <br>District: {{camp.District.Name}}
+                                    <br>Subdivision: {{camp.Subdivision}}
+                                    <br>City: {{camp.City}}
+                                    <br>Landmark: {{camp.Landmark}}
+                                    <br>Pin: {{camp.Pin}}
+                                    <br><br>
+                                    <b>DATE and TIME:</b>
+                                    <br>Date: {% if camp.End_Date is not None %}
+                                                    {{camp.Start_Date}} To {{camp.End_Date}}
+                                                {% else %}
+                                                    {{camp.Start_Date}}
+                                                {% endif %}
+                                    <br>Time: {{camp.Start_Time}} - {{camp.End_Time}}
+                                </span>
+                                <span class="location">{{camp.Landmark}}</span>
+                                <span class="organizer">{{camp.Organizer}}</span>
+                                <span class="organizer_email">{{camp.Email}}</span>
+                                <span class="alarm_reminder" id="alarm_reminder">60</span>
+                                <span class="calname">Blood Donation Camp-{{camp.camp_id}}</span>
+                                {% if camp.End_Date is not None %}
+                                    <span class="recurring">FREQ=DAILY;UNTIL={{camp.End_Date|date:"Ymd"}}T235959</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary reminder-modal-close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% endblock content %}
+
+
+    {% block script %}
+
+        <script src="{% static 'javascripts/blooddonationcampdetail.js' %}"></script>
+
+    {% endblock script %}
+    </body>
+</html>

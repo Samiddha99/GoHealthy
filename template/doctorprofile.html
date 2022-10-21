@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+<head>
+    {% block meta %}
+    <meta name="title" content="{{person.Username.username}} - Profile | Go Healthy">
+    <meta name="description" content="Doctor Profile">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>{{person.Username.username}} - Profile | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/doctorprofile.css' %}">
+    {% endblock style %}
+
+    </head>
+{% block body %}
+<body class="bg-light">
+{% endblock body %}
+
+{% block content %}
+
+    <h2 class="text-primary text-center mt-3" style="font-family: 'PT Serif', serif;">{{person.Name|upper}}</h2><br>
+
+    <div class="row text-center">
+        <div class="col-md-4 ml-5 mr-5">
+            <h5>Username: <span class="text-primary">{{person.Username.username}}</span></h5>
+            {% if 'Doctor' in request.user.User_Type and 'Blood Donor' in request.user.User_Type %}
+            <h5 style="color:blue">Doctor & Blood Donor</h5>
+            {% elif 'Doctor' in request.user.User_Type %}
+            <h5 style="color:blue">Doctor</h5>
+            {% endif %}
+            <img src="{{person.Image.url}}" class="rounded-lg" height="250" width="250" border="primary" style="border:3px solid blue" alt="My Profile Picture" id="img_id">
+            <div class="row">
+                <div class="col-md"></div>
+                <div class="col-md-10 ml-2 mr-2">
+                    <form id="photo" method="post" action="{% url 'Go_Healthy_App:DoctorProfile' %}" enctype="multipart/form-data" autocomplete="off">
+                        {% csrf_token %}
+                        <input type="file" hidden name="picture" id="picture" form="photo" accept="image/*" required>
+                        <label class="btn-upload mt-3" for="picture" id="image-upload-button">Change Profile Picture</label>
+                        <span id="imageError"></span>
+                    </form>
+
+                    <div>
+                        <span class="text-primary">Display profile picture to all&nbsp;</span>
+                        <span class="toggle-button text-left">
+                            {% if user.display_profile_pic %}
+                            <input type="checkbox" class="checkbox" id="picShow" name="picShow" checked>
+                            {% else %}
+                            <input type="checkbox" class="checkbox" id="picShow" name="picShow">
+                            {%endif%}
+                            <label for="picShow" class="checkbox-label">
+                                <div class="toggle-button-layer">
+                                    <div class="toggle-button-knobs"></div>
+                                </div>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md"></div>
+            </div>
+            <br>
+            <h4 class="text-danger"><span id="showgroup" data-value="{{person.Blood_Group}}">Blood Group: {{person.Blood_Group}}</span>
+                <button type="button" class="btn" id="groupbtn" data-edit="false" style="background-color:none;border:none"><i class="fad fa-pencil text-primary"></i></button>
+            </h4>
+            <form id="editgroupform" method="post" autocomplete="off" action="{% url 'Go_Healthy_App:Edit-BloodGroup' %}">
+                {% csrf_token %}
+                <div id="editgroupfield" style="display:none">
+                    <select form="editgroupform" class="form-control input-sm red-input" id="bloodGroup" name="bloodGroup" required style="width:45%">
+                        <option label="Select Blood Group"></option>
+                        {% for i in bloodGroups %}
+                        <option label="{{i.1}}" value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" form="editgroupform" class="btn btn-danger" style="margin-top:2px">Update</button>
+                </div>
+            </form>
+            <span id="groupmessage"></span>
+            <br>
+            <ul class="list-group">
+          <li class="list-group-item custom-list-group-item active" aria-current="true">IDENTIFICATION</li>
+          <li class="list-group-item custom-list-group-item">
+              <span style="float:left">Registration Number</span>
+              <span style="float:right">{{person.Username.ID_Number}}</span>
+          </li>
+        </ul>
+            <br>
+            <ul class="list-group">
+                <li class="list-group-item custom-list-group-item active" aria-current="true">ACTIVITIES</li>
+                <li class="list-group-item custom-list-group-item">
+                    <span style="float:left">Profile Created</span>
+                    <span style="float:right">{{person.Username.date_joined}}</span>
+                </li>
+                <li class="list-group-item custom-list-group-item">
+                    <span style="float:left">Last Profile Update</span>
+                    <span style="float:right">{{person.Username.username|LastUpdate}}</span>
+                </li>
+                <li class="list-group-item custom-list-group-item">
+                    <button type="button" class="btn btn-light w-100" data-toggle="modal" data-target="#activityModal">
+                        <b>Show Last Few Logins</b>
+                    </button>
+                    <div class="modal fade" id="activityModal" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="activityModalLabel">Last Few Logins</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body text-left">
+                                {% for i in person.Username.last_login_details.last_logins|listConversion %}
+                                <ul>
+                                    <li style="list-style: square;">
+                                        <b style="font-size: 15px;">Time: {{i.Time}}</b>
+                                    </li>
+                                    <ul class="mb-1" style="list-style: circle;">
+                                        <li>Session Key: {{i.session.session_key}}</li>
+                                        <li>Device: {{i.Device}}</li>
+                                        <li>
+                                            Browser: {{i.Browser}}
+                                            {% if request.session.session_key == i.session.session_key %}
+                                            [This Browser]
+                                            {% elif not i.session.session_key|isTheSessionActive %}
+                                            [Account is logged out from the browser]
+                                            {% endif %}
+                                        </li>
+                                        <li><b class="text-dark">Geo Coordination:</b></li>
+                                        <ul style="list-style: none;">
+                                            <li>Latitude: {{i.geoInfo.latitude}}</li>
+                                            <li>Longitude: {{i.geoInfo.longitude}}</li>
+                                            <li>Pin: {{i.geoInfo.pin}}</li>
+                                            <li>City: {{i.geoInfo.city}}</li>
+                                            <li>State: {{i.geoInfo.state}}</li>
+                                            <li>District: {{i.geoInfo.district}}</li>
+                                            <li>Country: {{i.geoInfo.country}}</li>
+                                        </ul>
+                                        <li><b class="text-dark">IP Info:</b></li>
+                                        <ul style="list-style: none;">
+                                            <li>IP Address: {{i.IP}}</li>
+                                            <li>ISP: {{i.ipInfo.isp}}</li>
+                                            <li>Latitude: {{i.ipInfo.latitude}}</li>
+                                            <li>Longitude: {{i.ipInfo.longitude}}</li>
+                                            <li>City: {{i.ipInfo.city}}</li>
+                                            <li>Region: {{i.ipInfo.region}}</li>
+                                            <li>Country: {{i.ipInfo.country}}</li>
+                                            <li>Used VPN: {{i.ipInfo.vpn}}</li>
+                                            <li>Used Proxy: {{i.ipInfo.proxy}}</li>
+                                            <li>Used Tor: {{i.ipInfo.tor}}</li>
+                                            <li>Used Relay: {{i.ipInfo.relay}}</li>
+                                        </ul>
+                                    </ul>
+                                </ul>
+                                <hr>
+                                {% endfor %}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <br><br>
+        </div>
+        <div class="col-md"></div>
+        <div class="col-md-6 ml-5 mr-5">
+            {% if 'Blood Donor' not in request.user.User_Type%}
+
+            <button class="btn btn-danger" type="button" id="openDonorUpgrade" data-target="#upgrade">
+                <b>Become A Blood Donor</b>
+            </button>
+
+            <div class="modal fade" id="upgrade" data-backdrop="static" data-keyboard="false"
+                 tabindex="-1" aria-labelledby="upgradeLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success">
+                            <h5 class="modal-title" id="upgradeLabel" style="color:white">Upgrade Profile</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" align="center">
+                            <form id="donorupgradeform" method="post" action="{% url 'Go_Healthy_App:Profile-Upgrade' %}" autocomplete="off">
+                                {% csrf_token %}
+                                <div class="input-group mb-0">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="dob" style="background-color:#28a745; color:white">DOB</label>
+                                    </div>
+                                    <input placeholder="DOB" type="date" class="form-control input-sm upgrade-input" name="dob" id="dob" form="donorupgradeform" required aria-describedby="dobMessage1">
+                                </div>
+                                <span id="dobMessage1" class="feedback"></span>
+                                <input type="hidden" name="upgradeto" value="Doctor" form="donorupgradeform" required>
+                            </form>
+                            <div id="upgrademessage-donor"></div>
+                        </div>
+                        <div class="modal-footer bg-light">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                            </button>
+                            <button type="submit" class="btn bg-success" id="upgradeBtn"
+                                    form="donorupgradeform" style="color:white">
+                                Upgrade
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+
+
+            <br><br>
+            <h4 class="bg-secondary text-light" style="padding:2px">GENERAL INFORMATION
+            </h4>
+            <div id="gen_data">
+                <ul class="list-group">
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Name:</b></div>
+                            <div class="col ml-1 info-text">{{person.Name}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Gender:</b></div>
+                            <div class="col ml-1 info-text">{{person.Gender}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Degree:</b></div>
+                            <div class="col ml-1 info-text">{{person.Degree.Degree}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Speciality:</b></div>
+                            <div class="col ml-1 info-text">{{person.Special.Speciality}}</div>
+                        </div>
+                    </li>
+                </ul>
+                <br>
+            </div>
+            <h4 class="bg-secondary text-light" style="padding:2px">CONTACT INFO
+                <span style="float:right">
+                    <button type="button" id="contactbtn" class="btn edit-btn" data-edit="false"><i class="fad fa-edit" style="color:white;"></i></button>
+                </span>
+            </h4>
+            <div id="contact_data">
+                <ul class="list-group">
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Contact:</b></div>
+                            <div class="col ml-1 info-text" data-value="{{person.Username.Contact}}" id="data_contact">{{person.Username.Contact}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Email:</b></div>
+                            <div class="col ml-1 info-text" data-value="{{person.Username.email}}" id="data_email">{{person.Username.email}}</div>
+                        </div>
+                    </li>
+                </ul>
+                <br>
+            </div>
+            <form id="contacteditform" method="post" autocomplete="off" action="{% url 'Go_Healthy_App:Edit-Contact' %}">
+                {% csrf_token %}
+                <div id="contact_edit" style="display:none">
+                    <ul class="list-group">
+                        <li class="list-group-item custom-list-group-item">
+                            <div class="row">
+                                <div class="col" align="left">
+                                    <span><b>Contact:</b></span>
+                                </div>
+                                <div class="col-7" align="left">
+                                    <input type="tel" inputmode="tel" class="grey-field" id="contact" form="contacteditform" value="{{person.Username.Contact}}" minlength="10" maxlength="10" required>
+                                </div>
+                                <div class="col col-right"></div>
+                            </div>
+                        </li>
+                        <li class="list-group-item custom-list-group-item">
+                            <div class="row">
+                                <div class="col" align="left">
+                                    <span><b>Email:</b> </span>
+                                </div>
+                                <div class="col-7" align="left">
+                                    <input type="email" inputmode="email" class="grey-field text-lowercase" id="email" form="contacteditform" value="{{person.Username.email}}" required>
+                                    <span id="emailessage" class="text-danger"></span>
+                                </div>
+                                <div class="col col-right"></div>
+                            </div>
+                        </li>
+                        <li class="list-group-item custom-list-group-item">
+                            <div class="row no-gutters" style="gap:5px">
+                                <div class="col-md-3"></div>
+                                <div class="col mr-1" id="mobile-otp" style="display: none;">
+                                        <input type="text" inputmode="numeric" minlength="6" maxlength="6" placeholder="OTP (Mobile No)" class="grey-field" id="mobileotp" form="contacteditform" autocomplete="off">
+                                </div>
+                                <div class="col" id="email-otp" style="display: none;">
+                                        <input type="text" inputmode="numeric" minlength="6" maxlength="6" placeholder="OTP (Email)" class="grey-field" id="emailotp" form="contacteditform" autocomplete="off">
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <span id="message"></span>
+                <button type="submit" form="contacteditform" data-value="Send OTP" id="submit_btn" class="btn btn-success"
+                        style="margin-top:2px;margin-bottom:5px; display:none">Send OTP
+                </button>
+            </form>
+            <div id="contactmessage"></div>
+
+
+            <h4 class="bg-secondary text-light mt-2" style="padding:2px">PERMANENT ADDRESS
+            </h4>
+            <div id="permanent-address_data">
+                <ul class="list-group">
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Address:</b></div>
+                            <div class="col ml-1 info-text" style="white-space: pre-wrap">{{person.Permanent_Address}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Pin:</b></div>
+                            <div class="col ml-1 info-text">{{person.Permanent_Pin}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>State:</b></div>
+                            <div class="col ml-1 info-text">{{person.Permanent_State.Name}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>District:</b></div>
+                            <div class="col ml-1 info-text">{{person.Permanent_District.Name}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Town/Village:</b></div>
+                            <div class="col ml-1 info-text">{{person.Permanent_City}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Subdivision:</b></div>
+                            <div class="col ml-1  info-text">{{person.Permanent_Subdivision}}</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h4 class="bg-secondary text-light mt-4" style="padding:2px">CURRENT ADDRESS
+                <span style="float:right">
+                    <button type="button" id="addressbtn" class="btn edit-btn" data-edit="false"><i class="fad fa-edit" style="color:white"></i></button>
+                </span>
+            </h4>
+            <div id="address_data">
+                <ul class="list-group">
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Address:</b></div>
+                            <div class="col ml-1 info-text" data-value="{{person.Address}}" id="data_address" style="white-space: pre-wrap">{{person.Address}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Pin:</b></div>
+                            <div class="col ml-1 info-text" data-value="{{person.Pin}}" id="data_pin">{{person.Pin}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>State:</b></div>
+                            <div class="col ml-1 info-text" data-value="{{person.State.Name}}" id="data_state">{{person.State.Name}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>District:</b></div>
+                            <div class="col ml-1 info-text" data-value="{{person.District.Name}}" id="data_district">{{person.District.Name}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Town/Village:</b></div>
+                            <div class="col ml-1 info-text" data-value="{{person.City}}" id="data_city">{{person.City}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom-list-group-item">
+                        <div class="row">
+                            <div class="col-2 col-md-4" align="left"><b>Subdivision:</b></div>
+                            <div class="col ml-1  info-text" data-value="{{person.Subdivision}}" id="data_subdivision">{{person.Subdivision}}</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div id="address_edit" style="display:none">
+                <form id="addressform" method="post" action="{% url 'Go_Healthy_App:DoctorProfile' %}" autocomplete="off">
+                    {% csrf_token %}
+                    <ul class="list-group">
+                        <li class="list-group-item custom-list-group-item">
+                            <div class="row">
+                                <div class="col" align="left">
+                                    <span><b>Address:</b> </span>
+                                </div>
+                                <div class="col-7" align="left">
+                                    <textarea name="address" id="address" form="addressform" required class="grey-field text-capitalize" rows="3" maxlength="500">{{person.Address}}</textarea>
+                                </div>
+                                <div class="col col-right"></div>
+                            </div>
+                        </li>
+                        <li class="list-group-item custom-list-group-item">
+                            <button type="button" class="btn btn-outline-primary mb-2" id="detectLocationBtn" style="padding:2px">
+                                Fetch My Address <i class="fal fa-crosshairs fa-spin" id="location-spinner" style="display:none;"></i>
+                            </button>
+                            <div class="row">
+                                <div class="col" align="left">
+                                    <span><b>Pin:</b> </span>
+                                </div>
+                                <div class="col-7" align="left">
+                                    <input type="text" inputmode="numeric" name="pin" id="pin" class="grey-field" value="{{person.Pin}}" form="addressform" required minlength="6" maxlength="6">
+                                    <div id="pinLoading" class="mt-2" align="center"></div>
+                                </div>
+                                <div class="col col-right"></div>
+                            </div>
+                        </li>
+                        <li class="list-group-item custom-list-group-item">
+                            <div class="row">
+                                <div class="col" align="left">
+                                    <span><b>State:</b></span>
+                                </div>
+                                <div class="col-7" align="left">
+                                    <select name="state" class="grey-field" id="state" form="addressform" required>
+                                        <optgroup label="States">
+                                            {% for i in states %}
+                                            {% if not i.Is_Union_Territory %}
+                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </optgroup>
+                                        <optgroup label="Union Territory">
+                                            {% for i in states %}
+                                            {% if i.Is_Union_Territory %}
+                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col col-right"></div>
+                            </div>
+                        </li>
+                        <li class="list-group-item custom-list-group-item">
+                            <div class="row">
+                                <div class="col" align="left">
+                                    <span><b>District:</b></span>
+                                </div>
+                                <div class="col-7" align="left">
+                                    <select id="district" class="grey-field" name="district" form="addressform" required>
+                                        {% for i in districts %}
+                                        {% if i.Name == person.district.Name %}
+                                        <option value="{{i.Name}}" selected>{{i.Name}}</option>
+                                        {% else %}
+                                        <option value="{{i.Name}}">{{i.Name}}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col col-right"></div>
+                            </div>
+                        </li>
+                        <li class="list-group-item custom-list-group-item">
+                            <div class="row">
+                                <div class="col" align="left">
+                                    <span><b>Town/Village:</b></span>
+                                </div>
+                                <div class="col-7" align="left">
+                                    <input type="text" inputmode="text" name="city" id="city" class="grey-field text-capitalize" value="{{person.City}}"
+                                           form="addressform" required>
+                                </div>
+                                <div class="col col-right"></div>
+                            </div>
+                        </li>
+                        <li class="list-group-item custom-list-group-item">
+                            <div class="row">
+                                <div class="col" align="left">
+                                    <span><b>Subdivision:</b></span>
+                                </div>
+                                <div class="col-7" align="left">
+                                    <input type="text" inputmode="text" name="subdivision" id="subdivision" class="grey-field text-capitalize"
+                                           value="{{person.Subdivision}}" form="addressform" required>
+                                </div>
+                                <div class="col col-right"></div>
+                            </div>
+                        </li>
+                    </ul>
+                    <button type="submit" name="action" id="addressUpgradeBtn" value="AddressUpdate" form="addressform"
+                            class="btn btn-success"
+                            style="margin-top:2px;width:100%">Update
+                    </button>
+                </form>
+            </div>
+            <br>
+        </div>
+    </div>
+
+{% endblock content %}
+</body>
+{% block script %}
+
+<script src="{% static 'javascripts/doctorprofile.js' %}"></script>
+
+{% endblock script %}
+</html>

@@ -1,0 +1,11 @@
+Patient **patientName** (ID: **patientId**) has been shifted to -
+Department:- **department**,
+Bed No:- **bed_no**,
+Ward:- **ward**, Support:- **support**,
+Room:- **room**, Unit: **unit**,
+Building:- **building**, Floor:- **floor**.
+
+Hospital Contact Number: **hospitalContact**
+
+Regards,
+Go Healthy

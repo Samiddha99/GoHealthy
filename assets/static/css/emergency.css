@@ -1,0 +1,45 @@
+body{
+    background: rgb(255, 253, 253);
+}
+
+#office:disabled{
+    background-color: white;
+}
+#subdivision:disabled{
+    background-color: white;
+}
+.search-box{
+    top: 68px;
+    padding-top: 10px;
+    padding-bottom: 3px;
+    z-index: 1;
+    background-color: rgb(255, 253, 253);
+}
+
+.autocomplete-result {
+    border-top: 1px solid #eee;
+    padding: 10px;
+    background: transparent;
+}
+
+.autoload-option-title {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+  
+.autoload-option-snippet {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.54);
+}
+.no-resuls-found{
+    display: none;
+}
+.not-found-img{
+    width: 100%;
+}
+.emergency-table-header{
+    background-color: rgb(244, 247, 247);
+    font-size: 20px;
+    color: rgb(163, 162, 162);
+}

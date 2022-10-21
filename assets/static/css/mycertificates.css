@@ -1,0 +1,89 @@
+body{
+    background: rgb(255, 255, 255);
+}
+.search-box{
+    top: 68px;
+    padding-top: 10px;
+    padding-bottom: 3px;
+    z-index: 1;
+    background-color: rgb(255, 255, 255);
+}
+
+.no-resuls-found{
+    display: none;
+}
+.not-found-img{
+    width: 100%;
+}
+
+
+.skeleton {
+    height: 7px;
+    margin-bottom: 10px !important;
+    margin: 5px;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.5) 50%,
+        rgba(255, 255, 255, 0) 80%
+        ),
+        lightgray;
+    background-repeat: repeat-y;
+    background-size: 50px 200px;
+    background-position: 0 0;
+    animation: shine 1s infinite;
+}
+@keyframes shine {
+    to {
+        background-position: 100% 0, /* move highlight to right */ 0 0;
+    }
+}
+.loading-skeleton{
+    cursor: progress;
+}
+
+.skeleton.title-skeleton{
+    width: 70%;
+}
+.skeleton.date-skeleton, .skeleton.unit-skeleton{
+    width: 40%;
+}
+.skeleton.name-skeleton{
+    width: 80%;
+}
+.skeleton.phone-skeleton{
+    width: 60%;
+}
+.skeleton.email-skeleton{
+    width: 80%;
+}
+
+.data-card{
+    box-shadow: 0px 0px 2px 1px rgb(206, 205, 205);
+}
+.data-card:hover{
+    box-shadow: 0px 0px 8px 1px rgb(206, 205, 205);
+}
+
+.certificate-id{
+    color: grey;
+    font-size: 14px;
+    margin-top: -15px;
+}
+.bank-name{
+    font-size: 17px;
+    color: #6b6b6b;
+    font-weight: 600;
+}
+.donated-date{
+    margin-top: 10px;
+    color: gray;
+}
+.donate-unit{
+    margin-top: 3px;
+    color: gray;
+}
+.certificate-name, .certificate-phone, .certificate-email{
+    color: gray;
+    margin-bottom: 3px;
+}

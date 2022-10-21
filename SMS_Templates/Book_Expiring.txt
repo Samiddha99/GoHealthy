@@ -1,0 +1,6 @@
+Why are you so late? Don't be late, patient needs treatment as early as possible.
+Your bed booking with id **yourId** will be expired soon.
+Please reach to the hospital within 30 minutes.
+
+Regards,
+Go Healthy

@@ -1,0 +1,431 @@
+
+{% extends 'registerbasepage.html' %}
+{% load static %}
+<head>
+    
+    {% block pagetitle %}
+        <title>Blood Donor Registration | Go Healthy</title>
+    {% endblock pagetitle %}
+
+    {% block morestyle %}
+
+    {% endblock morestyle %}
+
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+
+
+{% block successMessage %}
+    <div class="card ml-3 mr-3">
+        <div class="card-header">
+            <strong><h4>REGISTERED</h4></strong>
+        </div>
+        <div class="card-body">
+            <p><i class="fal fa-check-circle fa-4x text-secondary hidden" id="right_tick"></i></p>
+            <h5 class="card-title"><b>Registration Successful</b></h5>
+            <h6 class="card-subtitle mb-2 text-muted" id="successMessage"></h6>
+            <p class="card-text">
+                We will verify your data. If we see that all of your given information is correct then we will active your account.
+                <br><br>
+                <b>How will we verify your data?</b>
+            </p>
+            <div class="row">
+                <div class="col-md"></div>
+                <div class="col-md-9 ml-1 mr-1" align="left">
+                    <ul>
+                        <li>
+                            We will check is your ID Number correct or not.
+                        </li>
+                        <li>
+                            We will check is your provided information (name, DOB and permanent address) matched with your ID or not.
+                        </li>
+                        <li>
+                            If both validation satisfy true, only then we will activate your account.
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md"></div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a type="button" href="{% url 'Go_Healthy_App:Register-Donor' %}" class="btn btn-primary">
+                Go to Back
+            </a>
+        </div>
+    </div>
+{% endblock successMessage %}
+
+
+{% block registrationForm %}
+    <div class="div_registration-donor div-form" id="section_register-donor">
+        <form method="post" id="registrationForm" enctype="multipart/form-data" action="{% url 'Go_Healthy_App:Register-Donor' %}" autocomplete="off">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md mb-5">
+                    <label for="picture" class="input-label">Upload Your Photo:</label><br>
+                    <div align="center">
+                        <img id="img_id" src="{% static 'images/GoHealthy_Profile Image icon.png' %}" alt="your image" width="200" height="200" style="margin-bottom:5px"/>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="input-field" id="picture" name="picture" accept="image/*" required form="registrationForm" aria-describedby="imageError">
+                        <label class="custom-file-label input-field" for="picture" aria-describedby="Image Upload">Choose an image file</label>
+                    </div>
+                    <div id="imageError" class="feedback"></div>
+                    <label for="picShow" class="text-muted"><input type="checkbox" form="registrationForm" id="picShow" name="picShow"> I want to display my profile picture to all</label>
+                </div>
+                <div class="col-md" align="left">
+                    <label for="username" class="input-label">Username:</label><br>
+                    <input type="text" inputmode="text" class="form-control input-sm input-field text-capitalize" maxlength="15" id="username" minlength="5" name="username" form="registrationForm" required aria-describedby="usernamevalidation">
+                    <div id="usernamevalidation" class="feedback"></div>
+                    <small id="usernameHelpBlock" class="form-text text-muted">
+                        Username will be maximum 15 characters long and minimum 5 characters long. Letters, digits and @/./+/-/_ only applicable.
+                    </small>
+                    <br>
+
+                    <label for="email" class="input-label">Email:</label><br>
+                    <div class="input-group">
+                        <input type="email" inputmode="email" autocomplete="off" class="form-control input-sm input-field text-lowercase" maxlength="100" id="email" name="email" form="registrationForm" placeholder="example@domain.com" required aria-describedby="emailvalidation">
+                        <div class="input-group-append">
+                            <button type="button" disabled class="btn btn-primary verify-open" id="email-verify-open">
+                                Verify
+                            </button>
+                        </div>
+                    </div>
+                    <div id="emailvalidation" class="feedback"></div>
+                    <br><br>
+                    <div class="modal fade text-center modal-verify" id="email-verifyModal" tabindex="-1" role="dialog" aria-labelledby="email-verifyModalLabel" aria-hidden="true" data-backdrop="static">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content" style="top: 50px !important">
+                                <div class="modal-body otp-modal-body">
+                                    <p class="otp-heading">Please enter the One Time Password</p>
+                                    <span class="otp-sent-to">
+                                        <span id="otp-sent-to">sent to <span id="email_id_text"></span></span>
+                                        <button type="button" class="otp-close" id="email-otp-close" aria-label="Close">
+                                            <span aria-hidden="true">Change Email</span>
+                                        </button>
+                                    </span>
+                                    <br><br>
+                                    <span>
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="email-otp-1" data-field="1" data-otp="email" autocomplete="off">
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="email-otp-2" data-field="2" data-otp="email" autocomplete="off">
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="email-otp-3" data-field="3" data-otp="email" autocomplete="off">
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="email-otp-4" data-field="4" data-otp="email" autocomplete="off">
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="email-otp-5" data-field="5" data-otp="email" autocomplete="off">
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="email-otp-6" data-field="6" data-otp="email" autocomplete="off">
+                                    </span>
+                                    <div class="mt-4">
+                                        <button type="button" class="btn otp-validate" id="emailOtpVerifyBtn">
+                                            Validate
+                                        </button>
+                                        <p style="color:rgb(255, 112, 87)" id="email-otp-validate-error"></p>
+                                        <span>
+                                            Didn't receive OTP?
+                                            <button type="button" class="resend-otp-btn" id="emailOtpResendBtn"></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md" align="left">
+                    <label for="password1" class="input-label">Password:</label><br>
+                    <input type="password" class="form-control input-sm input-field" id="password1" minlength="8" autocomplete="off" form="registrationForm" aria-describedby="checkpassword" name="password1" required>
+                    <div id="checkpassword" class="feedback feedback-invalid"></div>
+                    <br><br>
+                </div>
+                <div class="col-md" align="left">
+                    <label for="password2" class="input-label">Confirm Password:</label><br>
+                    <input type="password" disabled class="form-control input-sm input-field" id="password2" minlength="8" autocomplete form="registrationForm" name="password2" placeholder="Enter Password Again" required aria-describedby="passwordcheck">
+                    <div id="passwordcheck" class="feedback"></div>
+                    <br>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md" align="left">
+                    <label for="name" class="input-label">Name:</label><br>
+                    <input type="text" inputmode="text" class="form-control input-sm input-field text-capitalize" maxlength="100" value="{{name}}" name="name" id="name" form="registrationForm" required data-validation="basic_name_validation">
+                    <div id="namevalidation" class="feedback"></div>
+                    <br><br>
+                </div>
+                <div class="col-md" align="left">
+                    <label for="contact" class="input-label">Contact:</label><br>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text set-flag">
+                                <img src="{% static 'images/india-flag.png' %}" height="20px" width="30px">
+                                <span style="color:#727272">&nbsp;+91</span>
+                            </span>
+                        </div> 
+                        <input type="tel" inputmode="tel" class="form-control input-sm input-field" name="contact" id="contact" value="{{contact}}"  minlength="10" maxlength="10" form="registrationForm" placeholder="10 digit mobile no" required aria-describedby="contactvalidation">
+                        <div class="input-group-append">
+                            <button type="button" disabled class="btn btn-primary verify-open" id="contact-verify-open">
+                                Verify
+                            </button>
+                        </div>
+                    </div>
+                    <div id="contactvalidation" class="feedback"></div>
+                    <br><br>
+                    <div class="modal fade text-center" id="contact-verifyModal" tabindex="-1" role="dialog" aria-labelledby="contact-verifyModalLabel" aria-hidden="true" data-backdrop="static">
+                        <div class="modal-dialog modal-verify" role="document">
+                            <div class="modal-content" style="top: 50px !important">
+                                <div class="modal-body otp-modal-body">
+                                    <p class="otp-heading">Please enter the One Time Password</p>
+                                    <span class="otp-sent-to">
+                                        <span id="otp-sent-to">sent to <span id="mobile_no_text"></span></span>
+                                        <button type="button" class="otp-close" id="mobile-otp-close" aria-label="Close">
+                                            <span aria-hidden="true">Change Mobile No</span>
+                                        </button>
+                                    </span>
+                                    <br><br>
+                                    <span>
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="mobile-otp-1" data-field="1" data-otp="mobile" autocomplete="off">
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="mobile-otp-2" data-field="2" data-otp="mobile" autocomplete="off">
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="mobile-otp-3" data-field="3" data-otp="mobile" autocomplete="off">
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="mobile-otp-4" data-field="4" data-otp="mobile" autocomplete="off">
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="mobile-otp-5" data-field="5" data-otp="mobile" autocomplete="off">
+                                        <input type="text" inputmode="numeric" minlength="1" maxlength="1" class="otp-enter-input" id="mobile-otp-6" data-field="6" data-otp="mobile" autocomplete="off">
+                                    </span>
+                                    <div class="mt-4">
+                                        <button type="button" class="btn otp-validate" id="mobileOtpVerifyBtn">
+                                            Validate
+                                        </button>
+                                        <p style="color:rgb(255, 112, 87)" id="contact-otp-validate-error"></p>
+                                        <span>
+                                            Didn't receive OTP?
+                                            <button type="button" class="resend-otp-btn" id="mobileOtpResendBtn"></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md text-md-left text-center">
+                    <div class="text-left">
+                        <label class="input-label">Gender:</label><br>
+                    </div>
+                    <input type="radio" name="gender" id="male" form="registrationForm" value="Male" required hidden>
+                    <label for="male" class="input-label radio-label">Male</label>
+                    <input type="radio" name="gender" id="female" form="registrationForm" value="Female" required hidden>
+                    <label for="female" class="input-label radio-label">Female</label>
+                    <input type="radio" name="gender" id="other" form="registrationForm" value="Other" required hidden>
+                    <label for="other" class="input-label radio-label">Other</label>
+                    <input type="radio" name="gender" id="nosay" form="registrationForm" value="I not preferred to say" required hidden>
+                    <label for="nosay" class="input-label radio-label">I not preferred to say</label>
+                    <br><br>
+                </div>
+                <div class="col-md" align="left">
+                    <label for="dob" class="input-label">Date of Birth:</label><br>
+                    <input type="date" class="form-control input-sm input-field" value="{{dob}}" name="dob" id="dob" form="registrationForm" required style="width:80%" aria-describedby="dobMessage">
+                    <div id="dobMessage" class="feedback"></div>
+                    <br><br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md text-left">
+                    <label for="idNumber" class="input-label">ID Number:</label><br>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <select name="idType" class="form-control input-sm input-field id-type-select" id="idType" form="registrationForm" required>
+                                <option label="ID Type"></option>
+                                <option value="Aadhaar">Aadhaar</option>
+                                <option value="Voter Card">Voter Card</option>
+                                <option value="PAN">PAN</option>
+                            </select>
+                        </div>
+                        <input type="text" inputmode="text" class="form-control input-sm id-field text-uppercase" required form="registrationForm" id="idNumber" name="idNumber">
+                    </div>
+                    <br><br>
+                </div>
+                <div class="col-md text-left">
+                    <label for="bloodGroup" class="input-label">Blood Group:</label>
+                    <select form="registrationForm" class="form-control input-sm input-field" id="bloodGroup" name="bloodGroup" required style="width:100%">
+                        <option label="Select Blood Group"></option>
+                        {% for i in bloodGroups %}
+                        <option label="{{i.1}}" value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                    </select>
+                    <br><br>
+                </div>
+            </div>
+            <p class="text-hor-divider mb-5"><span class="text" style="font-size:22px">Permanent Address</span></p>
+            <div class="row">
+                <div class="col-md" align="center">
+                    <label for="permanent_address" class="input-label">Address:</label><br>
+                    <textarea name="permanent_address" class="form-control input-sm input-field text-capitalize" id="permanent_address" maxlength="500" rows="2" form="registrationForm" placeholder="Enter Your Full Address" required></textarea>
+                    <br><br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md" align="center">
+                    <label for="permanent_pin" class="input-label">PIN:</label><br>
+                    <input type="text" inputmode="numeric" class="form-control input-sm input-field" data-address="permanent" value="{{pin}}" maxlength="6" minlength="6" name="permanent_pin" id="permanent_pin" form="registrationForm" required style="width:30%">
+                    <br>
+                    <div id="permanent_pinLoading" class="mb-4" style="margin-top:-15px"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md" align="left">
+                    <label for="permanent_city" class="input-label">Town/Village:</label><br>
+                    <input type="text" inputmode="text" class="form-control input-sm input-field text-capitalize" id="permanent_city" value="{{city}}" name="permanent_city" form="registrationForm" required>
+                    <br><br>
+                </div>
+                <div class="col-md" align="left">
+                    <label for="permanent_subdivision" class="input-label">Sub-Division:</label><br>
+                    <input type="text" inputmode="text" class="form-control input-sm input-field text-capitalize" id="permanent_subdivision" value="{{subdivision}}" name="permanent_subdivision" form="registrationForm" required>
+                    <br><br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md" align="left">
+                    <label for="permanent_state" class="input-label">State:</label><br>
+                    <select name="permanent_state" class="form-control input-sm input-field" data-address="permanent" id="permanent_state" form="registrationForm" required data-district_option="permanent_district">
+                        <option label="Select State"></option>
+                        <optgroup label="States">
+                            {% for i in states %}
+                            {% if not i.Is_Union_Territory %}
+                            <option value="{{i.Name}}">{{i.Name}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                        <optgroup label="Union Territory">
+                            {% for i in states %}
+                            {% if i.Is_Union_Territory %}
+                            <option value="{{i.Name}}">{{i.Name}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+                    <br><br>
+                </div>
+                <div class="col-md" align="left">
+                    <label for="permanent_district" class="input-label">District:</label><br>
+                    <select id="permanent_district" class="form-control input-sm input-field" name="permanent_district" form="registrationForm" required>
+                        <option label="Select District"></option>
+                    </select>
+                    <br><br>
+                </div>
+            </div>
+            <p class="text-hor-divider mb-4"><span class="text" style="font-size:22px">Current Address</span></p>
+            <input type="checkbox" form="registrationForm" name="samecurrent" id="samecurrent"><label
+                for="samecurrent">&nbsp;<b>Same as permanent address</b></label>
+            <div id="current_address" style="display:block">
+                <div align="center">
+                    <p class="text-hor-divider" style="width:50%"><span class="text">OR</span></p>
+                </div>
+                <div class="row">
+                    <div class="col-md" align="center">
+                        <label for="address" class="input-label">Address:</label><br>
+                        <textarea name="address" class="form-control input-sm input-field text-capitalize" id="address" maxlength="500" rows="2" form="registrationForm" placeholder="Enter Your Full Address" required></textarea>
+                        <br>
+                    </div>
+                </div>
+                <div align="center">
+                    <button type="button" id="locationbtn" class="btn btn-secondary mt-1" style="padding:2px; padding-left:4px; padding-right:4px">
+                        <i class="fas fa-map-marker-alt"></i> Detect My Current Location
+                        <i class="fal fa-crosshairs fa-spin" id="location-spinner" style="display:none;"></i>
+                    </button>
+                    <br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md" align="center">
+                        <label for="pin" class="input-label">PIN:</label><br>
+                        <input type="text" inputmode="numeric" class="form-control input-sm input-field" data-address="current" value="{{pin}}" maxlength="6" minlength="6" name="pin" id="pin" form="registrationForm" required style="width:30%">
+                        <br>
+                        <div id="current_pinLoading" class="mb-4" style="margin-top:-15px"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md" align="left">
+                        <label for="city" class="input-label">Town/Village:</label><br>
+                        <input type="text" inputmode="text" class="form-control input-sm input-field text-capitalize" id="city" value="{{city}}" name="city" form="registrationForm" required>
+                        <br><br>
+                    </div>
+                    <div class="col-md" align="left">
+                        <label for="subdivision" class="input-label">Sub-Division:</label><br>
+                        <input type="text" inputmode="text" class="form-control input-sm input-field text-capitalize" id="subdivision" value="{{subdivision}}" name="subdivision" form="registrationForm" required>
+                        <br><br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md" align="left">
+                        <label for="state" class="input-label">State:</label><br>
+                        <select name="state" class="form-control input-sm input-field" data-address="current" id="state" form="registrationForm" required data-district_option="district">
+                            <option label="Select State"></option>
+                            <optgroup label="States">
+                                {% for i in states %}
+                                {% if not i.Is_Union_Territory %}
+                                <option value="{{i.Name}}">{{i.Name}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Union Territory">
+                                {% for i in states %}
+                                {% if i.Is_Union_Territory %}
+                                <option value="{{i.Name}}">{{i.Name}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </optgroup>
+                        </select>
+                        <br><br>
+                    </div>
+                    <div class="col-md" align="left">
+                        <label for="district" class="input-label">District:</label><br>
+                        <select id="district" class="form-control input-sm input-field" name="district" form="registrationForm" required>
+                            <option label="Select District"></option>
+                        </select>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="row mt-2" id="nextbtnblock" style="display:block">
+            <label for="agree"><input type="checkbox" form="registrationForm" id="agree" name="agree" value="agreed" required> I agree with the <span><a target="_blank" href="{% url 'Go_Healthy_App:TermsConditions' %}">Terms & Conditions</a></span></label>
+            <div class="col-md">
+                <button type="submit" form="registrationForm" name="done" id="nextbtn" class="btn btn-lg btn-primary btn-next" style="width:200px">
+                    NEXT&nbsp;&nbsp;<i class="fad fa-angle-double-right" style="font-size:24px"></i>
+                </button>
+                <p id="registerMessage" style="color: red;"></p>
+            </div>
+        </div>
+
+        <div class="modal fade" id="submit-declarationModal" tabindex="-1" role="dialog" aria-labelledby="submit-declarationModalLabel" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog" role="document" style="top:40px">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="submit-declarationModalLabel">Declaration</h5>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        After registration you will not be able to change your Username, Name, Gender, Date of Birth and Permanent Address details.
+                        <br>You can only change your Contact Details and Current Address after registration.
+                        <br><b>So make sure your entered details is correct.</b>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Edit Data</button>
+                    <button type="button" class="btn btn-success" id="submit">Submit</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock registrationForm %}
+</body>
+
+{% block morescript %}
+
+<script src="{% static 'javascripts/registerdonor.js' %}" class="more-scripts"></script>
+
+{% endblock morescript %}
+</html>

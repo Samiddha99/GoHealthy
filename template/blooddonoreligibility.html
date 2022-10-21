@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %} <!--To use the files under static folder we have to load the static in that page-->
+<head>
+    {% block meta %}
+    <meta name="title" content="Blood Donor Eligibility | Go Healthy">
+    <meta name="description" content="Check your eligibility to donate blood">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>Blood Donor Eligibility | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <style>
+        body{
+            background-color: #eeeeee;
+        }
+    </style>
+    {% endblock style %}
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md-8 ml-2 mr-2">
+            <div class="box-eligibility">
+                <div class="donor-eligible-main-heading-div">
+                    <h2 class="donor-eligible-main-heading">
+                        Eligibility to Donate Blood
+                    </h2>
+                </div>
+                <div class="donor-eligible-contents">
+                    <div class="bg-donor-eligible top">
+                        <h5 class="donor-eligible-heading">Age</h5>
+                        <p class="donor-eligible-text">You must be at least 18 years old and maximum 65 year age is acceptable.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Weight</h5>
+                        <p class="donor-eligible-text">
+                            Your weight must be at least 45 kilograms to donate blood.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Acupuncture</h5>
+                        <p class="donor-eligible-text">
+                            You may donate if a licensed acupuncturist, MD, or DO performed the procedure, otherwise you must wait 12 months after having acupuncture.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Alcohol or Smoke Consumption</h5>
+                        <p class="donor-eligible-text">
+                            It is advisable to refrain from smoking at least two hours before you donate blood. It is also not advisable to consume alcohol at least 24 hours before donating blood.
+                            <br>You should not consume alcohol or smoke, it is injurious to health.
+                            <br>Your health is your wealth. Why would you harm the wealth?
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Allergy, Fever, Breathing Problem, Acute Infection</h5>
+                        <p class="donor-eligible-text">
+                            You can donate blood to a patient, when you have no cold, fever, flu, catarrh, cough, sore throat, diarrhea, allergic problems, breathing problems, infection, any disease and feel well.
+                            <br>If at now you have this diseases, you can register yourself, but you will be eligible for blood donation when you get well fully.
+                            <br>If you have had any major acute infection you should take advise from doctor before donating blood.
+                            <br>Those who have had infections with Chagas Disease or Leishmaniasis are not eligible to donate. Those who have had infection with Babesiosis can donate if it has been 2 years or more since the diagnosis or positive test.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Aspirin</h5>
+                        <p class="donor-eligible-text">
+                            If you are taking aspirin or any medicine containing aspirin, then you need to concern about time period of your medicine.
+                            Because, you can donate blood 48 hours after taking aspirin.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Antibiotics</h5>
+                        <p class="donor-eligible-text">
+                            You can donate blood to a patient, if you took your last Antibiotics 10 days ago. And your Antibiotics dose is completed.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Asthma</h5>
+                        <p class="donor-eligible-text">
+                            Acceptable as long as you do not have any limitations on daily activities and are not having difficulty breathing at the time of donation and you otherwise feel well. Medications for asthma do not disqualify you from donating.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Birth Control</h5>
+                        <p class="donor-eligible-text">
+                            Women on oral contraceptives or using other forms of birth control are eligible to donate.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Bleeding Problems</h5>
+                        <p class="donor-eligible-text">
+                            If you have a history of bleeding problems, your blood does not clot normally and you are taking any "blood thinner" then you should not donate blood.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Blood Pressure</h5>
+                        <p class="donor-eligible-text">
+                            Your blood pressure must be at least 90/50 (systolic/diastolic) and below 180/100 (systolic/diastolic) at time of donation.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Blood Transfusion</h5>
+                        <p class="donor-eligible-text">
+                            Wait for 3 months after receiving a blood transfusion from another person to donate blood.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Blood Donation Interval</h5>
+                        <p class="donor-eligible-text">
+                            You can donate blood many times. But, you need to give some time to your body to replace donated blood. Your body will replace the blood volume (plasma) within 48 hours. It will take four to eight weeks for your body to completely replace the red blood cells you donated. It is better for you to wait for at least 90 days after blood donation to donate blood again.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Cancer</h5>
+                        <p class="donor-eligible-text">
+                            Eligibility depends on the type of cancer and treatment history. If you had leukemia or lymphoma, including Hodgkin’s Disease and other cancers of the blood, you are not eligible to donate. Other types of cancer are acceptable if the cancer has been treated successfully and it has been more than 12 months since treatment was completed and there has been no cancer recurrence in this time. 
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Creutzfeldt-Jakob Disease (CJD)</h5>
+                        <p class="donor-eligible-text">
+                            If you ever received a dura mater (brain covering) transplant, an injection of cadaveric pituitary human growth hormone (hGH) and you have been diagnosed with vCJD, CJD or any other TSE or have a blood relative diagnosed with genetic CJD (e.g., fCJD, GSS, or FFI) then you are not eligible to donate.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Dental Procedures and Oral Surgery</h5>
+                        <p class="donor-eligible-text">
+                            Acceptable after dental procedures as long as there is no infection present. Wait until finishing antibiotics for a dental infection. Wait for 3 days after having oral surgery to donate blood.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Diabetes</h5>
+                        <p class="donor-eligible-text">
+                            Diabetics who are well controlled on insulin or oral medications are eligible to donate.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Ebola Virus</h5>
+                        <p class="donor-eligible-text">
+                            You are not eligible to donate if you have ever had Ebola virus infection or disease.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Heart Disease</h5>
+                        <p class="donor-eligible-text">
+                            In general, acceptable as long as you have been medically evaluated and treated, have no current (within the last 6 months) heart related symptoms such as chest pain and have no limitations or restrictions on your normal daily activities.
+                            <br>Wait at least 6 months following an episode of angina.
+                            <br>Wait at least 6 months following a heart attack.
+                            <br>Wait at least 6 months after bypass surgery or angioplasty.
+                            <br>Wait at least 6 months after a change in your heart condition that resulted in a change to your medications.
+                            <br>If you have a pacemaker, you may donate as long as your pulse is between 50 and 100 beats per minute and you meet the other heart disease criteria. You should discuss your particular situation with your personal healthcare provider and the health historian at the time of donation.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Heart Murmur, Heart Valve Disorder</h5>
+                        <p class="donor-eligible-text">
+                            Acceptable if you have a heart murmur as long as you have been medically evaluated and treated and have not had symptoms in the last 6 months and have no restrictions on your normal daily activities.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Hemoglobin</h5>
+                        <p class="donor-eligible-text">
+                            In order to donate blood, a woman must have a hemoglobin level of at least 12.5 g/dL, and a man must have a hemoglobin level of at least 13.0 g/dL. For all donors, the hemoglobin level can be no greater than 20 g/dL.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Hepatitis, Jaundice</h5>
+                        <p class="donor-eligible-text">
+                            If you have signs or symptoms of hepatitis (inflammation of the liver) caused by a virus, or unexplained jaundice (yellow discoloration of the skin), you are not eligible to donate blood.
+                            <br>If you ever tested positive for hepatitis, at any age, you are not eligible to donate, even if you were never sick or jaundiced from the infection.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">HIV, AIDS</h5>
+                        <p class="donor-eligible-text">
+                            You should not give blood if you have AIDS or have ever had a positive HIV test, or if you have done something that puts you at risk for becoming infected with HIV.
+                            <br><br>You are at risk for getting infected if:
+                            <ul style="margin-top: -10px;" class="donor-eligible-text">
+                                <li>your body is cut with something that has come in contact with the blood of another infected person,</li>
+                                <li>you have used needles to take any drugs, steroids, or anything not prescribed by a doctor,</li>
+                                <li>you have had sexual contact in the past 3 months with anyone who are at risk of getting infected.</li>
+                            </ul>
+                            <p class="donor-eligible-text">You should not give blood if you have any of the following conditions that can be signs or symptoms of HIV/AIDS</p>
+                            <ul style="margin-top: -10px;" class="donor-eligible-text">
+                                <li>Fever</li>
+                                <li>Enlarged lymph glands</li>
+                                <li>Sore throat</li>
+                                <li>Rash</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Hormone Replacement Therapy (HRT)</h5>
+                        <p class="donor-eligible-text">
+                            Women on hormone replacement therapy for menopausal symptoms and prevention of osteoporosis are eligible to donate.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Immunization, Vaccination</h5>
+                        <p class="donor-eligible-text">
+                            Acceptable if you were vaccinated for influenza, pneumonia, tetanus or meningitis; and received Tdap vaccine, HPV Vaccine, SHINGRIX (shingles vaccine) and providing you are symptom-free and fever-free.
+                        </p>
+                        <ul class="donor-eligible-text">
+                            <li class="mb-2">
+                                <strong>COVID-19 Vaccine</strong>
+                                <ul>
+                                    <li>Acceptable if you were vaccinated with a non-replicating, inactivated, or RNA-based COVID-19 vaccine manufactured by AstraZeneca, Janssen/J&J, Moderna, Novavax, or Pfizer providing you are symptom-free and fever-free.</li>
+                                    <li>Wait 2 weeks if you were vaccinated with a live attenuated COVID-19 vaccine.</li>
+                                    <li>Wait 2 weeks if you were vaccinated with a COVID-19 vaccine but do not know if it was a non-replicating, inactivated, RNA based vaccine or a live attenuated vaccine.</li>
+                                </ul>
+                            </li>
+                            <li class="mb-2">
+                                <strong>Rabies Vaccine</strong>
+                                <ul>
+                                    If you have taken rabies vaccination you will need to wait for at least a year to be eligible as a blood donor. 
+                                </ul>
+                            </li>
+                            <li class="mb-2">
+                                <strong>Smallpox Vaccine</strong>
+                                <ul>
+                                    <li><b>Smallpox vaccination and did not develop complications: </b>
+                                        Wait 8 weeks (56 days) from the date of having a smallpox vaccination as long as you have had no complications. Complications may include skin reactions beyond the vaccination site or general illness related to the vaccination.
+                                    </li>
+                                    <li><b>Smallpox vaccination and developed complications: </b>
+                                        Wait 14 days after all vaccine complications have resolved or 8 weeks (56 days) from the date of having had the smallpox vaccination whichever is the longer period of time. You should discuss your particular situation with the health historian at the time of donation. Complications may include skin reactions beyond the vaccination site or general illness related to the vaccination.
+                                    </li>
+                                    <li><b>Close contact with someone who has had the smallpox vaccine and you did not develop any skin lesions or other symptoms: </b>
+                                        If you make close contact with someone who has had the smallpox vaccine in the last eight weeks and you did not develop any skin lesions or other symptoms, then you are eligible to donate.
+                                    </li>
+                                    <li><b>Close contact with someone who has had the smallpox vaccine and you developed skin lesions or symptoms: </b>
+                                        Wait 8 weeks (56 days) from the date of the first skin lesion or sore. You should discuss your particular situation with the health historian at the time of donation. Complications may include skin reactions or general illness related to the exposure.
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Insulin</h5>
+                        <p class="donor-eligible-text">
+                            Donors with diabetes who take any kind of insulin are eligible to donate as long as their diabetes is well controlled.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Drug Use</h5>
+                        <p class="donor-eligible-text">
+                            <ul class="donor-eligible-text">
+                                <li>You cannot give blood if you have ever injected or been injected with drugs that were not prescribed by a registered medical practitioner, even once or a long time ago.</li>
+                                <li>You cannot give blood for 12 months if you have snorted cocaine or any other drug. You should refrain from taking illegal drugs.</li>
+                                <li>You cannot give blood for 14 days if you have taken ecstasy.</li>
+                                <li>You cannot give blood if you are under the influence of any recreational drug.</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Malaria</h5>
+                        <p class="donor-eligible-text">
+                            If you have had malaria, Wait 3 years after completing treatment for malaria to donate blood.
+                            <br>Wait 3 months after returning from a trip to an area where malaria is found.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Medications</h5>
+                        <p class="donor-eligible-text">
+                            In almost all cases, medications will not disqualify you as a blood donor. Your eligibility will be based on the reason that the medication was prescribed. As long as the condition is under control and you are healthy, blood donation is usually permitted.
+                            <br>Over-the-counter oral homeopathic medications, herbal remedies, and nutritional supplements are acceptable.
+                            <br><br>
+                            There are a handful of drugs that are of special significance in blood donation. Persons on these drugs have waiting periods following their last dose before they can donate blood:
+                            <ul class="donor-eligible-text">
+                                <li>Accutane, Amnesteem, Absorica, Claravis, Myorisan, Sotret or Zenatane (isotretinoin), Proscar (finasteride), and Propecia (finasteride) - wait 1 month from the last dose.</li>
+                                <li>Avodart or Jalyn (dutasteride) - wait 6 months from the last dose.</li>
+                                <li>Aspirin, no waiting period for donating whole blood. However, you must wait 2 full days after taking aspirin or any medication containing aspirin before donating platelets by apheresis.</li>
+                                <li>Effient (prasugrel) and Brilinta (ticagrelor) – no waiting period for donating whole blood. However, you must wait 7 days after taking Brilinta (ticagrelor) before donating platelets by apheresis. You must wait 3 days after taking Effient (prasugrel) before donating platelets by apheresis.</li>
+                                <li>Feldene (piroxicam), no waiting period for donating whole blood. However, you must wait 2 days after taking Feldene (piroxicam) before donating platelets by apheresis.</li>
+                                <li>Coumadin, Warfilone, Jantoven (warfarin) and Heparin, are prescription blood thinners- you should not donate since your blood will not clot normally. If your doctor discontinues your treatment with blood thinners, wait 7 days before returning to donate.</li>
+                                <li>Arixtra (fondaparinux), Fragmin (dalteparin), Eliquis (apixaban), Pradaxa (dabigatran),Savaysa (edoxaban), Xarelto (rivaroxaban),and Lovenox (enoxaparin) are also prescription blood thinners- you should not donate since your blood will not clot normally. If your doctor discontinues your treatment with these blood thinners, wait 2 days before returning to donate.</li>
+                                <li>Hepatitis B Immune Globulin – given for exposure to hepatitis, wait 12 months after exposure to hepatitis.</li>
+                                <li>HIV Prevention (PrEP and PEP) medications - Truvada (Tenofovir), Descovy (emtricitabine), Tivicay (dolutegravir) and  Isentress (raltegravir) and Isentress are given for exposure to HIV, you must wait 3 months after the last dose of medication to donate.</li>
+                                <li>HIV treatment also known as antiretroviral therapy (ART) at any time - you are not eligible to donate blood.</li>
+                                <li>Plavix (clopidogrel) and Ticlid (ticlopidine) – no waiting period for donating whole blood. However you must wait 14 days after taking this medication before donating platelets by apheresis.</li>
+                                <li>Zontivity (vorapaxar) – no waiting period for donating whole blood. However, you must wait 1 month after taking this medication before donating platelets by apheresis.</li>
+                                <li>Rinvoq (upadacitinib) – wait 1 month</li>
+                                <li>Thalomid (thalidomide) – wait 1 month.</li>
+                                <li>Cellcept (mycophenolate mofetil) – an immunosuppressant– wait 6 weeks.</li>
+                                <li>Soriatane (acitretin) – wait 3 years.</li>
+                                <li>Tegison (etretinate) at any time – you are not eligible to donate blood.</li>
+                                <li>Arava (leflunomide), Erivedge (vismodegib) and Odomzo (sonidegib)– wait 2 years.</li>
+                                <li>Aubagio (teriflunomide) – wait 2 years.</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Organ/Tissue Transplants</h5>
+                        <p class="donor-eligible-text">
+                            Wait 3 months after receiving any type of organ transplant from another person. If you ever received a dura mater (brain covering) transplant, you are not eligible to donate. This requirement is related to concerns about the brain disease, Creutzfeld-Jacob Disease (CJD).
+                            <br>If you ever received a transplant of animal organs or of living animal tissue - you are not eligible to donate blood. Non-living animal tissues such as bone, tendon, or heart valves are acceptable.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Piercing (ears, body), Electrolysis</h5>
+                        <p class="donor-eligible-text">
+                            Acceptable as long as the instruments used were single-use equipment and disposable (which means both the gun and the earring cassette were disposable). Wait 12 months if a piercing was performed using a reusable gun or any reusable instrument.
+                            <br>Wait 12 months if there is any question whether or not the instruments used were single-use equipment. This requirement is related to concerns about hepatitis.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Period or Menstruating</h5>
+                        <p class="donor-eligible-text">
+                            You can donate blood during your period if it is required. If you are not bleeding heavily, your haemoglobin is more than 12.5 g/dl and you are not in any discomfort or pain, then you can donate. It may be better for you to donate the week after periods.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Pregnancy</h5>
+                        <p class="donor-eligible-text">
+                            Persons who are pregnant are not eligible to donate. Wait 6 weeks after giving birth.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Pulse (High or Low)</h5>
+                        <p class="donor-eligible-text">
+                            Acceptable as long as your pulse is no more than 100 and no less than 50.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Sexually Transmitted Disease</h5>
+                        <p class="donor-eligible-text">
+                            If you gettreatment for syphilis or gonorrhea, wait 12 months after treatment for syphilis or gonorrhea.
+                            <br>Chlamydia, venereal warts (human papilloma virus), or genital herpes are not a cause for deferral if you are feeling healthy and well and meet all other eligibility requirements.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Sickle Cell</h5>
+                        <p class="donor-eligible-text">
+                            You may donate plasma or platelets if you have the sickle cell trait, but not whole blood. Those with sickle cell disease are not eligible to donate. Learn how blood donations help those affected by Sickle Cell Disease.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Skin Disease, Rash, Acne</h5>
+                        <p class="donor-eligible-text">
+                            Acceptable as long as the skin over the vein to be used to collect blood is not affected. If the skin disease has become infected, wait until the infection has cleared before donating. Taking antibiotics to control acne does not disqualify you from donating.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Surgery</h5>
+                        <p class="donor-eligible-text">
+                            You must wait six months to donate after surgery. For outpatient surgical procedures, you must wait until you are completely healed and released from a doctor’s care. 
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Tattoo</h5>
+                        <p class="donor-eligible-text">
+                            You must wait 12 months to donate after tattooing or permanent makeup.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Tuberculosis</h5>
+                        <p class="donor-eligible-text">
+                            If you have active tuberculosis or are being treated for active tuberculosis you should not donate. Acceptable if you have a positive skin test or blood test, but no active tuberculosis and are NOT taking antibiotics. If you are receiving antibiotics for a positive TB skin test or blood test only or if you are being treated for a tuberculosis infection, wait until treatment is successfully completed before donating.
+                        </p>
+                    </div>
+                    <div class="bg-donor-eligible">
+                        <h5 class="donor-eligible-heading">Zika Virus</h5>
+                        <p class="donor-eligible-text">
+                            If you have been diagnosed with Zika virus infection, wait more than 120 days after your symptoms resolve to donate.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md"></div>
+    </div>
+
+{% endblock content %}
+    
+</body>
+</html>

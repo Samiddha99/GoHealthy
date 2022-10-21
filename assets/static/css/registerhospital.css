@@ -1,0 +1,249 @@
+
+body{
+    background-color: #f9f9f9;
+}
+.registration-nav-tabs{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid rgb(219, 219, 219);
+}
+.note-box{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid rgb(219, 219, 219);
+}
+.note-box h5{
+    font-size: 20px;
+}
+.note-box h6{
+    font-size: 18px;
+}
+.note-box p, .note-box li{
+    font-size: 16px;
+}
+.register-hospital-input{
+    border-radius: 0px !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid rgb(200, 207, 233) !important;
+}
+.register-hospital-input:focus{
+    border-radius: 0px !important;
+    outline: none !important;
+    box-shadow: 0px 0px 3px 0.5px rgb(28, 91, 224) !important;
+}
+.register-hospital-input ~ label span{
+    color: rgb(138, 160, 200);
+    background-color: white !important;
+}
+.register-hospital-input:focus ~ label span{
+    color: rgb(96, 139, 212);
+    background-color: white !important;
+}
+.input-help{
+    font-size: 14px;
+    color: gray;
+    margin-bottom: 0px;
+}
+.input-help ul{
+    padding-left: 15px;
+    margin-bottom: 0px;
+}
+
+.profile-image-border{
+    border: 3px solid gray;
+}
+
+.is-invalid{
+    border: 1px solid #f76269 !important;
+    border-radius:0px !important;
+    outline:none !important;
+}
+.is-invalid:focus{
+    border:1px solid #EF000A !important;
+    box-shadow: none !important;
+    border-radius:0px !important;
+    outline:none !important;
+}
+.is-valid{
+    border:1px solid #a2f780 !important;
+    border-radius:0px !important;
+    outline:none !important;
+}
+.is-valid:focus{
+    border:1px solid #49FF00 !important;
+    box-shadow: none !important;
+    border-radius:0px !important;
+    outline:none !important;
+}
+.feedback-valid{
+    color: green;
+    font-size: 14px;
+}
+.feedback-invalid{
+    color: red;
+    font-size: 14px;
+}
+.table-serial {
+    counter-reset: serial-number;  /* Set the serial number counter to 0 */
+}
+.table-serial-no:before {
+    counter-increment: serial-number;  /* Increment the serial number counter */
+    content: counter(serial-number);  /* Display the counter */
+}
+.map-modal{
+    margin: 10px !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    min-height: 100vh !important;
+}
+.map{
+    width: 100%;
+    height: 100%;
+}
+
+.add-bed-addon{
+    background: rgb(141, 141, 141);
+    color: white;
+}
+.add-bed-input{
+    border: 1px solid rgb(141, 141, 141);
+    outline: none;
+}
+.add-bed-input:focus{
+    border: 1px solid rgb(141, 141, 141);
+    box-shadow: 0px 0px 5px 1px rgb(141, 141, 141);
+    outline: none;
+}
+.availability-heading{
+    background-color: rgb(141, 141, 141);
+    color: white;
+    border-radius: 5px;
+    padding: 7px;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 17px;
+}
+
+.hos-id{
+    font-weight: bold;
+    font-size: 16px;
+}
+.confirmation-text{
+    color: dimgrey;
+}
+.btn-go-to-top{
+    display: none;
+}
+.table-added-beds .thread-sticky{
+    position: sticky !important;
+    top: 0px;
+    z-index: 10;
+}
+.has-antivenom-label{
+    background: rgb(141, 141, 141);
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.table-added-rooms thead th{
+    background-color: #2a6eff;
+    color: white;
+    position: sticky !important;
+    top: 0px;
+    z-index: 9;
+}
+.table-column{
+    text-align: center !important;
+    padding-right: 30px !important;
+}
+.table-sort-column{
+    cursor: pointer;
+    user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+.room-data-table-sort-icon{
+    margin-top: 5px !important;
+}
+.modal-body-bed-info-table{
+    height: 50vh;
+    overflow: auto;
+}
+
+.update-modal-input:focus{
+    box-shadow: 0px 0px 5px 0.5px #6593f8 !important;
+}
+
+.success-box{
+    padding: 20px;
+    box-shadow: 0px 0px 8px 1px rgb(160, 159, 159);
+    border-radius: 5px;
+}
+.success-box h3{
+    font-family: 'Libre Baskerville', serif;
+    font-size: 30px;
+}
+.success-box h4{
+    color: #82dd15;
+    font-size: 27px;
+}
+.success-box p{
+    font-size: 16px;
+}
+
+.section-help{
+    font-size: 16px;
+    color: gray;
+    text-align: center;
+    margin-top: -15px;
+    margin-bottom: 15px;
+}
+.text-hor-divider{
+    text-align: center;
+    margin-top: 35px;
+}
+.text-hor-divider .hor-divider{
+    width:100%;
+    height: 1px !important;
+    background-color: rgb(193, 204, 222);
+}
+.text-hor-divider .text{
+    position: relative;
+    top: -14px;
+    background:rgb(198, 213, 245);
+    color:#8799b3;
+    font-size: 18px;
+    padding: 2px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 50px;
+}
+
+.email-verification-div .otp-heading{
+    font-size: 16x;
+    font-weight: 600;
+}
+.email-verification-div .sub-otp-heading{
+    font-size: 14px;
+    font-weight: 400;
+}
+.input-user_verification{
+    border: 1px solid rgba(176, 176, 195, 0.847);
+}
+.input-user_verification:focus{
+    box-shadow: 0px 0px 1px 1px rgb(111, 111, 243);
+}
+.btn-user_verification{
+    background-color: #39ba07;
+    color: white;
+    border-radius: 50px;
+}
+.btn-user_verification:hover{
+    background-color: #2f9208;
+    color: white;
+}

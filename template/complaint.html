@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    {% block meta %}
+    <meta name="title" content="Complaint | Go Healthy">
+    <meta name="description" content="Drop your complaint">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>Complaint | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/complaint.css' %}">
+    {% endblock style %}
+
+</head>
+{% block body %}
+<body style="min-height:100%;background-image: linear-gradient(#6360E2, #6360E2)">
+{% endblock body %}
+<!--Make a background-->
+
+{% block content %}
+<center>
+    <h2 style="color:yellow;font-weight:bold; text-shadow:-4px 4px black">DROP YOUR COMPLAINT HERE</h2>
+
+
+    <div class="row">
+        <div class="col-md">
+            <img src="{% static 'images/GoHealthy_drop complaint.png' %}" width="100%" height="550vw" style="margin-bottom:-65px">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md-6 ml-2 mr-2">
+            <div class="container" style="background-color:#EBEEEF;padding:10px;border-radius:25px;">
+                <img src="{% static 'images/GoHealthy_complaint quote.jpg' %}" width="100%"
+                     style="margin-bottom:40px;border-top-left-radius:25px;border-top-right-radius:25px;opacity:1">
+
+                <h6 style="color:red">All <b>*</b> Fields are Mandatory</h6><br>
+                <form method="post" id="complainForm" action="{% url 'Go_Healthy_App:project-Complain' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="fieldWrapper" style="padding-left:10px; padding-right:10px">
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">Name:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7" align="left">
+                                <input type="text" inputmode="text" autocomplete="name" class="form-control input-sm complaint-form text-capitalize" id="name" name="name" value="{{Name}}" form="complainForm" required style="text-transform: capitalize;">
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">Email:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7" align="left">
+                                <input type="email" inputmode="email" autocomplete="email" class="form-control input-sm complaint-form text-lowercase" id="email" name="email" value="{{Email}}" form="complainForm" required>
+                                <span id="emailMessage" class="text-danger"></span>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">Contact:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7" align="left">
+                                <input type="tel" inputmode="tel" autocomplete="tel-national" minlength="10" maxlength="10" class="form-control input-sm complaint-form" id="phone" name="phone" value="{{Phone}}" form="complainForm" required>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">Address:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7" align="left">
+                                <textarea name="address" id="address" class="form-control input-sm complaint-form text-capitalize" rows="2" form="complainForm" required maxlength="500">{{Address}}</textarea>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">Pin:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7" align="left">
+                                <input type="text" inputmode="numeric" autocomplete="postal-code" name="pin" class="form-control input-sm complaint-form" minlength="6" maxlength="6" id="pin" value="{{Pin}}" form="complainForm" required>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">Subdivision:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7" align="left">
+                                <input type="text" inputmode="text" name="subdivision" class="form-control input-sm complaint-form text-capitalize" id="subdivision" value="{{Subdivision}}" form="complainForm" required>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">Town/Village:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7" align="left">
+                                <input type="text" inputmode="text" name="city" id="city" class="form-control input-sm complaint-form text-capitalize" value="{{City}}" form="complainForm" required>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">State:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7" align="left">
+                                <select name="state" id="state" class="form-control input-sm complaint-form" form="complainForm" required>
+                                    <option label="Select State"></option>
+                                    <optgroup label="States">
+                                        {% for i in states %}
+                                        {% if not i.Is_Union_Territory %}
+                                        <option value="{{i.Name}}">{{i.Name}}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </optgroup>
+                                    <optgroup label="Union Territory">
+                                        {% for i in states %}
+                                        {% if i.Is_Union_Territory %}
+                                        <option value="{{i.Name}}">{{i.Name}}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">District:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7" align="left">
+                                <select name="district" class="form-control input-sm complaint-form" id="district" form="complainForm" required>
+                                    <option label="Select District"></option>
+                                </select>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">Attachment (If any):</label>
+                            </div>
+                            <div class="col-md-7">
+                                <input type="file" class="w-100" id="attachment" name="attachment" form="complainForm">
+                                <p class="text-muted">
+                                    If you have any document or proof regarding your complaint, then please attach it.
+                                    <br>File size should be maximum 100 Mb. Only Document, Image, Video and Audio files are accepted.
+                                </p>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">Language:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7" align="left">
+                                <select name="language" id="language" class="form-control input-sm complaint-form" form="complainForm" required>
+                                    <option label="Select Language"></option>
+                                    {% for i in languages %}
+                                        <option value="{{i.Language}}">{{i.Language}} ({{i.Local_Script}})</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="text-muted">
+                                    In which language you want to write your complaint?
+                                </span>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">Subject:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7">
+                                <select name="subject" class="form-control input-sm complaint-form" required id="subject" form="complainForm">
+                                    <option label="Choose A Subject"></option>
+                                    <option value="The Hospital Refused To Admit Patient Despite Having I Booked A Bed">The Hospital Refused To Admit Patient Despite I Booked A Bed</option>
+                                    <option value="The Website showed Hospital Has Available Beds, But Hospital Did Not Admit Patient">The Website showed Hospital Has Available Beds, But Hospital Did Not Admit Patient</option>
+                                    <option value="Blood Donor Said He Would Give Blood, But He Didn't Come To Give Blood">Blood Donor Said He Would Give Blood, But He Didn't Come To Give Blood</option>
+                                    <option value="I Am Not Satisfied with Doctor's Instruction">I Am Not Satisfied with Doctor's Instruction</option>
+                                    <option value="In The Site There Have Wrong Information About A Hospital">In The Site There Have Wrong Information About A Hospital</option>
+                                    <option value="I Found Wrong Information About A Doctor">I Found Wrong Information About A Doctor</option>
+                                    <option value="I Found Wrong Information About A Blood Donor">I Found Wrong Information About A Blood Donor</option>
+                                    <option value="A Person Send Abuse Chats To Me">A Person Send Abuse Chats To Me</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <input type="text" name="otherSubject" id="otherSubjectId" class="form-control input-sm text-capitalize complaint-form" placeholder="Type Your Subject" value="N/A" form="complainForm" required style="display:none">
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+
+                        <div class="row mt-3 mb-4">
+                            <div class="col-md"></div>
+                            <div class="col-md-2 col-field-label">
+                                <label class="input-label text-muted">Complaint:<b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-7" align="left">
+                                <textarea name="complaint" id="complaint" class="form-control input-sm complaint-form" form="complainForm" rows="5" placeholder="Write Your Complaint with proper details......." required maxlength="10000"></textarea>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+
+                        <button type="submit" form="complainForm" class="btn btn-success" id="submit"
+                                style="width:130px;font-family:bold;font-size:20px;margin-bottom:30px">
+                            Submit
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md"></div>
+    </div>
+</center>
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/complaint.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

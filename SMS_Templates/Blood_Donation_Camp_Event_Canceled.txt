@@ -1,0 +1,23 @@
+You have set a reminder for this blood donation camp. But the organizer (**Organizer**) postponed the event.
+Event details were -
+
+VENUE:
+State: **State**
+District: **District**
+Subdivision: **Subdivision**
+City: **City**
+Landmark: **Landmark**
+Pin: **Pin**
+
+DATE and TIME:
+Date: **Date**
+Time: **Time**
+
+Contact: **Contact**
+Organizer's Website: **Website**
+
+Organizer may announce the new venue, date and time later.
+
+
+Regards,
+Go Healthy

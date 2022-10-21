@@ -1,0 +1,72 @@
+
+
+.page-heading{
+    font-size: 30px;
+    color: crimson;
+}
+.blood-availability-data-table thead, .blood-availability-data-table td{
+    text-align: center;
+}
+.blood-availability-data-table thead, .blood-availability-data-table th{
+    background-color: rgb(248, 70, 106);
+    color: white;
+}
+.blood-availability-data-table tbody th, .blood-availability-data-table thead th{
+    max-width: 100px;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.blood-availability-data-table tbody tr:hover > td{
+    background-color: rgb(252, 212, 212);
+}
+.blood-availability-data-table tbody tr:hover > th{
+    background-color: rgb(212, 53, 85);
+}
+
+
+@media only screen and (min-device-width : 793px){
+    .col-info-card.one{
+        border-right: 1px solid rgb(190, 190, 190);
+    }
+    .col-info-card{
+        background-color: white;
+        padding: 20px;
+    }
+}
+@media only screen and (max-device-width : 792px){
+    .col-info-card{
+        background-color: white;
+        padding: 20px;
+        border-bottom: 1px solid rgb(190, 190, 190);
+    }
+}
+
+.info-text p{
+    line-height: 20px !important;
+}
+.info-card{
+    color: rgb(58, 57, 57);
+}
+.info-card .header{
+    font-size: 25px;
+    font-weight: 700;
+}
+.info-card .info-state{
+    font-size: 22px;
+}
+.info-card .info-contact{
+    font-size: 18px;
+}
+
+.address-heading{
+    width: 100px;
+}
+.address-heading, .address-value{
+    display: inline-table;
+    font-size: 18px;
+}
+.info-contact a{
+    color: unset;
+    text-decoration: none;
+}

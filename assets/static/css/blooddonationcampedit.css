@@ -1,0 +1,243 @@
+
+:root {
+  --main-bg-color: #d0dbec;
+  --step-box-default-bg-color: #48bef5;
+  --step-box-active-bg-color: #0077bf;
+  --step-box-undone-bg-color: #eee;
+  --step-box-current-bg-color: rgb(111, 88, 245);
+}
+
+body{
+    background-color: var(--main-bg-color);
+}
+
+.main-header{
+    color: white;
+    background-image: linear-gradient(to right, #62abc4 , #90c6d7, #3773a1, #90c6d7, #62abc4);
+    width: 100%;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 500;
+    padding: 5px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.steps {
+    list-style-type: none;
+    padding: 0;
+}
+.steps li {
+    display: inline-block;
+    margin: 1px;
+    margin-bottom: 2px !important;
+}
+.steps li .box{
+    padding: 10px;
+    padding-left: 18px;
+    padding-right: 20px;
+    clip-path: polygon(94% 0, 100% 50%, 94% 100%, 0% 100%, 6% 50%, 0% 0%);
+    text-align: left;
+}
+
+
+.steps li.done .box{
+    background-color: var(--step-box-default-bg-color);
+}
+.steps li.active .box{
+    background-color: var(--step-box-active-bg-color) !important;
+}
+.steps li.undone .box {
+    background-color: var(--step-box-undone-bg-color);
+}
+.steps li.current .box {
+    background-color: var(--step-box-current-bg-color);
+}
+
+.steps li.done .box .step-no{
+    color: rgb(0, 47, 255);
+}
+.steps li.done .box .setp-heading{
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(0, 47, 255);
+}
+.steps li.done .box .step-info{
+    font-size: 14px !important;
+    color: #3b4a8a;
+    line-height: 12px;
+}
+.steps li.undone .box .step-no{
+    color: rgb(85, 85, 85);
+}
+.steps li.undone .box .setp-heading{
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(85, 85, 85);
+}
+.steps li.undone .box .step-info{
+    font-size: 14px !important;
+    color: #6d6c6c;
+    line-height: 12px;
+}
+.steps li.current .box .step-no{
+    color: rgb(241, 230, 252);
+}
+.steps li.current .box .setp-heading{
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(241, 230, 252);
+}
+.steps li.current .box .step-info{
+    font-size: 14px !important;
+    color: rgb(223, 224, 231);
+    line-height: 12px;
+}
+
+.steps li.active .box .step-no{
+    color: white !important;
+}
+.steps li.active .box .setp-heading{
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: white !important;
+}
+.steps li.active .box .step-info{
+    font-size: 14px !important;
+    color: #dadcdd !important;
+    line-height: 12px !important;
+}
+
+.steps li.done:hover, .steps li.current:hover{
+    cursor: pointer !important;
+}
+
+.form-box{
+    background-color: white;
+    padding: 20px;
+    width: 100% !important;
+}
+.floating-label .edit-event-input:placeholder-shown + label {
+    color: #6ebbf7 !important;
+}
+.floating-label .edit-event-input:not(:placeholder-shown) + label, .floating-label .edit-event-input:focus + label {
+    color: #53aef3!important;
+}
+.edit-event-input{
+    outline: none !important;
+    border: 1px solid #92d0ff !important;
+}
+.edit-event-input:focus{
+    outline: none !important;
+    border: 1px solid #92d0ff !important;
+    box-shadow: 0px 0px 5px 1px #92d0ff;
+}
+.edit-event-input-info{
+    color: #6d6c6c;
+}
+
+.form-box{
+    display: none;
+}
+.form-box.active{
+    display: block;
+}
+
+.camp-data-field{
+    outline: none;
+    border: 1px solid gray;
+    border-top: none;
+    padding: 3px;
+    background-color: #eeeff0;
+}
+.camp-data-field.field-1{
+    border-top: 1px solid gray;
+}
+/* .col-date{
+    border-right: 1px solid gray;
+} */
+.data-heading{
+    width: 80px;
+}
+.data-heading, .data-value{
+    display: inline-table;
+}
+.btn-select{
+    cursor: pointer;
+    outline: none !important;
+    border: none !important;
+    color: black;
+    background-color: #cac7c7;
+}
+.btn-select:hover{
+    cursor: pointer;
+    outline: none !important;
+    border: none !important;
+    color: black;
+    background-color: #b6b4b4;
+}
+
+.point-required{
+    color: red;
+    font-size: 20px;
+}
+.feedback-invalid{
+    color: red;
+    font-size: 14px;
+}
+#donationCampEditForm label{
+    font-size: 17px;
+    font-weight: 700;
+}
+#donationCampEditForm .label-info{
+    color: rgb(161, 161, 161);
+    font-size: 15px;
+    margin-bottom: 7px;
+    margin-top: -10px;
+}
+.input-register{
+    outline: none !important;
+    border: 0.5px solid rgb(126, 124, 124);
+    margin-top: -5px;
+}
+.input-register:focus{
+    outline: none !important;
+    box-shadow: none !important;
+    border: 2px solid rgb(54, 54, 54) !important;
+}
+.btn-form-submit{
+    outline: none !important;
+    border: none !important;
+    color: white;
+    width: 100%;
+    background-color: rgb(74, 112, 236);
+}
+.btn-form-submit:hover{
+    outline: none !important;
+    border: none !important;
+    color: white;
+    background-color: rgb(44, 84, 212);
+}
+.input-header{
+    color: rgb(123, 123, 161);
+    text-align: center;
+    font-size: 18px;
+    margin-top: 29px;
+    margin-bottom: 8px;
+}
+#donationCampEditForm .input-info{
+    color: rgb(161, 161, 161);
+    font-size: 15px;
+}
+
+.or-div .or-text{
+    background-color: white;
+    padding: 3px;
+    font-size: 18px;
+}
+.or-div .or-bar{
+    width: 100%;
+    height: 0.5px;
+    background-color: #8d8d8d;
+    margin-top: -12px
+}

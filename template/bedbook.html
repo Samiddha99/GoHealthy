@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% load cache %}
+<head>
+    {% block meta %}
+    <meta name="title" content="Bed Book in {{Hospital}} | Go Healthy">
+    <meta name="description" content="Book Bed for patient">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>Bed Book in {{Hospital}} | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/bedbook.css' %}">
+    {% endblock style %}
+
+</head>
+
+{% block body %}
+{% cache 31557600 BedBookBody %}
+<body style="background-image: url('{% static 'images/test.jpg' %}');
+             background-size: 100% 100%;background-repeat:no-repeat;background-attachment:fixed">
+{% endcache %}
+{% endblock body %}
+
+
+{% block content %}
+<div class="loading-image-background">
+    <img alt="middle" src="{% static 'gif/animated-ambulence.gif' %}" class="loading-img" id="filter-loading-id">
+</div>
+<div align="center">
+    {% if noHospital %}
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md ml-1 mr-1">
+            <img src="{% static 'images/GoHealthy_logo main.png'%}" alt="Logo" width="100%"><br><br>
+        </div>
+        <div class="col-md"></div>
+    </div>
+    <h2 class="hospital-name-heading">Error 404</h2>
+    <h4 style="color:red">
+        Hospital Not Found!<br>
+        You can't book bed in any non-existing hospital.
+    </h4>
+    <br><br>
+    <h5 style="color:rgb(15, 167, 15)">Click <a href="{% url 'Go_Healthy_App:project-Hospital' %}" aria-labelledby="Click here to find hospitals in your location">Here</a> to Find a Hospital in Your Locality
+    </h5>
+    <h5 style="color:blue;"><a href="{% url 'Go_Healthy_App:project-Home'%}" aria-labelledby="Go back to Home">Go Back To Home</a></h5>
+    {% elif noBed %}
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md ml-1 mr-1">
+            <img src="{% static 'images/GoHealthy_logo main.png'%}" alt="Logo" width="100%"><br><br>
+        </div>
+        <div class="col-md"></div>
+    </div>
+    <h2 class="hospital-name-heading mt-5">
+        Book Bed
+        <div class="heading-underline"></div>
+        <span style="font-size: 23px;">{{Hospital.Name}}</span>
+    </h2>
+    <br><br>
+    <h4 style="color:blue">Sorry to say that</h4>
+    <h4 style="color:red">
+        Booking is not Possible!<br>
+        At the moment this Hospital has not any available bed.
+    </h4>
+    <br><br>
+    <h5 style="color:rgb(15, 167, 15)">Click <a href="{% url 'Go_Healthy_App:project-Hospital' %}" aria-labelledby="Click here to find other hospitals in your location">Here</a> to Find other Hospital in Your Locality
+    </h5>
+    <h5 style="color:white"><a href="{% url 'Go_Healthy_App:project-Home'%}" aria-labelledby="Go back to home">Go Back To Home</a></h5>
+    {% elif nobook == '1' %}
+    <h2 class="hospital-name-heading mt-5">
+        Book Bed
+        <div class="heading-underline"></div>
+        <span style="font-size: 23px;">{{Hospital.Name}}</span>
+    </h2>
+    <br>
+    <div class="card" style="width: 70%;">
+        <div class="card-header">
+            <strong><h4>Bed Booking is not allow</h4></strong>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title"><b>You can't do Bed Booking in any hospital from this web portal</b></h5>
+            <p class="card-text">As we see that you had done unnecessary Hospital Bed Bookings. It is the <span
+                    style="color:red">violation the Terms & Condition.</span>
+                <br>So we stop the Bed Booking feature for this account.</p>
+            <br>We have already informed you about this through email.
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'Go_Healthy_App:project-Home' %}" class="btn btn-primary" aria-labelledby="Go Back to Home">Go Back to
+                Home
+            </a>
+        </div>
+    </div>
+
+    {% else %}
+    <h2 class="hospital-name-heading mt-5">
+        Book Bed
+        <div class="heading-underline"></div>
+        <span style="font-size: 23px;">{{Hospital.Name}}</span>
+    </h2>
+    <br>
+    <div class="row">
+        <div class="col-lg"></div>
+        <div class="col-lg-6 ml-2 mr-2">
+            <div class="container" id="cont" style="background-color:white;padding:20px;border-radius:10px">
+                <form method="post" id="bookbed" name="bookbed" aria-label="Bed Book Form" style="padding-left:8px; padding-right:8px;" action="{% url 'Go_Healthy_App:bedbook' hospitalID=Hospital.Unique_Id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="hospital_id" id="hospital_id" value="{{Hospital.Unique_Id}}" form="bookbed">
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label for="hospital" class="input-label-bed-book"><b>HOSPITAL </b><span class="required-asterisk"><b>*</b></span></label>
+                        </div>
+                        <div class="col-lg">
+                            <input type="text" inputmode="text" name="hospital" id="hospital" form="bookbed" value="{{Hospital.Name}}"
+                                   readonly="readonly" required class="input-field text-capitalize" aria-labelledby="Hospital Name">
+                        </div>
+                    </div>
+                    <hr class="hr-style">
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label for="disease" class="input-label-bed-book"><b>Disease </b><span class="required-asterisk"><b>*</b></span></label>
+                        </div>
+                        <div class="col-lg">
+                            <select name="disease" id="disease" form="bookbed" required class="input-field" aria-labelledby="Select Disease">
+                                <option label="Select Disease"></option>
+                                <option value="General Medicine">I Don't Know</option>
+                                {% for i in common_diseases %}
+                                    <option value="{{i.Concerned_Department.department}}">{{i.Disease}}</option>
+                                {% endfor %}
+                                <option value="General Medicine">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr class="hr-style">
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label for="department" class="input-label-bed-book"><b>Department </b><span class="required-asterisk"><b>*</b></span></label>
+                        </div>
+                        <div class="col-lg">
+                            <input type="text" inputmode="text" name="department" id="department" form="bookbed" readonly="readonly" required class="input-field text-capitalize">
+                            <div id="departmentMessage" style="color:rgb(245, 84, 84)"></div>
+                        </div>
+                    </div>
+                    <div id="ICUSupport">
+                        <hr class="hr-style">
+                        <div class="row">
+                            <div class="col-lg text-left pl-md-4">
+                                <label class="input-label-bed-book"><b>Need ICU Support? </b><span class="required-asterisk"><b>*</b></span></label>
+                            </div>
+                            <div class="col-lg">
+                                <input type="radio" value="Yes" id="ICUyes" name="NeedICU" form="bookbed" required>
+                                <label for="ICUyes" class="choice-labe-bed-book">Yes</label>
+                                <input type="radio" value="No" id="ICUno" name="NeedICU" form="bookbed" required>
+                                <label for="ICUno" class="choice-labe-bed-book">No</label>
+                                <div id="icuMessage" style="color:rgb(245, 84, 84)"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="O2Support" style="display:none">
+                        <hr class="hr-style">
+                        <div class="row">
+                            <div class="col-lg text-left pl-md-4">
+                                <label class="input-label-bed-book"><b>Need O2 Support? </b><span class="required-asterisk"><b>*</b></span></label>
+                            </div>
+                            <div class="col-lg">
+                                <input type="radio" value="Yes" id="O2Yes" name="NeedO2" form="bookbed">
+                                <label for="O2Yes" class="choice-labe-bed-book">Yes</label>
+                                <input type="radio" value="No" id="O2No" name="NeedO2" form="bookbed">
+                                <label for="O2No" class="choice-labe-bed-book">No</label>
+                                <div id="O2Message" style="color:rgb(245, 84, 84)"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="hr-style">
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label for="age" class="input-label-bed-book"><b>Enter Patient's Age </b><span
+                                    class="required-asterisk"><b>*</b></span></label>
+                            <br><span style="color:#89a2ac">Age less than 10 is Child age</span>
+                        </div>
+                        <div class="col-lg">
+                            <input type="number" inputmode="numeric" name="age" value="{{age}}" id="age" form="bookbed" min="0" placeholder="Patient's Age" required class="input-field" aria-labelledby="Patient's Age">
+                            <div id="ageMessage" style="color:rgb(245, 84, 84)"></div>
+                        </div>
+                    </div>
+                    <hr class="hr-style">
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label class="input-label-bed-book"><b>Select Patient's Gender </b><span class="required-asterisk"><b>*</b></span></label>
+                        </div>
+                        <div class="col-lg">
+                            <input type="radio" id="male" value="Male" name="gender" form="bookbed" required aria-labelledby="Gender Male">
+                            <label for="male" class="choice-labe-bed-book">Male</label>
+                            <input type="radio" id="female" value="Female" name="gender" form="bookbed" required aria-labelledby="Gender Female">
+                            <label for="female" class="choice-labe-bed-book">Female</label>
+                            
+                            <div id="genderMessage" style="color:rgb(245, 84, 84)"></div>
+                        </div>
+                    </div>
+                    <hr class="hr-style">
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label for="patientName" class="input-label-bed-book"><b>Enter Patient's Name </b><span
+                                    class="required-asterisk"><b>*</b></span></label>
+                        </div>
+                        <div class="col-lg">
+                            <input type="text" inputmode="text" autocomplete="name" name="patientName" value="{{patientName}}" id="patientName" form="bookbed"
+                                   maxlength="100"
+                                   placeholder="Patient's Name" required class="input-field text-capitalize" aria-labelledby="Patient's Name">
+                        </div>
+                    </div>
+                    <hr class="hr-style">
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label for="mobile" class="input-label-bed-book"><b>Enter Your Mobile No </b><span class="required-asterisk"><b>*</b></span></label>
+                        </div>
+                        <div class="col-lg">
+                            <input type="tel" inputmode="tel" autocomplete="tel-national" name="mobile" value="{{mobile}}" autocomplete="off" id="mobile" minlength="10"
+                                   maxlength="10"
+                                   form="bookbed" placeholder="10 digit Mobile No" required class="input-field" aria-labelledby="Mobile Number">
+                                   <p style="color:#89a2ac; margin-bottom:-6px">Booking Id will be send to this mobile no.</p>
+                        </div>
+                    </div>
+                
+                    <hr class="hr-style">
+
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label for="altmobile" class="input-label-bed-book"><b>Enter your Alternative Mobile No</b></label>
+                        </div>
+                        <div class="col-lg">
+                            <input type="tel" inputmode="tel" autocomplete="tel-national" name="altmobile" value="{{altmobile}}" id="altmobile" autocomplete="off"
+                                   maxlength="10" minlength="10"
+                                   form="bookbed"
+                                   placeholder="10 digit Mobile No (optional)" class="input-field" aria-labelledby="Alternative Mobile Number">
+                        </div>
+                    </div>
+                    <hr class="hr-style">
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label for="pin" class="input-label-bed-book"><b>Enter your Pin Code </b><span
+                                    class="required-asterisk"><b>*</b></span></label>
+                        </div>
+                        <div class="col-lg">
+                            <input type="text" inputmode="numeric" autocomplete="postal-code" id="pin" value="{{pin}}" name="pin"
+                                   placeholder="Pin Code" maxlength="6" minlength="6"
+                                   form="bookbed"
+                                   required class="input-field" aria-labelledby="Pin Code">
+                            <div align="right">
+                                <i class="fad fa-spinner-third fa-spin" id="pinLoader" style="font-size:20px;position:absolute;top:5px;right:21px;display:none"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="color:#89a2ac">If your entered Pin is correct, then State, District and Sub-division will be
+                        detect automatically.<br>You can also manually edit these fields.</p>
+                    <hr class="hr-style">
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label for="state" class="input-label-bed-book"><b>Select State </b><span class="required-asterisk"><b>*</b></span></label>
+                        </div>
+                        <div class="col-lg">
+                            <select name="state" id="state" form="bookbed" required data-district_option="#district"
+                                    class="input-field" aria-labelledby="Select State">
+                                <option label="Select State"></option>
+                                <optgroup label="States">
+                                    {% for i in states %}
+                                    {% if not i.Is_Union_Territory %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="Union Territory">
+                                    {% for i in states %}
+                                    {% if i.Is_Union_Territory %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <hr class="hr-style">
+
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label for="district" class="input-label-bed-book"><b>Enter Your District </b><span class="required-asterisk"><b>*</b></span></label>
+                        </div>
+                        <div class="col-lg">
+                            <select name="district" id="district" form="bookbed" required class="input-field" aria-labelledby="Select District">
+                                <option label="Select District"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr class="hr-style">
+
+                    <div class="row">
+                        <div class="col-lg text-left pl-md-4">
+                            <label for="district" class="input-label-bed-book"><b>Enter Your Sub-Division: </b><span
+                                    class="required-asterisk"><b>*</b></span></label>
+                        </div>
+                        <div class="col-lg">
+                            <input type="text" inputmode="text" maxlength="100" value="{{subdivision}}" id="subdivision" name="subdivision"
+                                   placeholder="Sub-division"
+                                   form="bookbed" required class="input-field text-capitalize" aria-labelledby="Sub-Division">
+                        </div>
+                    </div>
+                </form>
+                
+                <div id="submitId">
+                    <hr class="hr-style">
+                    <h6 align="center" style="color:#00c3ff">TERMS & CONDITIONS</h6>
+                    <div align="left">
+                        <ul style="color:#5ab7db">
+                            <li>I hereby declare that all the above mentioned information is true and correct.</li>
+                            <li>I booking bed for a patient, not for unnecessary reason.</li>
+                            <li>After a successful booking, I can't make any more booking before reached to the hospital.</li>
+                            <li>If I don't go to the Hospital with the patient within 3 hours after confirm booking, then
+                                automatically my booking will be expired.
+                            </li>
+                            <li>If I do more than one bookings, but I do not reach to the hospital with the patient in
+                                case of each bookings then I will no longer be able to do any more Bed Booking.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-inline ml-4" style="text-align: center !important;">
+                        <input type="checkbox" name="bookdec" form="bookbed" id="bookdec" required aria-labelledby="I Agree Terms and Conditions">
+                        <label for="bookdec" style="color:#006cc4"><b> &nbsp;I Agree with the Terms & Conditions.</b></label>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col" align="left">
+                            <button type="reset" class="btn btn-danger w-100" form="bookbed" id="reset" aria-labelledby="Reset Data" style="border-radius: 10px;border-radius:50px;">Reset Data
+                            </button>
+                        </div>
+                        <div class="col" align="center">
+                            <button type="submit" class="btn btn-success w-100" form="bookbed" id="submit"
+                                    style="margin-bottom:10px;border-radius:10px;border-radius:50px;" aria-labelledby="Submit">SUBMIT
+                            </button>
+                        </div>
+                    </div>
+                    <div id="errorSubmit" style="color:rgb(255, 128, 128)"></div>
+                </div>
+
+                <input type="hidden" id="hasICU" value="{{hasICU}}">
+                <input type="hidden" id="hasPICU" value="{{hasPICU}}">
+                <input type="hidden" id="generalWithO2" value="{{generalWithO2}}">
+                <input type="hidden" id="generalNonO2" value="{{generalNonO2}}">
+                <input type="hidden" id="femaleWithO2" value="{{femaleWithO2}}">
+                <input type="hidden" id="femaleNonO2" value="{{femaleNonO2}}">
+                <input type="hidden" id="maleWithO2" value="{{maleWithO2}}">
+                <input type="hidden" id="maleNonO2" value="{{maleNonO2}}">
+                <input type="hidden" id="childWithO2" value="{{childWithO2}}">
+                <input type="hidden" id="hasICU" value="{{childNonO2}}">
+
+            </div>
+        </div>
+        <div class="col-lg"></div>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}
+</body>
+
+{% block script %}
+
+{% if not noHospital %}
+<script src="{% static 'javascripts/bedbook.js' %}"></script>
+{% endif %}
+
+{% endblock script %}
+</html>

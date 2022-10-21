@@ -1,0 +1,79 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link href="{% static 'images/favicon.ico' %}" rel="icon" type="image/ico" media="screen,print">
+    <title>Rate Limit Exceeded</title>
+
+    <style>
+        body{
+            background-color: rgb(238, 238, 238);
+            padding: 10px !important;
+        }
+        .main-div{
+            margin: auto;
+            margin-top: 70px;
+        }
+       
+        .logo_img{
+            width: 100%;
+            max-width: 300px;
+            height: 70px;
+        }
+        @media only screen and (max-device-width : 300px){
+            .logo_img{
+                height: 60px;
+            }
+        }
+
+        .alart-box{
+            margin-top: 15px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0px 0px 10px 1px gray;
+        }
+        @media only screen and (min-device-width : 700px){
+            .alart-box{
+                max-width: 700px !important;
+            }
+        }
+        .alart-box .heading{
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: rgb(65, 65, 65);
+        }
+        .alart-box .text{
+            color: rgb(114, 114, 114);
+            text-align: left;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <div class="main-div">
+            <div class="logo_div">
+                <img src="{% static 'images/GoHealthy_logo main.png' %}" class="logo_img">
+            </div>
+            <div class="alart-box">
+                <div class="heading">
+                    Rate Limit Exceeded
+                </div>
+                <div class="text">
+                    <p>You received this alert because you have sent too many request within a short time.<br>
+                    We have set rate limit for every user. So a user can't send too much request to the server within a certain time period.
+                    The main motive behind this implementation is to increase the security level of the website. This implementation helps us to prevent Brute force attacks and Denial of Service (DoS) attacks.</p>
+                    <div style="text-align: center;"><b>Try again after some time. After a certain time you will be again able to access the site.</b></div>
+                </div>
+            </div>
+        </div>
+    </center>
+</body>
+</html>

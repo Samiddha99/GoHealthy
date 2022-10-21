@@ -1,0 +1,83 @@
+.loading-image-background {
+    z-index: 9999 !important;
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(255, 255, 255, 0.856); /* White w/ opacity */
+    backdrop-filter: blur(2px);
+}
+.loading-img{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 2000;
+    width: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+}
+@media only screen and (min-device-width : 700px)
+{
+    .loading-img{
+        width: 250px;
+    }
+}
+.required-asterisk{
+    color:red;
+}
+.hr-style{
+    background-color:#ebebeb;
+}
+.choice-labe-bed-book{
+    color: #4aaeff;
+}
+.input-label-bed-book{
+    color: #008fd6;
+}
+.input-field{
+    width:100%;
+    outline:none;
+    border: 1px solid #00b0d3 !important;
+    border-radius: 5px;
+    padding: 2px;
+    color: #4aaeff;
+}
+.input-field::placeholder{
+    color: #4aaeff;
+}
+.input-field:focus{
+    border-color: #008ee1 !important;
+    box-shadow: 0px 0px 7px #008ee1 !important;
+    margin-bottom:5px;
+    width:100%;
+    outline:none !important;
+}
+.input-invalid{
+    border: 1px solid #dc3545 !important;
+}
+.hospital-name-heading{
+    color:#ff0077;
+    margin:2px;
+    font-family: 'Merriweather', serif;
+    font-weight: 700 !important;
+    line-height: 20px;
+}
+.hospital-name-heading .heading-underline{
+    margin-top: 4px;
+    margin-bottom: 5px;
+    height: 2px;
+    width: 150px;
+    background-color: #ff0077;
+}
+#bookbed:disabled{
+    background-color: white;
+}
+#verifyform:disabled{
+    background-color: white;
+}
+a{
+    text-decoration: none !important;
+}

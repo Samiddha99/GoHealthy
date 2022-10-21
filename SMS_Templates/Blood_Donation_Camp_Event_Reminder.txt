@@ -1,0 +1,24 @@
+REMINDER!!
+You had set reminder for a blood donation camp.
+
+The blood donation camp organized by **Organizer** will be start after **afterhour**.
+
+EVENT DETAILS:-
+Date: **EventDate**
+Time: **EventTime**
+
+VENUE:
+State: **State**
+District: **District**
+Subdivision: **Subdivision**
+City: **City**
+Landmark: **Landmark**
+Pin: **Pin**
+
+Contact: **Contact**
+Organizer's Website: **Website**
+
+For more information go to the link: **Event_Link**
+
+Regards,
+Go Healthy

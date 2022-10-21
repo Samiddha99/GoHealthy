@@ -1,0 +1,108 @@
+.main-header{
+    color: white;
+    background-image: linear-gradient(to right, #62abc4 , #90c6d7, #3773a1, #90c6d7, #62abc4);
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 500;
+    padding: 5px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+.header-intro{
+    color: rgb(97, 96, 96);
+    margin-top: 20px;
+    font-size: 17px;
+}
+#campRegistration label{
+    font-size: 17px;
+    font-weight: 700;
+}
+
+#campRegistration .label-info{
+    color: rgb(161, 161, 161);
+    font-size: 15px;
+    margin-bottom: 7px;
+    margin-top: -10px;
+}
+#campRegistration .input-info{
+    color: rgb(161, 161, 161);
+    font-size: 15px;
+}
+.input-header{
+    color: rgb(123, 123, 161);
+    text-align: center;
+    font-size: 18px;
+    margin-top: 29px;
+    margin-bottom: 8px;
+}
+.btn-generate{
+    outline: none !important;
+    border: none !important;
+    color: white;
+    background-color: forestgreen;
+}
+.btn-generate:hover{
+    outline: none !important;
+    border: none !important;
+    color: white;
+    background-color: rgb(21, 122, 21);
+}
+.input-register{
+    outline: none !important;
+    border: 0.5px solid rgb(126, 124, 124);
+    margin-top: -5px;
+}
+.input-register:focus{
+    outline: none !important;
+    box-shadow: none !important;
+    border: 2px solid rgb(54, 54, 54) !important;
+}
+.input-otp{
+    outline: none !important;
+    border: 0.5px solid rgb(34, 88, 139);
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+.input-otp:focus{
+    outline: none !important;
+    box-shadow: none !important;
+    border: 2px solid rgb(24, 78, 128) !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+.btn-verify{
+    outline: none !important;
+    border: none !important;
+    color: white;
+    background-color: rgb(34, 88, 139);
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}
+.btn-verify:hover{
+    outline: none !important;
+    border: none !important;
+    color: white;
+    background-color: rgb(24, 78, 128);
+}
+.btn-form-submit{
+    outline: none !important;
+    border: none !important;
+    color: white;
+    width: 100%;
+    background-color: rgb(74, 112, 236);
+}
+.btn-form-submit:hover{
+    outline: none !important;
+    border: none !important;
+    color: white;
+    background-color: rgb(44, 84, 212);
+}
+.point-required{
+    color: red;
+    font-size: 20px;
+}
+.feedback-invalid{
+    color: red;
+    font-size: 14px;
+}

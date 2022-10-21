@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% extends 'base.html' %}
+  {% load static %} <!--To use the files under static folder we have to load the static in that page-->
+  <head>
+    {% block meta %}
+    <meta name="title" content="Blood Donation Camp Edit | Go Healthy">
+    <meta name="description" content="Here you can edit your blood donation camp events">
+    {% endblock meta %}
+
+    {% block title %}
+      <title>Blood Donation Camp Edit | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+      <link rel="stylesheet" href="{% static 'css/blooddonationcampedit.css' %}">
+    {% endblock style %}
+
+    </head>
+
+    {% block body %}
+    <body>
+    {% endblock body %}
+
+
+
+    {% block content %}
+
+    <!-- <div class="row">
+        <div class="col-md ml-1 mr-1">
+            <div class="main-header">
+                Change Details of Blood Donation Camp
+            </div>
+        </div>
+    </div> -->
+    <div class="row mt-4 ml-1 mr-1">
+        <div class="col-md-1"></div>
+        <div class="col-md-9 text-lg-left text-left">
+            <ul class="steps">
+                <li class="step-select current active" data-target="#step-1-form" data-status="current">
+                    <div class="box">
+                        <div class="row no-gutters">
+                            <div class="col-">
+                                <i class="fa-solid fa-circle-1 fa-2x mt-1 step-no mr-1 ml-3"></i>
+                            </div>
+                            <div class="col">
+                                <div class="setp-heading">
+                                    Enter Mobile No
+                                </div>
+                                <div class="step-info">
+                                    Enter the mobile number by which you registered the event
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="step-select undone" data-target="#step-2-form" data-status="undone">
+                    <div class="box">
+                        <div class="row no-gutters">
+                            <div class="col-">
+                                <i class="fa-solid fa-circle-2 fa-2x mt-1 step-no ml-1 mr-1"></i>
+                            </div>
+                            <div class="col">
+                                <div class="setp-heading">
+                                    Select Event
+                                </div>
+                                <div class="step-info">
+                                    Select a event to change the details
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="step-select undone" data-target="#step-3-form" data-status="undone">
+                    <div class="box">
+                        <div class="row no-gutters">
+                            <div class="col-">
+                                <i class="fa-solid fa-circle-3 fa-2x mt-1 step-no mr-1"></i>
+                            </div>
+                            <div class="col">
+                                <div class="setp-heading">
+                                    Edit The Event
+                                </div>
+                                <div class="step-info">
+                                    Edit the details and update it
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+          
+            <div class="row mb-4">
+                <div class="col-md-1"></div>
+                <div class="col-md">
+                    <div class="form-box active" id="step-1-form">
+                        <form id="mobile-verification" method="post" autocomplete="off">
+                            <div class="row mb no-gutters" style="gap:5px">
+                                <div class="col-md col">
+                                    <div class="floating-label">
+                                        <input type="tel" inputmode="tel" class="form-control input-sm edit-event-input" name="contact" id="event-edit-mobile" form="mobile-verification" placeholder="10 digit mobile no" minlength="10" maxlength="10" required>
+                                        <label for="event-edit-mobile">
+                                            <span>Mobile Number</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-5">
+                                    <div class="text-right">
+                                        <button type="button" class="btn btn-primary w-100" id="edit-sent-otp-button">Send OTP</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="edit-event-input-info">
+                                Enter the mobile number which you used during the registration of the event.
+                            </div>
+                    
+                            <div class="row mt-4">
+                                <div class="col-md">
+                                    <div class="floating-label">
+                                        <input type="text" inputmode="numeric" class="form-control input-sm edit-event-input" name="otp" id="event-edit-otp" form="mobile-verification" minlength="6" maxlength="6" placeholder="6 digit OTP" required readonly>
+                                        <label for="event-edit-otp">
+                                            <span>Enter OTP</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div id="otp-sent-to" class="text-success"></div>
+                                    <div id="otp-error" class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100 mt-4" form="mobile-verification" id="edit-verify-otp-button">Verify</button>
+                            <div id="no-register-found" class="text-danger"></div>
+                        </form>
+                    </div>
+                    
+                    <div class="form-box" id="step-2-form">
+                        
+                    </div>
+
+                    <div class="form-box" id="step-3-form">
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-danger" id="cancel-event">
+                                Postpone The Event
+                            </button>
+                            <div class="text-danger" id="cancel-error"></div>
+                        </div>
+                        <div class="or-div mt-5">
+                            <div class="text-center text-muted">
+                                <span class="or-text">OR</span>
+                            </div>
+                            <div class="or-bar"></div>
+                        </div>
+                        <h3 class="text-center text-muted mt-5 mb-4">Edit the event</h3>
+                        <form id="donationCampEditForm" method="post" action="{% url 'Go_Healthy_App:BloodDonationCampEdit' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" id="id" form="donationCampEditForm" required>
+                            <div class="input-header">
+                                Organization's Details
+                            </div>
+                            <div class="row">
+                                <div class="col-md mb-4">
+                                    <label for="Organization">Name of the Organization</label>
+                                    <span class="point-required">*</span>
+                                    <div class="label-info">
+                                        Which organization will organize the blood donation camp
+                                    </div>
+                                    <input type="text" inputmode="text" class="form-control input-sm text-capitalize input-register" maxlength="500" name="Organization" id="Organization" form="donationCampEditForm" required readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md mb-4">
+                                    <label for="Website">Website</label>
+                                    <input type="url" inputmode="url" class="form-control input-sm input-register" maxlength="500" name="Website" id="Website" form="donationCampEditForm" placeholder="https://www.example.com">
+                                    <div class="input-info">
+                                        URL of the website of the organization (if any)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md mb-4">
+                                    <label for="Contact">Contact Number</label>
+                                    <span class="point-required">*</span>
+                                    <input type="tel" inputmode="tel" class="form-control input-sm input-register" maxlength="10" minlength="10" name="Contact" id="Contact" form="donationCampEditForm" required placeholder="10 digit mobile no" readonly>
+                                </div>
+                                <div class="col-md mb-4">
+                                    <label for="Contact">Email</label>
+                                    <span class="point-required">*</span>
+                                    <input type="email" inputmode="email" class="form-control input-sm text-lowercase input-register" maxlength="100" name="Email" id="Email" form="donationCampEditForm" required>
+                                </div>
+                            </div>
+                                    
+                            <div class="input-header">
+                                Where the blood donation camp will take place?
+                            </div>
+                            <div class="row">
+                                <div class="col-md mb-4">
+                                    <label for="State">State</label>
+                                    <span class="point-required">*</span>
+                                    <select class="form-control input-sm input-register" id="State" name="State" form="donationCampEditForm" required data-district_option="#District">
+                                        <option label="Select State"></option>
+                                        <optgroup label="States">
+                                            {%for i in allStates%}
+                                                {% if not i.Is_Union_Territory %}
+                                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                                {% endif %}
+                                            {%endfor%}
+                                        </optgroup>
+                                        <optgroup label="Union Territories">
+                                            {%for i in states%}
+                                                {% if i.Is_Union_Territory %}
+                                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                                {% endif %}
+                                            {%endfor%}
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-md mb-4">
+                                    <label for="District">District</label>
+                                    <span class="point-required">*</span>
+                                    <select class="form-control input-sm input-register" id="District" name="District" form="donationCampEditForm" required>
+                                        <option label="Select District"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md mb-4">
+                                    <label for="City">City</label>
+                                    <span class="point-required">*</span>
+                                    <input type="text" inputmode="text" class="form-control input-sm text-capitalize input-register" maxlength="200" name="City" id="City" form="donationCampEditForm" required>
+                                </div>
+                                <div class="col-md mb-4">
+                                    <label for="Subdivision">Subdivision</label>
+                                    <span class="point-required">*</span>
+                                    <input type="text" inputmode="text" class="form-control input-sm text-capitalize input-register" maxlength="200" name="Subdivision" id="Subdivision" form="donationCampEditForm" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md mb-4">
+                                    <label for="Pin">Zip Code</label>
+                                    <span class="point-required">*</span>
+                                    <input type="text" inputmode="numeric" class="form-control input-sm input-register" minlength="6" maxlength="6" name="Pin" id="Pin" form="donationCampEditForm" required>
+                                </div>
+                                <div class="col-md mb-4">
+                                    <label for="Landmark">Landmark</label>
+                                    <span class="point-required">*</span>
+                                    <input type="text" inputmode="text" class="form-control input-sm input-register" maxlength="500" name="Landmark" id="Landmark" form="donationCampEditForm" required placeholder="e.g: M N College, S K Road">
+                                </div>
+                            </div>
+                            <div class="input-header">
+                                When the blood donation camp will take place?
+                            </div>
+                            <div class="row">
+                                <div class="col-md mb-4">
+                                    <label for="Start_Date">Start at</label>
+                                    <span class="point-required">*</span>
+                                    <input type="date" class="form-control input-sm input-register" name="Start_Date" id="Start_Date" form="donationCampEditForm" required aria-describedby="Start_Date-error">
+                                    <div class="feedback feedback-invalid" id="Start_Date-error"></div>
+                                </div>
+                                <div class="col-md mb-4">
+                                    <label for="End_Date">End at</label>
+                                    <input type="date" class="form-control input-sm input-register" name="End_Date" id="End_Date" form="donationCampEditForm" aria-describedby="End_Date-error">
+                                    <div class="feedback feedback-invalid" id="End_Date-error"></div>
+                                    <div class="input-info">
+                                        In which day the blood donation camp will end. Enter the date only if the blood donation camp will take place for more than one day.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md mb-4">
+                                    <label for="From">From</label>
+                                    <span class="point-required">*</span>
+                                    <input type="time" class="form-control input-sm input-register" name="From" id="From" form="donationCampEditForm" required aria-describedby="From-error">
+                                    <div class="feedback feedback-invalid" id="From-error"></div>
+                                </div>
+                                <div class="col-md mb-4">
+                                    <label for="To">To</label>
+                                    <span class="point-required">*</span>
+                                    <input type="time" class="form-control input-sm input-register" name="To" id="To" form="donationCampEditForm" required aria-describedby="To-error">
+                                    <div class="feedback feedback-invalid" id="To-error"></div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-form-submit" id="donationCampEditFormSubmit" name="action" value="edit event" form="donationCampEditForm" style="display: block;">
+                                Save Changes
+                            </button>
+                            <div id="submit-error" style="color: red;"></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+        <div class="col-md"></div>
+    {% endblock content %}
+
+
+
+    {% block script %}
+
+        <script src="{% static 'javascripts/blooddonationcampedit.js' %}"></script>
+
+    {% endblock script %}
+    </body>
+</html>

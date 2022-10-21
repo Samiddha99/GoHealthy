@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    {% block meta %}
+    <meta name="title" content="First Aid | Go Healthy">
+    <meta name="description" content="First Aid is the very essential thing. A firs aid can save a life. Due to lack of good transport system it is not possible to reach the rescue team or health team at the quickly. It is very common scenario that ambulance reach to the lately. We never should wait for the rescue team. We should start the first aid to save the life of the victim. But Beware! Your one wrong step can push the victim to death. So it advise to you if you have experience or some kind of knowledge then do first aid; otherwise never try to this. If you have not knowledge then ask others in the accident spot if he/she have knowledge about that. If in the accident spot nobody have any proper knowledge then you can do basic first aid. You should learn first aid to save a life. From here you can start learning.">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>First Aid | Go Healthy</title>
+    {% endblock title %}
+</head>
+{% block body %}
+<body style="min-height:100%;" class="bg-light">
+{% endblock body %}
+
+{% block content %}
+<center>
+    <div class="alert alert-light ml-2 mr-2" role="alert">
+        <h1 class="alert-heading" style="color:red;font-family:Courier New, monospace;">Before starting First Aid!</h1>
+        <p>First Aid is the very essential thing. A firs aid can save a life. Due to lack of good transport system it is not possible to reach the rescue team
+            or health team at the quickly. It is very common scenario that ambulance reach to the lately. We never should wait for the rescue team. We should start the first aid to
+            save the life of the victim.
+            <br>But Beware! Your one wrong step can push the victim to death. So it advise to you if you have experience or
+            some kind of knowledge then do first aid; otherwise never try to this.
+            If you have not knowledge then ask others in the accident spot if he/she have knowledge about that. If in
+            the accident spot nobody have any proper knowledge then you can do basic first aid.</p>
+        <b>You should learn first aid to save a life. From here you can start learning.</b>
+        <hr>
+    <p>
+        <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target=".multi-collapse"
+                aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Select Learning Mode
+        </button>
+    </p>
+    </div>
+    <div class="row" style="padding:20px">
+        <div class="col mb-4">
+            <div class="collapse multi-collapse" id="multiCollapseExample1">
+                <div class="card card-body" style="background-color:white">
+                    <div class="card" style="width: 100%;background: url('{% static 'images/GoHealthy_first aid photo.jpg' %}');background-repeat:no-repeat;background-size:100% 100%;border:5px groove white">
+                        <div class="card-body" style="margin-top:100px">
+                            <h5 class="card-title" style="font-family:Georgia, serif;font-variant: small-caps;font-size:50px;color:white">Photo Tutorial</h5>
+                            <p class="card-text" style="color:white">In this mode you will find step by step first aid guide with pictures to learn first aid</p>
+                            <a href="{% url 'Go_Healthy_App:firstaid-Photos' %}" class="btn btn-primary" style="width:100%;border:2px solid white;font-size:25px;padding:0px">Start Learning</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="collapse multi-collapse" id="multiCollapseExample2">
+                <div class="card card-body" style="background-color:white">
+                    <div class="card" style="width: 100%;background: url('{% static 'images/GoHealthy_first aid video.jpg' %}');background-repeat:no-repeat;background-size:100% 100%;border:5px groove white">
+                        <div class="card-body" style="margin-top: 100px">
+                            <h5 class="card-title" style="font-family:Georgia, serif;font-variant: small-caps;font-size:50px;color:white">Video Tutorial</h5>
+                            <p class="card-text" style="color:white">In this mode you will find full video tutorials to learn first aid</p>
+                            <a href="{% url 'Go_Healthy_App:firstaid-Videos' %}" class="btn btn-primary" style="width:100%;border:2px solid white;font-size:25px;padding:0px">Start Learning</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</center>
+{% endblock content %}
+</body>
+</html>

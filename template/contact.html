@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    {% block meta %}
+    <meta name="title" content="Contact Us | Go Healthy">
+    <meta name="description" content="We are available 24 x 7">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>Contact Us | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+    {% endblock style %}
+
+</head>
+{% block body %}
+<body style="min-height:100%;background-image: linear-gradient(#1f2253, #1f2253);
+             background-size: 100% 100%;background-repeat:no-repeat;background-attachment:fixed;">
+{% endblock body %}
+
+{% block content %}
+<center>
+
+    <div class="row mt-0 mb-3">
+        <div class="col-md ml-2 mr-2">
+            <img src="{%static 'images/GoHealthy_contact banner.png' %}" class="contact-banner" width="100%">
+        </div>
+    </div>
+
+
+    <div class="row mb-5">
+        <div class="col-md-2 mb-4"></div>
+        <div class="col-md ml-4 mr-3 mb-2" style="color: white" align="left">
+            <h2>CONTACT US</h2>
+            <a href="https://wa.me/{{whatsappNumbers.0.Whatsapp_Number}}?text=I%20need%20help!" style="text-decoration: none; color:white; margin-right:6px;" title="Send Your Message In WhatsApp">
+                <i class="fab fa-whatsapp-square fa-2x"></i>
+            </a>
+            <a href="mailto: {{siteEmailsMain.0.EmailId}}" style="text-decoration: none; color:white; margin-right:6px;" title="Send Your Mail To Us">
+                <i class="fas fa-envelope-square fa-2x"></i>
+            </a>
+            <a href="https://www.facebook.com/" style="text-decoration: none; color:white; margin-right:6px;" title="Follow us on Facebook">
+                <i class="fab fa-facebook-square fa-2x"></i>
+            </a>
+            <a href="https://twitter.com/" style="text-decoration: none; color:white;" title="Follow us on Twitter">
+                <i class="fab fa-twitter-square fa-2x"></i>
+            </a>
+            <br><br>
+            <div class="mb-4">
+                <div class="mb-3">
+                    <i class="fad fa-mobile-android-alt" style="font-size: 30px;"></i>
+                    <span style="font-size: 25px;">Phone</span>
+                    <div class="contact-underline" style="margin-left: 30px;"></div>
+                </div>
+                <div class="ml-md-3">
+                    <div class="row">
+                        <div class="col-sm mb-4 ml-3 ml-md-4">
+                            <div style="margin-bottom: 6px;" class="text-md-left text-center">
+                                <h5 class="available-text">24 x 7 Available</h5>
+                            </div>
+                            {% for contact in siteContacts24x7 %}
+                            <div class="mb-1 mt-2">
+                                <div style="font-size:16px">{{contact.Contact_Number}}</div>
+                                <div style="font-size: 15px; margin-top:-5px; margin-left: 2px;">({{contact.Contact_For}})</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-sm ml-3 ml-md-4">
+                            <div style="margin-bottom: 6px;" class="text-md-left text-center">
+                                <h5 class="available-text">On Working Hour</h5>
+                            </div>
+                            {% for contact in siteContactsWorkingHours %}
+                            <div class="mb-1 mt-2">
+                                <div style="font-size:16px">{{contact.Contact_Number}}</div>
+                                <div style="font-size: 15px; margin-top:-5px; margin-left: 2px;">({{contact.Contact_For}})</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="mb-4">
+                <div class="mb-2">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 30px;"></i>
+                    <span style="font-size: 25px;">WhatsApp Numbers</span>
+                    <div class="contact-underline" style="margin-left: 40px; width: 200px; margin-top: 0.5px;"></div>
+                </div>
+                {% for number in whatsappNumbers %}
+                <div class="mb-1 ml-4 ml-md-5">
+                    <div style="font-size:16px">{{number.Whatsapp_Number}}</div>
+                    <div style="font-size: 15px; margin-top:-2px; margin-left: 2px;">({{number.Contact_For}})</div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div>
+                <div class="mb-2">
+                    <i class="fad fa-envelope" style="font-size: 30px;"></i>
+                    <span style="font-size: 25px;">Emails</span>
+                    <div class="contact-underline" style="margin-left: 40px;"></div>
+                </div>
+                {% for email in siteEmails %}
+                <div class="mb-1 ml-4 ml-md-5">
+                    <div style="font-size:16px">{{email.EmailId}}</div>
+                    <div style="font-size: 15px; margin-top:-2px; margin-left: 2px;">({{email.Mail_For}})</div>
+                </div>
+                {% endfor %}
+            </div>
+            <hr>
+        </div>
+        <div class="col-md ml-4 mr-md-5 mr-4">
+            <div class="mb-5 text-left">
+                <h4 style="color: white;">Working Hours</h4>
+                <table class="table table-bordered table-sm working-table">
+                    <tbody>
+                      <tr id="week-1">
+                        <th scope="row">Monday</th>
+                        <td>{{workingHour.Monday}}</td>
+                      </tr>
+                      <tr id="week-2">
+                        <th scope="row">Tuesday</th>
+                        <td>{{workingHour.Tuesday}}</td>
+                      </tr>
+                      <tr id="week-3">
+                        <th scope="row">Wednesday</th>
+                        <td>{{workingHour.Wednesday}}</td>
+                      </tr>
+                      <tr id="week-4">
+                        <th scope="row">Thursday</th>
+                        <td>{{workingHour.Thursday}}</td>
+                      </tr>
+                      <tr id="week-5">
+                        <th scope="row">Friday</th>
+                        <td>{{workingHour.Friday}}</td>
+                      </tr>
+                      <tr id="week-6">
+                        <th scope="row">Saturday</th>
+                        <td>{{workingHour.Saturday}}</td>
+                      </tr>
+                      <tr id="week-0">
+                        <th scope="row">Sunday</th>
+                        <td>{{workingHour.Sunday}}</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="display-alert"></div>
+            <h3 style="color:white">Reach Us</h3>
+            <form action="{% url 'Go_Healthy_App:Ajaxcontact' %}" method="post" id="contactform">
+                {% csrf_token %}
+                <input type="text" inputmode="text" name="name" autocomplete="name" id="nameContact" placeholder="Name" form="contactform" class="form-control input-sm contact-form text-capitalize" value="{{Name}}" required>
+                <input type="tel" inputmode="tel" autocomplete="tel-national" name="phone" id="phoneContact" placeholder="Phone" form="contactform" class="form-control input-sm contact-form" value="{{Phone}}" minlength="10" maxlength="10" required>
+                <input type="email" inputmode="email" name="email" autocomplete="email" id="emailContact" placeholder="Email" form="contactform" class="form-control input-sm contact-form text-lowercase" value="{{Email}}" required>
+                <textarea name="message" rows="5" class="form-control input-sm contact-form" id="messageContact" placeholder="Leave your message here....." form="contactform" required maxlength="1000"></textarea>
+                <div align="left">
+                    <button type="submit" class="btn btn-light" id="messageSubmitBtn" form="contactform" style="padding-left:40px; padding-right:40px;font-size:20px">Send</button>
+                    <span id="submitmessageContact" style="color:white"></span>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row mb-5 ml-2 mr-2 text-left">
+        <div class="col-md mb-3">
+            <div class="card">
+                <div class="card-body">
+                  <h4><b>Frequently Asked Questions</b></h4>
+                  <p class="text-muted" style="margin-bottom: 10px;">
+                    Take a look at FAQ, you will find solutions regarding common questions or problems.
+                  </p>
+                  <p class="text-muted" style="font-weight: 500;">
+                    <br><br><br>
+                  </p>
+                  <a type="button" class="btn btn-contact" href="{% url 'Go_Healthy_App:FAQ' %}">
+                      Go To FAQ &nbsp;&nbsp;<i class="fal fa-question-circle" style="font-size: 19px;"></i>
+                  </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4><b>General Enquiry</b></h4>
+                    <p class="text-muted" style="margin-bottom: 10px;">
+                        Didn't you find your solution in FAQ ?
+                        <br>Are you facing problem regarding registration, log in, password reset, profile update?
+                        Have you find any error in the website? Then mail to us.
+                    </p>
+                    {% for email in siteEmailsMain %}
+                        {% if not loop.index > 2 %}
+                            <p class="text-muted" style="font-weight: 500; line-height: 8px;">
+                                <i class="fal fa-envelope" style="font-size: 18px;"></i> {{email.EmailId}}
+                            </p>
+                        {% endif %}
+                    {% endfor %}
+                    <a type="button" class="btn btn-contact" href="mailto: {{siteEmailsMain.0.EmailId}}">
+                        Mail Us &nbsp;&nbsp;<i class="fal fa-envelope" style="font-size: 19px;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4><b>Emergency Enquiry</b></h4>
+                    <p class="text-muted" style="margin-bottom: 10px;">
+                        Are you need an emergency support?
+                        <br>Are you facing problem regarding patient addmission, bed book, finding blood donor? Then call us.
+                    </p>
+                    {% for contact in siteContactsMain %}
+                        {% if not loop.index > 2 %}
+                            <p class="text-muted" style="font-weight: 500; line-height: 8px;">
+                                <i class="fal fa-phone-alt" style="font-size: 18px;"></i> {{contact.Contact_Number}}
+                            </p>
+                        {% endif %}
+                    {% endfor %}
+                  <a type="button" class="btn btn-contact" href="tel: {{siteContactsMain.0.Contact_Number}}">
+                      Call Us &nbsp;&nbsp;<i class="fal fa-phone" style="font-size: 19px;"></i>
+                  </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</center>
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/contact.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

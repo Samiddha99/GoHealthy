@@ -1,0 +1,111 @@
+.grey-field{
+    border: 0.5px solid #acb7be !important;
+    width: 100%;
+    border-radius: 2px;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.grey-field:focus{
+    border-color: #929FA8 !important;
+    box-shadow: 0px 0px 5px 1px rgb(159, 163, 167) !important;
+    outline:none !important;
+}
+.upgrade-input{
+    border: 0.5px solid #72D29C !important;
+}
+.upgrade-input:focus{
+    border-color: #72D29C !important;
+    box-shadow: 0px 0px 10px rgba(40, 167, 69, 1) !important;
+    outline:none !important;
+}
+.red-input:focus{
+    border: 2px solid red !important;
+    box-shadow: none !important;
+    outline:none !important;
+}
+.edit-btn{
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    font-size:17px;
+}
+@media only screen and (min-device-width : 701px)
+{
+    .info-text{
+        text-align: left !important;
+    }
+}
+@media only screen and (max-device-width : 700px)
+{
+    .info-text{
+        text-align: center !important;
+    }
+    .col-right{
+        display: none;
+    }
+}
+
+.checkbox{
+    display: none;
+}
+.checkbox-label{
+    cursor: pointer;
+}
+.toggle-button-layer{
+    width: 70px;
+    height: 28px;
+    border-radius: 50px;
+    background-color: rgb(255, 198, 198);
+}
+.toggle-button-knobs:before{
+    position: relative;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    top: 0px;
+    right: 4px;
+    left: 4px;
+    height: 10px;
+    width: 10px;
+    padding: 5px;
+    z-index: 10;
+    border-radius: 100%;
+    content: 'OFF';
+    background-color: rgb(255, 57, 57);
+    cursor: pointer;
+}
+.checkbox:checked + .checkbox-label .toggle-button-layer{
+    background-color: rgb(208, 255, 187) !important;
+}
+
+.checkbox:checked ~ .checkbox-label .toggle-button-layer .toggle-button-knobs:before{
+    content: 'ON';
+    background-color: rgb(50, 219, 78);
+    left: 40px
+}
+.toggle-button-knobs:before{
+    transition: 0.3s ease all;
+}
+.feedback-valid{
+    color: green;
+    font-size: 14px;
+}
+.feedback-invalid{
+    color: red;
+    font-size: 14px;
+}
+
+.list-group-item.custom-list-group-item{
+    padding: 5px !important;
+}
+
+#collapseLast-logins{
+    margin-top: 5px !important;
+}
+#collapseLast-logins .card-body{
+    border: none !important;
+    border-top: 1px solid rgb(235, 235, 236) !important;
+    border-radius: 0px !important;
+    padding: 3px !important;
+}

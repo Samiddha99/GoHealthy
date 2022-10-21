@@ -1,0 +1,54 @@
+th{
+    color: #5A55FF;
+}
+th > h5{
+    color:#36B7FF;
+}
+td{
+    color: #666666;
+}
+
+td > h5{
+    color: #5A55FF;
+    font-size: 19px;
+}
+
+td > span{
+    color: rgb(106, 157, 224);
+    font-size: 18px;
+    font-weight: 500;
+}
+.hospital-name-bg{
+    background-color: #e9e6e69a;
+}
+
+.row-heading{
+    max-width: 110px;
+    text-align: right !important;
+}
+.link-button{
+    text-decoration: none !important;
+    font-size: 18px;
+    color: rgb(151, 151, 199);
+}
+
+.table-page-break-before{
+    page-break-before: always
+}
+
+@media only print{
+    nav, .modal, .our-goal, .base-alert-message, .Alert, .top-button, footer, .side-col, .button-section{
+        display: none !important;
+    }
+    body{
+        background-color: white !important;
+    }
+    
+}
+
+.link-button{
+    color: darkslateblue;
+}
+.link-button:hover{
+    color: rgb(96, 85, 169);
+}

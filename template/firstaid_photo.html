@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    {% block meta %}
+    <meta name="title" content="First Aid - Photo | Go Healthy">
+    <meta name="description" content="Learn First Aid with Photo Tutorials">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>First Aid - Photo | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/firstaid_photo.css' %}">
+    {% endblock style %}
+    
+</head>
+{% block body %}
+<body style="background-image: url('{% static 'images/GoHealthy_first aid photo background.jpg' %}');
+             background-size: cover;background-repeat:no-repeat;background-attachment:fixed;min-height:200%;">
+{% endblock body %}
+
+{% block content %}
+<center>
+<form id="languageFilter" method="get">
+<div class="row">
+    <div class="col-md-8 col"></div>
+    <div class="col-md-3 col-7 ml-2 mr-3" align="right">
+        <select name="language" id="language" class="form-control input-sm" form="languageFilter" required style="width:95%">
+            <option label="Select Language"></option>
+            {% if language == 'All Languages' %}
+            <option value="All Languages" selected>All Languages</option>
+            {% else %}
+            <option value="All Languages">All Languages</option>
+            {% endif %}
+            {% for i in languages %}
+            {% if language == i.Language %}
+            <option value="{{i.Language}}" selected>{{i.Language}}</option>
+            {% else %}
+            <option value="{{i.Language}}">{{i.Language}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-11 ml-2 mr-3 mt-1" align="right">
+        <button type="submit" class="btn btn-success" form="languageFilter" name="action" value="filter" style="width:200px;margin-top:1px">Filter</button>
+    </div>
+    <div class="col-md"></div>
+</div>
+</form>
+<div id="imageModal" class="image-background">
+    <div class="image-caption" id="caption"></div>
+    <div class="zoom-place" id="id_zoom-place">
+        <span>
+            <button class="btn btn-zoom-out" id="zoom-out" disabled title="zoom Out"><i class="fas fa-search-minus"></i></button>
+            <button class="btn btn-zoom-in" id="zoom-in" title="Zoom In"><i class="fas fa-search-plus"></i></button>
+        </span>
+    </div>
+    <img class="image-content" id="img-show">
+    <div class="left-space" id="id_left-space">
+        <button class="left-button" id="id_left-button">
+            <i class="fad fa-chevron-circle-left"></i>
+        </button>
+    </div>
+    <div class="right-space" id="id_right-space">
+        <button class="right-button" id="id_right-button">
+            <i class="fad fa-chevron-circle-right"></i>
+        </button>
+    </div>
+  </div>
+<br>
+    <div class="col-card">
+        {%for i in Ph%}
+            <div class="card"
+                 style="width:100%;background-image:linear-gradient(white, white); border-radius:10px">
+                <div class="card-body" style="padding:10px; padding-top:5px; padding-bottom:0px">
+                    <center>
+                        <h4 class="card-title" style="color:#646464">{{i.SL_No}}. {{i.Name}}</h4>
+                    </center>
+                    <img id="{{forloop.counter}}" data-src="{{i.Upload_Photo.url}}" class="lazy card-img-bottom" alt="{{i.SL_No}}. {{i.Name}}" value="{{i.Upload_Photo.url}}">
+                    <span class="text-right" align="right" style="float: right;">
+                        <a href="{{i.Upload_Photo.url}}" download="{{i.Name}}">
+                            <i class="fas fa-download photo-download" title="Download the image"></i>
+                        </a>
+                    </span>
+                    <p style="white-space: pre-wrap;line-height:22px" align="left">{{i.Description}}</p>
+                </div>
+            </div>
+        {%endfor%}
+    </div>
+</center>
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/firstaid_photo.js' %}"></script>
+
+{% endblock script %}
+</body>

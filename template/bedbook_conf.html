@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+<head>
+    {% block meta %}
+    <meta name="title" content="Patient Information - Patient Id: {{book.Booking_ID}} | Go Healthy">
+    <meta name="description" content="Status of your booking">
+    {% endblock meta %}
+
+    {% block title %}
+        <title>
+            {% if book.Status == "Not Admit Still Now" or book.Status == "Don't Need to Admit" or book.Status == "Expired" %}
+                Bed Booking Information - Booking Id: {{book.Booking_ID}} | Go Healthy
+            {% else %}
+                Patient Information - Patient Id: {{book.Booking_ID}} | Go Healthy
+            {% endif %}
+        </title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/bedbook_conf.css' %}">
+    {% endblock style %}
+
+</head>
+{% block body %}
+<body style="background-color:#BDC7FF">
+{% endblock body %}
+
+{% block content %}
+
+<center>
+    {% if noBook %}
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md ml-1 mr-1">
+            <img src="{% static 'images/GoHealthy_logo main.png'%}" alt="Logo" width="100%" height="100"><br><br>
+        </div>
+        <div class="col-md"></div>
+    </div>
+    <h1 style="color:blue">Error 404</h1>
+    <h4 style="color:red">
+        No Patient Found!<br>
+        May be no booking was done with this Id or Patient has been released of this Booking Id or Booking has been expired.
+    </h4>
+    <br><br>
+    <h5>Click <a href="{% url 'Go_Healthy_App:StatusCheck' %}" aria-labelledby="Click here to check status of booking">Here</a> to Check Status of Booking</h5>
+    <h5 style="color:black">Go Back to <a href="{% url 'Go_Healthy_App:project-Home'%}" aria-labelledby="Go Back to Home">Home</a></h5>
+    {% else %}
+    <div class="row">
+        <div class="col-md-3 side-col"></div>
+        <div class="col-md ml-2 mr-2">
+            <div class="button-section mb-2 mt-3 text-right">
+                <span>
+                    <a href="{% url 'Go_Healthy_App:BookingPDF' id=book.Booking_ID %}" target="__blank" class="link-button">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        View as PDF
+                    </a>
+                    &nbsp;
+                    <a href="{% url 'Go_Healthy_App:BookingPDF' id=book.Booking_ID %}" class="link-button" download="Patient_Information-{{book.Booking_ID}}">
+                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                        Download
+                    </a>
+                    &nbsp;
+                    <button id="open_print" class="link-button" style="background-color: transparent; border: none; outline: none;">
+                        <i class="fa-solid fa-print"></i>
+                        Print
+                    </a>
+                </span>
+                <iframe src="{% url 'Go_Healthy_App:BookingPDF' id=book.Booking_ID %}" name="print_frame" style="display: none;"></iframe>
+            </div>
+            <div id="printPage" align="center">
+                <table class="table table-bordered table-condensed table-main" id="data-table" style="width:100%; background-color:white;">
+                    <tbody align="center">
+                        <tr align="center">
+                            <th colspan="2">
+                                <div class="row mb-0">
+                                    <div class="col-sm-8">
+                                        <div align="left" class="mb-2">
+                                        <img src="{% static 'images/GoHealthy_logo main.png' %}" height="50" width="200">
+                                        </div>
+                                        {% if book.Status == "Not Admit Still Now" or book.Status == "Don't Need to Admit" or book.Status == "Expired" %}
+                                            <h4 style="margin-bottom:5px; color:#6347FF">BED BOOKING INFORMATIONS</h4>
+                                            <p style="font-size:18px; font-weight:500; color:#ff3617">Booking Id: {{book.Booking_ID}}</p>
+                                        {% else %}
+                                            <h4 style="margin-bottom:5px; color:#6347FF">PATIENT'S INFORMATIONS</h4>
+                                            <p style="font-size:18px; font-weight:500; color:#ff3617">Patient Id: {{book.Booking_ID}}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm">
+                                        <img src="{{book.QR.url}}" width="140px" height="140px">
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                        {% if book.Booked_By != "Hospital Authority" %}
+                            <tr>
+                                <th scope="row" class="row-heading">Booking Time</th>
+                                <td class="row-data">{{book.Booking_Time}}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th scope="row" class="row-heading">Status</th>
+                            <td class="row-data">{{book.Status}}</td>
+                        </tr>
+                        {% if book.Status == "Not Admit Still Now" %}
+                        <tr>
+                            <th scope="row" class="row-heading">Expire Time</th>
+                            <td class="row-data">
+                                {{book.Expire_Time}}
+                            </td>
+                        </tr>
+                        {% elif book.Status == "Admitted" %}
+                        <tr>
+                            <th scope="row" class="row-heading">Admitted Time</th>
+                            <td class="row-data">
+                                {{book.Admit_Time}}
+                            </td>
+                        </tr>
+                        {% elif book.Status == "Referred" %}
+                        <tr>
+                            <th scope="row" class="row-heading">Referred At</th>
+                            <td class="row-data">
+                                {{book.Status_Changed_At}}
+                            </td>
+                        </tr>
+                        {% else %}
+                            <tr>
+                                <th scope="row" class="row-heading">Admitted Time</th>
+                                <td class="row-data">
+                                    {{book.Admit_Time}}
+                                </td>
+                            </tr>
+                            {% if book.Status == "Released" %}
+                                <tr>
+                                    <th scope="row" class="row-heading">Released Time</th>
+                                    <td class="row-data">
+                                        {{book.Status_Changed_At}}
+                                    </td>
+                                </tr>
+                            {% elif book.Status == "Died" %}
+                                <tr>
+                                    <th scope="row" class="row-heading">Died At</th>
+                                    <td class="row-data">
+                                        {{book.Status_Changed_At}}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+                        {% if bed is not None %}
+                            <tr>
+                                <th scope="row" class="row-heading">Department</th>
+                                <td class="row-data">
+                                    {{bed.Department.department}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="row-heading">Bed No</th>
+                                <td class="row-data">
+                                    Bed No: {{bed.Bed_No}}, Ward: {{bed.Ward}} ({{bed.Support}}),
+                                    {% if bed.Room != '' and bed.Room is not None and bed.Unit != '' and bed.Unit is not None %}
+                                        <br>Room: {{bed.Room.Room}}, Unit: {{bed.Unit.Unit}},
+                                    {% elif bed.Room != '' and bed.Room is not None %}
+                                        <br>Room: {{bed.Room.Room}},
+                                    {% elif bed.Unit != '' and bed.Unit is not None %}
+                                        <br>Unit: {{bed.Unit.Unit}},
+                                    {% endif %}
+                                    {% if bed.Building != '' and bed.Building is not None %}
+                                        <br>Building: {{bed.Building.Building}}, Floor: {{bed.Floor}}
+                                    {% else %}
+                                        <br>Floor: {{bed.Floor}}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th colspan="2" align="center"><h5>PATIENT'S DETAILS</h5></th>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="row-heading">Patient's Name</th>
+                            <td class="row-data">{{book.Patient_Name}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="row-heading">Patient's Gender</th>
+                            <td class="row-data">{{book.Gender}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="row-heading">Patient's Age</th>
+                            <td class="row-data">{{book.Age}}</td>
+                        </tr>
+                        {% if book.Email != '' %}
+                        <tr>
+                            <th scope="row" class="row-heading">Email</th>
+                            <td class="row-data">{{book.Email}}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th scope="row" class="row-heading">Mobile No</th>
+                            <td class="row-data">{{book.Mobile}}</td>
+                        </tr>
+                        {% if book.Alternative_Mobile != '' %}
+                        <tr>
+                            <th scope="row" class="row-heading">Alternative Mobile</th>
+                            <td class="row-data">{{book.Alternative_Mobile}}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th scope="row" class="row-heading">State</th>
+                            <td class="row-data">{{book.State}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="row-heading">District</th>
+                            <td class="row-data">{{book.District}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="row-heading">Area Pin</th>
+                            <td class="row-data">{{book.Pin}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="row-heading">Sub-Division</th>
+                            <td class="row-data">{{book.Subdivision}}</td>
+                        </tr>
+                        {% if book.Disease is not None  %}
+                        <tr>
+                            <th colspan="2"><h5>Diagnosis</h5></th>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="row-heading">Diagnosis</th>
+                            <td class="row-data">{{book.Disease.Disease}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if book.Status != "Referred" %}
+                            <tr>
+                                <th colspan="2"><h5>HOSPITAL DETAILS</h5></th>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="row-heading">Hospital Name</th>
+                                <td>{{book.Hospital_Name.Name}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="row-heading">Contact No</th>
+                                <td>{{book.Hospital_Name.Emergency_Number}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="row-heading">Email Id</th>
+                                <td>{{book.Username.email}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="row-heading">Address</th>
+                                <td style="white-space: pre-wrap">{{book.Hospital_Name.Address}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="row-heading">State</th>
+                                <td>{{book.Hospital_Name.State.Name}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="row-heading">District</th>
+                                <td>{{book.Hospital_Name.District.Name}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="row-heading">Subdivision</th>
+                                <td>{{book.Hospital_Name.Subdivision}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="row-heading">Pin</th>
+                                <td>{{book.Hospital_Name.Pin}}</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                {% if referralCount > 0 %}
+                <table class="table table-bordered table-condensed table-page-break-before" id="data-table-1" style="width:100%; background-color:white; margin-top: -10px;;">
+                    <tbody align="center">
+                        <tr>
+                            <th colspan="2"><h5>REFERRED HOSPITALS</h5></th>
+                        </tr>
+                        <tr>
+                            <th scope="col"><h5>REFERRED FROM</h5></th>
+                            <th scope="col"><h5>REFERRED TO</h5></th>
+                        </tr>
+                        {% for refer in referral %}
+                            <tr>
+                                <td colspan="2"><span style="font-size: 17px; color: darkgray;">Referred At: </span>{{refer.ReferredDate}}</td>
+                            </tr>
+                            <tr class="hospital-name-bg">
+                                <td><h5>Hospital Name: </h5>{{refer.Referral_Hospital_From.Name}}</td>
+                                <td><h5>Hospital Name: </h5> {{refer.Referral_Hospital_To.Name}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>Contact: </span>{{refer.Referral_Hospital_From.Emergency_Number}}</td>
+                                <td><span>Contact: </span> {{refer.Referral_Hospital_To.Emergency_Number}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>Email: </span>{{refer.Referral_Hospital_From.Username.email}}</td>
+                                <td><span>Email: </span> {{refer.Referral_Hospital_To.Username.email}}</td>
+                            </tr>
+                            <tr>
+                                <td style="white-space: pre-wrap"><span>Address: </span>{{refer.Referral_Hospital_From.Address}}</td>
+                                <td style="white-space: pre-wrap"><span>Address: </span> {{refer.Referral_Hospital_To.Address}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>State: </span>{{refer.Referral_Hospital_From.State.Name}}</td>
+                                <td><span>State: </span> {{refer.Referral_Hospital_To.State.Name}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>District: </span>{{refer.Referral_Hospital_From.District.Name}}</td>
+                                <td><span>District: </span> {{refer.Referral_Hospital_To.District.Name}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>Subdivision: </span>{{refer.Referral_Hospital_From.Subdivision}}</td>
+                                <td><span>Subdivision: </span> {{refer.Referral_Hospital_To.Subdivision}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>Pin: </span>{{refer.Referral_Hospital_From.Pin}}</td>
+                                <td><span>Pin: </span> {{refer.Referral_Hospital_To.Pin}}</td>
+                            </tr>                           
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+
+                {% if patientShiftRecordsCount > 0 %}
+                <table class="table table-bordered table-condensed table-page-break-before" id="data-table-2" style="width:100%; background-color:white; margin-top: -10px;;">
+                    <tbody align="center">
+                        <tr>
+                            <th colspan="2"><h5>BED SHIFT RECORDS</h5></th>
+                        </tr>
+                        <tr>
+                            <th scope="col"><h5>SHIFTED FROM</h5></th>
+                            <th scope="col"><h5>SHIFTED TO</h5></th>
+                        </tr>
+                        {% for shift in patientShiftRecords %}
+                            <tr>
+                                <td colspan="2"><span style="font-size: 17px; color: darkgray;">Shifted At: </span>{{shift.shifted_at}}</td>
+                            </tr>
+                            <tr class="hospital-name-bg">
+                                <td colspan="2"><h5>Hospital Name: </h5>{{shift.hospital.Name}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>Department: </span>{{shift.shift_form.Department.department}}</td>
+                                <td><span>Department: </span> {{shift.shift_to.Department.department}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>Bed No: </span>{{shift.shift_form.Bed_No}}</td>
+                                <td><span>Bed No: </span> {{shift.shift_to.Bed_No}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>Ward: </span>{{shift.shift_form.Ward}}</td>
+                                <td><span>Ward: </span> {{shift.shift_to.Ward}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>Support: </span>{{shift.shift_form.Support}}</td>
+                                <td><span>Support: </span> {{shift.shift_to.Support}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>Room: </span>{{shift.shift_form.Room.Room}}</td>
+                                <td><span>Room: </span> {{shift.shift_to.Room.Room}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>Unit: </span>{{shift.shift_form.Unit.Unit}}</td>
+                                <td><span>Unit: </span> {{shift.shift_to.Unit.Unit}}</td>
+                            </tr>  
+                            <tr>
+                                <td><span>Floor: </span>{{shift.shift_form.Floor}}</td>
+                                <td><span>Floor: </span> {{shift.shift_to.Floor}}</td>
+                            </tr>
+                            <tr>
+                                <td><span>Building: </span>{{shift.shift_form.Building.Building}}</td>
+                                <td><span>Building: </span> {{shift.shift_to.Building.Building}}</td>
+                            </tr>                                                    
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+
+                {% if book.Booked_By == "Hospital Authority" %}
+                    <p>This Booking is done by Hospital Authority</p>
+                {% endif %}
+            </div>
+            <div class="button-section">
+                <div class="mt-3">
+                    <a href="{% url 'Go_Healthy_App:project-Home' %}" style="color:blue" aria-labelledby="Go to home"><i class="fad fa-home"></i>
+                        Go to Home
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-md-3 side-col"></div>
+    </div>
+</center>
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/bedbook_conf.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

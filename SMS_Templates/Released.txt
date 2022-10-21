@@ -1,0 +1,7 @@
+Patient **patientName**(Patient ID - **bookingId**) has been released from the hospital.
+
+Hospital Name: **hospitalName**
+Hospital Contact Number: **hospitalContact**
+
+Regards,
+Go Healthy

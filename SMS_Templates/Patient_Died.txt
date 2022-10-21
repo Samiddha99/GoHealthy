@@ -1,0 +1,7 @@
+Hospital declared **patientName** (Patient ID - **patientId**) as died.
+
+Hospital Name: **hospitalName**
+Hospital Contact Number: **hospitalContact**
+
+Regards,
+Go Healthy

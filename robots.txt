@@ -1,0 +1,9 @@
+User-Agent: *
+
+Disallow: /bedbook/
+Disallow: /patient-info/
+Disallow: /my-profile/
+Disallow: /hospital-admin/
+Disallow: /logout/
+
+Sitemap: https://go-healthy.herokuapp.com/sitemap.xml

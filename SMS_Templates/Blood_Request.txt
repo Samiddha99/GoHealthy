@@ -1,0 +1,8 @@
+URGENT!!
+**patientName** needs **unit** Unit **bloodGroup** blood at **hospitalName**, **hospitalCity**.
+
+Please help the patient by donating blood.
+Call **contactNumber** to contact
+
+Regards,
+Go Healthy

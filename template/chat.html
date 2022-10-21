@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% load tz %}
+<html lang="en">
+<head>
+    {% block meta %}
+    <meta name="title" content="Chat | Go Healthy">
+    <meta name="description" content="Talk with Blood Donors or Doctors">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>Chat | Go Healthy</title>
+    {% endblock title %}
+</head>
+{% block body %}
+<body onload="FetchNewChat(); fetchDelete()" style="background-image: url('{% static 'images/GoHealthy_chat page background.png' %}');
+             background-size: 100% 100%;background-repeat:no-repeat;background-attachment:fixed;">
+{% endblock body %}
+
+
+{%block content %}
+<div class="row">
+    <div class="col-md-4 ml-3 mr-3" align="right">
+        <div id="openmychat" style="display:none">
+            <button type="button" class="btn btn-info w-100" onclick="openMyChat()">
+                <i class="fas fa-bars fa-2x" style="float:left"></i><b>Open My Chats</b>
+            </button>
+            <br>
+        </div>
+        <div class="container bg-info" id="mychat"
+             style="padding:0px;padding-left:10px;padding-top:10px;display:block;">
+            <div class="bg-light mb-1" style="padding:20px;margin-right:10px">
+                <span><img align="left" src="{{myself.Image.url}}" class="rounded-circle" height="50" width="50">
+                    <span style="float:left;font-size:18px">&nbsp;&nbsp;My Chats</span></span>
+                <button type="button" class="btn" onclick="location.reload()" title="Refresh My Chats"
+                        style="border:none;background-color:none">
+                    <i class="fas fa-sync-alt text-primary" style="font-size:20px"></i>
+                </button>
+
+                <button type="button" title="Close My Chats Section" onclick="closeMyChat()" id="close"
+                        class="btn btn-danger" style=""><i class="fas fa-times"></i></button>
+            </div>
+            <div align="right" class="mr-2">
+                <form id="allchatsearchform" method="post" action="{% url 'Go_Healthy_App:Chat' %}">
+                    {% csrf_token %}
+                    <input type="search" form="allchatsearchform" autocomplete="off" name="mychatsearch" required
+                           class="form-control input-sm"
+                           placeholder="Search My Chats">
+                    <input type="hidden" name="chatwith" form="allchatsearchform" value="{{with}}">
+                </form>
+                <div class="row">
+                    <div class="col-2" align="left">
+                        {% if searchMychat %}
+                        <form id="clearsearchform" method="post" action="{% url 'Go_Healthy_App:Chat' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="chatwith" form="clearsearchform" value="{{with}}">
+                            <button type="submit" title="Clear Search" class="btn" form="clearsearchform" name="action"
+                                    value="doChat" style="float:right">
+                                <i class="fal fa-times text-danger fa-2x"></i>
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                    <div class="col-4"></div>
+                    <div class="col-6" align="right">
+                        <button type="submit" name="action" value="SearchMyChat" class="btn btn-success"
+                                form="allchatsearchform"
+                                style="border-color:white;margin-top:5px;width:100%"><i class="fad fa-search"></i>&nbsp
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div id="messages" style="height:410px;overflow-x: scroll;overflow: auto;display:block">
+                {% if has_chat == 0 %}
+                <br>
+                <h3 align="center" class="text-light">
+                    <i class="fad fa-frown fa-3x"></i><br>
+                    No Past Chat Record Found !
+                </h3>
+                {% else %}
+                {% for i in chatwith %}
+                <form id="{{i}}" method="post" action="{% url 'Go_Healthy_App:Chat' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-info" style="border:none;width:100%;border-bottom: 1px solid gray;"
+                            form="{{i}}" name="action" value="doChat">
+                        <input type="hidden" form="{{i}}" name="chatwith" value="{{i.0}}">
+                        {% if i.0|newChat:user.username != 0 %}
+                        <span class="badge badge-danger badge-pill" style="float:right">
+                                {{i.0 | newChat:user.username}} New Messages
+                        </span>
+                        {% endif %}
+                        <div style="float:left;" class="text-light mb-0"><img
+                                src="/assets/media/{{i.2 }}"
+                                class="rounded-circle" height="40" width="40">
+                            &nbsp;<b>{{i.1}}</b><br>
+                            <span class="d-inline-block text-truncate" style="max-width: 300px;margin-bottom:-20px;">
+                                <p style="color:black" align="left">{{i.5}}</p>
+                            </span>
+                        </div>
+                        <div align="right" style="color:blue;float:right">{{i.3}}</div>
+                    </button>
+                </form>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <div class="col-md-6 ml-4 mr-4 bg-secondary" style="padding:0px">
+        {% if person == 'N/A' %}
+        <h1 class="text-light" align="center"><i class="fad fa-comment-smile fa-5x"></i></h1>
+        <h1 class="text-light" align="center">Select a chat from My Chats</h1>
+        <h2 class="text-light" align="center">OR</h2>
+        <h4 class="text-light" align="center">If you want to do chat with any Doctor or Blood Donor for any emergency
+            purpose then <br><a href="{% url 'Go_Healthy_App:project-Doctor' %}" class="text-warning">Search Doctor</a> or <a
+                    href="{% url 'Go_Healthy_App:project-Blood' %}" class="text-warning">Search Blood Donor</a></h4>
+        {% else %}
+        <div class="w-100 bg-info text-light" style="padding:10px;padding-left:18px;padding-bottom:0px">
+            <div class="row no-gutters" style="margin-bottom:-8px">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-sm-1 mr-2">
+                            <img src="{{data.Image.url}}" class="rounded-circle" height="40" width="40">
+                        </div>
+                        <div class="col-sm" align="left">
+                            <span>
+                            <b style="font-size:17px">{{data.Name}}</b>
+
+                                <b id="online" hidden>
+                            <i class="fas fa-circle fa-1x" style="color:#17FF00"></i>
+                            <button class="btn" type="button" data-toggle="collapse"
+                                    data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
+                                    style="border:none;background-color:none">
+                                <i class="fad fa-chevron-square-down fa-0x text-light"></i>
+                            </button>
+                                </b>
+
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4" align="left">
+                    <div align="left" style="margin-right:10px">
+                        <div class="row">
+                            <div class="form-inline" align="right">
+                                <div class="input-group mb-3">
+                                    <input type="hidden" name="from" id="from" value="{{person}}">
+                                    <input type="hidden" name="to" id="to" value="{{user.username}}">
+                                    <input type="hidden" id="result" value="">
+                                    <input type="hidden" id="searchIds" value="">
+                                    <input type="search" id="chatsearch" name="chatsearch" autocomplete="off"
+                                           onkeyup="SearchChat()"
+                                           class="form-control input-sm" placeholder="Search Chat" aria-label="Search Chat"
+                                           aria-describedby="button-addon2" required>
+                                    <span class="input-group-append">
+                                        <button class="btn btn-outline-dark btn-light" disabled onclick="SearchChat()"
+                                                name="action" value="chatSearch" type="submit" id="button-addon2"
+                                                style="background-color:white">
+                                            <i id="searchIcon" class="fas fa-search"></i>
+                                        </button>
+                                      </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:-9px">
+                <div class="row">
+                    <div class="col-8" align="left">
+                <span id="offline">
+                    <span id="lastSeen">Last Seen: {{person.last_seen}}</span>
+                    <button class="btn" type="button" data-toggle="collapse"
+                            data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
+                            style="border:none;background-color:none">
+                        <i class="fad fa-chevron-square-down fa-0x text-light"></i>
+                    </button>
+                </span>
+                    </div>
+                    <div class="col" align="right">
+                        <div align="right">
+                            <button style="color:red;display:none" class="btn ml-5 btn-light" id="deleteAll"
+                                    onclick="deleteAll()" title="Delete All Selected Chats"><i
+                                    class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body bg-light">
+                <h5 align="center">{{person.User_Type}}</h5>
+                <h6>Mobile: {{data.Contact}}</h6>
+                <h6>Email: {{person.email}}</h6>
+                <h6>State: {{data.State.Name}}</h6>
+                <h6>District: {{data.District.Name}}</h6>
+                <h6>Subdivision: {{data.Subdivision}}</h6>
+                <h6>Pin: {{data.Pin}}</h6>
+                <h6 style="white-space: pre-wrap">Address: {{data.Address}}</h6>
+            </div>
+        </div>
+        <div style="background-image: url('{% static 'images/GoHealthy_chat background.png' %}'); background-size: 100% 100%;background-repeat:no-repeat;">
+            <div style="height:430px;padding:10px;overflow-x: scroll;overflow: auto;box-sizing: content-box;"
+                 id="chatting">
+                <div align="right">
+                    <button type="button" class="btn" style="" onclick="ScrollTop()">
+                        <i class="fad fa-chevron-circle-up fa-2x text-primary" style="position:static"></i>
+                    </button>
+                </div>
+                <div id="conversation">
+                    {% for i in chats %}
+                    {% if i.To == request.user %}
+                    <div id="{{i.id}}click" onclick="ShowDel({{i.id}});">
+                        <div id="{{i.id}}toChats" align="left">
+                            <input type="hidden" id="del{{i.id}}" value="{{i.Deleted}}">
+                            <div class="mb-3" id="toChats{{i.id}}"
+                                 style="background-color:white;padding:5px;padding-bottom:0px;width:60%;border-top-right-radius:10px;border-bottom-right-radius:10px;border-bottom-left-radius:10px;border:0.1px solid gray;">
+                                {% if i.Deleted %}
+                                <p style="margin-bottom:-1px;" class="text-muted">This Message Was Deleted</p>
+                                {% else %}
+                                <p id="{{i.id}}Message" style="margin-bottom:-1px;">{{i.Message}}</p>
+                                <p class="text-muted" id="{{i.id}}Time" align="right" style="margin-bottom:0px">{{i.Time}}</p>
+                                <span id="{{i.id}}" style="display:none;">
+                            </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% elif i.From == request.user %}
+                    <div id="{{i.id}}click" onclick="ShowDel({{i.id}});">
+                        <div id="{{i.id}}sendChats" align="right">
+                            <input type="hidden" id="del{{i.id}}" value="{{i.Deleted}}">
+                            <div class="mb-3" id="sendChats{{i.id}}"
+                                 style="padding:5px;padding-bottom:0px;background-color:#00FFFC;width:60%;border-top-right-radius:10px;border-top-left-radius:10px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0.1px solid blue;">
+                                {% if i.Deleted %}
+                                <p style="margin-bottom:-1px;" align="right" class="text-muted">This Message Was
+                                    Deleted</p>
+                                {% else %}
+                                <p id="{{i.id}}Message" style="margin-bottom:-1px;white-space: pre-wrap" align="left">{{i.Message}}</p>
+                                <p class="text-muted" id="{{i.id}}Time" style="margin-bottom:0px">{{i.Time}}
+                                    <span id="check{{i.id}}">
+                                {% if i.Delivered %}
+                                <i class='fal fa-check-double text-primary'></i>
+                                {% else %}
+                                <i class='fal fa-check'></i>
+                                {% endif %}
+                            </span>
+                                </p>
+                                <span id="{{i.id}}" class="trash" style="display:none">
+                                <button class="btn" onclick="deleteChat({{i.id}})"><i
+                                        class="fas fa-trash-alt text-danger"></i></button>
+                            </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div align="right">
+                <button type="button" class="btn mt-10" style="" onclick="ScrollBottom()">
+                    <i class="fas fas fa-angle-down fa-2x text-primary" style="position:static;"></i>
+                </button>
+            </div>
+        </div>
+        <div class="bg-info" style="padding:7px;padding-right:1px">
+            <div id="scrollSearch" align="right" style="display:none">
+            <span class="text-light mb-1">
+                <input type="hidden" id="resultNum" value="">
+                <b id="totalResult"></b>
+                <button class="btn" id="searchTop" onclick="TopSearch()"><i class="fas fa-caret-up fa-2x text-light"></i></button>
+                <button class="btn" id="searchDown" onclick="DownSearch()"><i class="fas fa-caret-down fa-2x text-light"></i></button>
+            </span>
+            </div>
+            <form id="sendchat" method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="talkwith" form="sendchat" id="talkwith" value="{{person}}">
+                <input type="hidden" name="receiver" form="sendchat" id="receiver" value="{{user.username}}">
+                <div class="row no-gutters w-100" style="gap:5px">
+                    <div class="col">
+                        <textarea autocomplete="off" name="chat" id="chat" form="sendchat"
+                               class="form-control input-sm"
+                               placeholder="Type Your Message"
+                                  style="height:50px;" required></textarea>
+                    </div>
+                    <div class="col-2">
+                        <button id="sendbtn" type="button" form="sendchat" class="btn"
+                                onclick="sendChat();" title="Send Message"
+                                style="border:none;background-color:none">
+                            <i class="fas fa-paper-plane fa-2x" style="color:#43FF00"></i>
+                        </button>
+                    </div>
+                </div>
+                <span id="sendchatmessage" style="display:none"></span>
+            </form>
+        </div>
+        {% endif %}
+        <div class="col-md" style="background-color:white"></div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    function TotalChat()
+    {
+    lis = [];
+    $.ajax(
+        {
+            type:'POST',
+            url: {% url 'Go_Healthy_App:Total-Chat' %},
+            data:{
+            with:$('#talkwith').val(),
+            user:$('#receiver').val(),
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            dataType: 'json',
+            cache: false,
+            success:function(response)
+            {
+                lis = response.ids;
+                return lis;
+            },
+        });
+
+    }
+
+</script>
+
+
+<script>
+    function DownSearch()
+    {
+        $('#searchTop').attr('disabled', false);
+        var fromStart = "Yes";
+        var lis = $('#searchIds').val();
+        lis = lis.split(",");
+        for(i=0; i<lis.length; i++)
+        {
+            var ele = lis[i]+"click";
+            var c = $("#"+lis[i]).css('display');
+            if(c == 'block')
+            {
+                fromStart = "No";
+                var next = lis[i+1]+"click";
+                $("#"+lis[i]).css("display", "none");
+                $("#"+ele).css('background-color', '#F6FBDD');
+                $("#"+next).css('background-color', '#FDFF92');
+                $('#toChats'+lis[i]).removeClass('bg-light');
+                $('#sendChats'+lis[i]).removeClass('bg-primary');
+                $('#toChats'+lis[i+1]).addClass('bg-light');
+                 $('#sendChats'+lis[i+1]).addClass('bg-primary');
+                $("#"+next).click();
+                $("#"+lis[i+1]).css("display", "block");
+                $('#chatting').scrollTop($('#chatting').scrollTop() + $('#'+ele).position().top - $('#chatting').height()/2 + $('#'+ele).height()/2);
+                if(i == lis.length-2)
+                {
+                    $('#searchDown').attr('disabled', true);
+                }
+                return true;
+            }
+        }
+        if(fromStart == "Yes")
+        {
+        var start = lis[0]+"click";
+        $("#"+start).click();
+        $("#"+start).css('background-color', '#FDFF92');
+        $('#toChats'+lis[0]).addClass('bg-light');
+         $('#sendChats'+lis[0]).addClass('bg-primary');
+        $("#"+lis[0]).css("display", "block");
+        $('#chatting').scrollTop($('#chatting').scrollTop() + $('#'+start).position().top - $('#chatting').height()/2 + $('#'+start).height()/2);
+        return true;
+        }
+    }
+</script>
+
+
+<script>
+    function TopSearch()
+    {
+        $('#searchDown').attr('disabled', false);
+        var fromEnd = "Yes";
+        var lis = $('#searchIds').val();
+        lis = lis.split(",");
+        len = (lis.length-1);
+        for(i=len; i>=0; i--)
+        {
+            var ele = lis[i]+"click";
+            var c = $("#"+lis[i]).css('display');
+            if(c == 'block')
+            {
+                fromEnd = "No";
+                var next = lis[i-1]+"click";
+                $("#"+lis[i]).css("display", "none");
+                $("#"+next).click();
+                $("#"+ele).css('background-color', '#F6FBDD');
+                $("#"+next).css('background-color', '#FDFF92');
+                $('#toChats'+lis[i]).removeClass('bg-light');
+                 $('#sendChats'+lis[i]).removeClass('bg-primary');
+                $('#toChats'+lis[i-1]).addClass('bg-light');
+                 $('#sendChats'+lis[i-1]).addClass('bg-primary');
+                $("#"+lis[i-1]).css("display", "block");
+                $('#chatting').scrollTop($('#chatting').scrollTop() + $('#'+ele).position().top - $('#chatting').height()/2 + $('#'+ele).height()/2);
+                if(i == 1)
+                {
+                    $('#searchTop').attr('disabled', true);
+                }
+                return true;
+            }
+        }
+        if(fromEnd == "Yes")
+        {
+        var start = lis[len]+"click";
+        $("#"+start).click();
+        $("#"+start).css('background-color', '#FDFF92');
+        $('#toChats'+lis[len]).addClass('bg-light');
+        $('#sendChats'+lis[len]).addClass('bg-primary');
+        $("#"+len).css("display", "block");
+        $('#chatting').scrollTop($('#chatting').scrollTop() + $('#'+start).position().top - $('#chatting').height()/2 + $('#'+start).height()/2);
+        return true;
+        }
+    }
+</script>
+
+<script>
+    function deleteAll()
+    {
+            $.ajax(
+            {
+                type:'POST',
+                url: {% url 'Go_Healthy_App:Total-Chat' %},
+                data:{
+                with:$('#talkwith').val(),
+                user:$('#receiver').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+                dataType: 'json',
+            cache: false,
+                success:function(response)
+                {
+                    for(i=0; i<response.ids.length; i++)
+                    {
+                        if(document.getElementById(""+response.ids[i]).style.display == 'block')
+                        {
+                            $.ajax(
+                            {
+                                type:'POST',
+                                url: {% url 'Go_Healthy_App:Delete-Chat' %},
+                                data:{
+                                id:response.ids[i],
+                                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                },
+                                dataType: 'json',
+            cache: false,
+                                success:function(response)
+                                {
+                                    if(response.error == '0')
+                                    {
+                                        location.reload();
+                                    }
+                                },
+                            });
+
+                        }
+                    }
+                },
+            });
+    }
+
+</script>
+
+<script>
+    function ScrollBottom()
+    {
+    var objDiv = document.getElementById("chatting");
+    objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+</script>
+<script>
+    function ScrollTop()
+    {
+    $("#chatting").animate({ scrollTop: 0 }, "fast");
+    }
+
+</script>
+
+<script>
+    function deleteChat(id)
+    {
+        $.ajax(
+			{
+				type:'POST',
+				url: {% url 'Go_Healthy_App:Delete-Chat' %},
+				data:{
+				id:id,
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+				},
+				dataType: 'json',
+            cache: false,
+				success:function(response)
+				{
+				    if(response.error == '0')
+				    {
+				    document.getElementById(id+'Message').innerHTML = 'This Message Was Deleted';
+				    $('#'+id+'Message').addClass('text-muted');
+				    $('#'+id+'Time').remove();
+				    $('#Check'+id).remove();
+				    $('#del'+id).val('True');
+                    }
+				},
+			});
+    }
+
+</script>
+
+<script type="text/javascript">
+    function ShowDel(id)
+    {
+        document.getElementById("deleteAll").style.display = "none";
+        deleted = $('#del'+id).val()
+        if(deleted == 'False')
+        {
+            if(document.getElementById(""+id).style.display == 'none')
+            {
+                document.getElementById(""+id).style.display = "block";
+            }
+            else
+            {
+                document.getElementById(""+id).style.display = "none";
+            }
+
+            $.ajax(
+            {
+                type:'POST',
+                url: {% url 'Go_Healthy_App:Total-Chat' %},
+                data:{
+                with:$('#talkwith').val(),
+                user:$('#receiver').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+                dataType: 'json',
+            cache: false,
+                success:function(response)
+                {
+                    for(i=0; i<response.ids.length; i++)
+                    {
+                        if(document.getElementById(""+response.ids[i]).style.display == 'block')
+                        {
+                            document.getElementById("deleteAll").style.display = "block";
+                        }
+                    }
+                },
+            });
+        }
+    }
+
+</script>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            var scroll_position = localStorage.getItem('scroll_position');
+            if (scroll_position) window.scrollTo(0, scroll_position);
+        });
+
+        window.onbeforeunload = function(e) {
+            localStorage.setItem('scroll_position', window.scrollY);
+        };
+</script>
+
+<script>
+    function FetchNewChat()
+    {
+        // Update the count down every 1 second
+            setInterval(function() {
+            $.ajax({
+                type:'POST',
+                url: {% url 'Go_Healthy_App:Fetch-Chat' %},
+                data:{
+                    sender:$('#talkwith').val(),
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+                dataType: 'json',
+            cache: false,
+                success: function(response)
+                {
+                    if(response.error == "0")
+                    {
+                        for(var i=0;i<response.count;i++)
+                        {
+                            $("#conversation").append("<div id="+response.id[i]+"click' onclick='ShowDel("+response.id[i]+");'><div id='"+response.id[i]+"toChats' align='left'><input type='hidden' id='del"+response.id[i]+"' value='False'><div class='mb-3' id='toChats"+response.id[i]+"' style='background-color:white;padding:5px;padding-bottom:0px;width:60%;border-top-right-radius:10px;border-bottom-right-radius:10px;border-bottom-left-radius:10px;border:0.1px solid gray;'><p id='"+response.id[i]+"Message' style='margin-bottom:-1px;'></p><p class='text-muted' id='"+response.id[i]+"Time' align='right' style='margin-bottom:0px'>"+response.time[i]+"</p><span id='"+response.id[i]+"' style='display:none;'><button class='btn' onclick='deleteChat("+response.id[i]+")'><i class='fas fa-trash-alt text-danger'></i></button></span></div></div></div>");
+                            $('#'+response.id[i]+"Message').text(response.chat[i])
+                            if ($(window).scrollTop() >= $('#chatting').offset().top + $('#chatting'). outerHeight() - window.innerHeight) {
+                                var objDiv = document.getElementById("chatting");
+                                objDiv.scrollTop = objDiv.scrollHeight;
+                            }
+                        }
+                        for(var j=0; j<response.check_count; j++)
+                        {
+                            $("#check"+response.check[j]).html("<i class='fal fa-check-double text-primary'></i>");
+                        }
+                    }
+                },
+            });
+
+        }, 1000);
+    }
+
+</script>
+
+
+<script>
+    function fetchDelete()
+    {
+    // Update the count down every 1 second
+        setInterval(function() {
+             $.ajax(
+            {
+                type:'POST',
+                url: {% url 'Go_Healthy_App:Total-Chat' %},
+                data:{
+                with:$('#talkwith').val(),
+                user:$('#receiver').val(),
+                forDelete:'Deleted',
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+                dataType: 'json',
+            cache: false,
+                success:function(response)
+                {
+                    for(i=0; i<response.ids.length; i++)
+                    {
+                    $('#'+response.ids[i]+'Message').html('This Message Was Deleted');
+				    $('#'+response.ids[i]+'Message').addClass('text-muted');
+				    $('#'+response.ids[i]+'Time').remove();
+				    $('#Check'+response.ids[i]).remove();
+				    $('#del'+response.ids[i]).val('True');
+                    }
+                    if(response.is_online == 'True')
+                    {
+                        $("#offline").attr("hidden", true);
+                    $("#online").removeAttr("hidden");
+                    }
+                    else
+                    {
+                    $("#offline").removeAttr("hidden");
+                    $("#online").attr("hidden", true);
+                    $("#lastSeen").html("Last seen "+response.last);
+                    }
+                    s = $('#chatsearch').val();
+                    if(s == '')
+                    {
+                    document.getElementById("scrollSearch").style.display = "none"
+                    $('[id^="toChats"]').css("background-color", "white");
+                    $('[id^="sendChats"]').css("background-color", "#00FFFC");
+
+                    $("[id$=click]").css("background-color", "transparent");
+
+                    $("[id$=toChats]").removeAttr("class");
+                    $("[id$=sendChats]").removeAttr("class");
+                    }
+                },
+            });
+
+        }, 1000);
+    }
+
+</script>
+
+<script>
+    function SearchChat(){
+        document.getElementById("scrollSearch").style.display = "none"
+        $('#searchIcon').addClass('fa-spin')
+        $('#resultNum').val('');
+        var v = $('#result').val();
+
+        $('.trash').css('display', 'none');
+        $('[id^="toChats"]').removeClass('bg-light');
+        $('[id^="sendChats"]').removeClass('bg-primary');
+
+        $('[id^="toChats"]').css("background-color", "white");
+        $('[id^="sendChats"]').css("background-color", "#00FFFC");
+
+        $("[id$=toChats]").css("background-color", "transparent");
+        $("[id$=sendChats]").css("background-color", "transparent");
+
+        $("[id$=toChats]").removeAttr("class");
+        $("[id$=sendChats]").removeAttr("class");
+
+		s = $('#chatsearch').val();
+		if(s !== '')
+		{
+		    var j = 1;
+		    var k = 2;
+			$.ajax(
+			{
+				type:'POST',
+				url: {% url 'Go_Healthy_App:Search-Chat' %},
+				data:{
+				chat:s,
+				sender:$('#from').val(),
+				receiver:$('#to').val(),
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+				},
+				dataType: 'json',
+            cache: false,
+				success:function(response)
+				{   document.getElementById("scrollSearch").style.display = "block"
+				    document.getElementById("totalResult").innerHTML = ""+response.num+" Results Found"
+				    $('#resultNum').val(response.num);
+				    $('#searchIds').val(response.chat_id);
+                    for(i=0; i<response.num; i++)
+                    {
+                     $('#toChats'+response.chat_id[i]).css("background-color", "#D6D9D9");
+                     $('#sendChats'+response.chat_id[i]).css("background-color", "#97DBFF");
+
+                     $('#'+response.chat_id[i]+'click').css("background-color", "#F6FBDD");
+                     $('#'+response.chat_id[i]+'click').css("background-color", "#F6FBDD");
+                     $('#'+response.chat_id[i]+'toChats').addClass(''+j);
+                     $('#'+response.chat_id[i]+'sendChats').addClass(''+k);
+                     j = j+1;
+                     k = k+1;
+                    }
+                    $('#resultNum').val(''+k);
+
+                    //return false;
+				},
+			});
+        }
+        $('#searchIcon').removeClass('fa-spin')
+			return false;
+	}
+
+</script>
+
+<script>
+    function sendChat(){
+        var mychat = $('#chat').val();
+        if(mychat.length != 0)
+        {
+        document.getElementById("sendchatmessage").style.display = "none"
+        var flag = 0;
+			document.getElementById("chat").disabled = true;
+			document.getElementById("sendbtn").disabled = true;
+			flag = flag + 1;
+			$.ajax(
+			{
+				type:'POST',
+				url: {% url 'Go_Healthy_App:Send-Chat' %},
+				data:{
+				chat:$('#chat').val(),
+				receiver:$('#talkwith').val(),
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+				},
+				dataType: 'json',
+            cache: false,
+				success:function(response)
+				{
+					document.getElementById("chat").disabled = false;
+					$('#chat').focus();
+					document.getElementById("sendbtn").disabled = false;
+					$('#chat').val('');
+					$("#conversation").append("<div id="+response.id+"click' onclick='ShowDel("+response.id+");'><div id='"+response.id+"sendChats' align='right'><input type='hidden' id='del"+response.id+"' value='False'><div class='mb-3' id='sendChats"+response.id+"' style='padding:5px;padding-bottom:0px;background-color:#00FFFC;width:60%;border-top-right-radius:10px;border-top-left-radius:10px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0.1px solid blue;'><p id='"+response.id+"Message' style='margin-bottom:-1px;white-space: pre-wrap' align='left'></p><p class='text-muted' id='"+response.id+"Time' style='margin-bottom:0px'>"+response.time+"<span id='check"+response.id+"'><i class='fal fa-check'></i></span></p><span id='"+response.id+"' class='trash' style='display:none'><button class='btn' onclick='deleteChat("+response.id+")'><i class='fas fa-trash-alt text-danger'></i></button></span></div></div></div>");
+				    $('#'+response.id+"Message').text(response.chat)
+				    var objDiv = document.getElementById("chatting");
+                    objDiv.scrollTop = objDiv.scrollHeight;
+                    if(flag == 1) {
+                    fetchDelete();
+                    }
+                    return false;
+				},
+				error: function(response)
+				{
+					document.getElementById("chat").disabled = false;
+					$('#chat').focus();
+					document.getElementById("sendbtn").disabled = false;
+					document.getElementById("sendchatmessage").style.display = "block"
+					document.getElementById("sendchatmessage").innerHTML = "<p style='color:red'>Message Send Failed</strong>"
+					return false;
+				},
+			});
+			return false;
+		return false;
+	}
+}
+</script>
+
+<script>
+    function closeMyChat()
+    {
+    document.getElementById('mychat').style.display = "none"
+    document.getElementById('openmychat').style.display = "block"
+    }
+
+</script>
+<script>
+    function openMyChat()
+    {
+    document.getElementById('openmychat').style.display = "none"
+    document.getElementById('mychat').style.display = "block"
+    }
+
+</script>
+{% endblock script %}
+</body>
+</html>

@@ -1,0 +1,31 @@
+.status-check-nav .nav-link.active{
+    color: white !important;
+}
+.complaint-background-1{
+    background-color:#EDEDED;
+    padding:20px;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+    box-shadow: 1px 0 10px 1px #16131391, -1px -1px 10px 1px #16131391;
+}
+.complaint-background-2{
+    background-color:#f7f7f7;
+    padding:20px;
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+    box-shadow: 1px 0 10px 1px #16131391, -1px 1px 10px 1px #16131391;
+}
+
+.status-check-tab .col-data{
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.status-check-tab .grid-container:nth-child(even){
+    background-color: #d9e8ff;
+}
+.status-check-tab .grid-container{
+    display: grid;
+    grid-template-columns: 0.4fr 1fr;
+    grid-gap: 0px;
+}

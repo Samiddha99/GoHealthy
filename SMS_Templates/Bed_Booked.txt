@@ -1,0 +1,12 @@
+Bed Book has been successful in **hospitalName**, **hospitalCity**, **hospitalDist**, **hospitalState**.
+Booking ID: **bookingId**.
+
+Cary the Booking ID with you.
+Go to the hospital within 3 Hrs and show the Booking ID to the hospital to admit the patient.
+
+Hospital Contact Number: **hospitalContact**.
+
+Check status: **statusURL**
+
+Regards,
+Go Healthy

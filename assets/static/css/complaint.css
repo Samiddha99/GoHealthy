@@ -1,0 +1,29 @@
+.input-label{
+    font-size:18px;
+    margin-bottom:0px;
+    text-align:left;
+    padding:0px
+}
+.complaint-form{
+    height:35px;
+    border: 1.5px solid #BABABA;
+}
+.complaint-form:focus{
+    border-color: #BABABA !important;
+    box-shadow: 0px 0px 10px rgba(186, 186, 186, 1) !important;
+}
+.complaint-form:disabled{
+    background-color: white;
+}
+@media only screen and (min-device-width : 701px)
+{
+    .col-field-label{
+        text-align: right;
+    }
+}
+@media only screen and (min-device-width : 300px) and (max-device-width : 700px)
+{
+    .col-field-label{
+        text-align: left;
+    }
+}

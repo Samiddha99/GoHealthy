@@ -1,0 +1,23 @@
+**Organizer** will organize a blood donation camp in your city.
+
+VENUE:
+State: **State**
+District: **District**
+Subdivision: **Subdivision**
+City: **City**
+Landmark: **Landmark**
+Pin: **Pin**
+
+DATE and TIME:
+Date: **Date**
+Time: **Time**
+
+Contact: **Contact**
+Organizer's Website: **Website**
+
+We are requesting you to attend the blood donation camp to donate blood to save life of someone.
+
+For more information go to the link: **Event_Link**
+
+Regards,
+Go Healthy

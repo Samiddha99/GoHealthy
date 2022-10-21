@@ -1,0 +1,286 @@
+body{
+    background-image: linear-gradient(to bottom right, rgb(252, 250, 250), rgb(241, 240, 240));
+}
+.filter-box{
+    top: 68px !important;
+    -webkit-position: sticky !important;
+    -moz-position: sticky !important;
+    -ms-position: sticky !important;
+    -o-position: sticky !important;
+    position: sticky !important;
+    z-index: 30;
+}
+.search-field{
+    border-radius: 50px;
+    width: 100% !important;
+    background-color: #39d3fa;
+    color: white;
+}
+.search-field::placeholder{
+    color: white;
+}
+.search-field:focus{
+    background-color: #00bcec;
+    color: white;
+    box-shadow: 0px 0px 10px rgb(255, 255, 255) !important;
+}
+.search-button{
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    color: white !important;
+}
+.search-button:hover{
+    color: blue !important;
+}
+.btn-search{
+    background-color: #39d3fa;
+    color: white;
+}
+.btn-search:hover{
+    background-color: #00bcec;
+    color: white
+}
+.advance-search-box{
+    box-shadow: 0px 0px 20px rgb(199, 197, 197) !important;
+    background-color: white;
+    padding: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+.advance-search-field{
+    border-radius: 0px !important;
+}
+.advance-search-field:focus{
+    border-radius: 0px !important;
+    outline: none !important;
+    border: none !important;
+    box-shadow: 0px 0px 10px #39d3fa !important;
+}
+@media only screen and (max-device-width : 700px){
+
+    .advance-search-box{
+        display: none;
+    }
+    .small-screen-text{
+        display: block;
+    }
+    .large-screen-text{
+        display: none;
+    }
+}
+@media only screen and (min-device-width : 701px){
+
+    .small-screen-text{
+        display: none;
+    }
+    .large-screen-text{
+        display: block;
+    }
+}
+.info-text-header{
+    color: rgb(34, 216, 80);
+    font-size: 50px;
+    font-family: 'Ruslan Display', cursive;
+}
+.info-text-message{
+    color: #0000ff;
+    font-family: 'Ruslan Display', cursive;
+}
+
+.our-goal{
+    font-size:27px;
+    font-weight:300;
+    letter-spacing: 2px;
+    color:rgb(245, 82, 82);
+    margin-top:-5px;
+    font-family:New Century Schoolbook, TeX Gyre Schola, serif;
+}
+
+.col-venue{
+    border-right: 1px solid rgb(228, 225, 225);
+    margin-bottom: 10px;
+}
+@media only screen and (max-device-width : 613px){
+    .col-venue{
+        border: none;
+        border-bottom: 1px solid rgb(228, 225, 225);
+        margin-bottom: 0px;
+    } 
+}
+.btn-new-event{
+    border-radius:50px;
+    padding:10px;
+    outline: none;
+    border: none;
+    background-image:linear-gradient(to bottom right, #e4e658, #FF1B08);
+    color:white;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.btn-new-event:hover{
+    color: white;
+    background-image:linear-gradient(to bottom right, #f1e319, #e91e0c);
+}
+
+.skeleton {
+    height: 7px;
+    margin-bottom: 10px !important;
+    margin: 5px;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.5) 50%,
+        rgba(255, 255, 255, 0) 80%
+        ),
+        lightgray;
+    background-repeat: repeat-y;
+    background-size: 50px 200px;
+    background-position: 0 0;
+    animation: shine 1s infinite;
+}
+@keyframes shine {
+    to {
+        background-position: 100% 0, /* move highlight to right */ 0 0;
+    }
+}
+.loading-skeleton{
+    cursor: progress;
+}
+
+.skeleton.title-skeleton-label{
+    width: 20%;
+}
+.skeleton.title-skeleton{
+    width: 60%;
+}
+.skeleton.venue-skeleton{
+    width: 20%;
+    margin-bottom: 20px !important;
+}
+.skeleton.address-skeleton{
+    width: 90%;
+    margin-bottom: 15px !important;
+}
+.skeleton.contact-skeleton-label{
+    width: 30%;
+}
+.skeleton.contact-skeleton{
+    width: 40%;
+}
+.skeleton.organized-on-skeleton{
+    width: 45%;
+    margin-top: 30px !important;
+}
+.skeleton.date-skeleton, .skeleton.time-skeleton{
+    width: 55%;
+}
+
+@media only screen and (min-device-width : 614px){
+    .no-resuls-found{
+        display: none;
+        margin-top: 100px !important;
+    }
+    .sad-emoji{
+        font-size: 150px;
+        color: rgb(208, 197, 248);
+    }
+    .not-found-text{
+        margin-top: -30px;
+    }
+    .sorry{
+        font-size: 90px;
+        color: #f13fca;
+        font-weight: bold !important;
+        letter-spacing: 5px;
+        font-family: 'Monofett', cursive;
+    }
+    .no-data-heading{
+        font-size: 30px;
+        color: #f8f2f3;
+        font-family: 'Roboto Mono', monospace;
+        font-weight: 500;
+        margin-top: 0px;
+    }
+    .no-data-heading-box{
+        background-color: darkorchid;
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 20px;
+    }
+}
+@media only screen and (max-device-width : 613px){
+    .no-resuls-found{
+        display: none;
+        margin-top: 10px !important;
+    }
+    .sad-emoji{
+        font-size: 80px;
+        color: rgb(208, 197, 248);
+    }
+    .not-found-text{
+        margin-top: -30px;
+    }
+    .sorry{
+        font-size: 60px;
+        color: #f13fca;
+        font-weight: bold !important;
+        letter-spacing: 5px;
+        font-family: 'Monofett', cursive;
+    }
+    .no-data-heading{
+        font-size: 20px;
+        color: #f8f2f3;
+        font-family: 'Roboto Mono', monospace;
+        font-weight: 500;
+        margin-top: 0px;
+    }
+    .no-data-heading-box{
+        background-color: darkorchid;
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 20px;
+    }
+}
+
+.setReminderModal{
+    margin-top: 65px;
+}
+.floating-label .reminder-input:placeholder-shown + label {
+    color: rgb(102, 156, 236) !important;
+}
+.floating-label .reminder-input:not(:placeholder-shown) + label, .floating-label .reminder-input:focus + label {
+    color: rgb(92, 126, 240)!important;
+}
+.reminder-input{
+    border: 1px solid rgb(142, 186, 252);
+    color: rgb(60, 124, 219) !important;
+    text-align: left !important;
+}
+.reminder-input:focus{
+    border: 1px solid rgb(142, 186, 252);
+    box-shadow: 0px 0px 5px rgb(57, 100, 243) !important;
+    color: rgb(60, 124, 219) !important;
+    text-align: left !important;
+}
+.reminder-input-info{
+    color: rgb(112, 122, 156);
+}
+.set-reminder-form label{
+    color: rgb(92, 126, 240)!important;
+}
+.set-reminder-form .addon{
+    background-color: rgb(125, 173, 245) !important;
+    color: white;
+}
+
+.data-card:hover{
+    box-shadow: 0px 0px 8px 2px gray;
+    background-color: rgb(250, 250, 250);
+}
+.data-card{
+    box-shadow: 0px 0px 1px 1px rgb(209, 208, 208);
+    color: rgb(134, 134, 250);
+}

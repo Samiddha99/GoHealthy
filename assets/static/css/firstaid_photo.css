@@ -1,0 +1,119 @@
+.image-background{
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 9999 !important; /* Sit on top */
+    left: 0;
+    top: 0;
+    padding: 10px;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto !important; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.959) /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.image-content{
+    position: relative;
+    z-index: 1000;
+    margin: auto;
+    max-width: 700px;
+    transform-origin: 50% 0;
+}
+@media only screen and (max-device-width : 700px) {
+    .image-content{
+        margin: auto;
+        width: 100%;
+    }
+}
+.card-img-bottom{
+    width: 100% !important;
+    min-height: 250px;
+    visibility: hidden;
+    cursor: pointer;
+}
+.card-img-bottom:hover{
+    opacity: 0.7;
+}
+@media only screen and (max-device-width : 700px) {
+    .col-card{
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-right: 20px;
+        margin-left: 20px;
+    }
+}
+@media only screen and (min-device-width : 701px) {
+    .col-card{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-right: 40px;
+        margin-left: 40px;
+    }
+}
+.photo-download{
+    font-size: 18px;
+    color: rgb(121, 120, 120) !important;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+.photo-download:hover{
+    color: rgb(94, 93, 93) !important;
+}
+.image-caption{
+    font-size: 20px;
+    color: rgb(194, 194, 194);
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+.zoom-place{
+    position: fixed;
+    top: 30px;
+    right: 20px;
+    z-index: 1010;
+}
+.btn-zoom-out{
+    border-radius: 10px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background-color: rgb(226, 226, 226) !important;
+    padding: 1px ;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.btn-zoom-in{
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    background-color: rgb(226, 226, 226) !important;
+    padding: 1px ;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.left-space{
+    position: fixed;
+    top: 200px;
+    left: 10px;
+    z-index: 1010;
+}
+.left-button{
+    border: none !important;
+    outline: none !important;
+    background-color: transparent !important;
+    color: rgb(117, 117, 117);
+    font-size: 40px;
+}
+.right-space{
+    position: fixed;
+    top: 200px;
+    right: 10px;
+    z-index: 1010;
+}
+.right-button{
+    border: none !important;
+    outline: none !important;
+    background-color: transparent !important;
+    color: rgb(117, 117, 117);
+    font-size: 40px;
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <style>
+        body{
+            background-color: #f9f9f9;
+            padding: 0px !important;
+        }
+        .content{
+            background-color: white;
+            width: 600px;
+            margin: 0px !important;
+            margin-left: 1px !important;
+            margin-right: 1px !important;
+
+        }
+        @media (max-width: 600px) {
+            .content{
+                width: 100%;
+                margin-left: 2px;
+                margin-right: 2px;
+            }
+        }
+        .content-body{
+            min-height: 70vh !important;
+            padding: 10px;
+        }
+        .nav{
+            background-color: #101010;
+            color: white;
+            padding: 10px;
+            padding-bottom: 1px;
+            display : flex;
+            flex-direction : row;
+        }
+         .container .box-cell.box1 {
+             background:green;
+             color:white;
+             text-align:left !important;
+          }
+         .container .box-cell.box2 {
+             background:lightgreen;
+             text-align:right
+         }
+         .bottom-back{
+             background-color: #c7d6f3;
+             padding: 1px;
+         }
+         .footer{
+             color: white;
+             background-color: #313131;
+             padding: 1px;
+         }
+         .content-heading{
+             color: #8f00ee;
+             margin-top: 1px;
+         }
+         .content-text{
+            color: #636363;
+         }
+    </style>
+    <body>
+        <center>
+            <div class="content">
+                <div class="nav">
+                    <div class="box-cell box1" align="left">
+                        <img src="https://go-healthy.herokuapp.com/static/images/GoHealthy_logo%20white.6eb6ab748abe.png" alt="Logo" border="0" style="outline: none; width: 20%;max-width: 600px; margin-bottom:-5px">
+                    </div>
+                    <div class="box-cell box2">
+                        <h3 style="color:white; margin-top:2px">ADMIN</h3>
+                    </div>
+                </div>
+                <div class="content-body">
+                    <h1 class="content-heading">MESSAGE_SUBJECT</h1>
+                    <div class="content-text">
+                        <p>MESSAGE_BODY</p>
+                    </div>
+                </div>
+                <div class="bottom-back">
+                    <p>
+                        <a href="mysite" style="color:rgb(3, 3, 204); text-decoration:none">Visit the site</a>
+                    </p>
+                    <p style="color:rgb(59, 17, 136)">This mail was sent to messageSentTo</p>
+                </div>
+                <div class="footer">
+                    <p>Copyrights © GoHealthy All Rights Reserved</p>
+                </div>
+            </div>
+        </center>
+    </body>
+</html>

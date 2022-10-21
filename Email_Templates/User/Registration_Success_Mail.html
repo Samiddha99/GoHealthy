@@ -1,0 +1,576 @@
+<!DOCTYPE HTML
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
+    xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+    <meta name="__cloudhq_email_draft_json"
+        content="eyJjb3VudGVycyI6eyJ1X3JvdyI6NiwidV9jb2x1bW4iOjYsInVfY29udGVudF90ZXh0Ijo5LCJ1X2NvbnRlbnRfaW1hZ2UiOjIsInVfY29udGVudF9idXR0b24iOjIsInVfY29udGVudF9zb2NpYWwiOjIsInVfY29udGVudF92aWRlbyI6MSwidV9jb250ZW50X2RpdmlkZXIiOjF9LCJib2R5Ijp7InJvd3MiOlt7ImNlbGxzIjpbMV0sImNvbHVtbnMiOlt7ImNvbnRlbnRzIjpbeyJ0eXBlIjoiaW1hZ2UiLCJ2YWx1ZXMiOnsiY29udGFpbmVyUGFkZGluZyI6IjIwcHgiLCJfbWV0YSI6eyJodG1sSUQiOiJ1X2NvbnRlbnRfaW1hZ2VfMSIsImh0bWxDbGFzc05hbWVzIjoidV9jb250ZW50X2ltYWdlIn0sInNlbGVjdGFibGUiOnRydWUsImRyYWdnYWJsZSI6dHJ1ZSwiZHVwbGljYXRhYmxlIjp0cnVlLCJkZWxldGFibGUiOnRydWUsInNyYyI6eyJ1cmwiOiJodHRwczovL3NoYXJlMS5jbG91ZGhxLW1rdDMubmV0LzkwODgwYzIwMjJmYzQxLnBuZyIsIndpZHRoIjo2MDAsImhlaWdodCI6MTY2LCJtYXhXaWR0aCI6IjUwJSIsImF1dG9XaWR0aCI6ZmFsc2V9LCJ0ZXh0QWxpZ24iOiJjZW50ZXIiLCJhbHRUZXh0IjoiSW1hZ2UiLCJhY3Rpb24iOnsibmFtZSI6IndlYiIsInZhbHVlcyI6eyJocmVmIjoiIiwidGFyZ2V0IjoiX2JsYW5rIn19LCJoaWRlRGVza3RvcCI6ZmFsc2UsImhpZGVNb2JpbGUiOmZhbHNlfX1dLCJ2YWx1ZXMiOnsiX21ldGEiOnsiaHRtbElEIjoidV9jb2x1bW5fMiIsImh0bWxDbGFzc05hbWVzIjoidV9jb2x1bW4ifSwiYm9yZGVyIjp7fSwicGFkZGluZyI6IjBweCIsImJhY2tncm91bmRDb2xvciI6IiJ9fV0sInZhbHVlcyI6eyJkaXNwbGF5Q29uZGl0aW9uIjpudWxsLCJjb2x1bW5zIjpmYWxzZSwiYmFja2dyb3VuZENvbG9yIjoiIiwiY29sdW1uc0JhY2tncm91bmRDb2xvciI6IiNmZmZmZmYiLCJiYWNrZ3JvdW5kSW1hZ2UiOnsidXJsIjoiIiwiZnVsbFdpZHRoIjp0cnVlLCJyZXBlYXQiOmZhbHNlLCJjZW50ZXIiOnRydWUsImNvdmVyIjpmYWxzZX0sInBhZGRpbmciOiIwcHgiLCJoaWRlRGVza3RvcCI6ZmFsc2UsImhpZGVNb2JpbGUiOmZhbHNlLCJub1N0YWNrTW9iaWxlIjpmYWxzZSwiX21ldGEiOnsiaHRtbElEIjoidV9yb3dfMiIsImh0bWxDbGFzc05hbWVzIjoidV9yb3cifSwic2VsZWN0YWJsZSI6dHJ1ZSwiZHJhZ2dhYmxlIjp0cnVlLCJkdXBsaWNhdGFibGUiOnRydWUsImRlbGV0YWJsZSI6dHJ1ZX19LHsiY2VsbHMiOlsxXSwiY29sdW1ucyI6W3siY29udGVudHMiOlt7InR5cGUiOiJ0ZXh0IiwidmFsdWVzIjp7ImNvbnRhaW5lclBhZGRpbmciOiIxMHB4IiwiX21ldGEiOnsiaHRtbElEIjoidV9jb250ZW50X3RleHRfMyIsImh0bWxDbGFzc05hbWVzIjoidV9jb250ZW50X3RleHQifSwic2VsZWN0YWJsZSI6dHJ1ZSwiZHJhZ2dhYmxlIjp0cnVlLCJkdXBsaWNhdGFibGUiOnRydWUsImRlbGV0YWJsZSI6dHJ1ZSwiY29sb3IiOiIjZTVlYWY1IiwidGV4dEFsaWduIjoiY2VudGVyIiwibGluZUhlaWdodCI6IjE0MCUiLCJsaW5rU3R5bGUiOnsiaW5oZXJpdCI6dHJ1ZSwibGlua0NvbG9yIjoiIzAwMDBlZSIsImxpbmtIb3ZlckNvbG9yIjoiIzAwMDBlZSIsImxpbmtVbmRlcmxpbmUiOnRydWUsImxpbmtIb3ZlclVuZGVybGluZSI6dHJ1ZX0sImhpZGVEZXNrdG9wIjpmYWxzZSwiaGlkZU1vYmlsZSI6ZmFsc2UsInRleHQiOiI8cCBkaXI9XCJsdHJcIiBzdHlsZT1cImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDE0MCU7XCI+PHNwYW4gc3R5bGU9XCJmb250LWZhbWlseTogJ2NvbWljIHNhbnMgbXMnLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxOS42cHg7XCI+PHN0cm9uZz5SRUdJU1RSQVRJT04gU1VDQ0VTU0ZVTDwvc3Ryb25nPjwvc3Bhbj48L3A+In19XSwidmFsdWVzIjp7Il9tZXRhIjp7Imh0bWxJRCI6InVfY29sdW1uXzMiLCJodG1sQ2xhc3NOYW1lcyI6InVfY29sdW1uIn0sImJvcmRlciI6e30sInBhZGRpbmciOiIwcHgiLCJiYWNrZ3JvdW5kQ29sb3IiOiIifX1dLCJ2YWx1ZXMiOnsiZGlzcGxheUNvbmRpdGlvbiI6bnVsbCwiY29sdW1ucyI6ZmFsc2UsImJhY2tncm91bmRDb2xvciI6IiIsImNvbHVtbnNCYWNrZ3JvdW5kQ29sb3IiOiIjMDAzMzk5IiwiYmFja2dyb3VuZEltYWdlIjp7InVybCI6IiIsImZ1bGxXaWR0aCI6dHJ1ZSwicmVwZWF0IjpmYWxzZSwiY2VudGVyIjp0cnVlLCJjb3ZlciI6ZmFsc2V9LCJwYWRkaW5nIjoiMHB4IiwiaGlkZURlc2t0b3AiOmZhbHNlLCJoaWRlTW9iaWxlIjpmYWxzZSwibm9TdGFja01vYmlsZSI6ZmFsc2UsIl9tZXRhIjp7Imh0bWxJRCI6InVfcm93XzMiLCJodG1sQ2xhc3NOYW1lcyI6InVfcm93In0sInNlbGVjdGFibGUiOnRydWUsImRyYWdnYWJsZSI6dHJ1ZSwiZHVwbGljYXRhYmxlIjp0cnVlLCJkZWxldGFibGUiOnRydWV9fSx7ImNlbGxzIjpbMV0sImNvbHVtbnMiOlt7ImNvbnRlbnRzIjpbeyJ0eXBlIjoidGV4dCIsInZhbHVlcyI6eyJjb250YWluZXJQYWRkaW5nIjoiMTBweCAxMHB4IDMzcHggN3B4IiwiX21ldGEiOnsiaHRtbElEIjoidV9jb250ZW50X3RleHRfNiIsImh0bWxDbGFzc05hbWVzIjoidV9jb250ZW50X3RleHQifSwic2VsZWN0YWJsZSI6dHJ1ZSwiZHJhZ2dhYmxlIjp0cnVlLCJkdXBsaWNhdGFibGUiOnRydWUsImRlbGV0YWJsZSI6dHJ1ZSwiY29sb3IiOiIjMDAwMDAwIiwidGV4dEFsaWduIjoiY2VudGVyIiwibGluZUhlaWdodCI6IjE2MCUiLCJsaW5rU3R5bGUiOnsiaW5oZXJpdCI6dHJ1ZSwibGlua0NvbG9yIjoiIzAwMDBlZSIsImxpbmtIb3ZlckNvbG9yIjoiIzAwMDBlZSIsImxpbmtVbmRlcmxpbmUiOnRydWUsImxpbmtIb3ZlclVuZGVybGluZSI6dHJ1ZX0sImhpZGVEZXNrdG9wIjpmYWxzZSwiaGlkZU1vYmlsZSI6ZmFsc2UsInRleHQiOiI8cCBzdHlsZT1cImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDE2MCU7IHRleHQtYWxpZ246IGxlZnQ7XCI+Jm5ic3A7PC9wPlxuPHAgc3R5bGU9XCJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxNjAlOyB0ZXh0LWFsaWduOiBjZW50ZXI7XCI+PHNwYW4gc3R5bGU9XCJmb250LXNpemU6IDIwcHg7IGxpbmUtaGVpZ2h0OiAzMnB4O1wiPllvdSBoYXZlIHN1Y2Nlc3NmdWxseSByZWdpc3RlcmVkIGFzIHVzZXIuPC9zcGFuPjwvcD5cbjxwIHN0eWxlPVwiZm9udC1zaXplOiAxNHB4OyBsaW5lLWhlaWdodDogMTYwJTsgdGV4dC1hbGlnbjogY2VudGVyO1wiPjxzcGFuIHN0eWxlPVwiZm9udC1mYW1pbHk6ICdQbGF5ZmFpciBEaXNwbGF5Jywgc2VyaWY7IGZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDIyLjRweDtcIj48c3Ryb25nPjxzcGFuIHN0eWxlPVwiZm9udC1zaXplOiAyMHB4OyBsaW5lLWhlaWdodDogMzJweDtcIj5SZWdpc3RyYXRpb24gRGV0YWlsczo8L3NwYW4+PC9zdHJvbmc+PC9zcGFuPjwvcD5cbjxwIHN0eWxlPVwiZm9udC1zaXplOiAxNHB4OyBsaW5lLWhlaWdodDogMTYwJTtcIj48c3BhbiBzdHlsZT1cImNvbG9yOiAjN2U4YzhkOyBmb250LXNpemU6IDE4cHg7IGxpbmUtaGVpZ2h0OiAyOC44cHg7XCI+PHN0cm9uZz48c3BhbiBzdHlsZT1cImxpbmUtaGVpZ2h0OiAyOC44cHg7IGZvbnQtc2l6ZTogMThweDtcIj5Vc2VybmFtZTogbXl1c2VybmFtZTwvc3Bhbj48L3N0cm9uZz48L3NwYW4+PC9wPlxuPHAgc3R5bGU9XCJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxNjAlO1wiPjxzcGFuIHN0eWxlPVwiY29sb3I6ICM3ZThjOGQ7IGZvbnQtc2l6ZTogMThweDsgbGluZS1oZWlnaHQ6IDI4LjhweDtcIj48c3Ryb25nPjxzcGFuIHN0eWxlPVwibGluZS1oZWlnaHQ6IDI4LjhweDsgZm9udC1zaXplOiAxOHB4O1wiPkVtYWlsOiBteWVtYWlsPC9zcGFuPjwvc3Ryb25nPjwvc3Bhbj48L3A+XG48cCBzdHlsZT1cImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDE2MCU7XCI+PHNwYW4gc3R5bGU9XCJjb2xvcjogIzdlOGM4ZDsgZm9udC1zaXplOiAxOHB4OyBsaW5lLWhlaWdodDogMjguOHB4O1wiPjxzdHJvbmc+PHNwYW4gc3R5bGU9XCJsaW5lLWhlaWdodDogMjguOHB4OyBmb250LXNpemU6IDE4cHg7XCI+Q29udGFjdDogbXljb250YWN0PC9zcGFuPjwvc3Ryb25nPjwvc3Bhbj48L3A+XG48cCBzdHlsZT1cImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDE2MCU7IHRleHQtYWxpZ246IGNlbnRlcjtcIj4mbmJzcDs8L3A+XG48cCBzdHlsZT1cImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDE2MCU7IHRleHQtYWxpZ246IGNlbnRlcjtcIj48c3BhbiBzdHlsZT1cImZvbnQtc2l6ZTogMTZweDsgbGluZS1oZWlnaHQ6IDI1LjZweDsgY29sb3I6ICMyMzZmYTE7XCI+PHNwYW4gc3R5bGU9XCJmb250LXNpemU6IDE2cHg7IGxpbmUtaGVpZ2h0OiAyNS42cHg7XCI+V2Ugd2lsbCB2ZXJpZnkgeW91ciBkYXRhLiBJZiB3ZSBzZWUgdGhhdCBhbGwgb2YgeW91ciBnaXZlbiBpbmZvcm1hdGlvbiBpcyBjb3JyZWN0IHRoZW4gd2Ugd2lsbCBhY3RpdmUgeW91ciBhY2NvdW50PC9zcGFuPi48L3NwYW4+PC9wPiJ9fSx7InR5cGUiOiJkaXZpZGVyIiwidmFsdWVzIjp7ImNvbnRhaW5lclBhZGRpbmciOiIxMHB4IiwiX21ldGEiOnsiaHRtbElEIjoidV9jb250ZW50X2RpdmlkZXJfMSIsImh0bWxDbGFzc05hbWVzIjoidV9jb250ZW50X2RpdmlkZXIifSwic2VsZWN0YWJsZSI6dHJ1ZSwiZHJhZ2dhYmxlIjp0cnVlLCJkdXBsaWNhdGFibGUiOnRydWUsImRlbGV0YWJsZSI6dHJ1ZSwid2lkdGgiOiIxMDAlIiwiYm9yZGVyIjp7ImJvcmRlclRvcFdpZHRoIjoiMXB4IiwiYm9yZGVyVG9wU3R5bGUiOiJzb2xpZCIsImJvcmRlclRvcENvbG9yIjoiI0JCQkJCQiJ9LCJ0ZXh0QWxpZ24iOiJjZW50ZXIiLCJoaWRlRGVza3RvcCI6ZmFsc2UsImhpZGVNb2JpbGUiOmZhbHNlfX0seyJ0eXBlIjoidGV4dCIsInZhbHVlcyI6eyJjb250YWluZXJQYWRkaW5nIjoiMzNweCA1NXB4IDYwcHgiLCJfbWV0YSI6eyJodG1sSUQiOiJ1X2NvbnRlbnRfdGV4dF83IiwiaHRtbENsYXNzTmFtZXMiOiJ1X2NvbnRlbnRfdGV4dCJ9LCJzZWxlY3RhYmxlIjp0cnVlLCJkcmFnZ2FibGUiOnRydWUsImR1cGxpY2F0YWJsZSI6dHJ1ZSwiZGVsZXRhYmxlIjp0cnVlLCJjb2xvciI6IiMwMDAwMDAiLCJ0ZXh0QWxpZ24iOiJjZW50ZXIiLCJsaW5lSGVpZ2h0IjoiMTYwJSIsImxpbmtTdHlsZSI6eyJpbmhlcml0Ijp0cnVlLCJsaW5rQ29sb3IiOiIjMDAwMGVlIiwibGlua0hvdmVyQ29sb3IiOiIjMDAwMGVlIiwibGlua1VuZGVybGluZSI6dHJ1ZSwibGlua0hvdmVyVW5kZXJsaW5lIjp0cnVlfSwiaGlkZURlc2t0b3AiOmZhbHNlLCJoaWRlTW9iaWxlIjpmYWxzZSwidGV4dCI6IjxwIHN0eWxlPVwibGluZS1oZWlnaHQ6IDE2MCU7IGZvbnQtc2l6ZTogMTRweDtcIj48c3BhbiBzdHlsZT1cImZvbnQtc2l6ZTogMThweDsgbGluZS1oZWlnaHQ6IDI4LjhweDtcIj5UaGFuayB5b3UsPC9zcGFuPjwvcD5cbjxwIHN0eWxlPVwibGluZS1oZWlnaHQ6IDE2MCU7IGZvbnQtc2l6ZTogMTRweDtcIj48c3BhbiBzdHlsZT1cImZvbnQtc2l6ZTogMThweDsgbGluZS1oZWlnaHQ6IDI4LjhweDtcIj5HbyBIZWFsdGh5IFRlYW08YnIgLz48YnIgLz48c3Ryb25nPjxzcGFuIHN0eWxlPVwiZm9udC1zaXplOiAxNnB4OyBsaW5lLWhlaWdodDogMjUuNnB4OyBjb2xvcjogI2UwM2UyZDtcIj7imqDvuI9JZiB5b3UgZGlkbid0IGRvIHRoaXMgYWN0aW9uIHRoZW4gY29udGFjdCB1cyBpbW1lZGlhdGVseTwvc3Bhbj48L3N0cm9uZz48L3NwYW4+PC9wPiJ9fSx7InR5cGUiOiJidXR0b24iLCJ2YWx1ZXMiOnsiY29udGFpbmVyUGFkZGluZyI6IjEwcHgiLCJfbWV0YSI6eyJodG1sSUQiOiJ1X2NvbnRlbnRfYnV0dG9uXzIiLCJodG1sQ2xhc3NOYW1lcyI6InVfY29udGVudF9idXR0b24ifSwic2VsZWN0YWJsZSI6dHJ1ZSwiZHJhZ2dhYmxlIjp0cnVlLCJkdXBsaWNhdGFibGUiOnRydWUsImRlbGV0YWJsZSI6dHJ1ZSwiaHJlZiI6eyJuYW1lIjoid2ViIiwidmFsdWVzIjp7ImhyZWYiOiIiLCJ0YXJnZXQiOiJfYmxhbmsifX0sImJ1dHRvbkNvbG9ycyI6eyJjb2xvciI6IiNGRkZGRkYiLCJiYWNrZ3JvdW5kQ29sb3IiOiIjM2ZhNzFiIiwiaG92ZXJDb2xvciI6IiNGRkZGRkYiLCJob3ZlckJhY2tncm91bmRDb2xvciI6IiMzQUFFRTAifSwic2l6ZSI6eyJhdXRvV2lkdGgiOnRydWUsIndpZHRoIjoiMTAwJSJ9LCJsaW5lSGVpZ2h0IjoiMTIwJSIsInRleHRBbGlnbiI6ImNlbnRlciIsImJvcmRlciI6eyJib3JkZXJUb3BXaWR0aCI6IjBweCIsImJvcmRlclRvcFN0eWxlIjoic29saWQiLCJib3JkZXJUb3BDb2xvciI6IiNDQ0MiLCJib3JkZXJMZWZ0V2lkdGgiOiIwcHgiLCJib3JkZXJMZWZ0U3R5bGUiOiJzb2xpZCIsImJvcmRlckxlZnRDb2xvciI6IiNDQ0MiLCJib3JkZXJSaWdodFdpZHRoIjoiMHB4IiwiYm9yZGVyUmlnaHRTdHlsZSI6InNvbGlkIiwiYm9yZGVyUmlnaHRDb2xvciI6IiNDQ0MiLCJib3JkZXJCb3R0b21XaWR0aCI6IjBweCIsImJvcmRlckJvdHRvbVN0eWxlIjoic29saWQiLCJib3JkZXJCb3R0b21Db2xvciI6IiNDQ0MifSwiYm9yZGVyUmFkaXVzIjoiNHB4IiwicGFkZGluZyI6IjEwcHggMjBweCIsImhpZGVEZXNrdG9wIjpmYWxzZSwiaGlkZU1vYmlsZSI6ZmFsc2UsInRleHQiOiI8c3BhbiBzdHlsZT1cImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDE2LjhweDtcIj5Db250YWN0IFVzPC9zcGFuPiIsImNhbGN1bGF0ZWRXaWR0aCI6MTA1LCJjYWxjdWxhdGVkSGVpZ2h0IjozN319XSwidmFsdWVzIjp7Il9tZXRhIjp7Imh0bWxJRCI6InVfY29sdW1uXzQiLCJodG1sQ2xhc3NOYW1lcyI6InVfY29sdW1uIn0sImJvcmRlciI6e30sInBhZGRpbmciOiIwcHgiLCJiYWNrZ3JvdW5kQ29sb3IiOiIifX1dLCJ2YWx1ZXMiOnsiZGlzcGxheUNvbmRpdGlvbiI6bnVsbCwiY29sdW1ucyI6ZmFsc2UsImJhY2tncm91bmRDb2xvciI6IiIsImNvbHVtbnNCYWNrZ3JvdW5kQ29sb3IiOiIjZmZmZmZmIiwiYmFja2dyb3VuZEltYWdlIjp7InVybCI6IiIsImZ1bGxXaWR0aCI6dHJ1ZSwicmVwZWF0IjpmYWxzZSwiY2VudGVyIjp0cnVlLCJjb3ZlciI6ZmFsc2V9LCJwYWRkaW5nIjoiMHB4IiwiaGlkZURlc2t0b3AiOmZhbHNlLCJoaWRlTW9iaWxlIjpmYWxzZSwibm9TdGFja01vYmlsZSI6ZmFsc2UsIl9tZXRhIjp7Imh0bWxJRCI6InVfcm93XzQiLCJodG1sQ2xhc3NOYW1lcyI6InVfcm93In0sInNlbGVjdGFibGUiOnRydWUsImRyYWdnYWJsZSI6dHJ1ZSwiZHVwbGljYXRhYmxlIjp0cnVlLCJkZWxldGFibGUiOnRydWV9fSx7ImNlbGxzIjpbMV0sImNvbHVtbnMiOlt7ImNvbnRlbnRzIjpbeyJ0eXBlIjoidGV4dCIsInZhbHVlcyI6eyJjb250YWluZXJQYWRkaW5nIjoiNDFweCA1NXB4IDE4cHgiLCJfbWV0YSI6eyJodG1sSUQiOiJ1X2NvbnRlbnRfdGV4dF81IiwiaHRtbENsYXNzTmFtZXMiOiJ1X2NvbnRlbnRfdGV4dCJ9LCJzZWxlY3RhYmxlIjp0cnVlLCJkcmFnZ2FibGUiOnRydWUsImR1cGxpY2F0YWJsZSI6dHJ1ZSwiZGVsZXRhYmxlIjp0cnVlLCJjb2xvciI6IiMwMDMzOTkiLCJ0ZXh0QWxpZ24iOiJjZW50ZXIiLCJsaW5lSGVpZ2h0IjoiMTYwJSIsImxpbmtTdHlsZSI6eyJpbmhlcml0Ijp0cnVlLCJsaW5rQ29sb3IiOiIjMDAwMGVlIiwibGlua0hvdmVyQ29sb3IiOiIjMDAwMGVlIiwibGlua1VuZGVybGluZSI6dHJ1ZSwibGlua0hvdmVyVW5kZXJsaW5lIjp0cnVlfSwiaGlkZURlc2t0b3AiOmZhbHNlLCJoaWRlTW9iaWxlIjpmYWxzZSwidGV4dCI6IjxwIHN0eWxlPVwiZm9udC1zaXplOiAxNHB4OyBsaW5lLWhlaWdodDogMTYwJTtcIj48c3BhbiBzdHlsZT1cImZvbnQtc2l6ZTogMjBweDsgbGluZS1oZWlnaHQ6IDMycHg7XCI+PHN0cm9uZz5NYWlsIFRvIFVzPC9zdHJvbmc+PC9zcGFuPjwvcD5cbjxwIHN0eWxlPVwiZm9udC1zaXplOiAxNHB4OyBsaW5lLWhlaWdodDogMTYwJTtcIj48c3BhbiBzdHlsZT1cImZvbnQtc2l6ZTogMTZweDsgbGluZS1oZWlnaHQ6IDI1LjZweDsgY29sb3I6ICMzNDQ5NWU7XCI+PGEgc3R5bGU9XCJjb2xvcjogIzM0NDk1ZTtcIiBocmVmPVwibWFpbHRvOmdvaGVhbHRoeW1haWxAZ21haWwuY29tP3N1YmplY3Q9JmJvZHk9XCIgdGFyZ2V0PVwiX2JsYW5rXCIgcmVsPVwibm9vcGVuZXJcIiBkYXRhLXUtbGluay12YWx1ZT1cImV5SnVZVzFsSWpvaVpXMWhhV3dpTENKaGRIUnljeUk2ZXlKb2NtVm1Jam9pYldGcGJIUnZPbnQ3WlcxaGFXeDlmVDl6ZFdKcVpXTjBQWHQ3YzNWaWFtVmpkSDE5Sm1KdlpIazllM3RpYjJSNWZYMGlmU3dpZG1Gc2RXVnpJanA3SW1WdFlXbHNJam9pWjI5b1pXRnNkR2g1YldGcGJFQm5iV0ZwYkM1amIyMGlMQ0p6ZFdKcVpXTjBJam9pSWl3aVltOWtlU0k2SWlKOWZRPT1cIj5nb2hlYWx0aHltYWlsQGdtYWlsLmNvbTwvYT48L3NwYW4+PC9wPiJ9fSx7InR5cGUiOiJzb2NpYWwiLCJ2YWx1ZXMiOnsiY29udGFpbmVyUGFkZGluZyI6IjEwcHggMTBweCAzM3B4IiwiX21ldGEiOnsiaHRtbElEIjoidV9jb250ZW50X3NvY2lhbF8xIiwiaHRtbENsYXNzTmFtZXMiOiJ1X2NvbnRlbnRfc29jaWFsIn0sInNlbGVjdGFibGUiOnRydWUsImRyYWdnYWJsZSI6dHJ1ZSwiZHVwbGljYXRhYmxlIjp0cnVlLCJkZWxldGFibGUiOnRydWUsImljb25zIjp7Imljb25UeXBlIjoiY2lyY2xlIiwiaWNvbnMiOlt7InVybCI6Imh0dHBzOi8vZmFjZWJvb2suY29tLyIsIm5hbWUiOiJGYWNlYm9vayJ9LHsibmFtZSI6IlR3aXR0ZXIiLCJ1cmwiOiJodHRwczovL3R3aXR0ZXIuY29tLyJ9LHsidXJsIjoiaHR0cHM6Ly9lbWFpbC5jb20vIiwibmFtZSI6IkVtYWlsIn1dfSwiYWxpZ24iOiJjZW50ZXIiLCJzcGFjaW5nIjoxNywiaGlkZURlc2t0b3AiOmZhbHNlLCJoaWRlTW9iaWxlIjpmYWxzZX19LHsidHlwZSI6InRleHQiLCJ2YWx1ZXMiOnsiY29udGFpbmVyUGFkZGluZyI6IjEwcHgiLCJfbWV0YSI6eyJodG1sSUQiOiJ1X2NvbnRlbnRfdGV4dF85IiwiaHRtbENsYXNzTmFtZXMiOiJ1X2NvbnRlbnRfdGV4dCJ9LCJzZWxlY3RhYmxlIjp0cnVlLCJkcmFnZ2FibGUiOnRydWUsImR1cGxpY2F0YWJsZSI6dHJ1ZSwiZGVsZXRhYmxlIjp0cnVlLCJjb2xvciI6IiMwMDAwMDAiLCJ0ZXh0QWxpZ24iOiJsZWZ0IiwibGluZUhlaWdodCI6IjE0MCUiLCJsaW5rU3R5bGUiOnsiaW5oZXJpdCI6dHJ1ZSwibGlua0NvbG9yIjoiIzAwMDBlZSIsImxpbmtIb3ZlckNvbG9yIjoiIzAwMDBlZSIsImxpbmtVbmRlcmxpbmUiOnRydWUsImxpbmtIb3ZlclVuZGVybGluZSI6dHJ1ZX0sImhpZGVEZXNrdG9wIjpmYWxzZSwiaGlkZU1vYmlsZSI6ZmFsc2UsInRleHQiOiI8cCBzdHlsZT1cImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDE0MCU7IHRleHQtYWxpZ246IGNlbnRlcjtcIj48c3BhbiBzdHlsZT1cImZvbnQtc2l6ZTogMTZweDsgbGluZS1oZWlnaHQ6IDIyLjRweDsgZm9udC1mYW1pbHk6ICdib29rIGFudGlxdWEnLCBwYWxhdGlubztcIj48YSBocmVmPVwiaHR0cHM6Ly93d3cuZ29oZWFsdGh5LmNvbVwiIHRhcmdldD1cIl9ibGFua1wiIHJlbD1cIm5vb3BlbmVyXCIgZGF0YS11LWxpbmstdmFsdWU9XCJleUp1WVcxbElqb2lkMlZpSWl3aVlYUjBjbk1pT25zaWFISmxaaUk2SW50N2FISmxabjE5SWl3aWRHRnlaMlYwSWpvaWUzdDBZWEpuWlhSOWZTSjlMQ0oyWVd4MVpYTWlPbnNpYUhKbFppSTZJbWgwZEhCek9pOHZkM2QzTG1kdmFHVmhiSFJvZVM1amIyMGlMQ0owWVhKblpYUWlPaUpmWW14aGJtc2lmWDA9XCI+VmlzaXQgdGhlIHNpdGU8L2E+PC9zcGFuPjwvcD4ifX1dLCJ2YWx1ZXMiOnsiX21ldGEiOnsiaHRtbElEIjoidV9jb2x1bW5fNSIsImh0bWxDbGFzc05hbWVzIjoidV9jb2x1bW4ifSwiYm9yZGVyIjp7fSwicGFkZGluZyI6IjBweCIsImJhY2tncm91bmRDb2xvciI6IiJ9fV0sInZhbHVlcyI6eyJkaXNwbGF5Q29uZGl0aW9uIjpudWxsLCJjb2x1bW5zIjpmYWxzZSwiYmFja2dyb3VuZENvbG9yIjoiIiwiY29sdW1uc0JhY2tncm91bmRDb2xvciI6IiNlNWVhZjUiLCJiYWNrZ3JvdW5kSW1hZ2UiOnsidXJsIjoiIiwiZnVsbFdpZHRoIjp0cnVlLCJyZXBlYXQiOmZhbHNlLCJjZW50ZXIiOnRydWUsImNvdmVyIjpmYWxzZX0sInBhZGRpbmciOiIwcHgiLCJoaWRlRGVza3RvcCI6ZmFsc2UsImhpZGVNb2JpbGUiOmZhbHNlLCJub1N0YWNrTW9iaWxlIjpmYWxzZSwiX21ldGEiOnsiaHRtbElEIjoidV9yb3dfNSIsImh0bWxDbGFzc05hbWVzIjoidV9yb3cifSwic2VsZWN0YWJsZSI6dHJ1ZSwiZHJhZ2dhYmxlIjp0cnVlLCJkdXBsaWNhdGFibGUiOnRydWUsImRlbGV0YWJsZSI6dHJ1ZX19LHsiY2VsbHMiOlsxXSwiY29sdW1ucyI6W3siY29udGVudHMiOlt7InR5cGUiOiJ0ZXh0IiwidmFsdWVzIjp7ImNvbnRhaW5lclBhZGRpbmciOiIxMHB4IiwiX21ldGEiOnsiaHRtbElEIjoidV9jb250ZW50X3RleHRfOCIsImh0bWxDbGFzc05hbWVzIjoidV9jb250ZW50X3RleHQifSwic2VsZWN0YWJsZSI6dHJ1ZSwiZHJhZ2dhYmxlIjp0cnVlLCJkdXBsaWNhdGFibGUiOnRydWUsImRlbGV0YWJsZSI6dHJ1ZSwiY29sb3IiOiIjZmFmYWZhIiwidGV4dEFsaWduIjoiY2VudGVyIiwibGluZUhlaWdodCI6IjE4MCUiLCJsaW5rU3R5bGUiOnsiaW5oZXJpdCI6dHJ1ZSwibGlua0NvbG9yIjoiIzAwMDBlZSIsImxpbmtIb3ZlckNvbG9yIjoiIzAwMDBlZSIsImxpbmtVbmRlcmxpbmUiOnRydWUsImxpbmtIb3ZlclVuZGVybGluZSI6dHJ1ZX0sImhpZGVEZXNrdG9wIjpmYWxzZSwiaGlkZU1vYmlsZSI6ZmFsc2UsInRleHQiOiI8cCBzdHlsZT1cImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDE4MCU7XCI+PHNwYW4gc3R5bGU9XCJmb250LXNpemU6IDE2cHg7IGxpbmUtaGVpZ2h0OiAyOC44cHg7XCI+Q29weXJpZ2h0cyAmY29weTsgR29IZWFsdGh5IEFsbCBSaWdodHMgUmVzZXJ2ZWQ8L3NwYW4+PC9wPiJ9fV0sInZhbHVlcyI6eyJfbWV0YSI6eyJodG1sSUQiOiJ1X2NvbHVtbl82IiwiaHRtbENsYXNzTmFtZXMiOiJ1X2NvbHVtbiJ9LCJib3JkZXIiOnt9LCJwYWRkaW5nIjoiMHB4IiwiYmFja2dyb3VuZENvbG9yIjoiIn19XSwidmFsdWVzIjp7ImRpc3BsYXlDb25kaXRpb24iOm51bGwsImNvbHVtbnMiOmZhbHNlLCJiYWNrZ3JvdW5kQ29sb3IiOiIiLCJjb2x1bW5zQmFja2dyb3VuZENvbG9yIjoiIzAwMzM5OSIsImJhY2tncm91bmRJbWFnZSI6eyJ1cmwiOiIiLCJmdWxsV2lkdGgiOnRydWUsInJlcGVhdCI6ZmFsc2UsImNlbnRlciI6dHJ1ZSwiY292ZXIiOmZhbHNlfSwicGFkZGluZyI6IjBweCIsImhpZGVEZXNrdG9wIjpmYWxzZSwiaGlkZU1vYmlsZSI6ZmFsc2UsIm5vU3RhY2tNb2JpbGUiOmZhbHNlLCJfbWV0YSI6eyJodG1sSUQiOiJ1X3Jvd182IiwiaHRtbENsYXNzTmFtZXMiOiJ1X3JvdyJ9LCJzZWxlY3RhYmxlIjp0cnVlLCJkcmFnZ2FibGUiOnRydWUsImR1cGxpY2F0YWJsZSI6dHJ1ZSwiZGVsZXRhYmxlIjp0cnVlfX1dLCJ2YWx1ZXMiOnsiYmFja2dyb3VuZENvbG9yIjoiI2Y5ZjlmOSIsImJhY2tncm91bmRJbWFnZSI6eyJ1cmwiOiIiLCJmdWxsV2lkdGgiOnRydWUsInJlcGVhdCI6ZmFsc2UsImNlbnRlciI6dHJ1ZSwiY292ZXIiOmZhbHNlfSwiY29udGVudFdpZHRoIjoiNjAwcHgiLCJjb250ZW50QWxpZ24iOiJjZW50ZXIiLCJmb250RmFtaWx5Ijp7ImxhYmVsIjoiQ2FiaW4iLCJ2YWx1ZSI6IidDYWJpbicsc2Fucy1zZXJpZiIsInVybCI6Imh0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20vY3NzP2ZhbWlseT1DYWJpbjo0MDAsNzAwIiwiZGVmYXVsdEZvbnQiOnRydWV9LCJwcmVoZWFkZXJUZXh0IjoiIiwibGlua1N0eWxlIjp7ImJvZHkiOnRydWUsImxpbmtDb2xvciI6IiMwMDAwZWUiLCJsaW5rSG92ZXJDb2xvciI6IiMwMDAwZWUiLCJsaW5rVW5kZXJsaW5lIjp0cnVlLCJsaW5rSG92ZXJVbmRlcmxpbmUiOnRydWV9LCJfbWV0YSI6eyJodG1sSUQiOiJ1X2JvZHkiLCJodG1sQ2xhc3NOYW1lcyI6InVfYm9keSJ9fX0sInNjaGVtYVZlcnNpb24iOjV9">
+    <!--[if gte mso 9]>
+<xml>
+  <o:OfficeDocumentSettings>
+    <o:AllowPNG/>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+  </o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="x-apple-disable-message-reformatting">
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<![endif]-->
+    <title></title>
+
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0px;
+            -webkit-text-size-adjust: 100%;
+            background-color: #f9f9f9
+        }
+        
+        a {
+            color: #0000ee;
+            text-decoration: underline;
+        }
+
+        @media only screen and (min-width: 600px) {
+            .u-row {
+                width: 600px !important;
+            }
+
+            .u-row .u-col {
+                vertical-align: top;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .u-row-container {
+                width: 100% !important;
+                padding: 0px !important;
+                margin: 0px !important;
+            }
+
+            .u-row .u-col {
+                display: block !important;
+            }
+        }
+
+        table,
+        tr,
+        td {
+            vertical-align: top;
+            border-collapse: collapse;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .ie-container table,
+        .mso-container table {
+            table-layout: fixed;
+        }
+
+        * {
+            line-height: inherit;
+        }
+
+        a[x-apple-data-detectors='true'] {
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+    </style>
+
+
+
+    <!--[if !mso]><!-->
+    <link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700" rel="stylesheet" type="text/css">
+    <!--<![endif]-->
+
+</head>
+
+<body class="clean-body">
+    <!--[if IE]><div class="ie-container"><![endif]-->
+    <!--[if mso]><div class="mso-container"><![endif]-->
+    <table
+        style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin: 0 auto;background-color: #f5f6fb;width:100%"
+        cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr style="vertical-align: top">
+                <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top; padding: 5px;">
+                    <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color: #f9f9f9;"><![endif]-->
+
+
+                    <div class="u-row-container" style="padding: 0px;background-color: transparent">
+                        <div class="u-row"
+                            style="Margin: 0 auto;width: 100%;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
+                            <div
+                                style="border-collapse: collapse;display: table;width: 100%;background-color: transparent;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr style="background-color: #ffffff;"><![endif]-->
+
+                                <!--[if (mso)|(IE)]><td align="center" width="100%" style="width: 100%;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
+                                <div class="u-col u-col-100"
+                                    style="width: 100%;display: table-cell;vertical-align: top;">
+                                    <div style="width: 100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div
+                                            style="padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
+                                            <!--<![endif]-->
+
+                                            <table style="font-family:'Cabin',sans-serif;" role="presentation"
+                                                cellpadding="0" cellspacing="0" width="100%" border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:7px;font-family:'Cabin',sans-serif;"
+                                                            align="left">
+
+                                                            <table width="100%" cellpadding="0" cellspacing="0"
+                                                                border="0">
+                                                                <tr>
+                                                                    <td style="padding:7px;" align="center">
+                                                                        <a href="**mysite**">
+                                                                            <img align="center" border="0"
+                                                                                src="https://share1.cloudhq-mkt3.net/90880c2022fc41.png"
+                                                                                alt="Image"
+                                                                                style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 80%;max-width: 600px;" />
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td><![endif]-->
+                                <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="u-row-container" style="padding: 0px;background-color: transparent">
+                        <div class="u-row"
+                            style="Margin: 0 auto;width: 100%;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #003399;">
+                            <div
+                                style="border-collapse: collapse;display: table;width: 100%;background-color: transparent;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr style="background-color: #003399;"><![endif]-->
+
+                                <!--[if (mso)|(IE)]><td align="center" width="100%" style="width: 100%;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
+                                <div class="u-col u-col-100"
+                                    style="width: 100%;display: table-cell;vertical-align: top;">
+                                    <div style="width: 100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div
+                                            style="padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
+                                            <!--<![endif]-->
+
+                                            <table style="font-family:'Cabin',sans-serif;" role="presentation"
+                                                cellpadding="0" cellspacing="0" width="100%" border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:7px;font-family:'Cabin',sans-serif;"
+                                                            align="left">
+
+                                                            <div
+                                                                style="color: #e5eaf5; line-height: 140%; text-align: center; word-wrap: break-word;">
+                                                                <p dir="ltr"
+                                                                    style="font-size: 14px; line-height: 140%;"><span
+                                                                        style="font-family: 'comic sans ms', sans-serif; font-size: 14px; line-height: 19.6px;"><strong>REGISTRATION
+                                                                            SUCCESSFUL</strong></span></p>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td><![endif]-->
+                                <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="u-row-container" style="padding: 0px;background-color: transparent">
+                        <div class="u-row"
+                            style="Margin: 0 auto;width: 100%;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
+                            <div
+                                style="border-collapse: collapse;display: table;width: 100%;background-color: transparent;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr style="background-color: #ffffff;"><![endif]-->
+
+                                <!--[if (mso)|(IE)]><td align="center" width="600" style="width: 100%;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
+                                <div class="u-col u-col-100"
+                                    style="width: 100%;display: table-cell;vertical-align: top;">
+                                    <div style="width: 100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div
+                                            style="padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
+                                            <!--<![endif]-->
+
+                                            <table style="font-family:'Cabin',sans-serif;" role="presentation"
+                                                cellpadding="0" cellspacing="0" width="100%" border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:7px;font-family:'Cabin',sans-serif;"
+                                                            align="left">
+
+                                                            <div style="color: #000000; line-height: 160%; text-align: center; word-wrap: break-word;">
+                                                                
+                                                                <p style="font-size: 15px; line-height: 20px; text-align: left;">
+                                                                    &nbsp;</p>
+
+                                                                <p style="font-size: 17px; line-height: 16px; text-align: center; margin-bottom:15px">
+                                                                    You have successfully registered as **user**
+                                                                </p>
+                                                                <p style="font-family: 'Playfair Display', serif; font-size: 20px; line-height: 32px;">
+                                                                    <strong>Registration Details:</strong>
+                                                                </p>
+                                                                <p style="font-size: 16px; line-height: 25px; color: #7e8c8d;">
+                                                                    <strong>Username: **myusername**</strong>
+                                                                </p>
+                                                                <p style="font-size: 16px; line-height: 25px; color: #7e8c8d;">
+                                                                    <strong>Email: **myemail**</strong>
+                                                                </p>
+                                                                <p style="font-size: 16px; line-height: 25px; color: #7e8c8d;">
+                                                                    <strong>Mobile: **mycontact**</strong>
+                                                                </p>
+
+                                                                <p
+                                                                    style="font-size: 14px; line-height: 160%; text-align: center;">
+                                                                    &nbsp;</p>
+                                                                <p
+                                                                    style="font-size: 14px; line-height: 17px; text-align: center;">
+                                                                    <span style="color: #236fa1;"><span
+                                                                            style="font-size: 15px;">We will verify your
+                                                                            data. If we see that all the given
+                                                                            information is correct then we will active
+                                                                            your account.</span></span></p>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <table style="font-family:'Cabin',sans-serif;" role="presentation"
+                                                cellpadding="0" cellspacing="0" width="100%" border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:7px;font-family:'Cabin',sans-serif;"
+                                                            align="left">
+
+                                                            <table height="0px" align="center" border="0"
+                                                                cellpadding="0" cellspacing="0" width="100%"
+                                                                style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #BBBBBB;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%">
+                                                                <tbody>
+                                                                    <tr style="vertical-align: top">
+                                                                        <td
+                                                                            style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%">
+                                                                            <span>&#160;</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <table style="font-family:'Cabin',sans-serif;" role="presentation"
+                                                cellpadding="0" cellspacing="0" width="100%" border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:1px;font-family:'Cabin',sans-serif;"
+                                                            align="left">
+
+                                                            <div
+                                                                style="color: #000000; line-height: 110%; text-align: center; word-wrap: break-word;">
+                                                                <p style="line-height: 110%; font-size: 14px;"><span
+                                                                        style="font-size: 18px; line-height: 28.8px;">Thank
+                                                                        you,</span></p>
+                                                                <p style="line-height: 110%;">
+                                                                    <span style="font-size: 18px; line-height: 10.8px;">
+                                                                        Go Healthy Team<br><br><br>
+                                                                        <span
+                                                                            style="font-size: 15px; line-height: 17px; color: #e03e2d;">
+                                                                            <b
+                                                                                style='color:#FFB100;font-size:20px'>&#9888;</b>
+                                                                                If you didn't do this action that means you share the registration OTP with someone. Or somebody gain access of your email and mobile, change the password of your email and enable two-step authentication in your email.
+                                                                                <br>And inform us immediately.
+                                                                        </span>
+                                                                    </span>
+                                                                </p>
+                                                            </div><br>
+                                                            <div align="center">
+                                                                <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;font-family:'Cabin',sans-serif;"><tr><td style="font-family:'Cabin',sans-serif;" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="" style="height:37px; v-text-anchor:middle; width:105px;" arcsize="11%" stroke="f" fillcolor="#3fa71b"><w:anchorlock/><center style="color:#FFFFFF;font-family:'Cabin',sans-serif;"><![endif]-->
+                                                                <a href="**mysite****contact_url**" target="_blank"
+                                                                    style="box-sizing: border-box;display: inline-block;font-family:'Cabin',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #3fa71b; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;border-top-width: 0px; border-top-style: solid; border-top-color: #CCC; border-left-width: 0px; border-left-style: solid; border-left-color: #CCC; border-right-width: 0px; border-right-style: solid; border-right-color: #CCC; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #CCC;">
+                                                                    <span
+                                                                        style="display:block;padding:10px 20px;line-height:120%;"><span
+                                                                            style="font-size: 14px; line-height: 16.8px;">Contact
+                                                                            Us</span></span>
+                                                                </a>
+                                                                <!--[if mso]></center></v:roundrect></td></tr></table><![endif]-->
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p align="center" style="margin-top:20px;margin-bottom:5px">This is
+                                                auto-generated mail.<br>Don't reply to this mail.</p>
+
+
+
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td><![endif]-->
+                                <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="u-row-container" style="padding: 0px;background-color: transparent">
+                        <div class="u-row"
+                            style="Margin: 0 auto;width: 100%;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #e5eaf5;">
+                            <div
+                                style="border-collapse: collapse;display: table;width: 100%;background-color: transparent;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr style="background-color: #e5eaf5;"><![endif]-->
+
+                                <!--[if (mso)|(IE)]><td align="center" width="600" style="width: 100%;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
+                                <div class="u-col u-col-100"
+                                    style="width: 100%;display: table-cell;vertical-align: top;">
+                                    <div style="width: 100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div
+                                            style="padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
+                                            <!--<![endif]-->
+
+                                            <table style="font-family:'Cabin',sans-serif;" role="presentation"
+                                                cellpadding="0" cellspacing="0" width="100%" border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:7px;padding-top:20px;font-family:'Cabin',sans-serif;"
+                                                            align="left">
+
+                                                            <div
+                                                                style="color: #003399; line-height: 160%; text-align: center; word-wrap: break-word;">
+                                                                <p style="font-size: 14px; line-height: 160%;"><span
+                                                                        style="font-size: 20px; line-height: 32px;"><strong>Mail
+                                                                            To Us</strong></span></p>
+                                                                <p style="font-size: 14px; line-height: 160%;"><span
+                                                                        style="font-size: 16px; line-height: 25.6px; color: #34495e;"><a
+                                                                            style="color: #34495e;"
+                                                                            href="mailto:gohealthymail@gmail.com?subject=&body="
+                                                                            target="_blank"
+                                                                            rel="noopener">gohealthymail@gmail.com</a></span>
+                                                                </p>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <table style="font-family:'Cabin',sans-serif;" role="presentation"
+                                                cellpadding="0" cellspacing="0" width="100%" border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:7px;font-family:'Cabin',sans-serif;"
+                                                            align="left">
+
+                                                            <div align="center">
+                                                                <div style="display: table; max-width:146px;">
+                                                                    <!--[if (mso)|(IE)]><table width="146" cellpadding="0" cellspacing="0" border="0"><tr><td style="border-collapse:collapse;" align="center"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; mso-table-lspace: 0pt;mso-table-rspace: 0pt; width:146px;"><tr><![endif]-->
+
+
+                                                                    <!--[if (mso)|(IE)]><td width="32" style="width:32px; padding-right: 17px;" valign="top"><![endif]-->
+                                                                    <table align="left" border="0" cellspacing="0"
+                                                                        cellpadding="0" width="32" height="32"
+                                                                        style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 17px">
+                                                                        <tbody>
+                                                                            <tr style="vertical-align: top">
+                                                                                <td align="left" valign="middle"
+                                                                                    style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
+                                                                                    <a href="https://facebook.com/"
+                                                                                        title="Facebook"
+                                                                                        target="_blank">
+                                                                                        <img src="https://cdn.tools.unlayer.com/social/icons/circle/facebook.png"
+                                                                                            alt="Facebook"
+                                                                                            title="Facebook" width="32"
+                                                                                            style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <!--[if (mso)|(IE)]></td><![endif]-->
+
+                                                                    <!--[if (mso)|(IE)]><td width="32" style="width:32px; padding-right: 17px;" valign="top"><![endif]-->
+                                                                    <table align="left" border="0" cellspacing="0"
+                                                                        cellpadding="0" width="32" height="32"
+                                                                        style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 17px">
+                                                                        <tbody>
+                                                                            <tr style="vertical-align: top">
+                                                                                <td align="left" valign="middle"
+                                                                                    style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
+                                                                                    <a href="https://twitter.com/"
+                                                                                        title="Twitter" target="_blank">
+                                                                                        <img src="https://cdn.tools.unlayer.com/social/icons/circle/twitter.png"
+                                                                                            alt="Twitter"
+                                                                                            title="Twitter" width="32"
+                                                                                            style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <!--[if (mso)|(IE)]></td><![endif]-->
+
+                                                                    <!--[if (mso)|(IE)]><td width="32" style="width:32px; padding-right: 0px;" valign="top"><![endif]-->
+                                                                    <table align="left" border="0" cellspacing="0"
+                                                                        cellpadding="0" width="32" height="32"
+                                                                        style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 0px">
+                                                                        <tbody>
+                                                                            <tr style="vertical-align: top">
+                                                                                <td align="left" valign="middle"
+                                                                                    style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
+                                                                                    <a href="https://email.com/"
+                                                                                        title="Email" target="_blank">
+                                                                                        <img src="https://cdn.tools.unlayer.com/social/icons/circle/email.png"
+                                                                                            alt="Email" title="Email"
+                                                                                            width="32"
+                                                                                            style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <!--[if (mso)|(IE)]></td><![endif]-->
+
+
+                                                                    <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
+                                                                </div>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <table style="font-family:'Cabin',sans-serif;" role="presentation"
+                                                cellpadding="0" cellspacing="0" width="100%" border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:7px;padding-top:20px;font-family:'Cabin',sans-serif;"
+                                                            align="left">
+
+                                                            <div style="color: #000000; line-height: 140%; word-wrap: break-word;"
+                                                                align="center">
+                                                                <p
+                                                                    style="font-size: 14px; line-height: 140%; text-align: center;">
+                                                                    <span
+                                                                        style="font-size: 16px; line-height: 22.4px; font-family: 'book antiqua', palatino;"><a
+                                                                            href="**mysite**" target="_blank"
+                                                                            rel="noopener">Visit the site</a></span></p>
+                                                                <p
+                                                                    style="margin-top:10px; margin-bottom:1px; font-size:14px;color:#000c9f">
+                                                                    This message was sent to **messageSentTo**</p>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td><![endif]-->
+                                <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="u-row-container" style="padding: 0px;background-color: transparent">
+                        <div class="u-row"
+                            style="Margin: 0 auto;width: 100%;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #003399;">
+                            <div
+                                style="border-collapse: collapse;display: table;width: 100%;background-color: transparent;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr style="background-color: #003399;"><![endif]-->
+
+                                <!--[if (mso)|(IE)]><td align="center" width="600" style="width: 100%;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
+                                <div class="u-col u-col-100"
+                                    style="width: 100%;display: table-cell;vertical-align: top;">
+                                    <div style="width: 100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div
+                                            style="padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
+                                            <!--<![endif]-->
+
+                                            <table style="font-family:'Cabin',sans-serif;" role="presentation"
+                                                cellpadding="0" cellspacing="0" width="100%" border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:7px;font-family:'Cabin',sans-serif;"
+                                                            align="left">
+
+                                                            <div
+                                                                style="color: #fafafa; line-height: 180%; text-align: center; word-wrap: break-word;">
+                                                                <p style="font-size: 14px; line-height: 180%;"><span
+                                                                        style="font-size: 13px; line-height: 28.8px;">Copyrights
+                                                                        &copy; GoHealthy All Rights Reserved</span></p>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td><![endif]-->
+                                <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!--[if mso]></div><![endif]-->
+    <!--[if IE]></div><![endif]-->
+</body>
+
+</html>

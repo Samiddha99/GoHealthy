@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+<head>
+    {% block meta %}
+    <meta name="title" content="Emergency Numbers | Go Healthy">
+    <meta name="description" content="All important emergency numbers in India">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>Emergency Number | Go Healthy</title>
+    {% endblock title %}
+
+    {%block style%}
+    <link rel="stylesheet" href="{% static 'css/emergency.css' %}">
+    {%endblock style%}
+
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+
+{% block content %}
+    <div class="sticky-top search-box">
+        <form id="emergencySearch" method="get" action="{% url 'Go_Healthy_App:Emergency' %}">
+            <div class="row ml-0 mr-0 ml-md-2 mr-md-2">
+                <div class="col-md-1"></div>
+                <div class="col-6 col-md mb-2">
+                    <select name="state" id="state" form="emergencySearch" class="form-control input-sm">
+                        <option label="Select State"></option>
+                        <option value="All States & Union Territories">All States & Union Territories</option>
+                        <optgroup label="States">
+                            {% for i in states %}
+                            {% if not i.Is_Union_Territory %}
+                            {% if i.Name == state %}
+                            <option value="{{i.Name}}" selected>{{i.Name}}</option>
+                            {% else %}
+                            <option value="{{i.Name}}">{{i.Name}}</option>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                        <optgroup label="Union Territories">
+                            {% for i in states %}
+                            {% if i.Is_Union_Territory %}
+                            {% if i.Name == state %}
+                                <option value="{{i.Name}}" selected>{{i.Name}}</option>
+                            {% else %}
+                                <option value="{{i.Name}}">{{i.Name}}</option>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="col-6 col-md mb-2">
+                    <select name="district" id="district" form="emergencySearch" class="form-control input-sm" data-toggle="tooltip" data-placement="top" title="To Select District choose A State First">
+                        <option label="Select District"></option>
+                    </select>
+                </div>
+                <div class="col-6 col-md mb-2">
+                    <input type="search" inputmode="search" name="subdivision" id="subdivision" form="emergencySearch" value="{{subdivision}}" class="form-control input-sm" placeholder="Subdivision">
+                </div>
+                <div class="col-6 col-md mb-2">
+                    <div id="autocomplete" class="autocomplete">
+                        <input type="search" inputmode="search" class="autocomplete-input form-control input-sm" name="office" disabled id="office" form="emergencySearch" placeholder="Office">
+                        <ul class="autocomplete-result-list"></ul>
+                    </div>
+                </div>
+                <div class="col-md mb-0 text-right text-md-left">
+                    <button type="submit" class="btn btn-success" form="emergencySearch" id="filter_search">Search</button>
+                    <button type="reset" class="btn btn-danger" form="emergencySearch" id="filter_clear">
+                        Clear
+                    </button>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </form>
+    </div>
+    <div id="row-results" style="min-height: 250px;">
+        <div class="no-resuls-found ml-1 mr-1 mt-5" align="center" id="no-results">
+            <div class="row">
+                <div class="col-md col"></div>
+                <div class="col-md-2 col-6">
+                    <div class="img-div">
+                        <img src="{% static 'images/no-result-found.png' %}" class="not-found-img">
+                    </div>
+                </div>
+                <div class="col-md col"></div>
+            </div>
+            <h2 class="text-muted">No Records Found</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md ml-2 mr-2">
+                <div id="emergency_data_table">
+        
+                </div>
+                <div align="center">
+                    <button class="btn btn-primary" id="loadMoreBtn" style="display: none;">Load More</button>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/emergency.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

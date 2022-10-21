@@ -1,0 +1,7 @@
+theme: jekyll-theme-minimal
+
+title: Go Healthy
+description: A Web Base Healthcare Service
+
+logo: logo.png
+show_downloads: true

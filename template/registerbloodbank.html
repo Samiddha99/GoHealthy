@@ -1,0 +1,1002 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+    {% block meta %}
+    <meta name="title" content="Blood Bank Registration | Go Healthy">
+    <meta name="description" content="Register a blood bank">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>Blood Bank Registration | Go Healthy</title>
+    {% endblock title %}
+       
+    
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/registerbloodbank.css' %}">
+    {% endblock style %}
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+
+
+
+{% block content %}
+<div class="row mt-5 mb-5" id="registration-success-message" style="display: none;">
+    <div class="col-md"></div>
+    <div class="col-md-8 text-center">
+        <div class="success-box ml-2 mr-2" style="background-color: white; padding: 10px;">
+            <img src="{% static 'images/registration_success.png' %}" height="150px" width="150px">
+            <h4 class="text-align">
+                Success!
+            </h4>
+            <h3 class="text-secondary">
+                Blood Bank Registration Completed
+            </h3>
+            <h6 class="text-muted">Blood Bank ID: <span id="id_blood_bank">{{bloodBank.Unique_Id}}</span></h6>
+            <p class="text-secondary">
+                We have received your application.
+                <br>We will review and verify your registration. If we find all the given details are correct, only then we will active the account.
+                Once the account is activated blood bank authority will able to access all the features.
+            </p>
+        </div>
+    </div>
+    <div class="col-md"></div>
+</div>
+<input type="hidden" id="registration_status" value="{{isRegistered}}">
+{% if not isRegistered %}
+<div class="row mt-4" id="main-registration-box">
+    <div class="col-xl"></div>
+    <div class="col-xl-9 text-center ml-2 mr-2 ml-md-0 mr-md-0">
+        <div class="row text-left">
+            <div class="col-xl-6 mb-3 col-registration-div">
+                <div class="registration-div">
+                    <div class="registration-nav-tabs">
+                        <h4 class="text-secondary mb-3 text-center text-md-left">BLOOD BANK REGISTRATION</h4>
+                        {% if registration_part1 %}
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" id="details-nav" data-toggle="tab" href="#details-tab" role="tab" aria-controls="details-tab" aria-selected="true">Blood Bank Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link disabled" id="blood-nav" data-toggle="tab" href="#blood-tab" role="tab" aria-controls="blood-tab" aria-selected="false">Add Bloods</a>
+                                </li>
+                            </ul>
+                        {% elif registration_part2 %}
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link disabled" id="details-nav" data-toggle="tab" href="#details-tab" role="tab" aria-controls="details-tab" aria-selected="true">Blood Bank Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" id="blood-nav" data-toggle="tab" href="#blood-tab" role="tab" aria-controls="blood-tab" aria-selected="false">Add Bloods</a>
+                                </li>
+                            </ul>
+                        {% endif %}
+                        <div class="tab-content" id="myTabContent">
+                            {% if registration_part1 %}
+                                <div class="tab-pane fade show active" id="details-tab" role="tabpanel" aria-labelledby="details-nav">
+                                    <form id="bloodBankRegistration" method="post" action="{% url 'Go_Healthy_App:Register-Blood-Bank' %}" enctype="multipart/form-data">
+                                        {%csrf_token%}
+                                        <div class="text-hor-divider">
+                                            <div class="hor-divider"></div>
+                                            <span class="text">For Login</span>
+                                        </div>
+                                        <div class="floating-label">
+                                            <input type="text" inputmode="text" class="form-control input-sm text-capitalize register-blood-bank-input" name="username" id="register-blood-bank-username" placeholder="Set a username" form="bloodBankRegistration" minlength="5" maxlength="15" required>
+                                            <label for="register-blood-bank-username">
+                                                <span>Username</span>
+                                            </label>
+                                        </div>
+                                        <div id="usernamevalidation" class="feedback"></div>
+                                        <small id="usernameHelpBlock" class="form-text text-muted">
+                                            Username will be maximum 15 characters long and minimum 5 characters long. Letters, digits and @/./+/-/_ only applicable.
+                                        </small>
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-3">
+                                                    <input type="password" inputmode="text" class="form-control input-sm register-blood-bank-input" name="password1" id="register-blood-bank-password1" placeholder="Set a password" form="bloodBankRegistration" minlength="8" required>
+                                                    <label for="register-blood-bank-password1">
+                                                        <span>Password</span>
+                                                    </label>
+                                                </div>
+                                                <div id="checkpassword" class="feedback feedback-invalid"></div>
+                                                <div class="input-help">
+                                                    <ul>
+                                                        <li>Password must not be too common.</li>
+                                                        <li>Password must not be similar to Username.</li>
+                                                        <li>Password must contain at least 8 characters.</li>
+                                                        <li>Password must not be entirely alphabetic and numeric.</li>
+                                                        <li>Password must contain at least one uppercase letter, one lowercase letter, one digit and one special character.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label mt-1 mt-md-3">
+                                                    <input type="password" inputmode="text" class="form-control input-sm register-blood-bank-input" name="password2" id="register-blood-bank-password2" placeholder="Enter password again" form="bloodBankRegistration" minlength="8" required disabled>
+                                                    <label for="register-blood-bank-password2">
+                                                        <span>Confirm Password</span>
+                                                    </label>
+                                                </div>
+                                                <div id="passwordcheck" class="feedback"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-hor-divider">
+                                            <div class="hor-divider"></div>
+                                            <span class="text">Information</span>
+                                        </div>
+                                        <div class="floating-label">
+                                            <input type="text" inputmode="text" class="form-control input-sm text-capitalize register-blood-bank-input" name="name" id="register-blood-bank-name" placeholder=" " form="bloodBankRegistration" maxlength="500" data-validation="office_name_validation" required>
+                                            <label for="register-blood-bank-name">
+                                                <span>Name of the blood bank</span>
+                                            </label>
+                                        </div>
+                                        <div id="namevalidation" class="feedback"></div>
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-4">
+                                                    <select class="form-control input-sm register-blood-bank-input" name="ownership" id="register-blood-bank-ownership" form="bloodBankRegistration" required>
+                                                        <option label="Select Blood Bank Ownership"></option>
+                                                        {% for i in bloodBankOwnerships %}
+                                                        <option value="{{i.0}}">{{i.1}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <label for="register-blood-bank-ownership">
+                                                        <span>Blood Bank's Ownership</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-4">
+                                                    <input type="text" inputmode="text" class="form-control input-sm text-uppercase register-blood-bank-input" name="registration_no" id="register-blood-bank-registration_no" placeholder=" " form="bloodBankRegistration" maxlength="20" required>
+                                                    <label for="register-blood-bank-registration_no">
+                                                        <span>Registration No</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">Issued by the government</div>
+                                                <div id="registration_no-error" class="feedback"></div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="custom-file mt-2 mt-md-4">
+                                                    <input type="file" class="custom-file-input register-blood-bank-input" name="registration_document" id="registration_document" form="bloodBankRegistration" required>
+                                                    <label class="custom-file-label register-blood-bank-input" for="registration_document" aria-describedby="Document Upload" data-placeholder="Upload Document">Upload Document</label>
+                                                  </div>
+                                                <div class="input-help">Proof of registration.
+                                                    <br>Only image and pdf file allowed. File size should be maximum 5 MB.
+                                                </div>
+                                                <div id="registration_document-error" class="feedback"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-hor-divider">
+                                            <div class="hor-divider"></div>
+                                            <span class="text">Contact Details</span>
+                                        </div>
+                                        <div class="section-help">Use STD code for landline/telephone numbers</div>
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-3">
+                                                    <input type="url" inputmode="url" class="form-control input-sm register-blood-bank-input" name="website" id="register-blood-bank-website" placeholder="https://www.example.com" form="bloodBankRegistration" maxlength="100">
+                                                    <label for="register-blood-bank-website">
+                                                        <span>Website</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label mt-1 mt-md-3">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-blood-bank-input" name="emergency_contact" id="register-blood-bank-emergency_contact" placeholder=" " form="bloodBankRegistration" maxlength="15" required>
+                                                    <label for="register-blood-bank-emergency_contact">
+                                                        <span>Emergency Contact</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">This contact number must be available for 24x7</div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md mt-3">
+                                                <div class="floating-label">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-blood-bank-input" name="toll_free_no" id="register-blood-bank-toll_free_no" placeholder=" " form="bloodBankRegistration" maxlength="15">
+                                                    <label for="register-blood-bank-toll_free_no">
+                                                        <span>Toll Free No</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label mt-1 mt-md-3">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-blood-bank-input" name="helpline_number" id="register-blood-bank-helpline-number" placeholder=" " form="bloodBankRegistration" maxlength="15">
+                                                    <label for="register-blood-bank-helpline-number">
+                                                        <span>Helpline Number</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row no-gutters mt-3" style="gap:4px;">
+                                            <div class="col-md">
+                                                <div class="floating-label">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-blood-bank-input" name="other_contacts" id="register-blood-bank-other_contact_1" placeholder=" " form="bloodBankRegistration" maxlength="15">
+                                                    <label for="register-blood-bank-other_contact_1">
+                                                        <span>Other Contact 1</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-blood-bank-input" name="other_contacts" id="register-blood-bank-other_contact_2" placeholder=" " form="bloodBankRegistration" maxlength="15">
+                                                    <label for="register-blood-bank-other_contact_2">
+                                                        <span>Other Contact 2</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-blood-bank-input" name="other_contacts" id="register-blood-bank-other_contact_3" placeholder=" " form="bloodBankRegistration" maxlength="15">
+                                                    <label for="register-blood-bank-other_contact_3">
+                                                        <span>Other Contact 3</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3 no-gutters" style="gap:8px;">
+                                            <div class="col-8">
+                                                <div class="floating-label">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-blood-bank-input" name="mobile" id="register-blood-bank-mobile" placeholder="10 digit Mobile Number" form="bloodBankRegistration" minlength="10" maxlength="10" required>
+                                                    <label for="register-blood-bank-mobile">
+                                                        <span>Mobile No</span>
+                                                    </label>
+                                                </div>
+                                                <div class="row no-gutters">
+                                                    <div class="col-6">
+                                                        <div id="mobilevalidation" class="feedback"></div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="text-right">
+                                                            <button type="button" class="btn text-primary" id="mobile-otp-send-btn" style="padding: 0px !important;">Send OTP</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-secondary text-right" id="mobile-otp-sent-to" style="margin-top: -5px;"></div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="floating-label">
+                                                    <input type="text" inputmode="numeric" class="form-control input-sm register-blood-bank-input" name="mobileotp" id="register-blood-bank-otp-mobile" placeholder="6 digit OTP" form="bloodBankRegistration" minlength="6" maxlength="6" required autocomplete="off">
+                                                    <label for="register-blood-bank-otp-mobile">
+                                                        <span>OTP</span>
+                                                    </label>
+                                                </div>
+                                                <div id="mobileotpvalidation" class="feedback feedback-invalid"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3 no-gutters" style="gap:8px;">
+                                            <div class="col-8">
+                                                <div class="floating-label">
+                                                    <input type="email" inputmode="email" class="form-control input-sm text-lowercase register-blood-bank-input" name="email" id="register-blood-bank-email" placeholder="example@domain.com" form="bloodBankRegistration" maxlength="100" required>
+                                                    <label for="register-blood-bank-email">
+                                                        <span>Email Id</span>
+                                                    </label>
+                                                </div>
+                                                <div class="row no-gutters">
+                                                    <div class="col-6">
+                                                        <div id="emailvalidation" class="feedback"></div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="text-right">
+                                                            <button type="button" class="btn text-primary" id="email-otp-send-btn" style="padding: 0px !important;" disabled>Send OTP</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-secondary text-right" id="email-otp-sent-to" style="margin-top: -5px;"></div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="floating-label">
+                                                    <input type="text" inputmode="numeric" class="form-control input-sm register-blood-bank-input" name="emailotp" id="register-blood-bank-otp-email" placeholder="6 digit OTP" form="bloodBankRegistration" minlength="6" maxlength="6" required autocomplete="off">
+                                                    <label for="register-blood-bank-otp-email">
+                                                        <span>OTP</span>
+                                                    </label>
+                                                </div>
+                                                <div id="emailotpvalidation" class="feedback feedback-invalid"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-hor-divider">
+                                            <div class="hor-divider"></div>
+                                            <span class="text">Address</span>
+                                        </div>
+                                        <div class="floating-label">
+                                            <textarea class="form-control input-sm text-capitalize register-blood-bank-input" name="address" id="register-blood-bank-address" placeholder="Full address of the blood bank" form="bloodBankRegistration" maxlength="500" required></textarea>
+                                            <label for="register-blood-bank-address">
+                                                <span>Address</span>
+                                            </label>
+                                        </div>
+                                        <div class="floating-label mt-4">
+                                            <input type="text" inputmode="numeric" class="form-control input-sm register-blood-bank-input" name="pin" id="register-blood-bank-pin" placeholder=" " form="bloodBankRegistration" minlength="6" maxlength="6">
+                                            <label for="register-blood-bank-pin">
+                                                <span>Pin</span>
+                                            </label>
+                                        </div>
+                                        <div align="right">
+                                            <i class="fad fa-spinner-third fa-spin" id="pinLoader" style="font-size:20px;position:relative;top:-30px;right:21px; visibility: hidden;"></i>
+                                        </div>
+                                        
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-4 mt-md-2">
+                                                    <select class="form-control input-sm register-blood-bank-input" name="state" id="register-blood-bank-state" form="bloodBankRegistration" required>
+                                                        <option label="Select State"></option>
+                                                        <optgroup label="States">
+                                                            {% for i in states %}
+                                                            {% if not i.Is_Union_Territory %}
+                                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                        </optgroup>
+                                                        <optgroup label="Union Territory">
+                                                            {% for i in states %}
+                                                            {% if i.Is_Union_Territory %}
+                                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                        </optgroup>
+                                                    </select>
+                                                    <label for="register-blood-bank-state">
+                                                        <span>State</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label mt-3 mt-md-2">
+                                                    <select class="form-control input-sm register-blood-bank-input" name="district" id="register-blood-bank-district" form="bloodBankRegistration" required>
+                                                        <option label="Select District"></option>
+                                                    </select>
+                                                    <label for="register-blood-bank-district">
+                                                        <span>District</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-gutters" style="gap: 8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-4">
+                                                    <input type="text" inputmode="text" class="form-control input-sm text-capitalize register-blood-bank-input" name="subdivision" id="register-blood-bank-subdivision" placeholder=" " form="bloodBankRegistration" maxlength="100">
+                                                    <label for="register-blood-bank-subdivision">
+                                                        <span>Subdivision</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label mt-3 mt-md-4">
+                                                    <input type="text" inputmode="text" class="form-control input-sm text-capitalize register-blood-bank-input" name="city" id="register-blood-bank-city" placeholder=" " form="bloodBankRegistration" maxlength="100">
+                                                    <label for="register-blood-bank-city">
+                                                        <span>Town/Village</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="latitude" id="selectedLatitude" form="bloodBankRegistration" value="" required>
+                                        <input type="hidden" name="longitude" id="selectedLongitude" form="bloodBankRegistration" value="" required>
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-sm btn-secondary mt-4" data-toggle="modal" data-target="#MapModal">
+                                                Pick Blood Bank's Location
+                                            </button>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100 mt-3" id="formSubmitBtn" form="bloodBankRegistration">Next</button>
+                                        <div id="registerMessage" class="text-danger text-center"></div>
+                                    </form>
+                                </div>
+                            {% elif registration_part2 %}
+                                <div class="tab-pane fade show active" id="blood-tab" role="tabpanel" aria-labelledby="blood-nav">
+                                    <div class="mt-4">
+                                        <b>Blood Bank Id:</b> <span id="registered-blood-bank-id">{{bloodBank.Unique_Id}}</span>
+                                    </div>
+                                    <div class="text-muted mb-3">
+                                        This id is auto-generated and unique to identify each registered blood banks uniquely
+                                    </div>
+                                    
+                                    <form id="bloodBankRegistrationAddBlood" method="post" action="{% url 'Go_Healthy_App:Register-Blood-Bank-submit' %}">
+                                        <input type="hidden" name="bloodBankID" id="bloodBankID" value="{{bloodBank.Unique_Id}}" form="bloodBankRegistrationAddBlood" required>
+
+                                        <div style="overflow: auto; height: 550px;">
+                                            <table class="table table-sm table-bordered text-center table-blood-availability">
+                                                <thead class="thread-sticky">
+                                                    <tr>
+                                                        <th scope="col" class="left-column-sticky">Blood Components</th>
+                                                        <th scope="col">A+</th>
+                                                        <th scope="col">A-</th>
+                                                        <th scope="col">B+</th>
+                                                        <th scope="col">B-</th>
+                                                        <th scope="col">AB+</th>
+                                                        <th scope="col">AB-</th>
+                                                        <th scope="col">O+</th>
+                                                        <th scope="col">O-</th>
+                                                        <th scope="col">HH</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">Whole Blood</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">Packed Red Blood Cells</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">White Blood Cells</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">Plasma</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">Platelet</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">Fresh Frozen Plasma</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">Platelet Poor Plasma</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">Platelet Rich Plasma</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">SDP (Single Donor Platelets)</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">RDP (Random Donor Platelets)</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+                                            
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">CPP (Cryo Poor Plasma)</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">LRBC (Leukoreduced Blood Components)</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">LPC</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="left-column-sticky">Cryo</td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_A_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_A_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_B_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_B_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_AB_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_AB_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_O_pos" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_O_neg" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_hh" form="bloodBankRegistrationAddBlood" required>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <button type="submit" class="btn btn-success w-100 mt-4" id="doneRegistration" form="bloodBankRegistrationAddBlood">Submit</button>
+                                        <div id="registerDoneError" class="feedback feedback-invalid text-center"></div>
+                                    </form>
+                                </div>
+
+                                <div class="modal fade" id="otpVerifyModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="otpVerifyModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="modal-header" style="background-color: #d5ecf6; color: #8d95a6;">
+                                          <h5 class="modal-title" id="otpVerifyModalLabel">Enter One Time Password</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="user_verification-form" action="{% url 'Go_Healthy_App:BloodBankRegistration_part2' id=bloodBank.Unique_Id %}">
+                                                <div class="email-verification-div mb-3">
+                                                    <div class="otp-heading">
+                                                        Please Enter the OTP
+                                                        <div class="sub-otp-heading">sent to registered email (<span>{{bloodBank.Username.email}}</span>)</div>
+                                                    </div>
+                                                    <div class="row no-gutters mt-1" style="gap: 10px;">
+                                                        <div class="col">
+                                                            <input type="text" inputmode="numeric" class="form-control input-sm input-user_verification" id="email_verification-otp" minlength="6" maxlength="6" placeholder="6 Digit OTP (Email)" autocomplete="off">
+                                                            <div class="row no-gutters">
+                                                                <div class="col text-left">
+                                                                    <span class="text-danger" id="email_verification-error"></span>
+                                                                </div>
+                                                                <div class="col-7 text-right">
+                                                                    <button type="button" class="btn" id="btn-email_verification-sendotp" style="padding: 0px; margin-top: -10px;">Send OTP</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <button type="button" class="btn btn-user_verification" id="btn-email_verification-verify">Verify</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="email-verification-div mb-3">
+                                                    <div class="otp-heading">
+                                                        Please Enter the OTP
+                                                        <div class="sub-otp-heading">sent to registered mobile no (<span>{{bloodBank.Username.Contact}}</span>)</div>
+                                                    </div>
+                                                    <div class="row no-gutters mt-1" style="gap: 10px;">
+                                                        <div class="col">
+                                                            <input type="text" inputmode="numeric" class="form-control input-sm input-user_verification" id="mobile_verification-otp" minlength="6" maxlength="6" placeholder="6 Digit OTP (Mobile)" autocomplete="off">
+                                                            <div class="row no-gutters">
+                                                                <div class="col text-left">
+                                                                    <span class="text-danger" id="mobile_verification-error"></span>
+                                                                </div>
+                                                                <div class="col-7 text-right">
+                                                                    <button type="button" class="btn" id="btn-mobile_verification-sendotp" style="padding: 0px; margin-top: -10px;">Send OTP</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <button type="button" class="btn btn-user_verification" id="btn-mobile_verification-verify">Verify</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="note-box">
+                    <h5>Why need to register a blood bank?</h5>
+                    <p>Our aim is to deliver live blood availability data of all the blood bank in the web portal. To archive that we need a universal database for all the blood banks;
+                        hence all the blood bank authority must register the blood bank, so that we will able to collect the data of the blood bank.
+                        After successfull registration blood bank authorities can maintain the blood availability records, blood donation and collection records, and also can issue digital blood donation Certificates to the blood donors.
+                        <br>We are building a system by that we will collect the data of all the reported blood donations and blood collections, and from that data we can analysis the data of the healthcare system
+                        like how many people donates blood in blood bank, how many people receives blood from blood bank.
+                        and from that data we will able to examine the scenario of the healthcare system. So to collect these data from your blood bank we need your blood bank's information through registration.
+                    </p>
+                    <h6 style="margin-bottom: -10px;">How to register?</h6>
+                    <p>
+                        <ol>
+                            <li>Enter all the data of the blood bank by fill up the form.</li>
+                            <li>After fill up all the input fields press the "Next" button.</li>
+                            <li>Now you have to provide the current blood availability details of your blood Bank.</li>
+                            <li>In the final step we will verify your given information and if we find everything is okay in your registration details then we will active your account. After activation of the account you can login to get access.</li>
+                        </ol>
+                    </p>
+                    <h6 style="margin-bottom: -10px;">What registered blood bank can do?</h6>
+                    <p>
+                        <ul>
+                            <li><b>Maintain Blood availability Data: </b>Blood Bank authorites can edit blood availability data anytime in the web portal</li>
+                            <li><b>Add and view Blood Donation or Collection Records: </b>Blood bank authorites can add a blood donor's information if he/she donated blood in blood bank, and also can see the information of the added donors.
+                            And also can add a patient's information if blood has collected for the patient from blood bank.</li>
+                            <li><b>Issue Blood Donation Certificate: </b>Authority can isssue a digital Blood Donation Certificate to a blood donor if the donor donated blood to the blood bank.</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl"></div>
+</div>
+
+<div class="modal fade" id="MapModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="MapModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable map-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="MapModalLabel">Select Blood Banks's Location From The Map</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="text-center">Click on a location on the map to select it. Drag the marker to change location</p>
+          <input id="pac-input" class="controls" type="text" placeholder="You can search your blood bank here"/>
+             <div id="map" class="map mt-2"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+        </div>
+      </div>
+    </div>
+</div>
+{% endif %}  
+{% endblock content %}
+
+
+
+
+{% block onesignal %}
+    
+{% endblock onesignal %}
+
+
+
+{% block script %}
+
+<script src="{% static 'javascripts/registerbloodbank.js' %}"></script>
+<script type="text/javascript" src="{% static 'javascripts/map.js' %}"></script>
+{% endblock script %}
+</body>
+</html>

@@ -1,0 +1,302 @@
+body{
+    background-color: white;
+}
+
+@media only screen and (min-device-width : 614px){
+    .not-found-card{
+        background-color: white;
+        border-radius: 20px;
+        padding-left: 20px;
+        padding-right: 80px;
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+}
+@media only screen and (max-device-width : 613px){
+    .not-found-card{
+        background-color: white;
+        border-radius: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+}
+
+
+.text-404{
+    font-family: 'Staatliches', cursive;
+    color: rgb(88, 88, 88);
+    font-size: 60px;
+}
+.heading-404{
+    font-family: 'Rubik', sans-serif;
+    font-size: 40px;
+    font-weight: 900 !important;
+    color: rgb(88, 88, 88);
+}
+
+.banner{
+    color: white;text-align: center;
+    padding-top: 130px;
+    padding-bottom: 160px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+@media only screen and (min-device-width : 793px){
+    .banner .event-title{
+        font-size: 80px;
+        font-weight: 700;
+        line-height: 40px;
+        margin-top: 60px;
+        margin-bottom: 60px;
+    }
+    .banner .event-date{
+        font-size: 40px;
+    }
+    .banner .event-time{
+        font-size: 25px;
+    }
+    .banner .event-location{
+        font-size: 25px;
+        font-style: oblique;
+        line-height: 25px;
+    }
+    .banner .event-organizer{
+        font-size: 29px;
+        margin-top: 30px;
+    }
+    .banner .event-organizer .name{
+        font-family: 'Akaya Telivigala', cursive;
+        margin-top: -1px !important;
+        line-height: 32px;
+
+    }
+    .btn-reminder{
+        font-size: 20px;
+        border-radius: 50px;
+        color: white;
+        background-color: deeppink;
+        margin-top: 50px;
+        outline: none !important;
+        border: 1px solid white;
+    }
+    .btn-reminder:hover{
+        color: white;
+        background-color: rgb(226, 13, 127);
+        outline: none !important;
+        border: 1px solid white;
+    }
+
+    .timmer{
+        width: 100%;
+        padding: 5px;
+        padding-top: 15px;
+        padding-bottom: 30px;
+        background-color: deeppink;
+        font-family: 'Staatliches', cursive;
+        letter-spacing: 3px !important;
+        color: white;
+        font-size: 50px;
+        font-weight: 600;
+        margin-top: -65px;
+        border-radius: 8px;
+    }
+    .timer-unit{
+        font-family: 'Red Rose', cursive;
+        font-size: 15px;
+        font-weight: 400;
+        margin-top: -10px;
+    }
+
+    .col-info-card.one, .col-info-card.two{
+        border-right: 1px solid rgb(190, 190, 190);
+    }
+    .col-info-card{
+        background-color: white;
+        padding: 20px;
+    }
+}
+
+@media only screen and (max-device-width : 792px){
+    .banner{
+        color: white;text-align: center;
+        padding-top: 130px;
+        padding-bottom: 160px;
+    }
+    .banner .event-title{
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 40px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .banner .event-date{
+        font-size: 20px;
+    }
+    .banner .event-time{
+        font-size: 20px;
+    }
+    .banner .event-location{
+        font-size: 20px;
+        font-style: oblique;
+        line-height: 25px;
+    }
+    .banner .event-organizer{
+        font-size: 29px;
+        margin-top: 30px;
+    }
+    .banner .event-organizer .name{
+        font-family: 'Akaya Telivigala', cursive;
+        margin-top: -1px !important;
+        line-height: 32px;
+    }
+    .btn-reminder{
+        font-size: 20px;
+        border-radius: 50px;
+        color: white;
+        background-color: deeppink;
+        margin-top: 50px;
+        outline: none !important;
+        border: 1px solid white;
+    }
+    .btn-reminder:hover{
+        color: white;
+        background-color: rgb(226, 13, 127);
+        outline: none !important;
+        border: 1px solid white;
+    }
+
+    .timmer{
+        width: 100%;
+        padding: 5px;
+        padding-top: 15px;
+        padding-bottom: 30px;
+        background-color: deeppink;
+        font-family: 'Staatliches', cursive;
+        letter-spacing: 3px !important;
+        color: white;
+        font-size: 40px;
+        font-weight: 600;
+        margin-top: -65px;
+        border-radius: 8px;
+    }
+    .timer-unit{
+        font-family: 'Red Rose', cursive;
+        font-size: 15px;
+        font-weight: 400;
+        margin-top: -10px;
+    }
+    .col-semicolon{
+        display: none !important;
+    }
+
+    .col-info-card{
+        background-color: white;
+        padding: 20px;
+        border-bottom: 1px solid rgb(190, 190, 190);
+    }
+}
+
+.col-info-card:hover .location-icon{
+    color: blue;
+}
+.location-icon{
+    font-size: 40px;
+}
+.info-text p{
+    line-height: 20px !important;
+}
+.info-card{
+    color: rgb(58, 57, 57);
+}
+.info-card .header{
+    font-size: 25px;
+    font-weight: 700;
+}
+.info-card .info-state{
+    font-size: 22px;
+}
+.info-card .info-date{
+    font-size: 22px;
+}
+.info-card .info-time{
+    font-size: 18px;
+}
+.info-card .info-contact{
+    font-size: 19px;
+}
+.col-info-card:hover{
+    background-color: rgba(243, 240, 240, 0.897);
+}
+
+.address-heading{
+    width: 100px;
+}
+.address-heading, .address-value{
+    display: inline-table;
+    font-size: 18px;
+}
+
+.why-donate{
+    font-size: 40px;
+    margin-top: 60px;
+    font-weight: 800;
+    margin-bottom: 0px;
+    font-family: 'Abril Fatface', cursive;
+}
+.card-why-donate .card-title{
+    font-size: 25px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+.underline{
+    margin-top: 0px;
+}
+.card-why-donate .card-title-icon{
+    font-size: 45px;
+}
+.card-why-donate{
+    box-shadow: 0px 0px 10px 5px rgb(226, 226, 226) !important;
+    min-height: 315px !important;
+    margin-bottom: 30px;
+}
+.card-why-donate:hover{
+    box-shadow: 0px 0px 15px 8px rgb(226, 226, 226) !important;
+    background-color: rgb(58, 58, 241);
+    color: white;
+}
+
+
+.setReminderModal{
+    margin-top: 65px;
+}
+
+.floating-label .reminder-input:placeholder-shown + label {
+    color: rgb(102, 156, 236) !important;
+}
+.floating-label .reminder-input:not(:placeholder-shown) + label, .floating-label .reminder-input:focus + label {
+    color: rgb(92, 126, 240)!important;
+}
+
+.reminder-input{
+    border: 1px solid rgb(142, 186, 252);
+    color: rgb(60, 124, 219) !important;
+    text-align: left !important;
+}
+.reminder-input:focus{
+    border: 1px solid rgb(142, 186, 252);
+    box-shadow: 0px 0px 5px rgb(57, 100, 243) !important;
+    color: rgb(60, 124, 219) !important;
+    text-align: left !important;
+}
+.reminder-input-info{
+    color: rgb(112, 122, 156);
+}
+.set-reminder-form label{
+    color: rgb(92, 126, 240)!important;
+}
+.set-reminder-form .addon{
+    background-color: rgb(125, 173, 245) !important;
+    color: white;
+}

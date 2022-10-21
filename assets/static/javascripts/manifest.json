@@ -1,0 +1,94 @@
+{
+    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+    "name": "Go Healthy - Health is Your Right",
+    "short_name": "Go Healthy",
+    "description": "A web base healthcare service",
+    "shortcuts": [
+        {
+            "name": "Find a bed in nearest hospotal",
+            "short_name": "Find bed",
+            "description": "You can see which hospitals have available beds",
+            "url": "/hospitals/",
+            "icons": [{ "src": "/static/images/shortcut-hospital.png", "sizes": "192x192" }]
+        },
+        {
+            "name": "Contact to a Doctor",
+            "short_name": "Contact doctor",
+            "description": "You can contact to any doctor in your location for any emergency purpose",
+            "url": "/doctors/",
+            "icons": [{ "src": "/static/images/shortcut-doctor.png", "sizes": "192x192" }]
+        },
+        {
+            "name": "Contact to a Blood Donor",
+            "short_name": "Contact blood donor",
+            "description": "You can contact to a blood donor in your location to get blood for a patient",
+            "url": "/blood-donors/",
+            "icons": [{ "src": "/static/images/shortcut-donor.png", "sizes": "192x192" }]
+        },
+        {
+            "name": "Contact to a Blood Bank",
+            "short_name": "Contact blood bank",
+            "description": "You can contact to a blood bank in your location to get blood for a patient",
+            "url": "/blood-banks/",
+            "icons": [{ "src": "/static/images/shortcut-blood-bank.png", "sizes": "192x192" }]
+        }
+    ],
+    "id": "/",
+    "start_url": "/",
+    "display_override": ["minimal-ui", "fullscreen", "standalone", "window-controls-overlay", "browser"],
+    "display": "minimal-ui",
+    "scope": "/",
+    "orientation": "any",
+    "background_color": "#ffffff",
+    "theme_color": "#9070EF",
+    "status_bar": "default",
+    "categories": ["health", "healthcare", "medical", "fitness", "education", "social", "productivity"],
+    "iarc_rating_id": "",
+    "icons": [{
+        "src": "/static/images/logo-round.png",
+        "sizes": "551x551",
+        "type": "image/png",
+        "purpose": "any maskable"
+    },
+    {
+        "src": "/static/images/logo-round - 72x72.png",
+        "sizes": "72x72",
+        "type": "image/png",
+        "purpose": "any maskable"
+    },
+    {
+        "src": "/static/images/logo-round - 96x96.png",
+        "sizes": "96x96",
+        "type": "image/png",
+        "purpose": "any maskable"
+    },
+    {
+        "src": "/static/images/logo-round - 120x120.png",
+        "sizes": "120x120",
+        "type": "image/png",
+        "purpose": "any maskable"
+    },
+    {
+        "src": "/static/images/logo-round - 192x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any maskable"
+    },
+    {
+        "src": "/static/images/logo-round - 512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+    }],
+    "dir": "auto",
+    "prefer_related_applications": true,
+    "related_applications": [
+        {
+          "platform": "play",
+          "url": "https://play.google.com/store/apps/details?id=com.gohealthy.gohealthyapp",
+          "id": "com.gohealthy.gohealthyapp"
+        }
+      ],
+    "lang": "en-US",
+    "gcm_sender_id":"224305100923"
+}

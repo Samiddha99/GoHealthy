@@ -1,0 +1,55 @@
+.filter-input{
+    background-color:#434ea2 !important;
+    color: white !important;
+}
+.filter-input:focus{
+    background-color:#354092 !important;
+    color: white !important;
+}
+.filter-input::placeholder{
+    color: white !important;
+}
+.icon-stack{
+    position:relative !important;
+}
+.icon-text{
+    position:absolute !important;
+    top:50px;
+    left:10px;
+    color:white;
+    font-size:30px;
+    text-align: center;
+}
+@media only screen and (min-device-width : 701px)
+{
+    .col-icon{
+        margin-right: 40px;
+        margin-left: 40px;
+    }
+}
+@media only screen and (max-device-width : 700px)
+{
+    .heading{
+        text-align: center;
+    }
+}
+.search-box{
+    position: sticky;
+    top:68px;
+    z-index: 1;
+}
+.page-footer{
+    margin-top:-37px !important;
+}
+.no-resuls-found{
+    margin-top:30px;
+    margin-bottom:100px;
+    display: none;
+}
+.not-found-img{
+    width: 100%;
+}
+
+.result-loader{
+    font-size: 250px !important;
+}

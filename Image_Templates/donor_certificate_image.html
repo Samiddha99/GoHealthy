@@ -1,0 +1,61 @@
+{% load custom_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Go Healthy">
+    <meta name="subject" content="Patient's Data PDF">
+    <meta name="keywords" content="booking confirmation, patient Information, pdf">
+    <meta name="application-name" content="Go Healthy">
+
+    <title>Patient's Information - {{book.Booking_ID}}</title>
+
+    <link href="{{static}}{{'images/favicon.ico'}}" rel="icon" type="image/ico" media="screen,print">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        body { 
+            -pdf-keep-in-frame-mode: shrink;
+            background-color: white;
+        }
+        table { 
+            -pdf-keep-in-frame-mode: shrink;
+        }
+        .header{
+            background-color: #548DD4;
+            color: white;
+            text-align: center;
+            font-size: 50px;
+            padding: 5px !important;
+            vertical-align: center !important;
+        }
+        .header h3{
+            transform: translate(-50%, -50%) !important;
+            font-family: 'Noto Serif', serif !important;
+        }
+        .side-by{
+            display: inline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-body">
+        <div class="header container">
+            <h3 class="side-by">Patient's Information</h3>
+            <div class="side-by">
+                <!-- <img src="{{static}}{{'images/logo-round.png'|stringToUrl}}" height="80px" width="80px"> -->
+            </div>
+        </div>
+        <p></p>
+    </div>
+
+
+</body>
+</html>

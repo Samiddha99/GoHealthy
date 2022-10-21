@@ -1,0 +1,179 @@
+.custom-navbar{
+    background-color: #101010 !important;
+}
+.footer-top{
+  display: none !important;
+}
+.top-button{
+  display: none !important;
+}
+.blood{
+  background-color: #101010;
+}
+.request{
+    background-color: #101010;
+}
+.blood .dropdown-item:hover{
+    color: #101010 !important;
+}
+.our-goal{
+    display: none !important;
+}
+.google_translate{
+    display: none !important;
+}
+body {
+  font-family: "Lato", sans-serif;
+  transition: background-color .5s;
+  padding-left: 55px;
+}
+.showingsidenav {
+  height: 100%;
+  width: 55px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+.showingsidenav a, .showingsidenav span {
+  padding: 10px;
+  padding-left: 13px;
+  padding-right:2px;
+  text-decoration: none;
+  font-size: 22px;
+  color: #818181;
+  display: block;
+  transition: 0.6s;
+}
+.showingsidenav a:hover, .showingsidenav span:hover {
+  color: #f1f1f1;
+}
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 55;
+  top: 0;
+  left: 0;
+  right:0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 10px;
+  padding-left: 25px;
+  padding-right:1px;
+  text-decoration: none;
+  font-size: 22px;
+  color: #818181;
+  display: block;
+  transition: 0.6s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+.sidenav a:hover:before {
+  color: #f1f1f1 !important;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+#main {
+  transition: margin-left .5s;
+  padding: 10px;
+}
+
+@media screen and (max-height: 450px) {
+  .showingsidenav {display:none;}
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+
+.sidenav #item1:before {
+    font-family: 'Font Awesome 5 Pro' !important;
+    content: '\f007' !important;
+    font-weight: bold;
+    color: #818181;
+    transition: 0.6s;
+    text-decoration: none;
+    padding-right:20px;
+    -webkit-font-smoothing: antialiased;
+}
+.sidenav #item2:before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f234';
+    font-weight: bold;
+    color: #818181;
+    transition: 0.6s;
+    text-decoration: none;
+    padding-right:20px;
+}
+.sidenav #item3:before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f8f9';
+    font-weight: bold;
+    color: #818181;
+    transition: 0.6s;
+    text-decoration: none;
+    padding-right:20px;
+}
+.sidenav #item4:before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f236';
+    font-weight: bold;
+    color: #818181;
+    transition: 0.6s;
+    text-decoration: none;
+    padding-right:20px;
+}
+.sidenav #item5:before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f77f';
+    font-weight: bold;
+    color: #818181;
+    transition: 0.6s;
+    text-decoration: none;
+    padding-right:20px;
+}
+.sidenav #item6:before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f8d3';
+    font-weight: bold;
+    color: #818181;
+    transition: 0.6s;
+    text-decoration: none;
+    padding-right:20px;
+}
+.sidenav #item7:before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f15c';
+    font-weight: bold;
+    color: #818181;
+    transition: 0.6s;
+    text-decoration: none;
+    padding-right:20px;
+}
+.sidenav #item8:before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f10b';
+    font-weight: bold;
+    color: #818181;
+    transition: 0.6s;
+    text-decoration: none;
+    padding-right:20px;
+}

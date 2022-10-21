@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    {% block meta %}
+    <meta name="title" content="FAQ | Go Healthy">
+    <meta name="description" content="Frequently Asked Questions">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>FAQ | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/faq.css' %}">
+    {% endblock style %}
+
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+{% block content %}
+    <center>
+        <div class="row">
+            <div class="col-md"></div>
+            <div class="col-md-10 ml-0 mr-0">
+                <!-- <img src="{% static 'images/faq_bannner.jpg' %}" width="100%" height="400vh" style="margin-bottom: -20px; z-index: 100;"> -->
+                <div class="container-fluid">
+                    <div class="faq-head">
+                        <h2>Frequently Asked Questions (FAQ)</h2>
+                        <p style="font-size: 19px; line-height: 17px;">Explore common questions and answers</p>
+                        <p style="font-size: 15px;">Select the topic below to see the relevant contents</p>
+                        <div class="row">
+                            <div class="col-6 col-md ml-0 mr-0 pr-1">
+                                <a type="button" class="btn btn-faq clicked" data-target="#question-register">
+                                    Registration
+                                    <div class="btn-focus-bar"></div>
+                                </a>
+                            </div>
+                            <div class="col-6 col-md ml-0 mr-0 pl-1 pr-md-2">
+                                <a type="button" class="btn btn-faq" data-target="#question-bed_booking">
+                                    Bed Booking
+                                    <div class="btn-focus-bar"></div>
+                                </a>
+                            </div>
+                            <div class="col col-md ml-0 mr-0 pr-1 pl-md-0">
+                                <a type="button" class="btn btn-faq" data-target="#question-hospital">
+                                    Hospital
+                                    <div class="btn-focus-bar"></div>
+                                </a>
+                            </div>
+                            <div class="col col-md ml-0 mr-0 pl-1 pr-1">
+                                <a type="button" class="btn btn-faq" data-target="#question-doctor">
+                                    Doctor
+                                    <div class="btn-focus-bar"></div>
+                                </a>
+                            </div>
+                            <div class="col col-md ml-0 mr-0 pl-1">
+                                <a type="button" class="btn btn-faq" data-target="#question-donor">
+                                    Donor
+                                    <div class="btn-focus-bar"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-body">
+                        <div class="hor-bar"></div>
+                        <div class="faq-container text-left">
+                            <div class="question-section active" id="question-register">
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">How long will it take to active my account?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">Generally, it make take 30 days to active your account.
+                                                    We will active your account after verification from our side. We will check your details (Name, Permanent Address and Date of Birth) and if we find that your registration details matched with your id, then we will active your.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">My account is not activated, what to do now?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    If after 30 days your account still not verified, then you may mail us regarding that.
+                                                    <br>And if you received mail that your account is not activated because your registration details is not matched with your given Id, then you have to register again with correct details after 48 hours of receiving the mail. And keep in mind that your registration should be matched with your given Id.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">How many registration can I make with an email id or mobile no?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    You have to register with unique email id and mobile no. You can't register with an email or mobile number, if an account already exists with the contact details. That means, if by an email or mobile number already one account is created, then this email or mobile number can no nome use to make a registration.  So then to do register, either you have use new email or mobile no (which is not used before to create any account on the website) or you have to change the contact details in the existing account.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">By mistake I select wrong User type during the registration. Now how do I change the user type?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    You can easily do that if your account is activated (if your account is not activated then wait for some days. For more details kindly check the first question).
+                                                    To change the user type, log in to your account and in your profile page you will find a button (title of the button is 'Upgrade Profile' or 'Become A Blood Donor' or 'Upgrade to Doctor Profile' - it's depends on account type). Click the button and fill the input fields and submit it. After finish the steps User Type will be changed.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">I have registered but not as a Blood Donor? Now how do I become blood donor?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    In that case, to do that you have to change the user type. In previous question it has been described. Kindly look at the answer to the previous question.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">I have registered as a Blood Stem Cell Donor or Organs & Tissues Donor? But I can't log in on that website</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    You can do that. If you register as Blood Stem Cell Donor or Organs & Tissues Donor then your data will not be store in our database. Because in that case, you had to register on another website. You done Blood Stem Cell Donor Registration in <a href="ttps://www.dkms-bmst.org/get-involved/become-a-donor">this</a> website and you done Organs & Tissues Donor Registration in <a href="https://notto.gov.in/registration.htm">this</a> website. So you need to visit that website for login.
+                                                    <br>But to use the full features of that website (like bed booking features) you must need an account on that website. You can create an account as a Normal User from <a href="{% url 'Go_Healthy_App:Register' %}">here</a> or if you are a doctor you can register as Doctor from here <a href="{% url 'Go_Healthy_App:Register-Doctor' %}">here</a> or if you want to be a blood donor you can register as a blood donor from here <a href="{% url 'Go_Healthy_App:Register-Donor' %}">here</a>.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+
+                            <div class="question-section" id="question-bed_booking">
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">For how long will my booking be valid?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">Your booking will be valid for 3 hours.
+                                                    After 3 hours your booking will be expired. So you have to reach to the hospital within 3 hours to admit the patient after bed booking.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">What happens if I book a bed but don't go to the hospital within 3 hours?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    If you failed to reach to the hospital within 3 hours, then you can book a bed again. But incase of second you must be reach to the hospital within 3 hours.
+                                                    if incase of second booking you also failed to reach to the hospital then booking features will be deprecated from your account and you will no longer able to make anymore booking.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">How many bed booking can I make?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    A user can make any number of bed booking in any hospital. But for each booking user must be reach to the hospital within 3 hours to admit the patient.
+                                                    After making a booking, you will not be able to make another booking until the patient of that booking is admitted to the hospital.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">I made a wrong bed booking, how do I correct it?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    If you made a wrong bed booking then you have to cancel the booking from <a href="{% url 'Go_Healthy_App:MyBookings' %}">here</a> and make a fresh booking again.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+
+                            <div class="question-section" id="question-hospital">
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">Hospital refused to admit the patient, what should I do now?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    It is a very serious issue. If hospital refused to admit the patient though you booked a bed to the hospital or the website showed that the hospital has available bed, then you must make a complaint to us <a href="{%url 'Go_Healthy_App:project-Complain'%}">from here</a>. And also you should share that incident in <a href="{%url 'Go_Healthy_App:PeopleVoice' %}">here</a>, because when you share the incident in public domain then everyone will know that the hospital is abusing people and so there will be pressure on that hospital to make the service better.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">I had bad experience in a hospital, what can I do now?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    You must complaint to us from <a href="{%url 'Go_Healthy_App:project-Complain'%}">here</a> and you should share the incident in <a href="{%url 'Go_Healthy_App:PeopleVoice' %}">here</a>. You can also look at the answer to the previous question.
+                                                    It is very sad to hear that you had bad experience in a hospital. We believe that it is the duty of the Hospital Authority and Government to provide the best healthcare service to every citizen.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">I found wrong information about a hospital in the website, so what can I do?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    You must raise a complaint about that from <a href="{%url 'Go_Healthy_App:project-Complain'%}">here</a>.
+                                                    It is responsibility of all hospitals to keep their details (contact info, address) up to date. It happened because of irresponsibility of that hospital.
+                                                    After received your complaint you will inform to the hospital to update the information.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+
+                            <div class="question-section" id="question-doctor">
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">Who can register as a doctor?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    A registered doctor can register as a doctor. During the registration the person have to give the registration number.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">I think a doctor misguided me or give wrong advice to me, what should I do now?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    You should follow the doctors' advice, however if you think that a doctor give you wrong advice or misguided you then you should talk to the doctor and try to share your health condition briefly then it will be easier for the doctor to give you correct advice.
+                                                    And still you think you are not getting healthy advice from the doctor then you can take advice from another doctor.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">I found wrong information about a doctor in the website, so what can I do?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    You must raise a complaint about that from <a href="{%url 'Go_Healthy_App:project-Complain'%}">here</a>.
+                                                    It is responsibility of all the doctors to keep their details (contact info, address) up to date. It happened because of irresponsibility of that doctor.
+                                                    After received your complaint you will inform to the doctor to update the information.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+
+                            <div class="question-section" id="question-donor">
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">Who can register as a blood donor?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                   A person who are are eligible for donate blood can registered as a blood donor.
+                                                   You can check your eligibility in <a href="{% url 'Go_Healthy_App:DonorEligibility' %}" target="_blank">here</a>.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">Blood donor said he Would give blood, but he didn't come to give blood. What should I do now?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    At first contact to another blood donor. And after that complain to us from <a href="{%url 'Go_Healthy_App:project-Complain'%}">here</a>. If a person does that, he has committed a serious crime. It may be a crime of attempt to murder. So after receive your complaint you take action against that person.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="question-card">
+                                    <div class="faq-question">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-question p-1 pl-2">
+                                                <span class="faq-question-logo">Q.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-question-text">I found wrong information about a blood donor in the website, so what can I do?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="row no-gutters">
+                                            <div class="col-0 mr-0 col-answer p-1 pl-2">
+                                                <span class="faq-answer-logo">A.</span>
+                                            </div>
+                                            <div class="col p-2">
+                                                <p class="faq-answer-text">
+                                                    You must raise a complaint about that from <a href="{%url 'Go_Healthy_App:project-Complain'%}">here</a>.
+                                                    It is responsibility of all the blood donors to keep their details (contact info, address) up to date. It happened because of irresponsibility of that donors.
+                                                    After received your complaint you will inform to the donors to update the information.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md"></div>
+        </div>
+        
+    </center>
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/faq.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

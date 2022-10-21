@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% load cache %}
+<head>
+    {% block meta %}
+    <meta name="title" content="Home | Go Healthy">
+    <meta name="description" content="We look forwards a time, when nobody dies due to insufficiency of Healthcare Service In India. Go Healthy is a website for medical support. Purpose of the website is to deliver all details about Bed and Antivenom availability in all hospitals, Doctors and Blood Donor near you and how to do first aid. This website has four different features. In Check Hospital section user can see the all information about all the Hospital and number of available bed in Hospital and also can book bed for patients and can see which hospital has Antivenom. In Find Doctor section user can see all the information about doctors of their location. And in Find Donor section user can see the all information about blood donors. In First Aid section there are several free videos and photos are available which will provide you a guide about First Aid.">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>Home | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    {% endblock style %}
+
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+
+{% block content %}
+
+{% cache 31557600 CacheHomePage %}
+<div class="loading-image-background">
+    <img alt="middle" src="{% static 'gif/hospital_animation.gif' %}" class="loading-img" id="filter-loading-id">
+</div>
+
+<audio id="slice-sound">
+    <source src="{% static 'sounds/side-sound.mp3' %}" type="audio/mpeg">
+</audio>
+<center>
+
+    <div id="carouselExampleIndicators" class="carousel slide custom-carousel" data-ride="carousel">
+        <ol class="carousel-indicators" touch="true">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        </ol>
+        <div class="carousel-inner" style="height:50vw">
+            <div class="carousel-item active">
+                <img src="{% static 'images/GoHealthy_welcome.png' %}" class="d-block w-100" alt="Welcome" aria-labelledby="Welcome">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/GoHealthy_logo banner.png' %}" class="d-block w-100" alt="Info Banner">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+    <div style="background: url('{% static 'images/GoHealthy_home about background.png' %}');background-repeat:no-repeat;background-size:100% 30%;">
+        <div class="row mb-5">
+            <div class="col-md"></div>
+            <div class="col-md-9 ml-2 mr-2">
+                <br>
+                <h2 style="font-family:Courier New, monospace"><strong>Our Vision</strong></h2>
+                <h6 align="center">We look forward a time, when nobody will die due to insufficiency of Healthcare Services In India..</h6>
+                <p class="text-muted">
+                    We all know what's the situation of healthcare system in India. Healthcare system facing shortage
+                    of beds, medical oxygen, hospitals, doctors. But since a long decades the State never response to fix the problems.
+                    And result of that is painful death. A strong and effective action should be taken to make a better healthcare system.
+                    <br>Go Healthy is a website for medical support, we want to help the victims of that poor healthcare system. Purpose of the website is to deliver all
+                    details about Bed and Antivenom availability in all hospitals,
+                    Doctors and Blood Donor near you and how to do first aid. This website has four different features.
+                    In Check Hospital section user can see the all information about all the Hospital and number of
+                    available bed in Hospital and also can book bed for patients and can see which hospital has Antivenom.
+                    In Find Doctor section user can see all the information about doctors of their location.
+                    And in Find Donor section user can see the all information about blood donors.
+                    In First Aid section there are several free videos and photos are available which will provide you a guide
+                    about First Aid.
+                </p>
+                <a class="btn btn-primary" href="{% url 'Go_Healthy_App:project-About' %}" aria-labelledby="See More">See More</a>
+            </div>
+            <div class="col-md"></div>
+        </div>
+        <div class="row">
+            <div class="col-md ml-4 mr-4">
+                <div class="card custom-card">
+                    <div class="card-inner custom-card-inner">
+                        <div class="card-front custom-card-front" style="background-image: linear-gradient(to bottom right, #191970, #800080); padding-top:30px; padding-bottom:33px">
+                            <!-- adding picture in the card -->
+                            <img src="{% static 'images/GoHealthy_hospital round.png' %}" alt="" width="50%"><br>
+                            <img src="{% static 'images/GoHealthy_hospital icon.png' %}" alt="" width="20%" style="margin-top:-60px; margin-bottom:10px">
+                            <h4 style="color:white">Find Hospitals</h4>
+                            <i class="fas fa-chevron-double-right bg-light" style="padding:10px;border-radius:50px;color:#6b057c"></i>
+
+                        </div>
+                        <!-- Decorate card back side -->
+                        <div class="card-back custom-card-back bg-light" style="padding-bottom:140px">
+                            <h4 style="color:blue"><br>Find Hospitals in Your Location.
+                                <br>And Book Bed for Patient</h4>
+                            <br><br><br><br>
+                            <a class="btn btn-primary" href="{%url 'Go_Healthy_App:project-Hospital'%}"
+                               style="font-size:25px;border-radius:40px" aria-labelledby="Show Hospitals">
+                                Show Hospitals
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div align="left" class="info">
+                    <i class="fad fa-user-injured fa-4x icon" style="color:blue;"></i>
+                    <hr style="background-color:blue">
+                    <h3 align="left" class="problem-heading"><b>No bed in Hospital</b></h3>
+                    <hr style="background-color:blue">
+                    <p style="color:blue" class="text-muted" align="left">
+                        Every day many patient died just for not getting bed in Hospital within right time. Patient families
+                        runs from one hospital to another hospital to admit the patient and hospitals replies We don't have
+                        no more bed. Every moment of time is important for a patient, if there is a delay to provide treatment
+                        to the patient, that means the patient death is certain. Everyday in everywhere this are happening. Why
+                        is that happening? Because of irresponsibility of the state. The death of the patients are not a normal death, it is a murder by the Healthcare
+                        System.
+                        <br>We should solve the problems. The problems will totally solved when Government focus on this
+                        issue. But since long decade any government never focus on that issue seriously.
+                        <br>For that we are trying to provide a platform to help the victims.
+                        <br>To help that victims of the poor healthcare system, we try to provide a platform, where anybody
+                        can see which hospital has available bed.
+                        <br>If a person easily can see which hospital of his locality has available bed and also can book a
+                        bed in advance, then the person don't need to run in several hospitals to admit the patient. The
+                        person just need to go to that hospital, in which hospital he/she saw, there are available bed using
+                        the platform. It will save the time. And save of time means, more chances of patient's recovery.
+                        Here by providing Hospital Searching and Bed Booking Features we try to help the people.</p>
+                    <div align="center">
+                        <a class="btn btn-go-it" href="{%url 'Go_Healthy_App:project-Hospital'%}" style="width:80%" aria-labelledby="Search Hospitals">Search Hospitals</a>
+                    </div>
+                    <hr style="background-color:blue;height:3px">
+                </div>
+                <br><br>
+            </div>
+
+            <div class="col-md ml-4 mr-4">
+
+                <div class="card custom-card">
+                    <div class="card-inner custom-card-inner">
+                        <div class="card-front custom-card-front" style="background-image: linear-gradient(to bottom right, #0000fe, #000033); padding-top:30px; padding-bottom:33px">
+                            <!-- adding picture in the card -->
+                            <img src="{% static 'images/GoHealthy_doctor round.png' %}" alt="" width="50%"><br>
+                            <img src="{% static 'images/GoHealthy_doctor icon.png' %}" alt="" width="18%" style="margin-top:-60px;">
+                            <h4 style="color:white">Find Doctors</h4>
+                            <i class="fas fa-chevron-double-right bg-light" style="padding:10px;border-radius:50px;color:#000044"></i>
+                        </div>
+                        <!-- Decorate card back side -->
+                        <div class="card-back custom-card-back bg-light" style="padding-bottom:140px">
+                            <h4 style="color:blue"><br>Find Doctors in Your Location.
+                                <br>And Contact them for Emergency</h4>
+                            <br><br><br><br>
+                            <a class="btn btn-primary" href="{%url 'Go_Healthy_App:project-Doctor'%}" style="font-size:25px;border-radius:40px" aria-labelledby="Show Doctors">
+                                Show Doctors
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div align="left" class="info">
+                    <i class="fad fa-stethoscope fa-4x" style="color:blue"></i>
+                    <hr style="background-color:blue">
+                    <h3 align="left" class="problem-heading"><b>Insufficient Doctor in India</b></h3>
+                    <hr style="background-color:blue">
+                    <p style="color:blue" class="text-muted" align="left">
+                        WHO recommended ratio of Doctor and people in a country must be 1:1000. But unfortunately India
+                        doesn't reach the ratio till now.<br>
+                        Result of that is death of patient due to not get medical assistance at the right time. People those who
+                        are live far from hospitals or living in rural area for them it is almost impossible to reach to hospital within time and get medical support immediately,
+                        because of lack of rural transport infrastructure. In rural hospital, there are no enough doctors. If
+                        patient's family try to reach to a good hospital to give treatment to the patient, it may cause death of patient;
+                        because it make delay in treatment. Specially rural people facing the problem; so in that case one
+                        solution is contact to a doctor immediately to get medical assistance.
+                        <br>But most of the people can't contact to a doctor to get a medical help. Because they don't know
+                        any doctors, they have no information of any doctor. How they will able to connect to a doctor in
+                        this case?
+                        <br>The first and important and best solution is establish Primary Healthcare Center in every villages and
+                        provide sufficient doctors to that center. But it is the responsibility of the State to do that.
+                        <br>But what the instant solution of that?
+                        <br>In that case to help the people, we provide a platform to the people, from where they can
+                        contact to a doctor anytime anywhere. By that platform we can deliver all the essential information
+                        about the doctors. People can find doctors of their locality and contact to the doctor.
+                    </p>
+                    <div align="center">
+                        <a class="btn btn-go-it" href="{%url 'Go_Healthy_App:project-Doctor'%}" style="width:80%" aria-labelledby="Search Doctors">Search Doctors</a>
+                    </div>
+                    <hr style="background-color:blue;height:3px">
+                </div>
+                <br><br>
+            </div>
+
+            <div class="col-md ml-4 mr-4">
+                <div class="card custom-card">
+                    <div class="card-inner custom-card-inner">
+                        <div class="card-front custom-card-front" style="background-image: linear-gradient(to bottom right, #00a7f5, #00296b); padding-top:30px; padding-bottom:33px">
+                            <!-- adding picture in the card -->
+                            <img src="{% static 'images/GoHealthy_donor round.png' %}" alt="" width="52%"><br>
+                            <img src="{% static 'images/GoHealthy_donation icon.png' %}" alt="" width="18%" style="margin-top:-60px;">
+                            <h4 style="color:white">Find Blood Donors</h4>
+                            <i class="fas fa-chevron-double-right bg-light text-primary" style="padding:10px;border-radius:50px"></i>
+                        </div>
+                        <!-- Decorate card back side -->
+                        <div class="card-back custom-card-back bg-light" style="padding-bottom:140px">
+                            <h4 style="color:blue"><br>Find Blood Donors in Your Location.
+                                <br>And Contact them if you need Blood</h4>
+                            <br><br><br><br>
+                            <a class="btn btn-primary" href="{%url 'Go_Healthy_App:project-Blood'%}" style="font-size:25px;border-radius:40px" aria-labelledby="Show Blood Donors">
+                                Show Blood Donors
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div align="left" class="info">
+                    <i class="fad fa-hand-holding-water fa-4x" style="color:blue"></i>
+                    <hr style="background-color:blue">
+                    <h3 align="left" class="problem-heading"><b>No enough blood in Blood Bank</b></h3>
+                    <hr style="background-color:blue">
+                    <p style="color:blue" class="text-muted" align="left">
+                        In the country, blood banks have not sufficient blood. India facing huge blood crisis. And for a common person it is almost
+                        impossible to
+                        collect blood within time. A patient need blood immediately, delay in giving blood to a patient
+                        means, certain death of patient.
+                        <br>Even blood banks has no information about the blood donors. Most of the times, the hospital authorities put the responsibility of collecting blood on the neck of patient's family. But this is not fair.
+                        Hospital authorities never want to take the responsibility of collection blood on their neck.
+                        <br>How will we get blood if needed? Will we call to everybody and ask them what is your blood
+                        group, can you donate blood?
+                        It will waste lots of time, and in treatment  waste of time is the biggest mistake,
+                        it will push the patient to the death.
+                        <br>One solution is provide a platform to the people, in which platform contact information of blood
+                        donor will be given. And also by that platform, we can collect the data of all volunteer blood donor in a single database. When needed a person
+                        can contact to the blood donors. It will help the people. And in this case there are no question of
+                        time waste;
+                        it will save a lots of time. And saving in time means, donate a good time to the patient.
+                        <br>India has large number of eligible blood donors. If one percent of that be a blood donor, then it could solve that crisis.</p>
+                    <div align="center">
+                        <a class="btn btn-go-it" href="{%url 'Go_Healthy_App:project-Blood'%}" style="width:80%" aria-labelledby="Search Blood Donors">Search Blood Donors</a>
+                    </div>
+                    <hr style="background-color:blue;height:3px">
+                </div>
+                <br><br>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="donorBtn" class="donor-buttons mt-3">
+        <div class="row">
+            <div class="col-md-4 ml-3 mr-3 ml-md-5">
+                <div class="ml-md-5">
+                    <div>
+                        <span class="be-donor">Become A Donor</span>
+                    </div>
+                    <img src="{% static 'images/become_donor.png' %}" width="100%">
+                    <div>
+                        <span class="save-life">SAVE LIFE</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="line-wrap">
+                    <div class="line left-rotate"></div>
+                    <div class="line vertical"></div>
+                    <div class="line right-rotate"></div>
+                </div>
+            </div>
+            <div class="col-md btn-donation ml-5 mr-5 ml-md-0 mr-md-0">
+                <a href="{% url 'Go_Healthy_App:Register-Donor' %}" type="button" class="btn btn-be-donor mb-3">Be A Blood Donor</a>
+                <a href="https://www.dkms-bmst.org/get-involved/become-a-donor" type="button" class="btn btn-be-donor mb-3">Be A Blood Stem Cell Donor</a>
+                <a href="https://notto.gov.in/registration.htm" type="button" class="btn btn-be-donor mb-3">Be A Organ & Tissue Donor</a>
+            </div>
+            <div class="col-md ml-5 mr-5 ml-md-4 mr-md-4 mt-md-0">
+                <div>
+                    <span class="be-organ-donor">You will live forever in everybody's heart</span>
+                </div>
+                <img src="{% static 'images/donate_organ.png' %}" width="100%">
+                <div>
+                    <span class="be-organ-donor-1">If you be an organ donor</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slogan">
+        It's the duty of the State to ensure free and cheapest primary and modern healthcare service for every citizen.
+    </div>
+    <hr class="mt-4 mb-4">
+
+    <div class="row ml-3 mr-3 quote-background">
+        <div class="col-md order-md-last" align="right">
+            <img src="{% static 'images/GoHealthy_healthcare is a human right.png' %}" alt="" width="100%" height="300"
+                 style="border-radius: 100px 50px;">
+        </div>
+        <div class="col-md-8 order-md-first">
+            <div class="container">
+                <h2 class="quote-text">
+                    <i class="fad fa-quote-left" style="float:left"></i><br>
+                    Health must be consider as a Fundamental Right of each person,<br>NOT a Business or NOT a Privilege. Health is NOT for Profit.
+                </h2>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row ml-3 mr-3 quote-background">
+        <div class="col-md ml-5" align="left">
+            <img src="{% static 'images/GoHealthy_healthcare disaster.jpg' %}" alt="" width="100%" height="300">
+        </div>
+        <div class="col-md-8 ml-3 mr-3">
+            <h2 class="quote-text">
+                <i class="fad fa-quote-left" style="float:left"></i><br>
+                The lack of true natural healthcare system is man-made disaster that is causing unneeded pain, suffering
+                and death.
+            </h2>
+            <h5 align="right">-- Deborah Burger</h5>
+        </div>
+    </div>
+    <br><br>
+    <h3 align="center" class="mb-3 random-color"><b>Explore More <i class="fad fa-chevron-double-right"></i></b></h3>
+    <div class="row ml-3 mr-3 mb-5">
+        <div class="col-md mb-4">
+            <div class="card zoom card-explore" style="width: 100%; min-height: 400px;">
+                <img src="{% static 'images/blood_bank_poster.png' %}" class="card-img-top" alt="First Aid" height="220px">
+                <div class="card-body">
+                    <h5 class="card-title">Find Blood Banks</h5>
+                    <p class="card-text">Search for blood in your nearest blood banks.</p>
+                </div>
+                <div class="card-footer" style="padding: 10px;">
+                    <a href="{% url 'Go_Healthy_App:BloodBank' %}" class="btn btn-primary">Search Blood Banks</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md mb-4">
+            <div class="card zoom card-explore" style="width: 100%; min-height: 400px;">
+                <img src="{% static 'images/blood_requests_poster.png' %}" class="card-img-top" alt="First Aid" height="220px">
+                <div class="card-body">
+                    <h5 class="card-title">Blood Requests</h5>
+                    <p class="card-text">Help the people those who seeking help to get blood.</p>
+                </div>
+                <div class="card-footer" style="padding: 10px;">
+                    <a href="{% url 'Go_Healthy_App:RequestedBlood' %}" class="btn btn-primary">Do Help</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md mb-4">
+            <div class="card zoom card-explore" style="width: 100%; min-height: 400px;">
+                <img src="{% static 'images/blood_donation_camp_poster.png' %}" class="card-img-top" alt="First Aid" height="220px">
+                <div class="card-body">
+                    <h5 class="card-title">Blood Donation Camps</h5>
+                    <p class="card-text">See in your city where blood donation camps are taking place.</p>
+                </div>
+                <div class="card-footer" style="padding: 10px;">
+                    <a href="{% url 'Go_Healthy_App:BloodDonationCamps' %}" class="btn btn-primary">See Blood Donation Camps</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md mb-4">
+            <div class="card zoom card-explore" style="width: 100%; min-height: 400px;">
+                <img src="{% static 'images/first aid background.jpg' %}" class="card-img-top" alt="First Aid" height="220px">
+                <div class="card-body">
+                    <h5 class="card-title">Learn First Aid</h5>
+                    <p class="card-text">A first aid can save a life. You should learn first aid.</p>
+                </div>
+                <div class="card-footer" style="padding: 10px;">
+                    <a href="{% url 'Go_Healthy_App:project-Firstaid' %}" class="btn btn-primary">Start Learning</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card zoom card-explore" style="width: 100%; min-height: 400px;">
+                <img src="{% static 'images/bmi background.jpg' %}" class="card-img-top" alt="BMI" height="220px">
+                <div class="card-body">
+                    <h5 class="card-title">Body Mask Index</h5>
+                    <p class="card-text">Check are you underweight, healthy weight, overweight, and obesity?</p>
+                </div>
+                <div class="card-footer" style="padding: 10px;">
+                    <a href="{% url 'Go_Healthy_App:BMI-Answer' %}" class="btn btn-primary">Check Your BMI</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="mb-4">
+
+    <div class="row no-gutters">
+        <div class="col-md mr-0">
+            <img src="{% static 'images/GoHealthy_hospital bed.jpg' %}" width="100%" alt="" style="border-top-right-radius:35px;">
+        </div>
+        <div class="col-md ml-0 low-bed-text-bg" style="background-color:#5890ff;color:white">
+            <div style="padding: 100px 30px" class="text-light" align="left">
+                <span class="typing-text" id="lowBedText" style="font-size:40px;font-weight:600;"></span><span><i class="fal fa-i-cursor blinking" style="font-size:38px;font-weight:300;"></i></span>
+                <hr align="left" style="height:1px;background-color:white;width:20%">
+                <p style="font-size:20px">
+                    Bed availability of India is only 5 beds for 10,000 people.
+                </p>
+                <p style="font-size:20px">
+                    In Human Development Report 2020, India ranked 155 out of 167 countries on Bed Availability.
+                    <br>That's why many patients dies just for not getting bed in hospital.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-md mr-0 order-md-last">
+            <img src="{% static 'images/GoHealthy_hospital.jfif' %}" alt="" width="100%">
+        </div>
+        <div class="col-md ml-0 bg-light order-md-fast" style="color:#5890ff;">
+            <div style="padding: 100px 30px;" align="left">
+                <span style="font-size:40px;font-weight:600;" id="lowHospitalText" class="typing-text"></span><span><i class="fal fa-i-cursor blinking" style="font-size:38px;font-weight:300;"></i></span>
+                <hr align="left" style="height:1px;background-color:#5890ff;width:20%">
+                <p style="font-size:20px;color:#5890ff">
+                    India has only 69,265 Hospitals.
+                </p>
+                <p style="font-size:20px;color:#5890ff">
+                    Just 25,778 Government Hospitals and 43,487 Private Hospitals.
+                    <br>People living in rural area are facing the problem of lower number of hospitals.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-md mr-0">
+            <img src="{% static 'images/GoHealthy_doctor.jpg' %}" alt="" width="100%" height="100%">
+        </div>
+        <div class="col-md ml-0" style="background-color:#5890ff;color:white">
+            <div style="padding: 100px 30px;" align="left">
+                <span id="lowDoctorText" style="font-size:40px;font-weight:600;" class="typing-text"></span><span><i class="fal fa-i-cursor blinking" style="font-size:38px;font-weight:300;"></i></span>
+                <hr align="left" style="height:1px;background-color:white;width:20%">
+                <p style="font-size:20px;color:white">
+                    WHO's recommended ratio of doctor and people for a country is 1:1000. That is in a country 1 doctor is required for every 1000 people.
+                </p>
+                <p style="font-size:20px;color:white">
+                    But according to Human Development Index 2020, India has just 8.6 doctors for every 10,000 population, i.e. in India there is 1 doctor for every 1163 people.
+                    <br>As a result, many patient do not receive treatment within in right time. Sometime that causes death of patients.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-md order-md-last mr-0">
+            <img src="{% static 'images/GoHealthy_donation.jpg' %}" alt="" width="100%">
+        </div>
+        <div class="col-md order-md-first ml-0 bg-light" style="color:#5890ff;">
+            <div style="padding: 60px 30px;" align="left">
+                <span style="font-size:40px;font-weight:600;" id="bloodCrisisText" class="typing-text"></span><span><i class="fal fa-i-cursor blinking" style="font-size:38px;font-weight:300;"></i></span>
+                <hr align="left" style="height:1px;background-color:#5890ff;width:20%">
+                <p style="font-size:20px;color:#5890ff">
+                    India facing blood shortage of almost 12 lakh unit.
+                </p>
+                <p style="font-size:20px;color:#5890ff">
+                    India has more than 512 million eligible blood donors. This number is enough to fulfill the shortage.
+                    WHO recommends that 1 percent of a country’s population would suffice for its blood needs.
+                    <br>So we need more voluntary blood donations. And annually 10 million blood are being collected. Due to lack of knowledge and myths most Indians are not want to donate blood.
+                    <br>Also many bloods are being waste in blood bank before expire date because of lack of storage infrastructure.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-md mr-0">
+            <img src="{% static 'images/GoHealthy_cpr.jpg' %}" alt="" width="100%" height="100%">
+        </div>
+        <div class="col-md ml-0" style="background-color:#5890ff;color:white">
+            <div style="padding: 100px 30px;" align="left">
+                <span id="delayTreatment" style="font-size:40px;font-weight:600;" class="typing-text"></span><span><i class="fal fa-i-cursor blinking" style="font-size:38px;font-weight:300;"></i></span>
+                <hr align="left" style="height:1px;background-color:white;width:20%">
+                <p style="font-size:20px;color:white">
+                    In india every day more than 1000 road crashes are being happened and in every day almost 400 people are being died in road accident.
+                </p>
+                <p style="font-size:20px;color:white">
+                    Cause of some of the death is, due to heavy traffic and no emergency lane in road, ambulance or medical emergency team can't reach to the accident spot within the time.
+                </p>
+            </div>
+        </div>
+    </div>
+{% endcache %}
+
+    <div class="row" style="margin-top:50px; margin-bottom:0px">
+        <div class="col-md" align="center">
+            <div style="font-size:42px;font-family:Garamond bold;color:#4D95F7;" id="totalVisitors">
+                <span class="back-board" id="totalVisitorsText">{{totalVisitors}}</span>
+            </div>
+            <div class="site-visitor-heading">SITE VISITORS</div>
+        </div>
+    </div>
+</center>
+
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/index.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

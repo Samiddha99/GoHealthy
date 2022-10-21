@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+<head>
+    {% block meta %}
+    <meta name="title" content="My Certificates | Go Healthy">
+    <meta name="description" content="Here you can see your all certificates">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>My Certificates | Go Healthy</title>
+    {% endblock title %}
+
+    {%block style%}
+    <link rel="stylesheet" href="{% static 'css/mycertificates.css' %}">
+    {%endblock style%}
+
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+
+{% block content %}
+    <div class="sticky-top search-box">
+        <form id="certificatesSearch" method="get" action="{% url 'Go_Healthy_App:MyBloodBankRecord' %}">
+            <div class="row ml-0 mr-0 ml-md-2 mr-md-2">
+                <div class="col-md-6"></div>
+                <div class="col-6 col-md mb-2">
+                    <select name="issued_for" id="issued_for" form="certificatesSearch" class="form-control input-sm">
+                        <option label="Issued For?"></option>
+                        {% for i in issued_for %}
+                        <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-6 col-md mb-2">
+                    <input type="text" name="issued_date" id="issued_date" form="certificatesSearch" class="form-control input-sm datetime-placeholder" placeholder="Issued Date">
+                </div>
+                <div class="col-md mb-0 text-right text-md-left">
+                    <button type="submit" class="btn btn-success" form="certificatesSearch" id="filter_search">
+                        Search
+                    </button>
+                    <button type="reset" class="btn btn-danger" form="certificatesSearch" id="filter_clear">
+                        Clear
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="row-results" style="min-height: 250px;">
+        <div class="no-resuls-found ml-1 mr-1 mt-5" align="center" id="no-results">
+            <div class="row">
+                <div class="col-md col"></div>
+                <div class="col-md-2 col-6">
+                    <div class="img-div">
+                        <img src="{% static 'images/no-result-found.png' %}" class="not-found-img">
+                    </div>
+                </div>
+                <div class="col-md col"></div>
+            </div>
+            <h2 class="text-muted">No Records Found</h2>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md"></div>
+            <div class="col-md-8 ml-2 mr-2">
+                <div id="all-certificates">
+                    
+                </div>
+                <div align="center">
+                    <button class="btn btn-primary" id="loadMoreBtn" style="display: none;">Load More</button>
+                </div>
+                <div class="loading-skeleton mb-3 mt-3 text-center">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="skeleton title-skeleton"></div>
+                                    <div class="skeleton date-skeleton"></div>
+                                    <div class="skeleton unit-skeleton"></div>
+                                </div>
+                                <div class="col-md mt-2">
+                                    <div class="skeleton name-skeleton"></div>
+                                    <div class="skeleton phone-skeleton"></div>
+                                    <div class="skeleton email-skeleton"></div>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="loading-skeleton mb-3 text-center">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="skeleton title-skeleton"></div>
+                                    <div class="skeleton date-skeleton"></div>
+                                    <div class="skeleton unit-skeleton"></div>
+                                </div>
+                                <div class="col-md mt-2">
+                                    <div class="skeleton name-skeleton"></div>
+                                    <div class="skeleton phone-skeleton"></div>
+                                    <div class="skeleton email-skeleton"></div>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="loading-skeleton mb-3 text-center">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="skeleton title-skeleton"></div>
+                                    <div class="skeleton date-skeleton"></div>
+                                    <div class="skeleton unit-skeleton"></div>
+                                </div>
+                                <div class="col-md mt-2">
+                                    <div class="skeleton name-skeleton"></div>
+                                    <div class="skeleton phone-skeleton"></div>
+                                    <div class="skeleton email-skeleton"></div>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md"></div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/mycertificates.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

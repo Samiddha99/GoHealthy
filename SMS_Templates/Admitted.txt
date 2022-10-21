@@ -1,0 +1,6 @@
+Patient with the ID **bookingId** has been admitted in **hospitalName**, **hospitalTown**, **hospitalDist**, **hospitalState**.
+
+Hospital Contact Number: **hospitalContact**
+
+Regards,
+Go Healthy

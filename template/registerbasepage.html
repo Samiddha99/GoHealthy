@@ -1,0 +1,180 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+    {% block meta %}
+    <meta name="title" content="Registration | Go Healthy">
+    <meta name="description" content="Register now to access more features">
+    {% endblock meta %}
+
+    {% block title %}
+        {% block pagetitle %}
+        {% endblock pagetitle %}
+    {% endblock title %}
+       
+    
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/registerbasepage.css' %}">
+    {% endblock style %}
+
+    {% block morestyle %}
+    
+    {% endblock morestyle %}
+
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+
+{% block content %}
+<center>
+
+    <div id="mainContent">
+
+        <div class="loading-image-background">
+            <img alt="middle" src="{% static 'gif/dual_circle_animation.gif' %}" class="loading-img" id="filter-loading-id">
+        </div>
+
+        <div id="successRegister" style="display:none">
+            <audio id="successSound">
+                <source src="{% static 'sounds/success.mp3' %}" type="audio/mpeg">
+            </audio>
+            <div class="row">
+                <div class="col-md"></div>
+                <div class="col-md-9">
+                    {% block successMessage %}
+                    {% endblock successMessage %}
+                </div>
+                <div class="col-md"></div>
+            </div>
+        </div>
+        
+        <div class="card text-center bg-light mb-5" id="cardRegister" style="display:block">
+            <div class="card-header reg-card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item reg-choice-item active">
+                        <a class="nav-link reg-choice-btn" id="section_register-normal_a">
+                            <button type="button" id="normal-reg-btn" data-href="{% url 'Go_Healthy_App:Register' %}" data-target="#section_register-normal" data-value="normal" class="btn btn-choice btn-register btn-normal btn-lg">
+                                Normal Registration
+                            </button>
+                        </a>
+                    </li>
+                    <li class="nav-item reg-choice-item">
+                        <a class="nav-link reg-choice-btn" id="section_register-doctor_a">
+                            <button type="button" data-href="{% url 'Go_Healthy_App:Register-Doctor' %}" data-target="#section_register-doctor" data-value="doctor" class="btn btn-choice btn-register btn-doctor btn-lg">
+                                I Am A Doctor
+                            </button>
+                        </a>
+                    </li>
+                    <li class="nav-item reg-choice-item">
+                        <a class="nav-link reg-choice-btn" id="section_register-donor_a">
+                            <button type="button" class="btn btn-choice btn-donor btn-lg" data-toggle="modal" data-target="#donorRegisterModal">
+                                I Want To Be A Donor
+                              </button>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown reg-choice-item-dropdown">
+                        <a class="nav-link dropdown-toggle btn btn-choice btn-authority btn-light" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Authority Registration</a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="{% url 'Go_Healthy_App:Register-Hospital' %}">Hospital Registration</a>
+                          <a class="dropdown-item" href="{% url 'Go_Healthy_App:Register-Blood-Bank' %}">Blood Bank Registration</a>
+                    </li>
+                    <!-- <div class="text-right" align="right">
+                        <li class="nav-item reg-choice-item">
+                            <a class="nav-link reg-choice-btn" id="section_register-donor_a">
+                                <button type="button" class="btn btn-choice btn-donor btn-lg" data-toggle="modal" data-target="#donorRegisterModal">
+                                    I Want To Be A Donor
+                                  </button>
+                            </a>
+                        </li>
+                    </div> -->
+                </ul>
+                
+            </div>
+
+            <div class="modal fade" id="donorRegisterModal" tabindex="-1" aria-labelledby="donorRegisterModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-donor-register">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <div aria-hidden="true">&times;</div>
+                          </button>
+                          <br>
+                          <div>
+                              <h6 style="font-size: 20px; font-weight: 400;">We appreciate you for your interest to be a donor.</h6>
+                          </div>
+                          <div class="modal-body-donor">
+                                <div class="row no-gutters">
+                                    <div class="col">
+                                        <button type="button" data-href="{% url 'Go_Healthy_App:Register-Donor' %}" data-parent-button="#a_section_register-donor" data-target="#section_register-donor" data-value="Donor" class="btn btn-don btn-register btn-warning mb-3">
+                                            I Want To Be A Blood Donor
+                                        </button>
+                                    </div>
+                                    <div class="col-1 mt-2">
+                                        <i class="fas fa-info-circle tooltip-question" data-trigger="hover" data-template='<div class="popover large" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>' data-placement="top" data-toggle="popover" title="Why should you be a blood donor?" data-html="true" data-content="<p>Blood is very essential for human body. In many case, injured patients, Thalassemia patients and serious patients need blood; because they suffer from lack of blood in their body, if patient doesn't receive blood on time, the patient may die. So to donate blood to these patients to save their life we need blood donor. A blood donor can save many life by donating blood. So you should be a blood donor to save life.</p>"></i>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="col">
+                                        <a href="https://www.dkms-bmst.org/get-involved/become-a-donor" type="button" class="btn btn-don btn-warning mb-3">
+                                            I Want To Be A Blood Stem Cell Donor
+                                        </a>
+                                    </div>
+                                    <div class="col-1 mt-2">
+                                        <i class="fas fa-info-circle tooltip-question" data-trigger="hover" data-template='<div class="popover large" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>' data-placement="top" data-toggle="popover" title="Why should you be a blood stem cell donor?" data-html="true" data-content="<p>Blood stem cells are most often used to treat blood cancer's patients. So by donating blood steem cell you can save life of a blood cancer victim. Your body will reproduce blood stem cells within about two weeks after donation, so blood stem cell donation doesn't harm your body. After registered you will be a registered blood stem cell donor and you can donate blood stem cells to cancer victims for Stem Cell Transplants and you may save their life.</p>"></i>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="col">
+                                        <a href="https://notto.gov.in/registration.htm" type="button" class="btn btn-don btn-warning mb-3">
+                                            I Want To Be A Organ & Tissue Donor
+                                        </a>
+                                    </div>
+                                    <div class="col-1 mt-2">
+                                        <i class="fas fa-info-circle tooltip-question" data-trigger="hover" data-template='<div class="popover large" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>' data-placement="top" data-toggle="popover" title="Why should you be a organs & tissues donor?" data-html="true" data-content="<p>Some organs and tissues is replaceable; i.e. If a person's any organ is been damage or stop working because of any decrease, then the damaged organ can be replace with new organ to save the person. And the new organs come from donation.<br>So anybody can donate organs or tissues to save others' life. Don't worry it is safe; because, donors' (person who registered as organs & tissues donor) organs and tissues will not be donated as long as the donor is alive. Tissues such as cornea, heart valves, skin, and bone can be donated in case of natural death but vital organs such as heart, liver, kidneys, intestines, lungs, and pancreas can be donated only in the case of 'brain death'.</p>"></i>
+                                    </div>
+                                </div>
+                          </div>
+                          <div>
+                            You can register to be all type of donor or some type of donor. You have to separately register for each type of donor. 
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            <div class="card-body bg-light" style="padding: 8px; padding-top: 10px;">
+                <div class="row mb-5">
+                    <div class="col-md"></div>
+                    <div class="col-md-8 form-background">
+                        <span id="loading-error" class="text-center"></span>
+                        <div class="registration-form" id="div_registration-form">
+                        {% block registrationForm %}
+                            
+                        {% endblock registrationForm %}
+                        </div>
+                    </div>
+                    <div class="col-md"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</center>
+{% endblock content %}
+
+{% block onesignal %}
+    
+{% endblock onesignal %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/registerbasepage.js' %}"></script>
+
+{% block morescript %}
+<script class="more-scripts"></script>
+{% endblock morescript %}
+
+{% endblock script %}
+</body>
+</html>

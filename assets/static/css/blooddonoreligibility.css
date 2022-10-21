@@ -1,0 +1,37 @@
+
+
+.box-eligibility{
+    padding: 20px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0px 0px 8px 6px #16131391;
+}
+
+.donor-eligible-main-heading{
+    color: red;
+    font-family: 'Playfair Display', serif;
+}
+
+.bg-donor-eligible{
+    border: 2px solid #cccbcb;
+    border-top: none;
+    padding: 23px;
+}
+.bg-donor-eligible.top{
+    border-top: 2px solid #cccbcb;
+}
+.bg-donor-eligible:nth-child(2n){ /* Select every 2nd .bg-donor-eligible */
+    background-color: #f0f0f0 !important;
+}
+.bg-donor-eligible{
+    color: #4a4a4c;
+    font-weight: 700;
+}
+.donor-eligible-heading{
+    color: #4a4a4c;
+    font-weight: 700;
+}
+.donor-eligible-text{
+    color: #747575;
+    font-weight: normal;
+}

@@ -1,0 +1,7 @@
+Use the OTP to send blood request.
+Your OTP: **yourOTP**
+OTP will be expired after 10 minutes.
+Never share the OTP to anyone.
+
+Regards,
+Go Healthy

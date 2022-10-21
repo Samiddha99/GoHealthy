@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load sri %} <!-- this will be use to add Subresource Integrity in external sources -->
+{% load custom_tags %}
+{% load embed_video_tags %}
+{% load tz %}
+{% load l10n %}
+{% load cache %}
+{% now "d" as current_full_day %}
+{% now "F" as current_full_month %}
+{% now "Y" as current_full_year %}
+{% now "l" as current_full_week %}
+
+<head>
+
+    <noscript>
+        <META HTTP-EQUIV="Refresh" CONTENT="0;URL={% url 'Go_Healthy_App:noScript' %}">
+    </noscript>
+
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content;">
+    <meta name="theme-color" content="#9070EF">
+    <meta name="author" content="Samiddha">
+    <meta name="subject" content="Web Base Healthcare Service">
+    <meta name="application-name" content="Go Healthy">
+    <meta name="keywords" content="india, healthcare, health, healthcare system, healthcare in india, healthcare system in india, hospital, doctor, blood donor, bmi, first aid, find hospital, find doctor, find blood donor, search hospital, search doctor, search blood donor, bed book, hospital status, near me">
+    <!--optimize code for mobile devices first and then scale up components as necessary using CSS media queries.-->
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=0.8, minimum-scale=0.8 shrink-to-fit=yes">
+
+    <!-- Path to manifest.json -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Add to home screen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Chrome for Android theme color -->
+    <meta name="theme-color" content="#9070EF">
+
+    <!-- Add to home screen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Go Healthy">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <link rel="apple-touch-icon" href="/static/images/logo-round.png" sizes="">
+    
+    <link href="/static/images/logo-round.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image"/>
+
+    <!-- Tile for Win8 -->
+    <meta name="msapplication-TileColor" content="#ffffff">
+
+    <meta name="msapplication-TileImage" content="/static/images/logo-round.png">
+
+    <link rel="icon" sizes="" href="/static/images/logo-round.png">
+
+    {% block meta %}
+    {% endblock meta %}
+    {% block title %}
+    <title>Base</title>
+    {% endblock title %}
+
+    <!-- <base href="{{request.get_host}}"> -->
+
+    <!-- Favicon -->
+    <link href="{% static 'images/favicon.ico' %}" rel="icon" type="image/ico" media="screen,print">
+
+    <!-- Jquery Library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    
+    <!-- JSON Serializer -->
+    <script src="{% static 'javascripts/JSON_Serializer/serializeJSON.js' %}"></script>
+    <script src="{% static 'javascripts/JSON_Serializer/serializeToJSON.js' %}"></script>
+    <script src="{% static 'javascripts/form_binding/jquery-json-form-binding.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+
+    <!-- Use polyfill to support the website in older browser also -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" media="screen,print">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Bootstrap Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous" defer></script>
+
+
+    <!-- Bootstrap stylish toggle only available in version 3.6.1, so link bootstrap-toggle from version 3.6.1 -->
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet" media="screen,print">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-float-label@4.0.2/bootstrap-float-label.min.css" rel="stylesheet" media="screen,print">
+
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="screen,print"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css" media="screen,print">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@600&family=Merienda&family=Viaoda+Libre&display=swap&family=Carter+One&family=Sigmar+One&Special+Elite&family=Kirang+Haerang&family=Handlee&family=Berkshire+Swash&family=Yeseva+One&family=Skranji&family=Abril+Fatface&family=Bitter:wght@500&family=Noto+Serif&family=Zen+Tokyo+Zoo&family=Ruslan+Display&family=Merriweathe&family=Pirata+One&family=PT+Serif:wght@700&family=Marck+Script&family=Rampart+One&family=Shalimar&family=Eczar&family=Yuji+Mai&family=Estonia&family=Playfair+Display:ital,wght@1,700&family=Playfair+Display:wght@700&family=Merriweather&family=Roboto+Mono&display=swap&family=Rowdies&family=Roboto+Mono&display=swap&family=Varela+Round&display=swap&family=Monofett&display=swap&family=Source+Serif+4&family=Source+Sans+Pro&family=Rowdies&family=Rubik&family=Mukta&family=Akaya+Telivigala&family=Roboto+Serif&family=Staatliches&family=Red+Rose&family=Abril+Fatface&family=Merriweather&family=Montserrat&family=Gideon+Roman&family=Libre+Baskerville&family=IBM+Plex+Serif&family=Courgette&family=Kalam&family=Courier+Prime&family=Rubik&family=Bitter&family=Merriweathe&family=Orelega+One&family=Libre+Baskerville" rel="stylesheet">
+
+    <!-- Eventstream -->
+    <script src="{% static 'django_eventstream/eventsource.min.js' %}" defer></script>
+    <script src="{% static 'django_eventstream/reconnecting-eventsource.js' %}" defer></script>
+
+    <!-- Fontawesome -->
+    <!-- <script src="https://pro.fontawesome.com/releases/v6.0.0/js/all.js" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"></script> -->
+    {% sri_static 'javascripts/Fontawesome/fontawesome v6.0.0.js' %} <!-- This will be as <script type='text/javascript' src='static/javascripts/fontawesome v5.15.3.js' integrity='an automatic generated key'</script> -->
+    <!-- <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" /> -->
+    
+    <!-- Hammer Library -->
+    <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+
+    <!-- Google Translate -->
+    <!-- <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript" defer></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+    </script> -->
+
+    <!-- Google ReCaptcha -->
+    <script src="https://www.google.com/recaptcha/api.js" defer></script>
+
+    <!-- Google Maps -->
+    <link rel="stylesheet" href="{% static 'css/map.css' %}">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQFO3XycJlcainVq6xCGq0TOF9_3wqa58&libraries=places" async></script>
+
+    <!-- AnyChart Library -->
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-bundle.min.js"></script>
+    <!-- Don't need to import this modules, features and extensions; as bundle.min.js contains all anychart packages -->
+    <!-- <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-base.min.js"></script> -->
+    <!-- <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script> -->
+    <!-- <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-exports.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-ui.min.js"></script> -->
+    <link rel="stylesheet" href="https://cdn.anychart.com/releases/8.11.0/css/anychart-ui.min.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.anychart.com/releases/8.11.0/fonts/css/anychart-font.min.css"/>
+    
+    <!-- include this if you plan to use Maps -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js"></script>
+
+    <!-- JsChatting Library -->
+    <!-- <script src="https://code.jscharting.com/latest/jscharting.js"></script>
+    <script src="https://code.jscharting.com/latest/modules/types.js"></script> -->
+
+    <!-- Lazy Plugin -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+    
+
+    <!-- Autocomplete -->
+    <script src="{% static 'javascripts/autocomplete/autocomplete.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/autocomplete/autocomplete.css' %}">
+
+
+    <!-- AddEvent script -->
+    <script type="text/javascript" src="https://cdn.addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
+    <script type="text/javascript" src="{% static 'javascripts/add-to-calender button/custom-atc.js' %}"></script>
+
+    <!-- plyr -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
+
+    <!-- Croper -->
+    <link rel="stylesheet" href="{% static 'css/croper/croper.css' %}">
+    <script src="{% static 'javascripts/croper/croper.js' %}"></script>
+
+    <script src="{% static 'javascripts/assign_function_to_dynamically_added_element/jquery.initialize.js' %}"></script>
+
+    
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blooddonoreligibility.css' %}">
+    <link rel="stylesheet" href="{% static 'css/terms_conditions.css' %}">
+
+    {% block style %}
+
+    {% endblock style %}
+
+    {% block datalist %}
+    {% endblock datalist %}
+
+</head>
+
+{% block body %}
+<body>
+{% endblock body %}
+
+{% localtime on %}
+<div id="body">
+
+    {% block navbar %}
+    <nav class="navbar navbar-expand-xl navbar-light sticky-top custom-navbar" id="navbar-id">
+        <span id="navbar-button-bar">
+            <button aria-controls="navbarSupportedContent1" id="navbar-toggler-button" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler ml-2"
+                    data-target="#navbarSupportedContent1" data-toggle="collapse" style="z-index:1;position:relative;border:none !important; outline:none !important;"
+                    type="button" aria-labelledby="Menu" st>
+                <span><i class="far fa-bars" id="_id-navbar-toggler-text" style="font-size:25px;color:white"></i></span>
+            </button>
+        </span>
+        <a class="navbar-brand mr-auto ml-md-auto ml-xl-2 mr-xl-3 text-center" href="{%url 'Go_Healthy_App:project-Home'%}" aria-labelledby="Home">
+            <img alt="Home" height="40" loading="lazy" src="{% static 'images/GoHealthy_logo white.png' %}" width="150">
+            <span class="sr-only">(current)</span>
+        </a>
+        <span id="navbar-button-close"></span>
+        <div class="collapse navbar-collapse mt-3 mb-2 mt-xl-0 mb-xl-0" id="navbarSupportedContent1">
+            <ul class="navbar-nav mr-auto navbar-left-item">
+                <li class="nav-item active">
+                    <a class="nav-link nav-text" href="{%url 'Go_Healthy_App:project-Hospital'%}" aria-labelledby="Search Hospital">
+                        Search Hospital</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link nav-text" href="{%url 'Go_Healthy_App:project-Doctor'%}" aria-labelledby="Find Doctors">
+                        Find Doctors</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a aria-expanded="false" aria-haspopup="true"
+                       class="nav-link dropdown-toggle nav-text" data-toggle="dropdown"
+                       href="#" id="navbarDropdownBlood"
+                       role="button" aria-labelledby="Find Blood">
+                        Find Blood
+                    </a>
+                    <div aria-labelledby="navbarDropdownBlood" class="dropdown-menu blood">
+                        <a class="dropdown-item" href="{% url 'Go_Healthy_App:project-Blood' %}" aria-labelledby="Find Blood Donors">
+                            Find Blood Donors
+                        </a>
+                        <a class="dropdown-item" href="{% url 'Go_Healthy_App:BloodBank' %}" aria-labelledby="Find Blood Banks">
+                            Find Blood Banks
+                        </a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a aria-expanded="false" aria-haspopup="true"
+                       class="nav-link dropdown-toggle nav-text" data-toggle="dropdown"
+                       href="#" id="navbarDropdownRequest"
+                       role="button" aria-labelledby="Blood Request">
+                        Blood Request
+                    </a>
+                    <div aria-labelledby="navbarDropdownRequest" class="dropdown-menu request">
+                        {% if request.user.is_authenticated %}
+                        <a class="dropdown-item" id="bloodRequestBtn" aria-labelledby="Request Blood" data-toggle="modal" data-target="#staticBackdropBloodRequest" style="cursor:pointer;">
+                            Request Blood
+                        </a>
+                        {% endif %}
+                        <a class="dropdown-item" href="{% url 'Go_Healthy_App:RequestedBlood' %}" aria-labelledby="Requested Blood Near Me">
+                            Requested Blood Near Me
+                        </a>
+                    </div>
+                </li>
+               
+                <li class="nav-item dropdown">
+                    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle nav-text" data-toggle="dropdown" href="#" id="navbarDropdownBloodDonationCamp" role="button" aria-labelledby="Blood Donation Camp">
+                        Blood Donation Camp
+                    </a>
+                    <div aria-labelledby="navbarDropdownBloodDonationCamp" class="dropdown-menu camp">
+                        <a class="dropdown-item" href="{% url 'Go_Healthy_App:BloodDonationCamps' %}" aria-labelledby="Search Blood Donor Camp">
+                            Search Blood Donor Camp
+                        </a>
+                        <a class="dropdown-item" href="{% url 'Go_Healthy_App:BloodDonationCampRegistration' %}" aria-labelledby="Create A New Event">
+                            Create A New Event
+                        </a>
+                        <a class="dropdown-item" href="{% url 'Go_Healthy_App:BloodDonationCampEdit' %}" aria-labelledby="Change A Event">
+                            Change A Event
+                        </a>
+                    </div>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link nav-text" href="{%url 'Go_Healthy_App:project-Firstaid'%}" aria-labelledby="First Aid">
+                        Learn First Aid
+                        <span class="sr-only">(current)</span></a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link nav-text" href="{%url 'Go_Healthy_App:BMI-Answer' %}" aria-labelledby="BMI">
+                        BMI
+                        <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link nav-text" href="{%url 'Go_Healthy_App:PeopleVoice' %}" aria-labelledby="People's Voice">
+                        People's Voice
+                        <span class="sr-only">(current)</span></a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a aria-expanded="false" aria-haspopup="true"
+                       class="nav-link dropdown-toggle nav-text" data-toggle="dropdown"
+                       href="#" id="navbarDropdown4" role="button">
+                        More
+                    </a>
+                    <div aria-labelledby="navbarDropdown" class="dropdown-menu text-primary" style="background-color: white;">
+                        <a class="dropdown-item" style="color:rgb(139, 139, 139)" href="{%url 'Go_Healthy_App:StatusCheck'%}" aria-labelledby="Check Status"><b>Check Status</b></a>
+                        <a class="dropdown-item" href="{%url 'Go_Healthy_App:DataCenter' %}" style="color:rgb(231, 127, 7)" aria-labelledby="People's Voice">
+                            Data & Statistics
+                        </a>
+                        <a class="dropdown-item" style="color:red" href="{% url 'Go_Healthy_App:Emergency' %}" aria-labelledby="Emergency Numbers">
+                            Emergency Numbers
+                            <span class="sr-only">(current)</span></a>
+                        <a class="dropdown-item" style="color:green" href="{%url 'Go_Healthy_App:project-About'%}" aria-labelledby="Our Vision">Our Vision</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-primary" href="{%url 'Go_Healthy_App:project-Contact'%}" aria-labelledby="Contact Us">Contact Us
+                            &nbsp;<img height="25" src="{% static 'images/GoHealthy_phone icon.png' %}" width="15" alt="phone icon"></a>
+                        <a class="dropdown-item text-primary" href="{%url 'Go_Healthy_App:project-Complain'%}" aria-labelledby="Complaint Box">Complain Box
+                            <img height="25" src="{% static 'images/GoHealthy_complain icon.png' %}" width="25" alt="complaint icon"></a>
+                    </div>
+                </li>
+            </ul>
+            
+            <ul class="nav navbar-nav navbar-right">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a aria-expanded="false" aria-haspopup="true"
+                       class="nav-link dropdown-toggle nav-text" data-toggle="dropdown"
+                       href="#" id="navbarDropdown5"
+                       role="button" style="margin-right:7px">
+                        {% if 'Hospital' in request.user.User_Type %}
+                        <i class="fas fa-hospital" style="font-size:22px"></i>
+                        {% elif 'Blood Bank' in request.user.User_Type %}
+                        <i class="fad fa-raindrops" style="font-size:22px"></i>
+                        {% elif 'Normal' in request.user.User_Type %}
+                        <i class="fas fa-user" style="font-size:22px"></i>
+                        {% elif 'Doctor' in request.user.User_Type %}
+                        <i class="fas fa-user-md" style="font-size:22px"></i>
+                        {% elif 'Blood Donor' in request.user.User_Type %}
+                        <i class="fas fa-tint" style="font-size:22px"></i>
+                        {% elif 'Site Admin' in request.user.User_Type %}
+                        <i class="fas fa-user-cog" style="font-size:22px"></i>
+                        {% endif %}
+                        <span id="display-username">{{request.user.username}}</span>
+                    </a>
+                    <div aria-labelledby="navbarDropdown" class="dropdown-menu" style="background-color: white;">                        
+                        {% if 'Normal' in request.user.User_Type or 'Blood Donor' in request.user.User_Type or 'Doctor' in request.user.User_Type %}
+                        <a class="dropdown-item text-primary" href="{% url 'Go_Healthy_App:Profile' %}" aria-labelledby="My Profile">
+                            My Profile
+                        </a>
+                        {% endif %}
+                        {% if 'First Aid Instructor' in request.user.User_Type %}
+                        <a class="dropdown-item text-primary" href="{% url 'Go_Healthy_App:FirstAidInstructorProfile' %}" aria-labelledby="Instructor Profile">
+                            Instructor Profile
+                        </a>
+                        {% endif %}
+                        {% if 'Hospital' in request.user.User_Type %}
+                        <a class="dropdown-item text-primary" href="{% url 'Go_Healthy_App:HospitalAdmin' %}" aria-labelledby="Hospital Admin Pannel">
+                            Hospital Admin Panel
+                        </a>
+                        {% elif 'Blood Bank' in request.user.User_Type %}
+                        <a class="dropdown-item text-primary" href="{% url 'Go_Healthy_App:BloodBankAdminProfile' %}" aria-labelledby="Blood Bank Admin Pannel">
+                            Blood Bank Admin Panel
+                        </a>
+                        {% endif %}
+                        {% if 'Site Admin' in request.user.User_Type %}
+                        <a class="dropdown-item text-primary" href="{% url 'Go_Healthy_App:SiteAdminProfile' %}" aria-labelledby="Site Admin Pannel">
+                            Site Admin Panel
+                        </a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-success" aria-labelledby="Change Password" id="change-password-open" data-toggle="modal" data-target="#passChange" style="cursor:pointer;"><b>Change Password</b></a>
+                        <a class="dropdown-item text-warning" href="{% url 'Go_Healthy_App:MyBookings' %}" aria-labelledby="My Bookings"><b>My Bookings</b>
+                            {% if request.user.username|totalBookings %}
+                            <span class="badge badge-primary badge-pill" id="mybookscount" style="float:right;display:inline-block;">
+                                {{request.user.username|totalBookings}}
+                            </span>
+                            {% else %}
+                            <span class="badge badge-primary badge-pill" id="mybookscount" style="float:right;display:none;">
+                            </span>
+                            {%endif%}
+                        </a>
+                        {% if hasIssuedCertificates %}
+                        <a class="dropdown-item text-secondary" href="{% url 'Go_Healthy_App:MyBloodBankRecord' %}" aria-labelledby="My Certificates">
+                            My Blood Donation & Collection
+                        </a>
+                        {% endif %}
+                        <a class="dropdown-item text-info" href="{% url 'Go_Healthy_App:Chat' %}" aria-labelledby="My Chats">
+                            My Chats
+                            {% if request.user.username|totalNewChat %}
+                            <span class="badge badge-primary badge-pill" id="mychatscount" style="float:right;display:inline-block;">
+                                {{request.user.username|totalNewChat}}
+                            </span>
+                            {% else %}
+                                <span class="badge badge-primary badge-pill" id="mychatscount" style="float:right;display:none;">
+                                </span>
+                            {%endif%}
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger text-center" href="{% url 'Go_Healthy_App:Logout' %}" aria-labelledby="Log Out">Log Out</a>
+                    </div>
+                </li>
+                {% else %}
+                <li class="nav-item active" style="margin-right:10px; background-color: #4a4a4c79;">
+                    <a class="nav-link nav-text" href="{%url 'Go_Healthy_App:LoginMain' %}" aria-labelledby="Login">
+                        <i class="fas fa-sign-in-alt" style="font-size:20px"></i>
+                        Login
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                {% endif %}
+                <input type="hidden" name="UserType" id="UserType" value="{{request.user.User_Type}}">
+                <input type="hidden" name="generalUserTypes" id="generalUserTypes" value="{{generalUserTypes}}">
+                <input type="hidden" name="specialUserTypes" id="specialUserTypes" value="{{specialUserTypes}}">
+
+                <li class="nav-item active">
+                    <a class="nav-link nav-text" href="{% url 'Go_Healthy_App:Register' %}" aria-labelledby="Register">
+                        <i class="fas fa-edit" style="font-size:20px"></i>
+                        Register
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    {% csrf_token %}
+    <input type="hidden" id="last-notification-event-id" value="{{request.user.username|getLastNotificationEventId}}">
+    {% if request.user.is_authenticated %}
+    <div aria-hidden="true" aria-labelledby="staticBackdropLabelBloodRequest" class="modal fade" data-backdrop="static" data-keyboard="false"
+         id="staticBackdropBloodRequest" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:red; color:white">
+                    <h5 class="modal-title" id="staticBackdropLabelBloodRequest">Blood Request</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button" aria-labelledby="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="bloodrequest" method="post" name="bloodrequest" aria-label="Send Blood Request" autocomplete="off" action="{% url 'Go_Healthy_App:SendBloodRequest' %}">
+                        <input type="text" inputmode="text" class="form-control input-sm mb-2 text-capitalize" form="bloodrequest" id="patient_name" maxlength="500" name="patient_name" placeholder="Patient's Name" required aria-labelledby="Patient's Name">
+                        <div class="row mb-2 no-gutters" style="gap:10px">
+                            <div class="col-md-5">
+                                <select class="form-control input-sm mb-2" form="bloodrequest" id="patient_bloodGroup" name="patient_bloodGroup" required aria-labelledby="Patient's Blood Group" style="padding-right: 2px;">
+                                    <option label="Blood Group"></option>
+                                    {% for i in baseBloodGroups %}
+                                    <option label="{{i.1}}" value="{{i.0}}">{{i.1}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md">
+                                <input type="number" inputmode="numeric" class="form-control input-sm mb-2" form="bloodrequest" id="request_blood_unit" min="1" name="unit" placeholder="How many unit" required aria-labelledby="Unit">
+                            </div>
+                        </div>
+                        <div class="row no-gutters" style="gap:5px">
+                            <div class="col-md-8">
+                                <div class="input-group mb-2 w-100">
+                                    <input type="tel" inputmode="tel" class="form-control input-sm" form="bloodrequest" id="your_contact" minlength="10" maxlength="10" name="your_contact" placeholder="Your Contact Number" required aria-labelledby="Your Contact Number">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="button-otp_send" disabled>Send OTP</button>
+                                    </div>
+                                </div>
+                                <p align="right" id="otp_send_message" style="margin-top:-10px; margin-bottom:1px">&nbsp;</p>
+                            </div>
+                            <div class="col-md">
+                                <input type="text" inputmode="numeric" class="form-control input-sm mb-2" form="bloodrequest" id="blood_otp" minlength="6" maxlength="6" name="OTP" placeholder="6 digit OTP" required aria-labelledby="6 digit OTP">
+                            </div>
+                        </div>
+                    
+                        <div>
+                            <span id="fetching_hospital"></span>
+                            <span id="refetch-hospitals" class="hospitals-refetch" style="display:none;">
+                                Try Again
+                            </span>
+                        </div>
+                        <select class="form-control input-sm mb-2" form="bloodrequest" id="patient_hospital"
+                                name="patient_hospital" required aria-labelledby="Select Hospital">
+                            <option label="Select Hospital"></option>
+
+                        </select>
+                        <input form="bloodrequest" id="patient_latitude" name="latitude" required type="hidden">
+                        <input form="bloodrequest" id="patient_longitude" name="longitude" required type="hidden">
+                    </form>
+                    <hr>
+                    <p class="text-muted">
+                        After Send Blood Request a message will be send to the all blood donors matching with the patient's blood group and near to the hospital location to contact you to donate blood.
+                        <br>Sure that your contact number is reachable, blood donors will contact you through this number.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div id="bloodrequestmessage">
+
+                    </div>
+                    <button class="btn btn-secondary" data-dismiss="modal" type="button" aria-labelledby="Close">Close</button>
+                    <button class="btn btn-success" type="submit" form="bloodrequest" id="sendrequestsubmit" aria-labelledby="Send Request">Send Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form action="{% url 'Go_Healthy_App:ChangePassword' %}" class="password-change-form" id="changePassword" method="post" aria-label="Change Password" autocomplete="off">
+        {%csrf_token%}
+        <!-- Modal -->
+        <div aria-hidden="true" aria-labelledby="passChangeLabel" class="modal fade" data-backdrop="static" data-keyboard="false" id="passChange" tabindex="-1">
+            <div class="modal-dialog modal-md modal-change-password">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color:#46d159">
+                        <h5 class="modal-title" id="passChangeLabel"><strong style="color:white">CHANGE PASSWORD</strong></h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true" aria-labelledby="Close">&times;</span>
+                        </button>
+                    </div>
+                    <div align="center" class="modal-body">
+                        <div class="row">
+                            <div class="col-md"></div>
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text password-group-text-old-password" id="basic-addon1"><i
+                                            class="fas fa-unlock-alt"></i></span>
+                                    <input type="password" aria-describedby="basic-addon1" aria-label="Password" autocomplete="off" class="form-control input-sm old-password-input"
+                                           id="old_password" minlength="8" name="old_password" form="changePassword"
+                                           placeholder="Old Password" required aria-labelledby="Old Password">
+                                </div>
+                            </div>
+                            <div class="col-md"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text password-group-text-new-password" id="basic-addon2"><i class="fas fa-key-skeleton"></i></span>
+                                    <input type="password" aria-describedby="basic-addon2" aria-label="New Password" autocomplete="off" form="changePassword" class="form-control input-sm new-password-input"
+                                           id="new_password1" minlength="8"
+                                           name="new_password1"
+                                           placeholder="New Password" required aria-labelledby="New Password">
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text password-group-text-new-password" id="basic-addon3"><i class="fas fa-key-skeleton"></i></span>
+                                    <input type="password" aria-describedby="basic-addon3" aria-label="Confirm New Password" form="changePassword" autocomplete="off" class="form-control input-sm new-password-input"
+                                           id="new_password2" minlength="8" name="new_password2"
+                                           placeholder="Confirm New Password" required aria-labelledby="Retype New Password">
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <span id="newpasswordcheck"></span>
+                        <ul class="text-left">
+                            <li class="password_validation_1 changePasswordValidation" style="color:red">Password must not be too common.</li>
+                            <li class="password_validation_2 changePasswordValidation" style="color:red">Password must not be similar to Username.</li>
+                            <li class="password_validation_3 changePasswordValidation" style="color:red">Password must contain at least 8 characters.</li>
+                            <li class="password_validation_4 password_validation_5 changePasswordValidation" style="color:red">Password must not be entirely alphabetic and numeric.</li>
+                            <li class="password_validation_6 password_validation_7 password_validation_8 password_validation_9 changePasswordValidation" style="color:red">Password must contain at least one uppercase letter, one lowercase letter, one digit and one special character.</li>
+                        </ul>
+                        <div id="message">
+                        </div>
+                        <b>After Update your Password you will be log out.
+                            <br>You have to log in again with the new password.</b>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <div id="loading">
+
+                        </div>
+                        <button class="btn btn-secondary" data-dismiss="modal" type="button" aria-labelledby="Close">Close
+                        </button>
+                        <div id="changeSub">
+                            <button class="btn bg-success" form="changePassword" id="changePasswordBtn"
+                                    style="color:white" type="submit" aria-labelledby="Save">
+                                Change
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+    {% endblock navbar %}
+
+    <form id="timezonevalueform" name="timezonevalueform">
+        <input id="timezonevalue" name="timezonevalue" type="hidden">
+    </form>
+    <input id="get-username" type="hidden" value="{{request.user.username}}">
+
+    {% block movingtext %}
+    <!-- Right to Left Scrolling Text -->
+    <marquee behavior="scroll" class="our-goal" direction="left" id="our-goal-id">
+        We look forward a time, when nobody will die due to insufficiency of Healthcare Services In India.
+    </marquee>
+    {% endblock movingtext %}
+
+    {% block termsandconditions %}
+    <div class="modal fade" id="tcModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="tcModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg tc-modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header tc-modal-header" align="left">
+                    
+                </div>
+                <div class="modal-body tcScroll" id="id_tcScroll">
+            
+                </div>
+                <div class="modal-footer tc-modal-footer">
+                    <button type="button" class="btn btn-primary" id="tcUnderstoodBtn" disabled title="Read the Terms & Conditions">Read the T & C</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock termsandconditions %}
+
+    <div id="base-alert-message" class="base-alert-message">
+        {% block donationAlert %}
+        <div class="modal fade model-alert" id="donorEligibilityModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="donorEligibilityModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-donor-eligibility">
+                <div class="modal-content modal-content-donor-eligibility">
+                    <div class="modal-header donor-eligibility-modal-header" align="left">
+                    
+                    </div>
+                    <div class="modal-body donorEligibilityScroll text-left" id="id_donorEligibilityScroll">
+                        
+                    </div>
+                    <div class="modal-footer donor-eligibility-modal-footer">
+                        <div class="row">
+                            <div class="col-lg-10 text-left">
+                                <div class="mb-1"><b>According to above mentioned eligiblity criteria:</b></div>
+                                <label for="eligibiltyCheckOk" class="eligible-radio">
+                                    <input type="radio" id="eligibiltyCheckOk" name="eligibiltyCheck" value="1"> 
+                                    I can donate blood now or after a certain period of time
+                                </label>
+                                <label for="eligibiltyCheckNo" class="eligible-radio">
+                                    <input type="radio" id="eligibiltyCheckNo" name="eligibiltyCheck" value="0"> 
+                                    I will never be able to donate blood
+                                </label>
+                                <div id="eligibilityMessage" class="text-danger" style="margin-top: -10px;margin-bottom: -8px;"></div>
+                            </div>
+                            <div class="col-lg text-right">
+                                <button type="button" class="btn btn-danger mt-md-4" id="donorEligibilityBtn" disabled>Continue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock donationAlert %}
+    </div>
+
+    {% block alertpopup %}
+    <div id="id_SingleButton-Alert" class="Alert">
+        <!-- Modal content -->
+        <div class="SingleButton-Alert-content">
+            <div class="SingleButton-Alert-header" id="id_SingleButton-Alert-header">
+                
+            </div>
+            <div class="SingleButton-Alert-body">
+                <p id="id_SingleButton-Alert-message">
+
+                </p>
+            </div>
+            <div class="SingleButton-Alert-footer">
+                <button class="SingleButton-Alert-button" id="id_SingleButton-Alert-button">
+                    
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="id_TwoButton-Alert" class="Alert">
+        <!-- Modal content -->
+        <div class="TwoButton-Alert-content">
+            
+            <div class="TwoButton-Alert-body">
+                <p id="id_TwoButton-Alert-message">
+
+                </p>
+            </div>
+            <div class="TwoButton-Alert-footer">
+                <div class="row no-gutters">
+                    <div class="col">
+                        <button class="TwoButton-Alert-button-close" id="id_TwoButton-Alert-button-close">
+                            
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button class="TwoButton-Alert-button-okay" id="id_TwoButton-Alert-button-okay">
+                            
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock alertpopup %}
+
+    {%block content%}
+
+    {% endblock content %}
+</div>
+
+{% block topbutton %}
+    <div style="float:right; margin-right:70px" class="top-button">
+        <button class="btn btn-primary btn-go-to-top" aria-labelledby="Go To Top" data-placement="left" data-toggle="tooltip" id="scrolltopbtn"
+                name="scrolltopbtn" title="Go To Top of The Page" type="button">
+            <i class="fad fa-arrow-to-top" style="font-size: 38px;"></i>
+        </button>
+    </div>
+{% endblock topbutton %}
+
+
+<!-- Crop Modal -->
+<div class="modal fade" id="cropModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="cropModalLabel">Crop The Image</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="crop-img-container">
+                    <img id="image-to-be-crop">
+                </div>
+                <div class="crop-img-btn text-center mt-1">
+                    <button type="button" class="btn btn-primary" id="crop-rotate-left" title="Rotate Left" data-placement="top" data-toggle="tooltip" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; margin-right: 0px;"><i class="fa-solid fa-rotate-left"></i></button>
+                    <button type="button" class="btn btn-primary mr-2" id="crop-rotate-right" title="Rotate Right" data-placement="top" data-toggle="tooltip" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px; margin-left: -5px;"><i class="fa-solid fa-rotate-right"></i></button>
+                
+                    <button type="button" class="btn btn-primary" id="crop-flip-horizental" title="Flip Horizental" data-placement="top" data-toggle="tooltip" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; margin-right: 0px;"><i class="fa-solid fa-left-right"></i></button>
+                    <button type="button" class="btn btn-primary mr-2" id="crop-flip-vertical" title="Flip Vertical" data-placement="top" data-toggle="tooltip" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px; margin-left: -5px;"><i class="fa-solid fa-up-down"></i></button>
+                    
+                    <button type="button" class="btn btn-primary" id="crop-reset" title="Reset" data-placement="top" data-toggle="tooltip">Reset</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="crop-done">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block footer %}
+<!--Footer-->
+<footer class="page-footer font-small blue mt-5 pt-0" style="width:100%;">
+
+    <!-- Footer  Details-->
+    <div class="container-fluid text-center text-md-left footer-top"
+         style="border-top:5px solid white;background:#080e26;float:bottom;height:100%;margin-top:1%;border-bottom:solid 0.1px white; padding-top:20px; padding:35px; padding-bottom:10px">
+        <div class="row">
+            <div class="col-md">
+                <h5 class="text-uppercase"><img height="45px" src="{% static 'images/GoHealthy_logo white.png' %}" width="200px" alt="Logo">
+                </h5>
+                <p style="font-size:120%;color:#CBD2F6">We look forward a time, when nobody will die due to insufficiency of Healthcare Services In India.
+                    <a href="{%url 'Go_Healthy_App:project-About'%}" style="color:#00DEFD" aria-labelledby="See More">see more</a>
+                </p>
+            </div>
+            <div class="col-md-2 mt-3">
+                <!-- About -->
+                <span>
+                    <a href="https://www.facebook.com/" style="color:white;margin-right:15px;font:time new roman;"
+                       target="_blank" aria-labelledby="Follow on Facebook">
+                        <i class="fab fa-facebook-square fa-3x"></i>
+                    </a>
+                    <a href="https://twitter.com/" style="color:white;font:time new roman;"
+                       target="_blank" aria-labelledby="Follow on Twitter">
+                        <i class="fab fa-twitter-square fa-3x"></i>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <!-- Grid row -->
+        <div class="row mt-5 no-gutters">
+
+            <div align="left" class="col-md-2 mb-3">
+                <h5 class="text-uppercase" style="font-size:18px;color:#7D89C8">Our Services</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="{% url 'Go_Healthy_App:project-Hospital'%}"
+                           style="color:#CBD2F6;font-size:15px;line-height:35px;text-decoration: none;" aria-labelledby="Find Hospitals">Find Hospitals</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'Go_Healthy_App:project-Doctor'%}"
+                           style="color:#CBD2F6;font-size:15px;line-height:35px;text-decoration: none;" aria-labelledby="Find Doctors">Find Doctors</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'Go_Healthy_App:project-Blood'%}"
+                           style="color:#CBD2F6;font-size:15px;line-height:35px;text-decoration: none;" aria-labelledby="Find Blood Donors">Find Blood Donors</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'Go_Healthy_App:project-Firstaid'%}"
+                           style="color:#CBD2F6;font-size:15px;line-height:35px;text-decoration: none;" aria-labelledby="First Aid">First Aid</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'Go_Healthy_App:BMI-Answer'%}"
+                           style="color:#CBD2F6;font-size:15px;line-height:35px;text-decoration: none;" aria-labelledby="BMI">BMI</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div align="left" class="col-md-2 mb-3">
+                <h5 class="text-uppercase" style="font-size:18px;color:#7D89C8;text-decoration: none;">Touch In</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="{% url 'Go_Healthy_App:project-About'%}"
+                           style="color:#CBD2F6;font-size:15px;line-height:35px;text-decoration: none;" aria-labelledby="Our Vision">Our Vision</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'Go_Healthy_App:project-Contact'%}"
+                           style="color:#CBD2F6;font-size:15px;line-height:35px;text-decoration: none;" aria-labelledby="Contact Us">Contact Us</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'Go_Healthy_App:project-Complain'%}"
+                           style="color:#CBD2F6;font-size:15px;line-height:35px;text-decoration: none;" aria-labelledby="Complaint">Complaint</a>
+                    </li>
+                </ul>
+            </div>
+
+
+            <!-- Grid column2 -->
+            <div align="left" class="col-md-3 mb-3" style="margin-left:0.01px">
+
+                <!-- Important Links -->
+                <h5 class="text-uppercase" style="font-size:18px;color:#7D89C8;text-decoration: none;">External Links</h5>
+
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="https://ors.gov.in/" style="color:#CBD2F6;font-size:15px;line-height:35px;text-decoration: none;"
+                           target="_blank" aria-labelledby="Online Registration System">Online Registration System</a>
+                    </li>
+                    <li>
+                        <a href="https://esanjeevaniopd.in/" style="color:#CBD2F6;font-size:15px;line-height:35px;text-decoration: none;"
+                           target="_blank" aria-labelledby="eSanjeevaniOPD">eSanjeevaniOPD</a>
+                    </li>
+                    <li>
+                        <a href="https://www.mohfw.gov.in/" style="color:#CBD2F6;font-size:15px;line-height:35px;text-decoration: none;"
+                           target="_blank" aria-labelledby="Ministry of Health and Family">Ministry of Health and Family
+                            Welfare</a>
+                    </li>
+                    <li>
+                        <a href="https://nbtc.naco.gov.in/" style="color:#CBD2F6;font-size:15px;line-height:35px; text-decoration: none;"
+                           target="_blank" aria-labelledby="National Blood Transfusion Council">National Blood Transfusion Council</a>
+                    </li>
+                    <li>
+                        <a href="https://notto.gov.in/" style="color:#00DEFD;font-size:15px;line-height:35px; color:#CBD2F6; text-decoration: none;"
+                           target="_blank" aria-labelledby="National Organ and Tissue Transplant">National Organ & Tissue Transplant Organization</a>
+                    </li>
+                    <li>
+                        <a href="https://www.dkms-bmst.org/" style="color:#00DEFD;font-size:15px;line-height:35px; color:#CBD2F6; text-decoration: none;"
+                           target="_blank" aria-labelledby="DKMS BMST">DKMS BMST</a>
+                    </li>
+                </ul>
+
+            </div>
+
+            <!-- Grid column3 -->
+            <div align="left" class="col-md mb-3">
+
+                <!-- Contact Us -->
+                <h5 class="text-uppercase" style="font-size:18px;color:#7D89C8">Contact Us</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <a style="margin-bottom: 30px;"><i class="fas fa-question-circle" style="color:#CBD2F6; font-size:20px; line-height:35px"></i>
+                            <a href="{% url 'Go_Healthy_App:FAQ' %}" style="font-size:15px;color:#CBD2F6; text-decoration: none;">&nbsp;FAQ</a>
+                        </a>
+
+                    </li>
+                    <li>
+                        <div class="side-div mb-2 mt-3">
+                            <div class="side-div-content">
+                                <i class="fas fa-phone-alt" style="color:#CBD2F6; font-size:22px;"></i>
+                            </div>
+                            <div class="side-div-content" style="margin-top:-15px">
+                                {% for contact in siteContactsMain %}
+                                    {% if not loop.index > 3 %}
+                                        <div>
+                                            <a href="tel: {{contact.Contact_Number}}" style="font-size:15px;color:#CBD2F6; text-decoration: none;">{{contact.Contact_Number}}</a>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}                                
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="side-div mb-2 mt-4">
+                            <div class="side-div-content">
+                                <i class="fas fa-envelope" style="color:#CBD2F6; font-size:28px;"></i>
+                            </div>
+                            <div class="side-div-content" style="margin-top:-10px">
+                                {% for email in siteEmailsMain %}
+                                    {% if not loop.index > 3 %}
+                                        <div>
+                                            <a href="mailto: {{email.EmailId}}" style="font-size:15px;color:#CBD2F6; text-decoration: none;">&nbsp;{{email.EmailId}}</a>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}                                
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div align="left" class="col-md mb-3">
+                <h5 style="font-size:20px;color:#7D89C8"><span class="text-uppercase">Feedback</span> or <span class="text-uppercase">Suggestion</span></h5>
+                <form action="{% url 'Go_Healthy_App:FeedbackSubmit' %}" method="post" id="feedbackform" aria-label="Feedback">
+                    {% csrf_token %}
+                    <input type="email" inputmode="email" autocomplete="email" name="feedbackEmail" id="feedbackEmail" placeholder="Email" form="feedbackform" class="form-control input-sm form-contact mb-2 text-lowercase" required aria-labelledby="Email">
+                    <textarea name="feedback" rows="4" class="form-control input-sm form-contact mb-1" id="feedback" placeholder="Leave your Feedback or Suggestion here....." form="feedbackform" required aria-labelledby="Leave your Feedback or Suggestion here" maxlength="1000"></textarea>
+                    <div class="row no-gutters">
+                        <div class="col" id="feedbacksubmitmessage" style="color:white"></div>
+                        <div class="col" align="right">
+                            <button type="submit" form="feedbackform" id="feedbacksubmit" class="btn" title="Send Your Feedback" aria-labelledby="Send Your Feedback" style="border:none !important; outline: none !important;"><i class="fad fa-paper-plane fa-2x" style="color:white"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md text-md-left text-center mb-3">
+                <a href="https://rzp.io/l/VXVxGrsJ" target="__blank" style="text-decoration: none;">
+                    <img src="{% static 'images/donate_button.png' %}" height="80px" width="190px">
+                </a>
+            </div>
+            <div class="col-md" align="center">
+                <a href="https://play.google.com/store/apps/details?id=" target="__blank" class="btn-play-store" style="text-decoration: none;">
+                    <img src="{% static 'images/play store.png' %}" height="70px" width="190px">
+                </a>
+            </div>
+            <div class="col-md"></div>
+        </div>
+        <p align="center" style="color:#7075A0">Declaimer: At the moment this website is in developing mode. At now this website is not for
+            public uses.</p>
+        <div align="center">
+            <a target="_blank" href="{% url 'Go_Healthy_App:TermsConditions' %}">Read Our Terms & Conditions</a>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3" style="color:white;background:#040f21;">
+       Copyright © {{'Year'|getDate}} <a href="{% url 'Go_Healthy_App:project-Home' %}" style="color:#B3B8FF" aria-labelledby="Home"> GoHealthy.com</a>
+        | Designed & Developed by Samiddha
+    </div>
+
+</footer>
+{% endblock footer %}
+
+{% endlocaltime %}
+<script src="https://player.vimeo.com/api/player.js"></script>
+
+{% block onesignal %}
+    <!-- OneSignal Web Push Notification -->
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+    {% if request.user.is_authenticated %}
+    <script type="text/javascript" src="{% static 'javascripts/Push_Notification/OneSignal/onesignal.js' %}"></script>
+    {% endif %}
+{% endblock onesignal %}
+
+<script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script>
+<script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.7/hls.min.js"></script>
+
+<script src="{% static 'javascripts/base.js' %}"></script>
+<script src="{% static 'javascripts/crop.js' %}"></script>
+
+{% block script %}
+{% endblock script %}
+
+</body>
+</html>

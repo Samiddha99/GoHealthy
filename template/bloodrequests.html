@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+<html lang="en">
+<head>
+    {% block meta %}
+    <meta name="title" content="Blood Requests | Go Healthy">
+    <meta name="description" content="Persons who needs blood immediately. Help them by donating blood.">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>Blood Requests | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/bloodrequests.css' %}">
+    {% endblock style %}
+
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+
+{% block content %}
+<div class="search-box">
+    <form id="filter" method="get" action="{% url 'Go_Healthy_App:RequestedBlood' %}">
+        <div class="row mt-0 no-gutters" style="gap:1px; padding-top:5px;padding-bottom:5px; background-color:#28328c">
+            <div class="col-md-1"></div>
+            <div class="col-md order-md-last heading">
+                <h5 style="color:white">Help them by donating blood</h5>
+            </div>
+            <div class="col col-md-2 ml-2 mr-2">
+                <div class="input-group mb-1">
+                    <input type="text" inputmode="text" form="filter" class="form-control input-sm filter-input" id="city" name="city" placeholder="City" aria-label="City" aria-describedby="button-addon1">
+                    <div class="input-group-append">
+                        <button class="btn btn-light btn-sm" title="Pick Your location" type="button" id="gpsBtn"><i class="fas fa-map-marker-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-md-1 mb-1 mr-1 mr-2">
+                <select class="form-control input-sm filter-input" name="group" form="filter" style="padding-left:1px;padding-right:1px">
+                    <option label="Blood Group"></option>
+                    {% for i in bloodGroups %}
+                    <option label="{{i.1}}" value="{{i.0}}">{{i.1}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-1 mr-2 ml-2">
+                <button type="submit" class="btn btn-primary btn-sm" id="btn_search" form="filter">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="show-results" style="display:block">
+    <div style="background: url('{% static 'images/GoHealthy_map background.jpg' %}');background-repeat:no-repeat;background-attachment:fixed;background-size:100% 100%;">
+        <div class="row mt-0 mb-5">
+            <div class="col-md-8 mb-0" style="background-color: white;padding-top:20px">
+                <div class="request-info ml-5" id="results">
+                    <div class="text-center loader-div">
+                        <i class="fa-light fa-loader text-secondary fa-spin result-loader"></i>
+                    </div>
+                </div>
+                <div align="center">
+                    <button class="btn btn-primary" id="seeMoreBtn" style="display: none;">See More</button>
+                </div>
+            </div>
+            <div class="col-md"></div>
+        </div>
+    </div>
+</div>
+<div class="no-resuls-found ml-1 mr-1" align="center" id="no-results">
+    <div class="row">
+        <div class="col-md col"></div>
+        <div class="col-md-2 col-6">
+            <div class="img-div">
+                <img src="{% static 'images/no-result.png' %}" class="not-found-img">
+            </div>
+        </div>
+        <div class="col-md col"></div>
+    </div>
+    <h2 class="text-muted">No Blood Requests Found</h2>
+</div>
+{% endblock content %}
+</body>
+{% block script %}
+
+<script src="{% static 'javascripts/bloodrequests.js' %}"></script>
+
+{% endblock script %}
+</html>

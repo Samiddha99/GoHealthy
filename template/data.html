@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% extends 'base.html' %}
+    {% load static %}
+    {% load cache %}
+    <head>
+        {% block meta %}
+        <meta name="title" content="Data Center | Go Healthy">
+        {% endblock meta %}
+
+        {% block title %}
+        <title>Data Center | Go Healthy</title>
+        {% endblock title %}
+
+        {% block style %}
+        <link rel="stylesheet" href="{% static 'css/data.css' %}">
+        {% endblock style %}
+
+    </head>
+    {% block body %}
+    <body>
+    {% endblock body %}
+
+    {% block content %}
+    <input type="hidden" id="event_id-live-data" value="{{last_id}}">
+    <center>
+        <div class="live-data-container ml-2 mr-2 mt-2">
+            <div class="text-right text-dark mb-2">Current Time: <span id="current_time"></span></div>
+            <div class="row">
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-1">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon hospital-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">REGISTERED HOSPITALS</div>
+                                <div class="value" id="totalHospitalCount">{{totalHos}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-2">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon blood-bank-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">REGISTERED BLOOD BANKS</div>
+                                <div class="value" id="totalBloodBankCount">{{totalBank}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-3">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon doctor-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">REGISTERED DOCTORS</div>
+                                <div class="value" id="totalDoctorCount">{{totalDoc}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-4">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon donor-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">REGISTERED BLOOD DONORS</div>
+                                <div class="value" id="totalDonorCount">{{totalDonor}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-5">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon total-beds-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">TOTAL BEDS IN HOSPITALS</div>
+                                <div class="value" id="totalBedsCount">{{totalBeds}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-6">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon total-available-beds-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">TOTAL AVAILABLE BEDS</div>
+                                <div class="value" id="totalAvailableBedsCount">{{totalAvailableBeds}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-7">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon total-used-beds-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">TOTAL USED BEDS</div>
+                                <div class="value" id="totalUsedBedsCount">{{totalUsedBeds}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-8">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon total-book-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">BED BOOKED TODAY</div>
+                                <div class="value" id="totalBookCount">{{totalBook}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-9">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon today-blood-donation-camp-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">BLOOD DONATION CAMPS TODAY</div>
+                                <div class="value" id="totalBloodDonationCampCount">{{totalBloodDonationCampToday}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-10">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon total-blood-requests-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">BLOOD REQUEST SENT TODAY</div>
+                                <div class="value" id="totaLBloodRequestCount">{{totalBloodRequest}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-11">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon total-blood-donated-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">
+                                    PERSON DONATED BLOOD TODAY
+                                    <div class="data-info-text">(In blood banks)</div>
+                                </div>
+                                <div class="value" id="totaLBloodDonatedCount">{{totalBloodDonatedToday}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-12">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon total-blood-collected-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">
+                                    PERSON COLLECTED BLOOD TODAY
+                                    <div class="data-info-text">(From blood banks)</div>
+                                </div>
+                                <div class="value" id="totalBloodCollectedCount">{{totalBloodCollectedToday}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-13">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon total-admitted-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">PATIENTS ADMITTED TODAY</div>
+                                <div class="value" id="totalAdmitCount">{{totalAdmit}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-14">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon total-released-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">PATIENTS RELEASED TODAY</div>
+                                <div class="value" id="totalReleasedCount">{{totalReleased}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-15">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon total-referred-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">PATIENTS REFERRED TODAY</div>
+                                <div class="value" id="totalReferredCount">{{totalReferred}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md mb-4">
+                    <div class="live-data-card card-16">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="image-icon total-dead-count-icon"></div>
+                            </div>
+                            <div class="col text-left">
+                                <div class="title">
+                                    PATIENTS DIED TODAY
+                                    <div class="data-info-text">(In hospitals)</div>
+                                </div>
+                                <div class="value" id="totalDiedCount">{{totalDied}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </center>
+
+    <div class="block-graph">
+        <div class="ml-1 mr-1 ml-lg-2 mr-lg-2">
+            <input type="hidden" id="graph_loader_img" value="{% static 'gif/bar_chart_loader.gif' %}">
+            <div class="row no-gutters">
+                <div class="col-lg mb-4 mb-lg-4">
+                    <div class="graph-box">
+                        <div class="text-right mt-1 graph-buttons">
+                            <button type="button" class="btn-graph-action" id="donation_collection-png" aria-labelledby="Save as PNG" data-placement="bottom" data-toggle="tooltip" title="Save Image as PNG">PNG</button>
+                            <button type="button" class="btn-graph-action" id="donation_collection-svg" aria-labelledby="Save as SVG" data-placement="bottom" data-toggle="tooltip" title="Save Image as SVG">SVG</button>
+                            <button type="button" class="btn-graph-action" id="donation_collection-pdf" aria-labelledby="Save as PDF" data-placement="bottom" data-toggle="tooltip" title="Save Image as PDF">PDF</button>
+                            <button type="button" class="btn-graph-action" id="donation_collection-csv" aria-labelledby="Export as CSV" data-placement="bottom" data-toggle="tooltip" title="Export Data as CSV">CSV</button>
+                            <button type="button" class="btn-graph-action" id="donation_collection-xlsx" aria-labelledby="Export as XLSX" data-placement="bottom" data-toggle="tooltip" title="Export Data as XLSX">XLSX</button>
+                            <button type="button" class="btn-graph-action" id="donation_collection-xml" aria-labelledby="Export as XML" data-placement="bottom" data-toggle="tooltip" title="Export Data as XML">XML</button>
+                            <button type="button" class="btn-graph-action" id="donation_collection-json" aria-labelledby="Export as JSON" data-placement="bottom" data-toggle="tooltip" title="Export Data as JSON">JSON</button>
+                            <button type="button" class="btn-graph-action" id="donation_collection-print" aria-labelledby="Print the graph" data-placement="bottom" data-toggle="tooltip" title="Print the graph">&nbsp;&nbsp;<i class="bi bi-printer-fill"></i>&nbsp;&nbsp;</button>
+                            <i class="fa-regular fa-arrows-rotate ml-1" id="donation_collection-reload" style="font-size: 16px; cursor: pointer;" aria-labelledby="Reload the graph" data-placement="left" data-toggle="tooltip" title="Reload the graph"></i>
+                        </div>
+                        <div class="graph-input donation_collection-graph-input">
+                            <div class="row mb-1 no-gutters" style="gap: 5px;">
+                                <div class="col">
+                                    <label for="donation_collection-state">State</label>
+                                    <select name="state" id="donation_collection-state" data-state_district="#donation_collection-district" data-blood_bank="#donation_collection-blood_bank" class="input-graph">
+                                        <option label="India" value="India" selected></option>
+                                        <option value="India" label="Select State"></option>
+                                        <optgroup label="States">
+                                            {% for i in allStates %}
+                                            {% if not i.Is_Union_Territory %}
+                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </optgroup>
+                                        <optgroup label="Union Territory">
+                                            {% for i in allStates %}
+                                            {% if i.Is_Union_Territory %}
+                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label for="donation_collection-district">District</label>
+                                    <select name="district" id="donation_collection-district" data-blood_bank="#donation_collection-blood_bank" class="input-graph">
+                                        <option label="Select District"></option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label for="donation_collection-blood_bank">Blood Bank</label>
+                                    <select name="blood_bank" id="donation_collection-blood_bank" class="input-graph" data-state="#donation_collection-state" data-district="#donation_collection-district" data-placement="top" data-toggle="tooltip" title="At first select a state">
+                                        <option label="Select Blood Bank"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row no-gutters" style="gap: 5px;">
+                                        <div class="col-md">
+                                            <label for="donation_collection-x">X Axis:</label>
+                                            <select name="x_axis" id="donation_collection-x" class="input-graph x-axis-input" data-month="donation_collection-x_month" data-year="donation_collection-x_year">
+                                                <option value="day" data-label="Days">Daily</option>
+                                                <option value="month" data-label="Months">Monthly</option>
+                                                <option value="year" data-label="Years" selected>Yearly (last 10 years)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="row no-gutters mb-1">
+                                                <div class="col" id="div_donation_collection-x_month" style="display: none;">
+                                                    <label for="donation_collection-x_month">Month</label>
+                                                    <select name="month" id="donation_collection-x_month" class="input-graph">
+                                                        {% for i in months %}
+                                                            {% if i.1 == current_full_month %}
+                                                                <option value="{{i.0}}" selected>{{i.1}}</option>
+                                                            {% else %}
+                                                                <option value="{{i.0}}">{{i.1}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col" id="div_donation_collection-x_year" style="display: none;">
+                                                    <label for="donation_collection-x_year">Year</label>
+                                                    <select name="year" id="donation_collection-x_year" class="input-graph">
+                                                        {% for i in years %}
+                                                            {% if i == current_full_year %}
+                                                                <option value="{{i}}" selected>{{i}}</option>
+                                                            {% else %}
+                                                                <option value="{{i}}">{{i}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="row no-gutters" style="gap:7px">
+                                        <div class="col">
+                                            <label for="donation_collection-y">Y Axis:</label>
+                                            <select name="y_axis" id="donation_collection-y" class="input-graph y-axis-input">
+                                                <option value="Units" selected>How many units of blood donated or collected</option>
+                                                <option value="Persons">How many person donated or collected blood</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="donation_collection-group">Group By:</label>
+                                            <select name="group" id="donation_collection-group" class="input-graph y-axis-input">
+                                                <option value="Gender" selected>Gender</option>
+                                                <option value="Age">Age</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-graph" id="donation_collection-graph">
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg mb-4">
+                    <div class="graph-box">
+                        <div class="text-right mt-1 graph-buttons">
+                            <button type="button" class="btn-graph-action" id="blood_request_donation-png" aria-labelledby="Save as PNG" data-placement="bottom" data-toggle="tooltip" title="Save Image as PNG">PNG</button>
+                            <button type="button" class="btn-graph-action" id="blood_request_donation-svg" aria-labelledby="Save as SVG" data-placement="bottom" data-toggle="tooltip" title="Save Image as SVG">SVG</button>
+                            <button type="button" class="btn-graph-action" id="blood_request_donation-pdf" aria-labelledby="Save as PDF" data-placement="bottom" data-toggle="tooltip" title="Save Image as PDF">PDF</button>
+                            <button type="button" class="btn-graph-action" id="blood_request_donation-csv" aria-labelledby="Export as CSV" data-placement="bottom" data-toggle="tooltip" title="Export Data as CSV">CSV</button>
+                            <button type="button" class="btn-graph-action" id="blood_request_donation-xlsx" aria-labelledby="Export as XLSX" data-placement="bottom" data-toggle="tooltip" title="Export Data as XLSX">XLSX</button>
+                            <button type="button" class="btn-graph-action" id="blood_request_donation-xml" aria-labelledby="Export as XML" data-placement="bottom" data-toggle="tooltip" title="Export Data as XML">XML</button>
+                            <button type="button" class="btn-graph-action" id="blood_request_donation-json" aria-labelledby="Export as JSON" data-placement="bottom" data-toggle="tooltip" title="Export Data as JSON">JSON</button>
+                            <button type="button" class="btn-graph-action" id="blood_request_donation-print" aria-labelledby="Print the graph" data-placement="bottom" data-toggle="tooltip" title="Print the graph">&nbsp;&nbsp;<i class="bi bi-printer-fill"></i>&nbsp;&nbsp;</button>
+                            <i class="fa-regular fa-arrows-rotate ml-1" id="blood_request_donation-reload" style="font-size: 16px; cursor: pointer;" aria-labelledby="Reload the graph" data-placement="left" data-toggle="tooltip" title="Reload the graph"></i>
+                        </div>
+                        <div class="graph-input blood_request_donation-graph-input">
+                            <div class="row mb-1 no-gutters" style="gap: 5px;">
+                                <div class="col">
+                                    <label for="blood_request_donation-state">State</label>
+                                    <select name="state" id="blood_request_donation-state" data-state_district="#blood_request_donation-district" data-hospital="#blood_request_donation-hospital" class="input-graph">
+                                        <option label="India" value="India" selected></option>
+                                        <option value="India" label="Select State"></option>
+                                        <optgroup label="States">
+                                            {% for i in allStates %}
+                                            {% if not i.Is_Union_Territory %}
+                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </optgroup>
+                                        <optgroup label="Union Territory">
+                                            {% for i in allStates %}
+                                            {% if i.Is_Union_Territory %}
+                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label for="blood_request_donation-district">District</label>
+                                    <select name="district" id="blood_request_donation-district" data-hospital="#blood_request_donation-hospital" class="input-graph">
+                                        <option label="Select District"></option>
+                                    </select>
+                                </div>
+                                <!-- <div class="col">
+                                    <label for="blood_request_donation-hospital">Hospital</label>
+                                    <select name="hospital" id="blood_request_donation-hospital" class="input-graph" data-state="#blood_request_donation-state" data-district="#blood_request_donation-district" data-placement="top" data-toggle="tooltip" title="At first select a state">
+                                        <option label="Select Hospital"></option>
+                                    </select>
+                                </div> -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row no-gutters" style="gap: 5px;">
+                                        <div class="col-md">
+                                            <label for="blood_request_donation-x">X Axis:</label>
+                                            <select name="x_axis" id="blood_request_donation-x" class="input-graph x-axis-input" data-month="blood_request_donation-x_month" data-year="blood_request_donation-x_year">
+                                                <option value="day" data-label="Days">Daily</option>
+                                                <option value="month" data-label="Months">Monthly</option>
+                                                <option value="year" data-label="Years" selected>Yearly (last 10 years)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="row no-gutters mb-1">
+                                                <div class="col" id="div_blood_request_donation-x_month" style="display: none;">
+                                                    <label for="blood_request_donation-x_month">Month</label>
+                                                    <select name="month" id="blood_request_donation-x_month" class="input-graph">
+                                                        {% for i in months %}
+                                                            {% if i.1 == current_full_month %}
+                                                                <option value="{{i.0}}" selected>{{i.1}}</option>
+                                                            {% else %}
+                                                                <option value="{{i.0}}">{{i.1}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col" id="div_blood_request_donation-x_year" style="display: none;">
+                                                    <label for="blood_request_donation-x_year">Year</label>
+                                                    <select name="year" id="blood_request_donation-x_year" class="input-graph">
+                                                        {% for i in years %}
+                                                            {% if i == current_full_year %}
+                                                                <option value="{{i}}" selected>{{i}}</option>
+                                                            {% else %}
+                                                                <option value="{{i}}">{{i}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="row no-gutters" style="gap:7px">
+                                        <div class="col">
+                                            <label for="blood_request_donation-y">Y Axis:</label>
+                                            <select name="y_axis" id="blood_request_donation-y" class="input-graph y-axis-input">
+                                                <option value="Units" selected>How many units of blood requested</option>
+                                                <option value="Persons">How many person requested blood</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-graph" id="blood_request_donation-graph">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row no-gutters">
+                <div class="col-lg mb-5 mb-lg-5">
+                    <div class="graph-box">
+                        <div class="text-right mt-1 graph-buttons">
+                            <button type="button" class="btn-graph-action" id="no_of_blood_donation_camps-png" aria-labelledby="Save as PNG" data-placement="bottom" data-toggle="tooltip" title="Save Image as PNG">PNG</button>
+                            <button type="button" class="btn-graph-action" id="no_of_blood_donation_camps-svg" aria-labelledby="Save as SVG" data-placement="bottom" data-toggle="tooltip" title="Save Image as SVG">SVG</button>
+                            <button type="button" class="btn-graph-action" id="no_of_blood_donation_camps-pdf" aria-labelledby="Save as PDF" data-placement="bottom" data-toggle="tooltip" title="Save Image as PDF">PDF</button>
+                            <button type="button" class="btn-graph-action" id="no_of_blood_donation_camps-csv" aria-labelledby="Export as CSV" data-placement="bottom" data-toggle="tooltip" title="Export Data as CSV">CSV</button>
+                            <button type="button" class="btn-graph-action" id="no_of_blood_donation_camps-xlsx" aria-labelledby="Export as XLSX" data-placement="bottom" data-toggle="tooltip" title="Export Data as XLSX">XLSX</button>
+                            <button type="button" class="btn-graph-action" id="no_of_blood_donation_camps-xml" aria-labelledby="Export as XML" data-placement="bottom" data-toggle="tooltip" title="Export Data as XML">XML</button>
+                            <button type="button" class="btn-graph-action" id="no_of_blood_donation_camps-json" aria-labelledby="Export as JSON" data-placement="bottom" data-toggle="tooltip" title="Export Data as JSON">JSON</button>
+                            <button type="button" class="btn-graph-action" id="no_of_blood_donation_camps-print" aria-labelledby="Print the graph" data-placement="bottom" data-toggle="tooltip" title="Print the graph">&nbsp;&nbsp;<i class="bi bi-printer-fill"></i>&nbsp;&nbsp;</button>
+                            <i class="fa-regular fa-arrows-rotate ml-1" id="no_of_blood_donation_camps-reload" style="font-size: 16px; cursor: pointer;" aria-labelledby="Reload the graph" data-placement="left" data-toggle="tooltip" title="Reload the graph"></i>
+                        </div>
+                        <div class="graph-input no_of_blood_donation_camps-graph-input">
+                            <div class="row mb-1 no-gutters" style="gap: 5px;">
+                                <div class="col">
+                                    <label for="no_of_blood_donation_camps-state">State</label>
+                                    <select name="state" id="no_of_blood_donation_camps-state" data-state_district="#no_of_blood_donation_camps-district" class="input-graph">
+                                        <option label="India" value="India" selected></option>
+                                        <option value="India" label="Select State"></option>
+                                        <optgroup label="States">
+                                            {% for i in allStates %}
+                                            {% if not i.Is_Union_Territory %}
+                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </optgroup>
+                                        <optgroup label="Union Territory">
+                                            {% for i in allStates %}
+                                            {% if i.Is_Union_Territory %}
+                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label for="no_of_blood_donation_camps-district">District</label>
+                                    <select name="district" id="no_of_blood_donation_camps-district" class="input-graph">
+                                        <option label="Select District"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row no-gutters" style="gap: 5px;">
+                                        <div class="col-md">
+                                            <label for="no_of_blood_donation_camps-x">X Axis:</label>
+                                            <select name="x_axis" id="no_of_blood_donation_camps-x" class="input-graph x-axis-input" data-month="no_of_blood_donation_camps-x_month" data-year="no_of_blood_donation_camps-x_year">
+                                                <option value="day" data-label="Days">Daily</option>
+                                                <option value="month" data-label="Months">Monthly</option>
+                                                <option value="year" data-label="Years" selected>Yearly (last 10 years)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="row no-gutters mb-1">
+                                                <div class="col" id="div_no_of_blood_donation_camps-x_month" style="display: none;">
+                                                    <label for="no_of_blood_donation_camps-x_month">Month</label>
+                                                    <select name="month" id="no_of_blood_donation_camps-x_month" class="input-graph">
+                                                        {% for i in months %}
+                                                            {% if i.1 == current_full_month %}
+                                                                <option value="{{i.0}}" selected>{{i.1}}</option>
+                                                            {% else %}
+                                                                <option value="{{i.0}}">{{i.1}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col" id="div_no_of_blood_donation_camps-x_year" style="display: none;">
+                                                    <label for="no_of_blood_donation_camps-x_year">Year</label>
+                                                    <select name="year" id="no_of_blood_donation_camps-x_year" class="input-graph">
+                                                        {% for i in years %}
+                                                            {% if i == current_full_year %}
+                                                                <option value="{{i}}" selected>{{i}}</option>
+                                                            {% else %}
+                                                                <option value="{{i}}">{{i}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-graph" id="no_of_blood_donation_camps-graph">
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg mb-4">
+                    <div class="graph-box">
+                        <div class="text-right mt-1 graph-buttons">
+                            <button type="button" class="btn-graph-action" id="patient_status-png" aria-labelledby="Save as PNG" data-placement="bottom" data-toggle="tooltip" title="Save Image as PNG">PNG</button>
+                            <button type="button" class="btn-graph-action" id="patient_status-svg" aria-labelledby="Save as SVG" data-placement="bottom" data-toggle="tooltip" title="Save Image as SVG">SVG</button>
+                            <button type="button" class="btn-graph-action" id="patient_status-pdf" aria-labelledby="Save as PDF" data-placement="bottom" data-toggle="tooltip" title="Save Image as PDF">PDF</button>
+                            <button type="button" class="btn-graph-action" id="patient_status-csv" aria-labelledby="Export as CSV" data-placement="bottom" data-toggle="tooltip" title="Export Data as CSV">CSV</button>
+                            <button type="button" class="btn-graph-action" id="patient_status-xlsx" aria-labelledby="Export as XLSX" data-placement="bottom" data-toggle="tooltip" title="Export Data as XLSX">XLSX</button>
+                            <button type="button" class="btn-graph-action" id="patient_status-xml" aria-labelledby="Export as XML" data-placement="bottom" data-toggle="tooltip" title="Export Data as XML">XML</button>
+                            <button type="button" class="btn-graph-action" id="patient_status-json" aria-labelledby="Export as JSON" data-placement="bottom" data-toggle="tooltip" title="Export Data as JSON">JSON</button>
+                            <button type="button" class="btn-graph-action" id="patient_status-print" aria-labelledby="Print the graph" data-placement="bottom" data-toggle="tooltip" title="Print the graph">&nbsp;&nbsp;<i class="bi bi-printer-fill"></i>&nbsp;&nbsp;</button>
+                            <i class="fa-regular fa-arrows-rotate ml-1" id="patient_status-reload" style="font-size: 16px; cursor: pointer;" aria-labelledby="Reload the graph" data-placement="left" data-toggle="tooltip" title="Reload the graph"></i>
+                        </div>
+                        <div class="graph-input patient_status-graph-input">
+                            <div class="row mb-1 no-gutters" style="gap: 5px;">
+                                <div class="col">
+                                    <label for="patient_status-state">State</label>
+                                    <select name="state" id="patient_status-state" data-state_district="#patient_status-district" data-hospital="#patient_status-hospital" class="input-graph">
+                                        <option label="India" value="India" selected></option>
+                                        <option value="India" label="Select State"></option>
+                                        <optgroup label="States">
+                                            {% for i in allStates %}
+                                            {% if not i.Is_Union_Territory %}
+                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </optgroup>
+                                        <optgroup label="Union Territory">
+                                            {% for i in allStates %}
+                                            {% if i.Is_Union_Territory %}
+                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label for="patient_status-district">District</label>
+                                    <select name="district" id="patient_status-district" data-hospital="#patient_status-hospital" class="input-graph">
+                                        <option label="Select District"></option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label for="patient_status-hospital">Hospital</label>
+                                    <select name="blood_bank" id="patient_status-hospital" class="input-graph" data-state="#patient_status-state" data-district="#patient_status-district" data-placement="top" data-toggle="tooltip" title="At first select a state">
+                                        <option label="Select Hospital"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row no-gutters" style="gap: 5px;">
+                                        <div class="col-md">
+                                            <label for="patient_status-x">X Axis:</label>
+                                            <select name="x_axis" id="patient_status-x" class="input-graph x-axis-input" data-month="patient_status-x_month" data-year="patient_status-x_year">
+                                                <option value="day" data-label="Days">Daily</option>
+                                                <option value="month" data-label="Months">Monthly</option>
+                                                <option value="year" data-label="Years" selected>Yearly (last 10 years)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="row no-gutters mb-1">
+                                                <div class="col" id="div_patient_status-x_month" style="display: none;">
+                                                    <label for="patient_status-x_month">Month</label>
+                                                    <select name="month" id="patient_status-x_month" class="input-graph">
+                                                        {% for i in months %}
+                                                            {% if i.1 == current_full_month %}
+                                                                <option value="{{i.0}}" selected>{{i.1}}</option>
+                                                            {% else %}
+                                                                <option value="{{i.0}}">{{i.1}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col" id="div_patient_status-x_year" style="display: none;">
+                                                    <label for="patient_status-x_year">Year</label>
+                                                    <select name="year" id="patient_status-x_year" class="input-graph">
+                                                        {% for i in years %}
+                                                            {% if i == current_full_year %}
+                                                                <option value="{{i}}" selected>{{i}}</option>
+                                                            {% else %}
+                                                                <option value="{{i}}">{{i}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="row no-gutters" style="gap:7px">
+                                        <div class="col">
+                                            
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="patient_status-group">Group By:</label>
+                                            <select name="group" id="patient_status-group" class="input-graph y-axis-input">
+                                                <option value="Gender" selected>Gender</option>
+                                                <option value="Age">Age</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-graph" id="patient_status-graph">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+
+    {% block script %}
+
+    <script src="{% static 'javascripts/data.js' %}"></script>
+
+    {% endblock script %}
+    </body>
+</html>

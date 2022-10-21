@@ -1,0 +1,12 @@
+.card{
+    border: none !important;
+}
+.card-header{
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
+}
+.card-footer{
+    background-color: #E7E7E7 !important;
+    border-bottom-left-radius: 15px !important;
+    border-bottom-right-radius: 15px !important;
+}

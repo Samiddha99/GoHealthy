@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% load tz %}
+<head>
+    {% block meta %}
+    <meta name="title" content="My Bookings | Go Healthy">
+    <meta name="description" content="Find information about all of your active bookings">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>My Bookings | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/mybook.css' %}">
+    {% endblock style %}
+
+</head>
+{% block body %}
+<body class="bg-light">
+{% endblock body %}
+
+{% block content %}
+<center>
+
+    <h2 style="color:#3A97E8">MY BOOKINGS</h2>
+    <br>
+    <h5 class="text-muted" id="noBookContent" style="display:none">No Active Bookings Found</h5>
+    {% if count <= 0 %}
+    <h5 class="text-muted" id="noBookContent">No Active Bookings Found</h5>
+    {% else %}
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md-7 ml-1 mr-1">
+            {% for i in bookings %}
+            <div class="card booking-card mb-3 bg-light" align="left" id="card{{i.Booking_ID}}">
+                {% if i.Status == "Not Admit Still Now" %}
+                    <div class="card-header bg-danger text-light">
+                        <div class="row">
+                            <div class="col">
+                                <h5>BOOKING ID: {{i.Booking_ID}}</h5>
+                            </div>
+                            <div class="col-3" align="right">
+                                <form id="deletebook{{i.Booking_ID}}" method="post" data-id="{{i.Booking_ID}}" class="form-cancel-book" action="{% url 'Go_Healthy_App:MyBookings' %}">
+                                    <button type="button" class="btn btn-light text-danger" data-toggle="modal" id="cancelBtnModal{{i.Booking_ID}}" data-target="#cancelBookModal{{i.Booking_ID}}">
+                                      Cancel
+                                    </button>
+                                </form>
+
+                                <div class="modal fade" id="cancelBookModal{{i.Booking_ID}}" tabindex="-1" aria-labelledby="cancelBookModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header bg-danger text-light">
+                                        <h5 class="modal-title" id="cancelBookModalLabel">Cancel Booking</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                        <div class="modal-body bg-light text-dark" align="left">
+                                            <h6>Booking ID: {{i.Booking_ID}}</h6>
+                                            <h6>Patient's Name: {{i.Patient_Name}}</h6>
+                                            <h6>Hospital: {{i.Hospital_Name.Name}}</h6>
+                                            <h6>Mobile: {{i.Mobile}}</h6>
+                                            <h6>Status: {{i.Status}}</h6>
+                                            <h6>Booking Time: {{i.Booking_Time}}</h6>
+                                            <h6>Expire: {{i.Expire_Time}}</h6>
+                                          </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" form="deletebook{{i.Booking_ID}}" class="btn btn-danger btn-cancel-book" id="cancel{{i.Booking_ID}}">Cancel</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% elif i.Status == "Don't Need to Admit" %}
+                    <div class="card-header bg-success text-light" style="border-top-left-radius:50px;border-top-right-radius:50px;">
+                        <h5>Booking ID: {{i.Booking_ID}}</h5>
+                    </div>
+                {% elif i.Status == "Admitted" %}
+                    <div class="card-header bg-warning text-light" style="border-top-left-radius:50px;border-top-right-radius:50px;">
+                        <h5>Booking ID: {{i.Booking_ID}}</h5>
+                    </div>
+                {% elif i.Status == "Released" %}
+                    <div class="card-header bg-info text-light" style="border-top-left-radius:50px;border-top-right-radius:50px;">
+                        <h5>Booking ID: {{i.Booking_ID}}</h5>
+                    </div>
+                {% elif i.Status == "Referred" %}
+                    <div class="card-header bg-primary text-light" style="border-top-left-radius:50px;border-top-right-radius:50px;">
+                        <h5>Booking ID: {{i.Booking_ID}}</h5>
+                    </div>
+                {% elif i.Status == "Died" %}
+                    <div class="card-header bg-danger text-light" style="border-top-left-radius:50px;border-top-right-radius:50px;">
+                        <h5>Booking ID: {{i.Booking_ID}}</h5>
+                    </div>
+                {% elif i.Status == "Expired" %}
+                    <div class="card-header bg-secondary text-light" style="border-top-left-radius:50px;border-top-right-radius:50px;">
+                        <h5>Booking ID: {{i.Booking_ID}}</h5>
+                    </div>
+                {% endif %}
+                <div class="card-body" style="background-color:#DBF3FF" align="center">
+                    <h5 class="card-title" align="center">Patient: {{i.Patient_Name}}</h5>
+                    <p class="card-text" style="font-weight: bold;">
+                        Hospital: {{i.Hospital_Name.Name}}<br>
+                        Mobile: {{i.Mobile}}<br>
+                        Status: {{i.Status}}<br>
+                        Booking Time: {{i.Booking_Time}}<br>
+                    </p>
+                    <a href="{% url 'Go_Healthy_App:BookStatus' id=i.Booking_ID %}" class="btn btn-primary">Show More</a>
+                </div>
+
+                <div class="card-footer text-muted" align="center">
+                    {% if i.is_admitted %}
+                        Admitted At: {{i.Admit_Time}}
+                    {% endif %}
+                    {% if i.Status == "Not Admit Still Now" %}
+                        Valid till: {{i.Expire_Time}}
+                    {% elif i.Status == "Released" %}
+                        Released At: {{i.Status_Changed_At}}
+                    {% elif i.Status == "Referred" %}
+                        Referred At: {{i.Status_Changed_At}}
+                    {% elif i.Status == "Died" %}
+                        Died At: {{i.Status_Changed_At}}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md"></div>
+    </div>
+    {% endif %}
+</center>
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/mybook.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

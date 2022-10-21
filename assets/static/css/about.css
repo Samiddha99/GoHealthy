@@ -1,0 +1,261 @@
+body{
+    background-color: #f3f4f3;
+}
+
+@media only screen and (min-device-width : 614px){
+    .image-desktop{
+        display: block;
+    }
+    .image-mobile{
+        display: none;
+    }
+}
+@media only screen and (max-device-width : 613px){
+    .image-desktop{
+        display: none;
+    }
+    .image-mobile{
+        display: block;
+    }
+}
+
+@media only screen and (min-device-width : 793px){
+    .banner{
+        color: white;
+        text-align: center;
+        padding-top: 120px;
+        padding-bottom: 120px;
+        padding-left: 4px;
+        padding-right: 4px;
+        background-repeat:no-repeat;
+        background-size:100% 100%;
+    }
+    .banner .our-vision{
+        text-shadow: -7px 7px 1px rgb(4, 4, 99);
+        font-size: 75px;
+        font-family: 'Merriweather', serif;
+        font-weight: 700 !important;
+        letter-spacing: 10px;
+        margin-bottom: 20px;
+    }
+    .banner .our-aim{
+        font-family: 'Courier Prime', monospace;
+        color: white;
+        font-size: 30px;
+        margin-bottom: 40px;
+        letter-spacing: 2px;
+        line-height: 35px;
+        margin-top: -20px;
+    }
+    .banner .we-need{
+        text-shadow: 3px 3px 0px rgb(73, 73, 75), -3px -3px 0px rgb(73, 73, 75);
+        font-size: 60px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        line-height: 70px;
+    }
+    .banner .better-life{
+        font-size: 40px;
+        font-family: 'Gideon Roman', cursive;
+        font-weight: 600;
+        letter-spacing: 2px;
+    }
+    .banner .need-action{
+        font-size: 33px;
+        font-weight: 400;
+        font-family: 'Bitter', serif;
+        letter-spacing: 2px;
+        line-height: 39px;
+        margin-top: 10px;
+    }
+    .banner .need-action span{
+        background-color: rgba(44, 22, 165, 0.801);
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .banner .our-right{
+        font-size: 60px;
+        font-weight: 600;
+        font-family: 'Libre Baskerville', serif;
+        margin-top: 50px;
+    }
+    .banner .yellow-text{
+        color: rgb(226, 230, 13);
+        letter-spacing: 3px;
+        text-shadow: 1px 1px 0px rgb(255, 255, 255), -1px -1px 0px rgb(255, 255, 255);
+    }
+    .banner .red-text{
+        color: rgb(255, 46, 46);
+        letter-spacing: 3px;
+        text-shadow: 1px 1px 0px rgb(255, 255, 255), -1px -1px 0px rgb(255, 255, 255);
+    }
+    .banner .fight{
+        font-family: 'IBM Plex Serif', serif;
+        font-size: 50px;
+    }
+}
+
+@media only screen and (max-device-width : 792px){
+    .banner{
+        color: white;
+        text-align: center;
+        padding-top: 70px;
+        padding-bottom: 90px;
+        padding-left: 4px;
+        padding-right: 4px;
+        background-repeat:no-repeat;
+        background-size:cover;
+    }
+    .banner .our-vision{
+        text-shadow: -7px 7px 1px rgb(4, 4, 99);
+        font-size: 75px;
+        font-family: 'Merriweather', serif;
+        font-weight: 700 !important;
+        letter-spacing: 10px;
+        margin-bottom: 20px;
+    }
+    .banner .our-aim{
+        font-family: 'Courier Prime', monospace;
+        color: white;
+        font-size: 30px;
+        margin-top: -20px;
+        margin-bottom: 40px;
+        letter-spacing: 2px;
+        line-height: 35px;
+    }
+    .banner .we-need{
+        text-shadow: 3px 3px 0px rgb(73, 73, 75), -3px -3px 0px rgb(73, 73, 75);
+        font-size: 40px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        line-height: 50px;
+        margin-top: 50px;
+    }
+    .banner .better-life{
+        font-size: 30px;
+        font-family: 'Gideon Roman', cursive;
+        font-weight: 600;
+        letter-spacing: 2px;
+        line-height: 35px;
+    }
+    .banner .need-action{
+        font-size: 30px;
+        font-weight: 400;
+        font-family: 'Bitter', serif;
+        letter-spacing: 2px;
+        line-height: 35px;
+        margin-top: 25px;
+    }
+    .banner .need-action span{
+        background-color: rgba(44, 22, 165, 0.801);
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .banner .our-right{
+        font-size: 50px;
+        font-weight: 600;
+        font-family: 'Libre Baskerville', serif;
+        margin-top: 50px;
+    }
+    .banner .yellow-text{
+        color: rgb(226, 230, 13);
+        letter-spacing: 3px;
+        text-shadow: 1px 1px 0px rgb(255, 255, 255), -1px -1px 0px rgb(255, 255, 255);
+    }
+    .banner .red-text{
+        color: rgb(255, 46, 46);
+        letter-spacing: 3px;
+        text-shadow: 1px 1px 0px rgb(255, 255, 255), -1px -1px 0px rgb(255, 255, 255);
+    }
+    .banner .fight{
+        font-family: 'IBM Plex Serif', serif;
+        font-size: 40px;
+    }
+}
+
+@media only screen and (min-device-width : 701px)
+{
+    .background-1{
+        margin:20px;
+        background-color:white;
+        box-shadow: 0px 0px 8px 5px rgb(201, 200, 200) !important;
+        padding:1px;
+        border-top-right-radius:20px;
+        border-bottom-right-radius:20px;
+    }
+    .background-2{
+        margin:20px;
+        background-color:white;
+        box-shadow: 0px 0px 8px 5px rgb(201, 200, 200) !important;
+        padding:1px;
+        padding-bottom: 8px;
+        border-top-left-radius:20px;
+        border-bottom-left-radius:20px;
+    }
+    .ourhealth-md{
+        display: block !important;
+        border-top-left-radius: 120px;
+        border-bottom-right-radius: 22px;
+    }
+}
+@media only screen and (max-device-width : 700px)
+{
+    .background-1{
+        margin:20px;
+        background-color:white;
+        padding:1px;
+        border-bottom-left-radius:20px;
+        border-bottom-right-radius:20px;
+    }
+    .background-2{
+        margin:20px;
+        background-color:white;
+        padding:1px;
+        border-bottom-left-radius:20px;
+        border-bottom-right-radius:20px;
+    }
+    .text-mob{
+        margin-bottom:20px;
+    }
+    .ourhealth-md{
+        display: block !important;
+        border-top-left-radius: 200px;
+        border-top-right-radius: 200px;
+        border-bottom-left-radius: 22px;
+        border-bottom-right-radius: 22px;
+    }
+}
+.background{
+    margin:20px;
+    background-color: white;
+    box-shadow: 0px 0px 8px 5px rgb(201, 200, 200) !important;
+    padding: 20px;
+    border-radius: 20px;
+}
+.reality-healthcare{
+    font-family: 'Carter One', cursive;
+    color: #636363 !important;
+
+}
+.accountable{
+    font-family: 'Sigmar One', cursive;
+    color: #434343 !important;
+}
+.heading{
+    font-family: 'Abril Fatface', cursive;
+    color: #545454 !important;
+}
+.about-box{
+    color: #7a7a7a;
+}
+.text-problem{
+    color:#646464 !important;
+}
+.our-goal{
+    font-size:27px;
+    font-weight:300;
+    letter-spacing: 2px;
+    color:rgb(66, 100, 252);
+    margin-top:-5px;
+    font-family:New Century Schoolbook, TeX Gyre Schola, serif;
+}

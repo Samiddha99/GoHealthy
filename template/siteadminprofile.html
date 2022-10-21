@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<head>
+ {% block title %}
+    <title>Site Admin | Go Healthy</title>
+{% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/adminprofile.css' %}">
+    {% endblock style %}
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+
+{% block content %}
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" id="close_nav">&times;</a>
+  <a href="">
+    <img src="{% static 'images/GoHealthy_logo white.png' %}" width="160" height="50" alt="Logo">
+  </a>
+
+  <a href="#" id="item1">Users</a>
+  <a href="#" id="item2">New Users</a>
+  <a href="#" id="item3">Bed Remove Requests</a>
+  <a href="#" id="item4">Bed Books</a>
+  <a href="#" id="item5">Notifications</a>
+  <a href="#" id="item6">Emergency Numbers</a>
+  <a href="#" id="item7">Complaints</a>
+  <a href="#" id="item8">Contacts</a>
+
+  <div style="color:rgba(129, 129, 129, 0.3);padding-left:35px;padding-top:30px;font-size:32px;">Admin Panel</div>
+</div>
+
+<div id="showingsidenav" class="showingsidenav">
+  <span style="font-size:20px;cursor:pointer" class="menu-bar" id="open_nav"><i class="fas fa-angle-double-right" style="font-size: 28px"></i></span>
+
+  <a href="#" title="User">
+    <i class="fas fa-user"></i>
+  </a>
+  <a href="#" title="New Users"><i class="fas fa-user-plus"></i></a>
+  <a href="#" title="Bed Remove Request"><i class="fas fa-bed-empty"></i></a>
+  <a href="#" title="Bed Books"><i class="fas fa-bed"></i></a>
+  <a href="#" title="Notifications"><i class="fas fa-bells"></i></a>
+  <a href="#" title="Emergency Numbers"><i class="fas fa-phone-rotary"></i></a>
+  <a href="#" title="Complaints"><i class="fas fa-file-alt"></i></a>
+  <a href="#" title="Contacts"><i class="fas fa-mobile"></i></a>
+</div>
+
+<div id="main">
+
+
+</div>
+{% endblock content %}
+
+{% block onesignal %}
+    
+{% endblock onesignal %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/adminprofile.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

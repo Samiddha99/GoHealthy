@@ -1,0 +1,644 @@
+:root {
+    --sm_min: 460px;
+    --sm_start: 461px;
+
+    --md_min: 613px;
+    --md_start: 614px;
+
+    --lg_min: 792px;
+    --lg_start: 793px;
+
+    --xl_min: 959px;
+    --xl_start: 960px;
+  }
+
+.addeventatc_dropdown{
+    width: 280px !important;
+    margin-left: -50px !important;
+}
+
+.anychart-credits{
+    display: none !important;
+}
+
+.modal .modal-dialog{
+    margin-top: 70px;
+}
+
+.autocomplete-result-list{
+    text-align: left;
+}
+
+.dropdown-input-field-area .dropdown-input-search{
+    width: 100%;
+    border: 1px solid #050064;
+    outline: none !important;
+    padding-left:30px !important;
+    padding:2px;
+    margin-bottom:10px;
+}
+.dropdown-input-field-area .dropdown-input-search:focus{
+    border: 1px solid #050099;
+
+}
+.dropdown-input-field-area .dropdown-options-menu{
+    padding: 10px;
+}
+.dropdown-input-field-area .dropdown-options-menu .dropdown-item{
+    width: 100% !important;
+    cursor:context-menu;
+    color: black;
+    margin: 0px !important;
+    margin-bottom: -10px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+.dropdown-input-field-area .dataLists{
+    height: 150px;
+    overflow-y: auto;
+}
+.dropdown-input-field-area .dataLists::-webkit-scrollbar{
+    width: 7px;
+}
+.dropdown-input-field-area .dataLists::-webkit-scrollbar-track {
+    background-color: rgb(255, 255, 255);
+}
+.dropdown-input-field-area .dataLists::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #e4e4e4;
+}
+.dropdown-input-field-area .dataLists::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    background-color: #c3c1c1;
+}
+
+.floating-label {
+    display: flex;
+    flex-flow: column-reverse;
+  }
+  /* Add a transition to the label and input. */
+  .floating-label label, .floating-label input, .floating-label select, .floating-label textarea {
+    transition: all 0.2s;
+  }
+  .floating-label input, .floating-label select, .floating-label textarea{
+      margin-top: -31px;
+  }
+  .floating-label label span{
+      user-select: none;
+}
+  /**
+  * Translate down and scale the label up to cover the placeholder,
+  * when following an input (with placeholder-shown support).
+  * Also make sure the label is only on one row, at max 2/3rds of the
+  * field—to make sure it scales properly and doesn't wrap.
+  */
+  .floating-label input:placeholder-shown ~ label, .floating-label textarea:placeholder-shown ~ label, .floating-label select ~ label{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transform-origin: left bottom;
+    transform: translate(10px, 9px) scale(1.1);
+  }
+  /**
+  * By default, the placeholder should be transparent. Also, it should 
+  * inherit the transition.
+  */
+  .floating-label input::-webkit-input-placeholder, .floating-label textarea::-webkit-input-placeholder {
+    opacity: 0;
+  }
+  /**
+  * Show the placeholder when the input is focused.
+  */
+.floating-label input:focus::-webkit-input-placeholder, .floating-label textarea:focus::-webkit-input-placeholder{
+    opacity: 1 !important;
+}
+
+  /**
+  * When the element is focused, remove the label transform.
+  * Also, do this when the placeholder is _not_ shown, i.e. when 
+  * there's something in the input at all.
+  */
+  .floating-label input:not(:placeholder-shown) + label, .floating-label input:focus + label, .floating-label textarea:not(:placeholder-shown) ~ label, .floating-label textarea:focus ~ label, .floating-label select:not([value=""]):valid + label, .floating-label select:focus + label {
+    transform: translate(8px, -14px) scale(1);
+  }
+  .floating-label input:not(:placeholder-shown) + label span, .floating-label input:focus + label span, .floating-label textarea:not(:placeholder-shown) ~ label span, .floating-label textarea:focus ~ label span, .floating-label select:not([value=""]):valid + label span, .floating-label select:focus + label span {
+    padding-top: -10px !important;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: white;
+  }
+  .floating-label input ~ label, .floating-label textarea ~ label, .floating-label textarea:focus ~ label{
+    cursor: text !important;
+  }
+  
+.floating-label select + label{
+    transform: translate(13px, -14px) scale(1) !important;
+}
+.floating-label select:focus + label{
+    transform: translate(8px, -14px) scale(1) !important;
+}
+input:read-only, select:read-only, textarea:read-only{
+    background-color: white !important;
+}
+input:disabled, select:disabled, textarea:disabled{
+    background-color: white !important;
+}
+
+.modal-open{
+    padding-right: 9px !important;
+    overflow: hidden !important;
+}
+body::-webkit-scrollbar{
+    width: 10px;
+}
+body::-webkit-scrollbar-track {
+    background-color: rgb(255, 255, 255);
+}
+body::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #a485fc;
+}
+body::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    background-color: #7950f5;
+}
+body{
+    overflow-x:hidden;
+    min-height: 100vh;
+}
+
+.modal-header{
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.modal-footer{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.custom-navbar{
+    border: none;
+    border-bottom-color:white;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    margin: 0px !important;
+    background-color: #4b30bd;
+    padding-left : 2px;
+    padding-top:7px;
+    padding-bottom:10px;
+    padding-right:2px;
+    top: 0px !important;
+    bottom: 0px !important;
+    z-index: 50 !important;
+}
+
+@media only screen and (min-device-width : 960px){
+    .custom-navbar .nav-item.dropdown:hover::after {
+        content: '';
+    
+        width: 80%;
+        position: absolute;
+        left: 8px;
+        bottom: 6px;
+    
+        border-width: 0 0 2px;
+        border-color: white;
+        border-style: solid;
+    }
+}
+.custom-navbar .nav-item .dropdown-menu{
+    margin-top: -2px !important;
+}
+.custom-navbar .nav-item .dropdown-item{
+    font-family: 'Source Serif 4', sans-serif;
+    font-weight: bold;
+    color: white;
+}
+.custom-navbar .nav-text{
+    color: white !important;
+    font-family: 'Source Sans Pro', sans-serif;
+    margin-left: 1px;
+}
+.dropdown-menu.request .dropdown-item:hover{
+    background-color: red !important;
+}
+.dropdown-menu.blood, .dropdown-menu.camp{
+    background-color: #613ff5;
+}
+.dropdown-menu.request{
+    background-color: #613ff5;
+}
+.dropdown-menu.blood .dropdown-item:hover, .dropdown-menu.camp .dropdown-item:hover{
+    color: #4b30bd !important;
+}
+@media only screen and (max-device-width : 959px)
+{
+    .custom-navbar .nav-text{
+        margin-left: 30px;
+    }
+    .custom-navbar .nav-item{
+        margin-bottom: 12px;
+    }
+    .custom-navbar-nav{
+        margin-top: 10px;
+    }
+}
+.password-change-form .password-group-text-old-password{
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background-color: #fcb63f;
+    color: white;
+    margin-right: -1px;
+    height: 38px;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+}
+.password-change-form .password-group-text-new-password{
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background-color: #7ada6a;
+    color: white;
+    margin-right: -1px;
+    height: 38px;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+}
+.password-change-form .new-password-input{
+    border: 1px solid #C3C3C3;
+    margin-bottom:5px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+}
+.password-change-form .new-password-input:focus{
+    border-color: #3CFF00 !important;
+    box-shadow: 0px 0px 5px rgba(60, 255, 0, 1) !important;
+    margin-bottom:5px;
+    outline:none !important;
+}
+.password-change-form .old-password-input{
+    border: 1px solid #C3C3C3;
+    margin-bottom:5px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+}
+.password-change-form .old-password-input:focus{
+    border-color: #FFA000 !important;
+    box-shadow: 0px 0px 5px rgba(255, 160, 0, 1) !important;
+    margin-bottom:5px;
+    outline:none !important;
+}
+.password-change-form .invalid-password-input-field{
+    border-color: #FF3F00 !important;
+    margin-bottom:5px;
+}
+.password-change-form .invalid-password-input-field:focus{
+    border-color: #FF3F00 !important;
+    box-shadow: 0px 0px 10px rgba(255, 63, 0, 1) !important;
+    margin-bottom:5px;
+    outline:none !important;
+}
+.our-goal{
+    font-size:27px;
+    font-weight:550;
+    letter-spacing: 2px;
+    text-shadow:-2px 1px white;
+    color:red;
+    margin-top:-5px;
+    font-family:New Century Schoolbook, TeX Gyre Schola, serif;
+}
+.custom-navbar .nav-item .dropdown-menu{
+    display: none;
+}
+.custom-navbar .nav-item.dropdown:hover .dropdown-menu{
+     display: block;
+}
+.hospitals-refetch{
+    color: blue;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+.map{
+    box-sizing: content-box !important;
+}
+.btn:disabled{
+    cursor: not-allowed !important;
+}
+.disabled{
+    cursor: not-allowed !important;
+}
+button:disabled{
+    cursor: not-allowed !important;
+}
+
+.tcScroll::-webkit-scrollbar{
+    width: 7px;
+}
+.tcScroll::-webkit-scrollbar-track {
+    background-color: #ffffff
+}
+.tcScroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #a3bee7;
+}
+.tcScroll{
+    overflow-y:auto;
+    height:70vh;
+}
+.tc-modal-dialog{
+    margin-top: 15px !important;
+}
+.tc-modal-header{
+    padding:7px;
+}
+.tc-modal-footer
+{
+    padding: 7px;
+}
+#tcUnderstoodBtn{
+    cursor: default !important;
+}
+.text-capitalize{
+    text-transform: capitalize !important;
+}
+.text-uppercase{
+    text-transform: uppercase !important;
+}
+.text-lowercase{
+    text-transform: lowercase !important;
+}
+
+/* The Modal (background) */
+.Alert {
+    z-index: 2000 !important;
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.SingleButton-Alert-content {
+    z-index: 2000 !important;
+    position: fixed;
+    background-color: #fefefe;
+    top: 40%;
+    left: 50%;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    transform: translate(-50%, -50%);
+}
+@media only screen and (min-device-width : 700px)
+{
+    .SingleButton-Alert-content {
+        width: 500px;
+    }
+}
+.SingleButton-Alert-header{
+    padding: 2px;
+    padding-left: 10px;
+    background-color: #3073bb;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: left;
+}
+.SingleButton-Alert-body{
+    padding: 10px;
+    padding-bottom: 8px;
+    text-align: center;
+}
+.SingleButton-Alert-footer{
+    text-align: center;
+    padding: 5px;
+    padding-bottom: 10px;
+}
+.SingleButton-Alert-button{
+    background-color: #357ebd;
+    padding-left: 30px;
+    padding-right: 30px;
+    color: white;
+    border: none;
+    outline: none;
+}
+.SingleButton-Alert-button:hover{
+    background-color: #2a6aa1;
+}
+
+.TwoButton-Alert-content {
+    z-index: 2000 !important;
+    position: fixed;
+    background-color: #fefefe;
+    top: 40%;
+    left: 50%;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 0px !important;
+    width: 80%; /* Could be more or less, depending on screen size */
+    transform: translate(-50%, -50%);
+}
+@media only screen and (min-device-width : 700px)
+{
+    .TwoButton-Alert-content {
+        width: 400px;
+    }
+}
+.TwoButton-Alert-header{
+    padding: 2px;
+    padding-left: 10px;
+    background-color: #3073bb;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: left;
+}
+.TwoButton-Alert-body{
+    padding: 10px !important;
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+    text-align: center;
+    font-size: 17px;
+}
+.TwoButton-Alert-footer{
+    text-align: center;
+}
+.TwoButton-Alert-button-close{
+    background-color: #eeeeee;
+    padding: 8px;
+    padding-left: 30px;
+    padding-right: 30px;
+    color: #f9002c;
+    border: 1px solid #c4c3c3;
+    outline: none;
+    width: 100% !important;
+    font-weight: 450;
+    margin: 0px !important;
+    border-bottom-left-radius: 5px !important;
+}
+.TwoButton-Alert-button-close:hover{
+    background-color: #e6e3e3;
+}
+.TwoButton-Alert-button-okay{
+    background-color: #eeeeee;
+    padding: 8px;
+    padding-left: 30px;
+    padding-right: 30px;
+    color: #006cd8;
+    border: 1px solid #c4c3c3;
+    outline: none;
+    width: 100% !important;
+    font-weight: 450;
+    margin: 0px !important;
+    border-bottom-right-radius: 5px !important;
+}
+.TwoButton-Alert-button-okay:hover{
+    background-color: #e6e3e3;
+}
+.btn-file-upload{
+    background-color: #5d1cc5;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+}
+.btn-upload{
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #A424FF;
+    cursor: pointer;
+    padding: 8px;
+}
+.btn-upload:hover{
+    background-color: #861dd1;
+}
+@media only screen and (min-device-width : 600px){
+    .modal-change-password{
+        min-width: 550px !important;
+        max-width: 550px !important;
+    }
+}
+.btn:focus, .btn:active{
+    outline: none;
+    box-shadow: none;
+}
+#scrolltopbtn{
+    margin-right:20px;
+    position:fixed;
+    bottom: 12px;
+    z-index: 2000;
+    border-radius:100%;
+    border-color:white;
+    transform: translateY(1000%);
+    transition: all 1s !important;
+}
+.modal{
+    overflow-y: hidden !important;
+}
+
+
+/* CSS of Donor Registration Page */
+.donorEligibilityScroll::-webkit-scrollbar{
+    width: 7px;
+}
+.donorEligibilityScroll::-webkit-scrollbar-track {
+    background-color: #ffffff
+}
+.donorEligibilityScroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #ff9393;
+}
+.donorEligibilityScroll{
+    overflow-y:auto;
+    max-height: 70vh;
+    padding: 20px;
+}
+.modal-dialog-donor-eligibility{
+    margin-top: 6px !important;
+}
+
+.donor-eligibility-modal-header{
+    padding:12px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.donor-eligibility-modal-footer
+{
+    padding: 7px;
+    background-color: rgb(241, 203, 203);
+}
+#donorEligibilityBtn{
+    border-radius: 20px;
+}
+
+.eligible-radio{
+    background-color: white;
+    border-radius: 50px;
+    padding: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.side-div .side-div-content{
+    display:inline-block;
+    vertical-align: middle;
+}
+
+#bloodrequest .form-control:focus{
+    box-shadow: 0px 0px 3px 1px rgb(252, 66, 66);
+    border: none !important;
+    outline: none !important;
+}
+
+table {
+    counter-reset: serial-number;  /* Set the serial number counter to 0 */
+}
+.table-serial-no:before {
+    counter-increment: serial-number;  /* Increment the serial number counter */
+    content: counter(serial-number);  /* Display the counter */
+}
+.table-serial-no{
+    font-weight: bold;
+}
+
+#cropModal .modal-dialog{
+    min-width: 100% !important;
+    height: 100% !important;
+    margin: 5px !important;
+    z-index: 99999;
+}
+.crop-img-container{
+    text-align: center !important;
+}
+.crop-img-container #image-to-be-crop{
+    width: 100%;
+    height: 70vh;
+    object-fit: contain !important;
+}
+
+
+.table-column{
+    text-align: center !important;
+    padding-right: 30px !important;
+}
+.table-sort-icon{
+    position: absolute !important;
+    margin-top: 5px !important;
+    right:3px !important;
+}
+.table-sort-column{
+    cursor: pointer;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.table-sort-icon.fas.fa-sort{
+    color: rgba(255, 255, 255, 0.54);
+}

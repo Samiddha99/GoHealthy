@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% extends 'base.html' %}
+    {% load static %}
+    {% load custom_tags %}
+    <head>
+        {% block meta %}
+        <meta name="title" content="Blood Bank | Go Healthy">
+        <meta name="description" content="See all details of blood bank">
+        {% endblock meta %}
+    
+        {% block title %}
+        <title>Blood Bank | Go Healthy</title>
+        {% endblock title %}
+
+        {% block style %}
+            <link rel="stylesheet" href="{% static 'css/bloodbankpage.css' %}">
+        {% endblock style %}
+    </head>
+    {% block body %}
+    <body>
+    {% endblock body %}
+
+    {% block content %}
+    <h1 class="page-heading text-center mt-4">{{bank.Name}}</h1>
+    <h5 class="text-center text-secondary mt-2" style="font-size: 18px;"><i class="fa-solid fa-circle-small" style="font-size: 13px;"></i> {{bank.Ownership}} <i class="fa-solid fa-circle-small" style="font-size: 13px;"></i></h5>
+    <input type="hidden" id="blood_bank_id" value="{{bank.Unique_Id}}">
+
+    <div class="text-right text-muted ml-2 mr-2 mr-md-4">
+        Last Update: <span id="last_update">{{bank.Last_Update}}</span>
+    </div>
+
+    <div class="blood-availability-data-box ml-2 mr-2 ml-md-4 mr-md-4">
+        <table class="table table-striped table-bordered blood-availability-data-table table-sm table-responsive-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Blood Components</th>
+                    <th scope="col">A+</th>
+                    <th scope="col">A-</th>
+                    <th scope="col">B+</th>
+                    <th scope="col">B-</th>
+                    <th scope="col">AB+</th>
+                    <th scope="col">AB-</th>
+                    <th scope="col">O+</th>
+                    <th scope="col">O-</th>
+                    <th scope="col">HH</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">WHOLE BLOOD</th>
+                    <td id="whole_blood_A_pos">{{bank.Blood_Availability.whole_blood_A_pos}}</td>
+                    <td id="whole_blood_A_neg">{{bank.Blood_Availability.whole_blood_A_neg}}</td>
+                    <td id="whole_blood_B_pos">{{bank.Blood_Availability.whole_blood_B_pos}}</td>
+                    <td id="whole_blood_B_neg">{{bank.Blood_Availability.whole_blood_B_neg}}</td>
+                    <td id="whole_blood_AB_pos">{{bank.Blood_Availability.whole_blood_AB_pos}}</td>
+                    <td id="whole_blood_AB_neg">{{bank.Blood_Availability.whole_blood_AB_neg}}</td>
+                    <td id="whole_blood_O_pos">{{bank.Blood_Availability.whole_blood_O_pos}}</td>
+                    <td id="whole_blood_O_neg">{{bank.Blood_Availability.whole_blood_O_neg}}</td>
+                    <td id="whole_blood_hh">{{bank.Blood_Availability.whole_blood_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Packed Red Blood Cells</th>
+                    <td id="packed_red_blood_cells_A_pos">{{bank.Blood_Availability.packed_red_blood_cells_A_pos}}</td>
+                    <td id="packed_red_blood_cells_A_neg">{{bank.Blood_Availability.packed_red_blood_cells_A_neg}}</td>
+                    <td id="packed_red_blood_cells_B_pos">{{bank.Blood_Availability.packed_red_blood_cells_B_pos}}</td>
+                    <td id="packed_red_blood_cells_B_neg">{{bank.Blood_Availability.packed_red_blood_cells_B_neg}}</td>
+                    <td id="packed_red_blood_cells_AB_pos">{{bank.Blood_Availability.packed_red_blood_cells_AB_pos}}</td>
+                    <td id="packed_red_blood_cells_AB_neg">{{bank.Blood_Availability.packed_red_blood_cells_AB_neg}}</td>
+                    <td id="packed_red_blood_cells_O_pos">{{bank.Blood_Availability.packed_red_blood_cells_O_pos}}</td>
+                    <td id="packed_red_blood_cells_O_neg">{{bank.Blood_Availability.packed_red_blood_cells_O_neg}}</td>
+                    <td id="packed_red_blood_cells_hh">{{bank.Blood_Availability.packed_red_blood_cells_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">White Blood Cells</th>
+                    <td id="white_blood_cells_A_pos">{{bank.Blood_Availability.white_blood_cells_A_pos}}</td>
+                    <td id="white_blood_cells_A_neg">{{bank.Blood_Availability.white_blood_cells_A_neg}}</td>
+                    <td id="white_blood_cells_B_pos">{{bank.Blood_Availability.white_blood_cells_B_pos}}</td>
+                    <td id="white_blood_cells_B_neg">{{bank.Blood_Availability.white_blood_cells_B_neg}}</td>
+                    <td id="white_blood_cells_AB_pos">{{bank.Blood_Availability.white_blood_cells_AB_pos}}</td>
+                    <td id="white_blood_cells_AB_neg">{{bank.Blood_Availability.white_blood_cells_AB_neg}}</td>
+                    <td id="white_blood_cells_O_pos">{{bank.Blood_Availability.white_blood_cells_O_pos}}</td>
+                    <td id="white_blood_cells_O_neg">{{bank.Blood_Availability.white_blood_cells_O_neg}}</td>
+                    <td id="white_blood_cells_hh">{{bank.Blood_Availability.white_blood_cells_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Plasma</th>
+                    <td id="plasma_A_pos">{{bank.Blood_Availability.plasma_A_pos}}</td>
+                    <td id="plasma_A_neg">{{bank.Blood_Availability.plasma_A_neg}}</td>
+                    <td id="plasma_B_pos">{{bank.Blood_Availability.plasma_B_pos}}</td>
+                    <td id="plasma_B_neg">{{bank.Blood_Availability.plasma_B_neg}}</td>
+                    <td id="plasma_AB_pos">{{bank.Blood_Availability.plasma_AB_pos}}</td>
+                    <td id="plasma_AB_neg">{{bank.Blood_Availability.plasma_AB_neg}}</td>
+                    <td id="plasma_O_pos">{{bank.Blood_Availability.plasma_O_pos}}</td>
+                    <td id="plasma_O_neg">{{bank.Blood_Availability.plasma_O_neg}}</td>
+                    <td id="plasma_hh">{{bank.Blood_Availability.plasma_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Platelet</th>
+                    <td id="platelet_A_pos">{{bank.Blood_Availability.platelet_A_pos}}</td>
+                    <td id="platelet_A_neg">{{bank.Blood_Availability.platelet_A_neg}}</td>
+                    <td id="platelet_B_pos">{{bank.Blood_Availability.platelet_B_pos}}</td>
+                    <td id="platelet_B_neg">{{bank.Blood_Availability.platelet_B_neg}}</td>
+                    <td id="platelet_AB_pos">{{bank.Blood_Availability.platelet_AB_pos}}</td>
+                    <td id="platelet_AB_neg">{{bank.Blood_Availability.platelet_AB_neg}}</td>
+                    <td id="platelet_O_pos">{{bank.Blood_Availability.platelet_O_pos}}</td>
+                    <td id="platelet_O_neg">{{bank.Blood_Availability.platelet_O_neg}}</td>
+                    <td id="platelet_hh">{{bank.Blood_Availability.platelet_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Fresh Frozen Plasma</th>
+                    <td id="fresh_frozen_plasma_A_pos">{{bank.Blood_Availability.fresh_frozen_plasma_A_pos}}</td>
+                    <td id="fresh_frozen_plasma_A_neg">{{bank.Blood_Availability.fresh_frozen_plasma_A_neg}}</td>
+                    <td id="fresh_frozen_plasma_B_pos">{{bank.Blood_Availability.fresh_frozen_plasma_B_pos}}</td>
+                    <td id="fresh_frozen_plasma_B_neg">{{bank.Blood_Availability.fresh_frozen_plasma_B_neg}}</td>
+                    <td id="fresh_frozen_plasma_AB_pos">{{bank.Blood_Availability.fresh_frozen_plasma_AB_pos}}</td>
+                    <td id="fresh_frozen_plasma_AB_neg">{{bank.Blood_Availability.fresh_frozen_plasma_AB_neg}}</td>
+                    <td id="fresh_frozen_plasma_O_pos">{{bank.Blood_Availability.fresh_frozen_plasma_O_pos}}</td>
+                    <td id="fresh_frozen_plasma_O_neg">{{bank.Blood_Availability.fresh_frozen_plasma_O_neg}}</td>
+                    <td id="fresh_frozen_plasma_hh">{{bank.Blood_Availability.fresh_frozen_plasma_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Platelet Poor Plasma</th>
+                    <td id="platelet_poor_plasma_A_pos">{{bank.Blood_Availability.platelet_poor_plasma_A_pos}}</td>
+                    <td id="platelet_poor_plasma_A_neg">{{bank.Blood_Availability.platelet_poor_plasma_A_neg}}</td>
+                    <td id="platelet_poor_plasma_B_pos">{{bank.Blood_Availability.platelet_poor_plasma_B_pos}}</td>
+                    <td id="platelet_poor_plasma_B_neg">{{bank.Blood_Availability.platelet_poor_plasma_B_neg}}</td>
+                    <td id="platelet_poor_plasma_AB_pos">{{bank.Blood_Availability.platelet_poor_plasma_AB_pos}}</td>
+                    <td id="platelet_poor_plasma_AB_neg">{{bank.Blood_Availability.platelet_poor_plasma_AB_neg}}</td>
+                    <td id="platelet_poor_plasma_O_pos">{{bank.Blood_Availability.platelet_poor_plasma_O_pos}}</td>
+                    <td id="platelet_poor_plasma_O_neg">{{bank.Blood_Availability.platelet_poor_plasma_O_neg}}</td>
+                    <td id="platelet_poor_plasma_hh">{{bank.Blood_Availability.platelet_poor_plasma_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Platelet Rich Plasma</th>
+                    <td id="platelet_rich_plasma_A_pos">{{bank.Blood_Availability.platelet_rich_plasma_A_pos}}</td>
+                    <td id="platelet_rich_plasma_A_neg">{{bank.Blood_Availability.platelet_rich_plasma_A_neg}}</td>
+                    <td id="platelet_rich_plasma_B_pos">{{bank.Blood_Availability.platelet_rich_plasma_B_pos}}</td>
+                    <td id="platelet_rich_plasma_B_neg">{{bank.Blood_Availability.platelet_rich_plasma_B_neg}}</td>
+                    <td id="platelet_rich_plasma_AB_pos">{{bank.Blood_Availability.platelet_rich_plasma_AB_pos}}</td>
+                    <td id="platelet_rich_plasma_AB_neg">{{bank.Blood_Availability.platelet_rich_plasma_AB_neg}}</td>
+                    <td id="platelet_rich_plasma_O_pos">{{bank.Blood_Availability.platelet_rich_plasma_O_pos}}</td>
+                    <td id="platelet_rich_plasma_O_neg">{{bank.Blood_Availability.platelet_rich_plasma_O_neg}}</td>
+                    <td id="platelet_rich_plasma_hh">{{bank.Blood_Availability.platelet_rich_plasma_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">SDP (Single Donor Platelets)</th>
+                    <td id="single_donor_platelets_A_pos">{{bank.Blood_Availability.single_donor_platelets_A_pos}}</td>
+                    <td id="single_donor_platelets_A_neg">{{bank.Blood_Availability.single_donor_platelets_A_neg}}</td>
+                    <td id="single_donor_platelets_B_pos">{{bank.Blood_Availability.single_donor_platelets_B_pos}}</td>
+                    <td id="single_donor_platelets_B_neg">{{bank.Blood_Availability.single_donor_platelets_B_neg}}</td>
+                    <td id="single_donor_platelets_AB_pos">{{bank.Blood_Availability.single_donor_platelets_AB_pos}}</td>
+                    <td id="single_donor_platelets_AB_neg">{{bank.Blood_Availability.single_donor_platelets_AB_neg}}</td>
+                    <td id="single_donor_platelets_O_pos">{{bank.Blood_Availability.single_donor_platelets_O_pos}}</td>
+                    <td id="single_donor_platelets_O_neg">{{bank.Blood_Availability.single_donor_platelets_O_neg}}</td>
+                    <td id="single_donor_platelets_hh">{{bank.Blood_Availability.single_donor_platelets_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">RDP (Random Donor Platelets)</th>
+                    <td id="random_donor_platelets_A_pos">{{bank.Blood_Availability.random_donor_platelets_A_pos}}</td>
+                    <td id="random_donor_platelets_A_neg">{{bank.Blood_Availability.random_donor_platelets_A_neg}}</td>
+                    <td id="random_donor_platelets_B_pos">{{bank.Blood_Availability.random_donor_platelets_B_pos}}</td>
+                    <td id="random_donor_platelets_B_neg">{{bank.Blood_Availability.random_donor_platelets_B_neg}}</td>
+                    <td id="random_donor_platelets_AB_pos">{{bank.Blood_Availability.random_donor_platelets_AB_pos}}</td>
+                    <td id="random_donor_platelets_AB_neg">{{bank.Blood_Availability.random_donor_platelets_AB_neg}}</td>
+                    <td id="random_donor_platelets_O_pos">{{bank.Blood_Availability.random_donor_platelets_O_pos}}</td>
+                    <td id="random_donor_platelets_O_neg">{{bank.Blood_Availability.random_donor_platelets_O_neg}}</td>
+                    <td id="random_donor_platelets_hh">{{bank.Blood_Availability.random_donor_platelets_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">CPP (Cryo Poor Plasma)</th>
+                    <td id="cryo_poor_plasma_A_pos">{{bank.Blood_Availability.cryo_poor_plasma_A_pos}}</td>
+                    <td id="cryo_poor_plasma_A_neg">{{bank.Blood_Availability.cryo_poor_plasma_A_neg}}</td>
+                    <td id="cryo_poor_plasma_B_pos">{{bank.Blood_Availability.cryo_poor_plasma_B_pos}}</td>
+                    <td id="cryo_poor_plasma_B_neg">{{bank.Blood_Availability.cryo_poor_plasma_B_neg}}</td>
+                    <td id="cryo_poor_plasma_AB_pos">{{bank.Blood_Availability.cryo_poor_plasma_AB_pos}}</td>
+                    <td id="cryo_poor_plasma_AB_neg">{{bank.Blood_Availability.cryo_poor_plasma_AB_neg}}</td>
+                    <td id="cryo_poor_plasma_O_pos">{{bank.Blood_Availability.cryo_poor_plasma_O_pos}}</td>
+                    <td id="cryo_poor_plasma_O_neg">{{bank.Blood_Availability.cryo_poor_plasma_O_neg}}</td>
+                    <td id="cryo_poor_plasma_hh">{{bank.Blood_Availability.cryo_poor_plasma_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">LRBC (Leukoreduced Blood Components)</th>
+                    <td id="leukoreduced_blood_components_A_pos">{{bank.Blood_Availability.leukoreduced_blood_components_A_pos}}</td>
+                    <td id="leukoreduced_blood_components_A_neg">{{bank.Blood_Availability.leukoreduced_blood_components_A_neg}}</td>
+                    <td id="leukoreduced_blood_components_B_pos">{{bank.Blood_Availability.leukoreduced_blood_components_B_pos}}</td>
+                    <td id="leukoreduced_blood_components_B_neg">{{bank.Blood_Availability.leukoreduced_blood_components_B_neg}}</td>
+                    <td id="leukoreduced_blood_components_AB_pos">{{bank.Blood_Availability.leukoreduced_blood_components_AB_pos}}</td>
+                    <td id="leukoreduced_blood_components_AB_neg">{{bank.Blood_Availability.leukoreduced_blood_components_AB_neg}}</td>
+                    <td id="leukoreduced_blood_components_O_pos">{{bank.Blood_Availability.leukoreduced_blood_components_O_pos}}</td>
+                    <td id="leukoreduced_blood_components_O_neg">{{bank.Blood_Availability.leukoreduced_blood_components_O_neg}}</td>
+                    <td id="leukoreduced_blood_components_hh">{{bank.Blood_Availability.leukoreduced_blood_components_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">LPC</th>
+                    <td id="lpc_A_pos">{{bank.Blood_Availability.lpc_A_pos}}</td>
+                    <td id="lpc_A_neg">{{bank.Blood_Availability.lpc_A_neg}}</td>
+                    <td id="lpc_B_pos">{{bank.Blood_Availability.lpc_B_pos}}</td>
+                    <td id="lpc_B_neg">{{bank.Blood_Availability.lpc_B_neg}}</td>
+                    <td id="lpc_AB_pos">{{bank.Blood_Availability.lpc_AB_pos}}</td>
+                    <td id="lpc_AB_neg">{{bank.Blood_Availability.lpc_AB_neg}}</td>
+                    <td id="lpc_O_pos">{{bank.Blood_Availability.lpc_O_pos}}</td>
+                    <td id="lpc_O_neg">{{bank.Blood_Availability.lpc_O_neg}}</td>
+                    <td id="lpc_hh">{{bank.Blood_Availability.lpc_hh}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Cryo</th>
+                    <td id="cryo_A_pos">{{bank.Blood_Availability.cryo_A_pos}}</td>
+                    <td id="cryo_A_neg">{{bank.Blood_Availability.cryo_A_neg}}</td>
+                    <td id="cryo_B_pos">{{bank.Blood_Availability.cryo_B_pos}}</td>
+                    <td id="cryo_B_neg">{{bank.Blood_Availability.cryo_B_neg}}</td>
+                    <td id="cryo_AB_pos">{{bank.Blood_Availability.cryo_AB_pos}}</td>
+                    <td id="cryo_AB_neg">{{bank.Blood_Availability.cryo_AB_neg}}</td>
+                    <td id="cryo_O_pos">{{bank.Blood_Availability.cryo_O_pos}}</td>
+                    <td id="cryo_O_neg">{{bank.Blood_Availability.cryo_O_neg}}</td>
+                    <td id="cryo_hh">{{bank.Blood_Availability.cryo_hh}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="row mt-5 mb-3 ml-2 mr-2 ml-md-5 mr-md-5">
+        <div class="col-md col-info-card one order-2 order-md-1">
+            <div class="wrapper info-card">
+                <div class="header text-center">
+                    ADDRESS
+                </div>
+                <div class="info-text text-left">
+                    <div class="info-state mb-2 text-center mt-2">{{bank.State.Name}}</div>
+                    <div class="mt-1">
+                        <div class="address-heading text-right">
+                            <p><b>District: </b></p>
+                        </div>
+                        <div class="address-value">
+                            <p>{{bank.District.Name}}</p>
+                        </div>
+                    </div>
+                    <div class="mt-0">
+                        <div class="address-heading text-right">
+                            <p><b>Subdivision: </b></p>
+                        </div>
+                        <div class="address-value">
+                            <p>{{bank.Subdivision}}</p>
+                        </div>
+                    </div>
+                    <div class="mt-0">
+                        <div class="address-heading text-right">
+                            <p><b>City:</b></p>
+                        </div>
+                        <div class="address-value">
+                            <p>{{bank.City}}</p>
+                        </div>
+                    </div>
+                    <div class="mt-0">
+                        <div class="address-heading text-right">
+                            <p><b>Pin:</b></p>
+                        </div>
+                        <div class="address-value">
+                            <p>{{bank.Pin}}</p>
+                        </div>
+                    </div>
+                    <div class="mt-0">
+                        <div class="address-heading text-right">
+                            <p><b>Address:</b></p>
+                        </div>
+                        <div class="address-value">
+                            <p style="white-space: pre-wrap">{{bank.Address}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a class="btn btn-primary" id="directionBtn" data-dest="{{bank.Latitude}},{{bank.Longitude}}" target="__blank" style="width: 70%;">Get Direction</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md col-info-card two order-1 order-md-2">
+            <div class="wrapper info-card">
+                <div class="header text-center">
+                    CONTACT
+                </div>
+                <div class="info-text text-center mt-3">
+                    <div class="info-contact mt-2">
+                        <p><b>Emergency:</b> <a href="tel: {{bank.Emergency_Number}}">{{bank.Emergency_Number}}</a></p>
+                        {% if bank.Toll_Free_Number is not None and bank.Toll_Free_Number != '' %}
+                            <p><b>Toll Free:</b> <a href="tel: {{bank.Toll_Free_Number}}">{{bank.Toll_Free_Number}}</a></p>
+                        {% endif %}
+                        {% if bank.Helpline_Number is not None and bank.Helpline_Number != '' %}
+                            <p><b>Helpline:</b> <a href="tel: {{bank.Helpline_Number}}">{{bank.Helpline_Number}}</a></p>
+                        {% endif %}
+
+                        {% if bank.Contacts|listLength > 0 %}
+                            <p>
+                                <b>Other: </b>
+                                {% for i in bank.Contacts %}
+                                    <a href="tel: {{i}}">{{i}}</a>
+                                    {% if not forloop.last %}
+                                        <span>/</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+
+                        <p><b>Email:</b> <a href="mailto: {{bank.Username.email}}">{{bank.Username.email}}</a></p>
+                        {% if bank.Website is not None and bank.Website != '' %}
+                        <p><b>Website:</b> <a href="{{bank.Website}}" target="__blank">{{bank.Website}}</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock content %}
+
+    {% block script %}
+
+    <script src="{% static 'javascripts/bloodbankpage.js' %}"></script>
+
+    {% endblock script %}
+    </body>
+</html>

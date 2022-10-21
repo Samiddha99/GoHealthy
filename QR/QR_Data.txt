@@ -1,0 +1,26 @@
+BOOKING DETAILS
+Booking ID:  booking_id
+Booking Time:  booking_time
+Expire Time:  expire_time
+Booked By:  booked_by
+
+PATIENT'S DETAILS
+Patient's Name:  patient_name
+Patient's Gender:  patient_gender
+Patient's Age:  patint_age
+Email:  patient_email
+Mobile No:  patient_mobile
+Alternative Mobile No:  patient_alter_mobile
+State:  patient_state
+District:  patient_district
+Area Pin:  patient_pin
+Sub-Division:  patient_subdivision
+
+HOSPITAL DETAILS
+Hospital Name:  hospital_name
+Contact No:  hospital_contact
+Address:  hospital_address
+State:  hospital_state
+District:  hospital_district
+Subdivision:  hospital_subdivision
+Pin:  hospital_pin

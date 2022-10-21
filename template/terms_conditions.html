@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    {% block meta %}
+    <meta name="title" content="Terms & Conditions | Go Healthy">
+    <meta name="description" content="Read our terms and conditions">
+    {% endblock meta %}
+    {% block title %}
+    <title>Terms & Conditions | Go Healthy</title>
+    {% endblock title %}
+
+    
+    {% block style %}
+    <style>
+        body{
+            background-color: #eeeeee;
+        }
+    </style>
+    {% endblock style %}
+    
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+
+{% block content %}
+    <div class="row ml-3 mr-3">
+        <div class="col-md">
+
+        </div>
+        <div class="col-md-6 mt-5 tc-background" align="left">
+            <div class="tc-box">
+                <div class="tc-heading-div">
+                    <h3 align="center" class="tc-heading"><i class="fal fa-file-alt fa-2x mr-4"></i><span class="tc-heading-text">TERMS & CONDITIONS</span></h3>
+                </div>
+                <br>
+                <div class="tc-contents">
+                    <div class="tc-point"><i class="fad fa-snowflake"></i>&nbsp;&nbsp;Display Your Data</div>
+                    <p class="tc-point-text">
+                        We will display users information (Name, Address, Contact Number, Age, Blood Group, Photo), if user is doctor or blood donor. When a person register
+                        as a doctor or blood donor, then after the activation of the account, the person's information will display in the corresponding section
+                        of the website.
+                    </p>
+                    <hr>
+                    <div class="tc-point"><i class="fad fa-snowflake"></i>&nbsp;&nbsp;Provide Correct Information</div>
+                    <p class="tc-point-text">
+                        You have to provide correct information during the registration process, if we find that your given information is wrong/misleading
+                        then we will not active your account. Your given ID Number will be use to verify your given information. Hence, in the registration
+                        process, you have to provide your information as per your provided Id.
+                    </p>
+                    <br>
+                    <div class="tc-point"><i class="fad fa-snowflake"></i>&nbsp;&nbsp;Bed Booking Limitation</div>
+                    <p class="tc-point-text">
+                        <b>There are some restrictions or limitations on bed booking features:</b>
+                        <ul class="tc-point-text" style="margin-top: -10px;">
+                            <li><p>Anybody can't book Hospital Beds for unnecessary reasons.</p></li>
+                            <li><p>After a successful booking, a person can't make any more bookings before reached to the hospital.</p></li>
+                            <li><p>After a successful booking, the person has to reach the hospital within 3 hours with the patient. After 3 hours, the booking will no longer be valid.</p></li>
+                            <li><p>
+                                If a person does more than one booking in the period of 6 months, but the person does not reach the hospital to admit the patient within 3 hours in case of each booking, then the person will no longer be able to do any more Bed Booking. That is, in case a person did a Bed Booking, but he/she didn't reach the hospital within 3 hours and within six months if the person does the same thing again, then bed booking features will be revoked from his/her account. But if the person does the same thing (do bed booking, but not reach the hospital within 3 hours) again after six months, then this will not make any issue.
+                            </p></li>
+                        </ul>
+                    </p>
+                    <br>
+                    <div class="tc-point"><i class="fad fa-snowflake"></i>&nbsp;&nbsp;Deactivate Your Account </div>
+                    <p class="tc-point-text">
+                        If we identify any unethical activities from any accounts or if any person violate our terms and conditions, then we will deactivate the person's account temporary or permanently.
+                        <br><b>List of some activities, that will be consider as a unethical activities:-</b>
+                        <ul class="tc-point-text" style="margin-top: -10px;">
+                            <li><p><b>Making fake blood request:</b> If we find that any user make a blood request; but the user doesn't need any blood, the person did it just
+                                for unnecessary reason; then it will be consider as a unethical activity.
+                            </p></li>
+                            <li><p><b>Doing abuse Chats:</b> If any person makes abuse chat with doctors or blood donors by using the Chat Feature, or if chatting unnecessarily; then it will be consider as a unethical activity.</p></li>
+                        </ul>
+                    </p>
+                    <div class="tc-point-text">
+                        <h6>NOTE:</h6>
+                        <p style="margin-left:20px">We do not identify fake blood requests and abusive chats automatically, we identify that on the basis of users' complaints.
+                        <br>So, it's strongly requested to you if you find any blood request as fake or someone makes abusive chats with you, then rise a complaint from <a href="{%url 'Go_Healthy_App:project-Complain'%}">here</a>.</p>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <hr style="height:0.8px; background-color:black; width:90%; margin-bottom:-8px;">
+                    <hr style="height:0.5px; background-color:black; width:80%">
+                </div>
+                <h4 align="center" class="tc-footer-heading">
+                    <span class="tc-footer-heading-text">&nbsp;Follow the Terms and Conditions&nbsp;</span>
+                </h4>
+            </div>
+        </div>
+        <div class="col-md">
+
+        </div>
+    </div>
+{% endblock content %}
+
+</body>
+</html>

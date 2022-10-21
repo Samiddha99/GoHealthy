@@ -1,0 +1,917 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+    {% block meta %}
+    <meta name="title" content="Hospital Registration | Go Healthy">
+    <meta name="description" content="Register your hospital">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>Hospital Registration | Go Healthy</title>
+    {% endblock title %}
+       
+    
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/registerhospital.css' %}">
+    {% endblock style %}
+</head>
+{% block body %}
+<body>
+{% endblock body %}
+
+
+
+{% block content %}
+<input type="hidden" id="registration_status" value="{{isRegistered}}">
+<div class="row mt-5 mb-5" style="display: none;" id="registration-success-message">
+    <div class="col-md"></div>
+    <div class="col-md-8 text-center">
+        <div class="success-box ml-2 mr-2" style="background-color: white; padding: 10px;">
+            <img src="{% static 'images/registration_success.png' %}" height="150px" width="150px">
+            <h4 class="text-align">
+                Success!
+            </h4>
+            <h3 class="text-secondary">
+                Hospital Registration Completed
+            </h3>
+            <h6 class="text-muted">Hospital ID: <span id="hospitalID">{{hospital.Unique_Id}}</span></h6>
+            <p class="text-secondary">
+                We have received your application.
+                <br>We will review and verify your registration. If we find all the given details are correct, only then we will active the account.
+                Once the account is activated hospital authority will able to access all the features.
+            </p>
+        </div>
+    </div>
+    <div class="col-md"></div>
+</div>
+{% if not isRegistered %}
+<div class="row mt-4" id="main-registration-box">
+    <div class="col-xl"></div>
+    <div class="col-xl-9 text-center ml-2 mr-2 ml-md-0 mr-md-0">
+        <div class="row text-left">
+            <div class="col-xl-6 mb-3 col-registration-div">
+                <div class="registration-div">
+                    <div class="registration-nav-tabs">
+                        <h4 class="text-secondary mb-3 text-center text-md-left">HOSPITAL REGISTRATION</h4>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            {% if registration_part1 %}
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" id="details-nav" data-toggle="tab" href="#details-tab" role="tab" aria-controls="details-tab" aria-selected="true">Hospital Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link disabled" id="bed-nav" data-toggle="tab" href="#bed-tab" role="tab" aria-controls="bed-tab" aria-selected="false">Add Beds</a>
+                                </li>
+                            {% elif registration_part2 %}
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link disabled" id="details-nav" data-toggle="tab" href="#details-tab" role="tab" aria-controls="details-tab" aria-selected="true">Hospital Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" id="bed-nav" data-toggle="tab" href="#bed-tab" role="tab" aria-controls="bed-tab" aria-selected="false">Add Beds</a>
+                                </li>
+                            {% endif %}
+                            
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            {% if registration_part1 %}
+                                <div class="tab-pane fade show active" id="details-tab" role="tabpanel" aria-labelledby="details-nav">
+                                    <form id="hospitalRegistration" method="post" action="{% url 'Go_Healthy_App:Register-Hospital' %}" enctype="multipart/form-data">
+                                        {%csrf_token%}
+                                        <div align="center">
+                                            <img align="center" id="img_id" src="{% static 'images/hospital-transparent.png' %}" alt="your image" width="266" height="150" style="margin-top:20px;margin-bottom:5px;"/>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input register-hospital-input" id="picture" name="picture" accept="image/*" required form="hospitalRegistration">
+                                            <label class="custom-file-label register-hospital-input" for="picture" aria-describedby="Image Upload" data-placeholder="Upload hospital's image">Upload hospital's image</label>
+                                        </div>
+                                        <div id="imageError" class="feedback"></div>
+
+                                        <div class="text-hor-divider">
+                                            <div class="hor-divider"></div>
+                                            <span class="text">For Login</span>
+                                        </div>
+                                        <div class="floating-label">
+                                            <input type="text" inputmode="text" class="form-control input-sm text-capitalize register-hospital-input" name="username" id="register-hospital-username" placeholder="Set a username" form="hospitalRegistration" minlength="5" maxlength="15" required>
+                                            <label for="register-hospital-username">
+                                                <span>Username</span>
+                                            </label>
+                                        </div>
+                                        <div id="usernamevalidation" class="feedback"></div>
+                                        <small id="usernameHelpBlock" class="form-text text-muted">
+                                            Username will be maximum 15 characters long and minimum 5 characters long. Letters, digits and @/./+/-/_ only applicable.
+                                        </small>
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-3">
+                                                    <input type="password" inputmode="text" class="form-control input-sm register-hospital-input" name="password1" id="register-hospital-password1" placeholder="Set a password" form="hospitalRegistration" minlength="8" required>
+                                                    <label for="register-hospital-password1">
+                                                        <span>Password</span>
+                                                    </label>
+                                                </div>
+                                                <div id="checkpassword" class="feedback feedback-invalid"></div>
+                                                <div class="input-help">
+                                                    <ul>
+                                                        <li>Password must not be too common.</li>
+                                                        <li>Password must not be similar to Username.</li>
+                                                        <li>Password must contain at least 8 characters.</li>
+                                                        <li>Password must not be entirely alphabetic and numeric.</li>
+                                                        <li>Password must contain at least one uppercase letter, one lowercase letter, one digit and one special character.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label mt-1 mt-md-3">
+                                                    <input type="password" inputmode="text" class="form-control input-sm register-hospital-input" name="password2" id="register-hospital-password2" placeholder="Enter password again" form="hospitalRegistration" minlength="8" required disabled>
+                                                    <label for="register-hospital-password2">
+                                                        <span>Confirm Password</span>
+                                                    </label>
+                                                </div>
+                                                <div id="passwordcheck" class="feedback"></div>
+                                            </div>
+                                        </div>
+                                        <div class="text-hor-divider">
+                                            <div class="hor-divider"></div>
+                                            <span class="text">Information</span>
+                                        </div>
+                                        <div class="floating-label">
+                                            <input type="text" inputmode="text" class="form-control input-sm text-capitalize register-hospital-input" name="name" id="register-hospital-name" placeholder=" " form="hospitalRegistration" maxlength="500" data-validation="office_name_validation" required>
+                                            <label for="register-hospital-name">
+                                                <span>Name of the hospital</span>
+                                            </label>
+                                        </div>
+                                        <div id="namevalidation" class="feedback"></div>
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-4">
+                                                    <select class="form-control input-sm register-hospital-input" name="type" id="register-hospital-type" form="hospitalRegistration" required>
+                                                        <option label="Select Hospital Type"></option>
+                                                        {% for i in hospitalTypes %}
+                                                        <option value="{{i.0}}">{{i.1}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <label for="register-hospital-type">
+                                                        <span>Hospital Type</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label mt-3 mt-md-4">
+                                                    <select class="form-control input-sm register-hospital-input" name="ownership" id="register-hospital-ownership" form="hospitalRegistration" required>
+                                                        <option label="Select Hospital Ownership"></option>
+                                                        {% for i in hospitalOwnerships %}
+                                                        <option value="{{i.0}}">{{i.1}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <label for="register-hospital-ownership">
+                                                        <span>Hospital's Ownership</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-4">
+                                                    <input type="text" inputmode="text" class="form-control input-sm text-uppercase register-hospital-input" name="registration_no" id="register-hospital-registration_no" placeholder=" " form="hospitalRegistration" maxlength="20" required>
+                                                    <label for="register-hospital-registration_no">
+                                                        <span>Registration No</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">Issued by the government</div>
+                                                <div id="registration_no-error" class="feedback"></div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="custom-file mt-2 mt-md-4">
+                                                    <input type="file" class="custom-file-input register-hospital-input" name="registration_document" id="registration_document" form="hospitalRegistration" required>
+                                                    <label class="custom-file-label register-hospital-input" for="registration_document" aria-describedby="Document Upload" data-placeholder="Upload Document">Upload Document</label>
+                                                  </div>
+                                                <div class="input-help">Proof of registration.
+                                                    <br>Only image and pdf file allowed. File size should be maximum 5 MB.
+                                                </div>
+                                                <div id="registration_document-error" class="feedback"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-hor-divider">
+                                            <div class="hor-divider"></div>
+                                            <span class="text">Contact Details</span>
+                                        </div>
+                                        <div class="section-help">Use STD code for landline/telephone numbers</div>
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-3">
+                                                    <input type="url" inputmode="url" class="form-control input-sm register-hospital-input" name="website" id="register-hospital-website" placeholder="https://www.example.com" form="hospitalRegistration" maxlength="100">
+                                                    <label for="register-hospital-website">
+                                                        <span>Website</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label mt-1 mt-md-3">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-hospital-input" name="emergency_contact" id="register-hospital-emergency_contact" placeholder=" " form="hospitalRegistration" maxlength="15" required>
+                                                    <label for="register-hospital-emergency_contact">
+                                                        <span>Emergency Contact</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">This contact number must be available for 24x7</div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md mt-3">
+                                                <div class="floating-label">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-hospital-input" name="toll_free_no" id="register-hospital-toll_free_no" placeholder=" " form="hospitalRegistration" maxlength="15">
+                                                    <label for="register-hospital-toll_free_no">
+                                                        <span>Toll Free No</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label mt-1 mt-md-3">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-hospital-input" name="helpline_number" id="register-hospital-helpline-number" placeholder=" " form="hospitalRegistration" maxlength="15">
+                                                    <label for="register-hospital-helpline-number">
+                                                        <span>Helpline Number</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row no-gutters mt-3" style="gap:4px;">
+                                            <div class="col-md">
+                                                <div class="floating-label">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-hospital-input" name="other_contacts" id="register-hospital-other_contact_1" placeholder=" " form="hospitalRegistration" maxlength="15">
+                                                    <label for="register-hospital-other_contact_1">
+                                                        <span>Other Contact 1</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-hospital-input" name="other_contacts" id="register-hospital-other_contact_2" placeholder=" " form="hospitalRegistration" maxlength="15">
+                                                    <label for="register-hospital-other_contact_2">
+                                                        <span>Other Contact 2</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-hospital-input" name="other_contacts" id="register-hospital-other_contact_3" placeholder=" " form="hospitalRegistration" maxlength="15">
+                                                    <label for="register-hospital-other_contact_3">
+                                                        <span>Other Contact 3</span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-help">If any</div>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="row no-gutters mt-3" style="gap:8px;">
+                                            <div class="col-8">
+                                                <div class="floating-label">
+                                                    <input type="tel" inputmode="tel" class="form-control input-sm register-hospital-input" name="mobile" id="register-hospital-mobile" placeholder="10 digit Mobile Number" form="hospitalRegistration" minlength="10" maxlength="10" required>
+                                                    <label for="register-hospital-mobile">
+                                                        <span>Mobile No</span>
+                                                    </label>
+                                                </div>
+                                                <div class="row no-gutters">
+                                                    <div class="col-6">
+                                                        <div id="mobilevalidation" class="feedback"></div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="text-right">
+                                                            <button type="button" class="btn text-primary" id="mobile-otp-send-btn" style="padding: 0px !important;">Send OTP</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-secondary text-right" id="mobile-otp-sent-to" style="margin-top: -5px;"></div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="floating-label">
+                                                    <input type="text" inputmode="numeric" class="form-control input-sm register-hospital-input" name="mobileotp" id="register-hospital-otp-mobile" placeholder="6 digit OTP" form="hospitalRegistration" minlength="6" maxlength="6" required autocomplete="off">
+                                                    <label for="register-hospital-otp-mobile">
+                                                        <span>OTP</span>
+                                                    </label>
+                                                </div>
+                                                <div id="mobileotpvalidation" class="feedback feedback-invalid"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3 no-gutters" style="gap:8px;">
+                                            <div class="col-8">
+                                                <div class="floating-label">
+                                                    <input type="email" inputmode="email" class="form-control input-sm text-lowercase register-hospital-input" name="email" id="register-hospital-email" placeholder="example@domain.com" form="hospitalRegistration" maxlength="100" required>
+                                                    <label for="register-hospital-email">
+                                                        <span>Email Id</span>
+                                                    </label>
+                                                </div>
+                                                <div class="row no-gutters">
+                                                    <div class="col-6">
+                                                        <div id="emailvalidation" class="feedback"></div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="text-right">
+                                                            <button type="button" class="btn text-primary" id="email-otp-send-btn" style="padding: 0px !important;" disabled>Send OTP</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-secondary text-right" id="email-otp-sent-to" style="margin-top: -5px;"></div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="floating-label">
+                                                    <input type="text" inputmode="numeric" class="form-control input-sm register-hospital-input" name="emailotp" id="register-hospital-otp-email" placeholder="6 digit OTP" form="hospitalRegistration" minlength="6" maxlength="6" required autocomplete="off">
+                                                    <label for="register-hospital-otp-email">
+                                                        <span>OTP</span>
+                                                    </label>
+                                                </div>
+                                                <div id="emailotpvalidation" class="feedback feedback-invalid"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-hor-divider">
+                                            <div class="hor-divider"></div>
+                                            <span class="text">Address</span>
+                                        </div>
+                                        <div class="floating-label">
+                                            <textarea class="form-control input-sm text-capitalize register-hospital-input" name="address" id="register-hospital-address" placeholder="Full address of the hospital" form="hospitalRegistration" maxlength="500" required></textarea>
+                                            <label for="register-hospital-address">
+                                                <span>Address</span>
+                                            </label>
+                                        </div>
+                                        <div class="floating-label mt-4">
+                                            <input type="text" inputmode="numeric" class="form-control input-sm register-hospital-input" name="pin" id="register-hospital-pin" placeholder=" " form="hospitalRegistration" minlength="6" maxlength="6">
+                                            <label for="register-hospital-pin">
+                                                <span>Pin</span>
+                                            </label>
+                                        </div>
+                                        <div align="right">
+                                            <i class="fad fa-spinner-third fa-spin" id="pinLoader" style="font-size:20px;position:relative;top:-30px;right:21px; visibility: hidden;"></i>
+                                        </div>
+                                        
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-4 mt-md-2">
+                                                    <select class="form-control input-sm register-hospital-input" name="state" id="register-hospital-state" form="hospitalRegistration" required>
+                                                        <option label="Select State"></option>
+                                                        <optgroup label="States">
+                                                            {% for i in states %}
+                                                            {% if not i.Is_Union_Territory %}
+                                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                        </optgroup>
+                                                        <optgroup label="Union Territory">
+                                                            {% for i in states %}
+                                                            {% if i.Is_Union_Territory %}
+                                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                        </optgroup>
+                                                    </select>
+                                                    <label for="register-hospital-state">
+                                                        <span>State</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label mt-3 mt-md-2">
+                                                    <select class="form-control input-sm register-hospital-input" name="district" id="register-hospital-district" form="hospitalRegistration" required>
+                                                        <option label="Select District"></option>
+                                                    </select>
+                                                    <label for="register-hospital-district">
+                                                        <span>District</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-gutters" style="gap:8px;">
+                                            <div class="col-md">
+                                                <div class="floating-label mt-4">
+                                                    <input type="text" inputmode="text" class="form-control input-sm text-capitalize register-hospital-input" name="subdivision" id="register-hospital-subdivision" placeholder=" " form="hospitalRegistration" maxlength="100">
+                                                    <label for="register-hospital-subdivision">
+                                                        <span>Subdivision</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="floating-label mt-3 mt-md-4">
+                                                    <input type="text" inputmode="text" class="form-control input-sm text-capitalize register-hospital-input" name="city" id="register-hospital-city" placeholder=" " form="hospitalRegistration" maxlength="100">
+                                                    <label for="register-hospital-city">
+                                                        <span>Town/Village</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="latitude" id="selectedLatitude" form="hospitalRegistration" value="" required>
+                                        <input type="hidden" name="longitude" id="selectedLongitude" form="hospitalRegistration" value="" required>
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-sm btn-secondary mt-4" data-toggle="modal" data-target="#MapModalHospitalRegistration">
+                                                Pick Hospital's Location
+                                            </button>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100 mt-3" id="formSubmitBtn" form="hospitalRegistration">Next</button>
+                                        <div id="registerMessage" class="text-danger text-center"></div>
+                                    </form>
+                                </div>
+                            {% elif registration_part2 %}
+                                <div class="tab-pane fade show active" id="bed-tab" role="tabpanel" aria-labelledby="bed-nav">
+                                    <div class="mt-4">
+                                        <b>Hospital Id:</b> <span id="registered-hospital-id">{{hospital.Unique_Id}}</span>
+                                    </div>
+                                    <div class="text-muted">
+                                        This id is auto-generated and unique to identify each registered hospitals uniquely
+                                    </div>
+                                    <div class="mt-4 mb-4">
+                                        <div style="display:inline-block">
+                                            <span class="has-antivenom-label">Has Antivenom</span>
+                                        </div>
+                                        <div style="display:inline-block">
+                                            <label for="antivenom-yes" class="ml-2"><input type="radio" id="antivenom-yes" name="has-antivenom" value="Yes" data-placeholder="Name" required> YES</label>
+                                            <label for="antivenom-no" class="ml-3"><input type="radio" id="antivenom-no" name="has-antivenom" value="No" data-placeholder="Registration No" required> NO</label>
+                                        </div>
+                                    </div>
+                                    <form id="hospitalRegistrationBedAdd" method="post" action="{% url 'Go_Healthy_App:AddBed' %}" autocomplete="off">
+                                        <input type="hidden" name="hospitalID" id="id_hospital" value="{{hospital.Unique_Id}}" form="hospitalRegistrationBedAdd" required>
+                                        <div class="input-group mt-2 mb-4">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text add-bed-addon">Department</span>
+                                            </div>
+                                            <select class="form-control input-sm add-bed-input" aria-label="Department" name="hospitalDepartment" id="add-bed-department" aria-describedby="add-bed-department" form="hospitalRegistrationBedAdd" required>
+                                                <option label="Select Department"></option>
+                                                {% for i in departments %}
+                                                <option value="{{i.department}}">{{i.department}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="input-group mb-4">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text add-bed-addon">Ward</span>
+                                            </div>
+                                            <select class="form-control input-sm add-bed-input" aria-label="Ward" name="hospitalWard" id="add-bed-ward" aria-describedby="add-bed-ward" form="hospitalRegistrationBedAdd" data-support="#add-bed-support" required>
+                                                <option label="Select Ward"></option>
+                                                {% for i in hospitalWards %}
+                                                <option value="{{i.0}}">{{i.1}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="input-group mb-4">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text add-bed-addon">Support</span>
+                                            </div>
+                                            <select class="form-control input-sm add-bed-input" name="hospitalSupport" id="add-bed-support" aria-label="support" aria-describedby="add-bed-support" form="hospitalRegistrationBedAdd" required data-toggle="tooltip" data-placement="top" title="Select Ward First">
+                                                <option label="Select Support"></option>
+                                            </select>
+                                        </div>
+                                        <div class="input-group mb-4">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text add-bed-addon">Bed No</span>
+                                            </div>
+                                            <input type="text" inputmode="text" class="form-control input-sm add-bed-input" name="hospitalBedNo" id="add-bed-no" aria-label="Bed No" aria-describedby="add-bed-no" form="hospitalRegistrationBedAdd" maxlength="5" required>
+                                        </div>
+                                        <div class="row no-gutters">
+                                            <div class="col">
+                                                <div class="dropdown-input-field-area mb-3" id="add-bed-selectRoom-dropdown-area">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text add-bed-addon">Room</span>
+                                                        </div>
+                                                        <input type="text" inputmode="text" class="form-control input-sm add-bed-input dropdown-input" name="hospitalRoomName" id="readonly-select-room" aria-label="Room" aria-describedby="select-room" form="hospitalRegistrationBedAdd" readonly placeholder="Select Room" data-dropdown="#add-bed-selectRoom-dropdown" data-dropdown_search="#select-room-search">
+                                                    </div>
+                                                    <input type="hidden" class="dropdown-input-value" name='hospitalRoomId' id="select-room" form="hospitalRegistrationBedAdd">
+                                                    <div class="dropdown dropdown-options" tabindex="-1">
+                                                        <div class="dropdown-menu dropdown-options-menu w-100" id="add-bed-selectRoom-dropdown">
+                                                            <div style="padding-left:20px;padding-right:20px;">
+                                                                <input type="text" inputmode="text" class="dropdown-input-search dropdown-input-search-room" id="select-room-search" placeholder="Search Room" autocomplete="off" tabindex="-1">
+                                                                <i class="far fa-search" style="position:absolute; top:17px; left:35px"></i>
+                                                            </div>
+                                                            <div class="dataLists selectRoom-dropdown-dataLists" data-label-input="#readonly-select-room" data-value-input="#select-room">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-secondary">If not applicable, leave the field empty</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                <button type="button" class="btn text-success" data-toggle="modal" data-target="#addRoomModal" data-placement="bottom" data-toggle="tooltip" title="Add new room">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row no-gutters">
+                                            <div class="col">
+                                                <div class="dropdown-input-field-area mb-3" id="add-bed-selectUnit-dropdown-area">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text add-bed-addon">Unit</span>
+                                                        </div>
+                                                        <input type="text" inputmode="text" class="form-control input-sm add-bed-input dropdown-input" name="hospitalUnitName" id="readonly-select-unit" aria-label="Unit" aria-describedby="select-unit" form="hospitalRegistrationBedAdd" readonly placeholder="Select Unit" data-dropdown="#add-bed-selectUnit-dropdown" data-dropdown_search="#select-unit-search">
+                                                    </div>
+                                                    <input type="hidden" class="dropdown-input-value" name='hospitalUnitId' id="select-unit" form="hospitalRegistrationBedAdd">
+                                                    <div class="dropdown dropdown-options">
+                                                        <div class="dropdown-menu dropdown-options-menu w-100" id="add-bed-selectUnit-dropdown">
+                                                            <div style="padding-left:20px;padding-right:20px;">
+                                                                <input type="text" inputmode="text" class="dropdown-input-search dropdown-input-search-unit" id="select-unit-search" placeholder="Search Unit" autocomplete="off" tabindex="-1">
+                                                                <i class="far fa-search" style="position:absolute; top:17px; left:35px"></i>
+                                                            </div>
+                                                            <div class="dataLists selectUnit-dropdown-dataLists" data-label-input="#readonly-select-unit" data-value-input="#select-unit">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-secondary">If not applicable, leave the field empty</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                <button type="button" class="btn text-success" data-toggle="modal" data-target="#addUnitModal" data-placement="bottom" data-toggle="tooltip" title="Add new unit">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                          
+                                        
+                                        <div class="input-group mb-4">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text add-bed-addon">Floor</span>
+                                            </div>
+                                            <select class="form-control input-sm add-bed-input" aria-label="Floor" name="hospitalFloor" id="add-bed-floor" aria-describedby="add-bed-floor" form="hospitalRegistrationBedAdd" required>
+                                                <option label="Select Floor"></option>
+                                                {% for i in hospitalFloors %}
+                                                <option value="{{i.0}}">{{i.1}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="row no-gutters">
+                                            <div class="col">
+                                                <div class="dropdown-input-field-area mb-3" id="add-bed-selectBuilding-dropdown-area">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text add-bed-addon">Building</span>
+                                                        </div>
+                                                        <input type="text" inputmode="text" class="form-control input-sm add-bed-input dropdown-input" name="hospitalBuilding" id="add-bed-readonly-select-building" aria-label="Building" aria-describedby="add-bed-select-building" form="hospitalRegistrationBedAdd" readonly placeholder="Select Building" data-dropdown="#add-bed-selectBuilding-dropdown" data-dropdown_search="#add-bed-select-building-search">
+                                                    </div>
+                                                    <input type="hidden" class="dropdown-input-value" name='hospitalBuildingId' id="add-bed-building" form="addBedForm">
+                                                    <div class="dropdown dropdown-options">
+                                                        <div class="dropdown-menu dropdown-options-menu w-100" id="add-bed-selectBuilding-dropdown">
+                                                            <div style="padding-left:20px;padding-right:20px;">
+                                                                <input type="text" inputmode="text" class="dropdown-input-search dropdown-input-search-building" id="add-bed-selectBuilding-search" placeholder="Search Building" autocomplete="off" tabindex="-1">
+                                                                <i class="far fa-search" style="position:absolute; top:17px; left:35px"></i>
+                                                            </div>
+                                                            <div class="dataLists selectBuilding-dropdown-dataLists" data-label-input="#add-bed-readonly-select-building" data-value-input="#add-bed-select-building">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-secondary text-left">If not applicable, leave the field empty</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                <button type="button" class="btn text-success" data-toggle="modal" data-target="#addBuildingModal" data-placement="bottom" data-toggle="tooltip" title="Add new unit">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button type="reset" class="btn btn-danger mt-3" id="hospitalRegistrationBedAddReset" form="hospitalRegistrationBedAdd">Reset</button>
+                                            <button type="submit" class="btn btn-primary mt-3" id="hospitalRegistrationBedAddSubmit" form="hospitalRegistrationBedAdd" style="width:100px">Add Bed</button>
+                                            <div id="add-bed-message"></div>
+                                        </div>
+                                    </form>
+                                    <div class="mt-3" id="added-bed-data-div" style="overflow: auto; overflow-x: scroll; height: 300px;">
+                                        <table class="table table-hover table-bordered table-striped table-sm table-responsive-xl table-serial table-added-beds">
+                                            <thead class="thead-dark thread-sticky">
+                                                <tr>
+                                                    <th scope="col"></th>
+                                                    <th scope="col">SL</th>
+                                                    <th scope="col">Department</th>
+                                                    <th scope="col">Bed No</th>
+                                                    <th scope="col">Ward</th>
+                                                    <th scope="col">Support</th>
+                                                    <th scope="col">Room</th>
+                                                    <th scope="col">Unit</th>
+                                                    <th scope="col">Floor</th>
+                                                    <th scope="col">Building</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="added-bed-data-body">
+                                                <tr id="not-added">
+                                                    <th colspan="100%" class="text-muted text-center">
+                                                        <h4>No Bed Added</h4>
+                                                    </th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button type="button" class="btn btn-success w-100 mt-4" id="doneRegistration">Submit</button>
+                                    <div id="registerDoneError" class="feedback feedback-invalid text-center"></div>
+                                </div>
+
+                                <div class="modal fade" id="otpVerifyModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="otpVerifyModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="modal-header" style="background-color: #d5ecf6; color: #8d95a6;">
+                                          <h5 class="modal-title" id="otpVerifyModalLabel">Enter One Time Password</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="user_verification-form" action="{% url 'Go_Healthy_App:HospitalRegistrationPart_2' id=hospital.Unique_Id %}">
+                                                <div class="email-verification-div mb-3">
+                                                    <div class="otp-heading">
+                                                        Please Enter the OTP
+                                                        <div class="sub-otp-heading">sent to registered email (<span>{{hospital.Username.email}}</span>)</div>
+                                                    </div>
+                                                    <div class="row no-gutters mt-1" style="gap: 10px;">
+                                                        <div class="col">
+                                                            <input type="text" inputmode="numeric" class="form-control input-sm input-user_verification" id="email_verification-otp" minlength="6" maxlength="6" placeholder="6 Digit OTP (Email)" autocomplete="off">
+                                                            <div class="row no-gutters">
+                                                                <div class="col text-left">
+                                                                    <span class="text-danger" id="email_verification-error"></span>
+                                                                </div>
+                                                                <div class="col-7 text-right">
+                                                                    <button type="button" class="btn" id="btn-email_verification-sendotp" style="padding: 0px; margin-top: -10px;">Send OTP</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <button type="button" class="btn btn-user_verification" id="btn-email_verification-verify">Verify</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="email-verification-div mb-3">
+                                                    <div class="otp-heading">
+                                                        Please Enter the OTP
+                                                        <div class="sub-otp-heading">sent to registered mobile no (<span>{{hospital.Username.Contact}}</span>)</div>
+                                                    </div>
+                                                    <div class="row no-gutters mt-1" style="gap: 10px;">
+                                                        <div class="col">
+                                                            <input type="text" inputmode="numeric" class="form-control input-sm input-user_verification" id="mobile_verification-otp" minlength="6" maxlength="6" placeholder="6 Digit OTP (Mobile)" autocomplete="off">
+                                                            <div class="row no-gutters">
+                                                                <div class="col text-left">
+                                                                    <span class="text-danger" id="mobile_verification-error"></span>
+                                                                </div>
+                                                                <div class="col-7 text-right">
+                                                                    <button type="button" class="btn" id="btn-mobile_verification-sendotp" style="padding: 0px; margin-top: -10px;">Send OTP</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <button type="button" class="btn btn-user_verification" id="btn-mobile_verification-verify">Verify</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <form id="add_room_form" autocomplete="on" method="post" action="{% url 'Go_Healthy_App:AddRoom' %}">
+                    {% csrf_token %}
+                    <div class="modal fade" id="addRoomModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="addRoomModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="addRoomModalLabel">Add, Remove or Edit Unit</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <input type="text" inputmode="text" class="form-control input-sm update-modal-input text-capitalize" name="room" id="add_room" form="add_room_form" placeholder="Enter Room No/Name" required>
+                                        </div>
+                                        <div class="col-5">
+                                            <div class="side-div">
+                                                <div class="side-div-content mr-1">
+                                                    <button type="submit" class="btn btn-primary" id="add-room-form-submit-button" form="add_room_form">
+                                                        Add
+                                                    </button>
+                                                </div>
+                                                <div class="side-div-content">
+                                                    <button type="reset" class="btn btn-danger" form="add_room_form">
+                                                        Reset
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="add-room-message"></div>
+                                    <div class="modal-body-bed-info-table mt-5">
+                                        <table class="table table-sm table-bordered table-added-units">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="table-column bg-light">SL No</th>
+                                                    <th scope="col" class="table-column bg-light">Room</th>
+                                                    <th scope="col" class="table-column bg-light">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table-added-room-data" class="table-added-room-data">
+                                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <form id="add_unit_form" autocomplete="on" method="post" action="{% url 'Go_Healthy_App:AddUnit' %}">
+                    {% csrf_token %}
+                    <div class="modal fade" id="addUnitModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="addUnitModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="addUnitModalLabel">Add, Remove or Edit Unit</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <input type="text" inputmode="text" class="form-control input-sm update-modal-input text-capitalize" name="unit" id="add_unit" form="add_unit_form" placeholder="Enter Unit No/Name" required>
+                                        </div>
+                                        <div class="col-5">
+                                            <div class="side-div">
+                                                <div class="side-div-content mr-1">
+                                                    <button type="submit" class="btn btn-primary" id="add-unit-form-submit-button" form="add_unit_form">
+                                                        Add
+                                                    </button>
+                                                </div>
+                                                <div class="side-div-content">
+                                                    <button type="reset" class="btn btn-danger" form="add_unit_form">
+                                                        Reset
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="add-unit-message"></div>
+                                    <div class="modal-body-bed-info-table mt-5">
+                                        <table class="table table-sm table-bordered table-added-units">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="table-column bg-light">SL No</th>
+                                                    <th scope="col" class="table-column bg-light">Unit</th>
+                                                    <th scope="col" class="table-column bg-light">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table-added-unit-data" class="table-added-unit-data">
+                                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <form id="add_building_form" autocomplete="on" method="post" action="{% url 'Go_Healthy_App:AddBuilding' %}">
+                    {% csrf_token %}
+                    <div class="modal fade" id="addBuildingModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="addBuildingModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="addBuildingModalLabel">Add, Remove or Edit Building</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <input type="text" inputmode="text" class="form-control input-sm update-modal-input text-capitalize" name="building" id="add_building" form="add_building_form" placeholder="Enter Building No/Name" required>
+                                        </div>
+                                        <div class="col-5">
+                                            <div class="side-div">
+                                                <div class="side-div-content mr-1">
+                                                    <button type="submit" class="btn btn-primary" id="add-building-form-submit-button" form="add_building_form">
+                                                        Add
+                                                    </button>
+                                                </div>
+                                                <div class="side-div-content">
+                                                    <button type="reset" class="btn btn-danger" form="add_building_form">
+                                                        Reset
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="add-building-message"></div>
+                                    <div class="modal-body-bed-info-table mt-5">
+                                        <table class="table table-sm table-bordered table-added-buildings">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="table-column bg-light">SL No</th>
+                                                    <th scope="col" class="table-column bg-light">Building</th>
+                                                    <th scope="col" class="table-column bg-light">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table-added-building-data" class="table-added-building-data">
+                                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="col-xl-6">
+                <div class="note-box">
+                    <h5>Why need to register a hospital?</h5>
+                    <p>Our aim is to deliver live bed availability data of all the hospital in the web portal. To archive that we need a universal database for all the hospitals;
+                        hence all the hospital authorities must register the hospital, so that we will able to collect the data of the hospitals. We also want to provide a hospital bed booking service to the people so that for a emergency a bed in hospital can easily book in advance, 
+                        and to implement this features we need to give the access to hospital authorities to admit the booked patients from the web portal and this access will only be given to the registered hospitals; and if more hospitals will register then this bed booking features will be available for the more hospitals means more people will be get the benefits. 
+                        <br>We also building a system by that we will collect the data of all the admitted patient in the hospital, and from that data we can analysis the data of the healthcare system
+                        like how much patients are admitting in a hospital every day, how many patients are releasing every day, in which area the patients suffering from which disease in most of the case, most of the patients are dying from which disease, how many patients are died in hospitals every day;
+                        and from that data we will able to examine the scenario of the healthcare system. So to collect these data from your hospitals we need your hospital's information through registration.
+                    </p>
+                    <h6 style="margin-bottom: -10px;">How to register?</h6>
+                    <p>
+                        <ol>
+                            <li>Enter all the data of the hospital by fill up the form.</li>
+                            <li>After fill up all the input fields press the "Next" button.</li>
+                            <li>Now you have to provide the bed details of your hospital. By login to the Hospital Profile portal you can also add or remove bed any time.
+                                <br>After complete the first step we will send you a link to the registered email. Form this link you can also complete this step (second step) within 3 days.
+                            </li>
+                            <li>In the final step we will verify your given information and if we find everything is okay in your registration details then we will active your account. After activation of the account you can login to get access.</li>
+                        </ol>
+                    </p>
+                    <h6 style="margin-bottom: -10px;">What registered hospitals can do?</h6>
+                    <p>
+                        <ul>
+                            <li><b>View Patients' Data: </b>Hospital authority able to see how many patients are admitted in their hospitals,
+                            how many patients the hospital released or referred in past few months</li>
+                            <li><b>View Bed Data: </b>How many beds are available in the hospital and in which beds which patients are admitted.</li>
+                            <li><b>Add or Remove Bed: </b>If more bed included in the hospital, hospital authority can add the data of new included bed in web portal. Or a bed is removed in the hospital then hospital authority can remove the bed's data in the web portal</li>
+                            <li><b>Live Oxygen Data: </b>From the web portal hospital administration can see for how long the supply of oxygen will remain. But to get the features hospital authority need to be establish a IoT set up.</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl"></div>
+</div>
+
+<div class="modal fade mapMarkerModal" id="MapModalHospitalRegistration" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="MapModalHospitalRegistrationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable map-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="MapModalHospitalRegistrationLabel">Select Hospital's Location From The Map</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="text-center">Click on a location on the map to select it. Drag the marker to change location</p>
+          <input id="pac-input" class="controls" type="text" placeholder="You can search your hospital here"/>
+             <div id="map" class="map mt-2"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+        </div>
+      </div>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}
+
+
+
+
+{% block onesignal %}
+    
+{% endblock onesignal %}
+
+
+
+{% block script %}
+
+<script src="{% static 'javascripts/registerhospital.js' %}"></script>
+<script type="text/javascript" src="{% static 'javascripts/map.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>

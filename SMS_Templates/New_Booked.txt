@@ -1,0 +1,7 @@
+**hospitalName** admitted the patient with the ID: **bookingId**.
+Hospital Contact Number: **hospitalContact**
+
+Check status: **statusURL**
+
+Regards,
+Go Healthy

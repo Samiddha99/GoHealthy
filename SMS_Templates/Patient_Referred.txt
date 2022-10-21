@@ -1,0 +1,15 @@
+Patient **patientName**(Patient ID - **patientId**) has been referred to other hospital.
+Present Hospital Name: **hospitalName**
+Present Hospital Contact Number: **hospitalContact**
+
+Referred To:
+Hospital Name: **referralHospitalName**
+State: **referralHospitalState**
+District: **referralHospitalDistrict**
+Subdivision: **referralHospitalSubdivision**
+City: **referralHospitalCity**
+Pin: **referralHospitalPin**
+Contact Number: **referralHospitalContact**
+
+Regards,
+Go Healthy

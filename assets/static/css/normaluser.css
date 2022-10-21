@@ -1,0 +1,64 @@
+.grey-field{
+    border: 0.5px solid #acb7be !important;
+    width: 100%;
+    border-radius: 2px;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.grey-field:focus{
+    border-color: #929FA8 !important;
+    box-shadow: 0px 0px 5px 1px rgb(159, 163, 167) !important;
+    outline:none !important;
+}
+.upgrade-input{
+    border: 0.5px solid #72D29C !important;
+}
+.upgrade-input:focus{
+    border-color: #72D29C !important;
+    box-shadow: 0px 0px 10px rgba(40, 167, 69, 1) !important;
+    outline:none !important;
+}
+.edit-btn{
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    font-size:17px;
+}
+@media only screen and (min-device-width : 701px)
+{
+    .info-text{
+        text-align: left !important;
+    }
+}
+@media only screen and (max-device-width : 700px)
+{
+    .info-text{
+        text-align: center !important;
+    }
+    .col-right{
+        display: none;
+    }
+}
+.feedback-valid{
+    color: green;
+    font-size: 14px;
+}
+.feedback-invalid{
+    color: red;
+    font-size: 14px;
+}
+
+.list-group-item.custom-list-group-item{
+    padding: 5px !important;
+}
+
+#collapseLast-logins{
+    margin-top: 5px !important;
+}
+#collapseLast-logins .card-body{
+    border: none !important;
+    border-top: 1px solid rgb(235, 235, 236) !important;
+    border-radius: 0px !important;
+    padding: 3px !important;
+}

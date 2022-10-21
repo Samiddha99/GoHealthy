@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% load tz %}
+<head>
+    {% block meta %}
+    <meta name="title" content="{{bank.Name}} - Profile | Go Healthy">
+    <meta name="description" content="Blood Bank Admin Page">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>{{bank.Name}} - Profile | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/bloodbankadmin.css' %}">
+    {% endblock style %}
+
+    </head>
+{% block body %}
+<body>
+{% endblock body %}
+
+
+{% block content %}
+<span class="sidenav-open"><i class="fas fa-angle-double-right open-icon"></i></span>
+<div id="id_sidenav" class="sidenav">
+    <div class="date-time">
+        <p class="date" id="today-date"></p>
+        <p class="time" id="today-time"></p>
+    </div>
+
+    <span class="sidenav-close"><i class="fas fa-angle-double-left close-icon"></i></span>
+    <h6 class="sidenav-pannal">Blood Bank Admin Panel</h6>
+    <div class="sidenav-items">
+        <li class="sidenav-item-list sidenav-list" data-target="#site-content-generate-donor-certificate"><i class="fa-solid fa-file-certificate"></i>&nbsp;&nbsp;Generate Donor Certificate</li>
+        <li class="sidenav-item-list sidenav-list" data-target="#site-content-generate-collection-certificate"><i class="fa-solid fa-file-plus"></i>&nbsp;&nbsp;Add Collection Record</li>
+        <div class="section">
+            <div class="section-heading" data-target="#data-content1">
+                <i class="fad fa-database"></i>&nbsp;&nbsp;Data <i class="btn-collapse fas fa-caret-square-down"></i>
+            </div>
+            <div class="section-content" id="data-content1">
+                <li class="section-content-list sidenav-list close-sidenav" data-target="#site-content-blood-availability"><i class="fas fa-chevron-right"></i>&nbsp;&nbsp;Blood Availability</li>
+                <li class="section-content-list sidenav-list close-sidenav" data-target="#site-content-show-donor-certificates"><i class="fas fa-chevron-right"></i>&nbsp;&nbsp;Issued Donor Certificates</li>
+                <li class="section-content-list sidenav-list close-sidenav" data-target="#site-content-show-collection-certificates"><i class="fas fa-chevron-right"></i>&nbsp;&nbsp;Issued Collection Certificates</li>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-heading" data-target="#data-content2">
+                <i class="fas fa-wrench"></i>&nbsp;&nbsp;Action <i class="btn-collapse fas fa-caret-square-down"></i>
+            </div>
+            <div class="section-content" id="data-content2">
+                <li class="section-content-list sidenav-list" data-target="#site-content-add-remove-bed"><i class="fas fa-chevron-right"></i>&nbsp;&nbsp;Update Signature</li>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="sidenav-footer">
+        <div class="row no-gutters ml-3">
+            <div class="col">
+                <b style="color: #7c7c7c; font-size:18px;">{{user.username}}</b><br>
+                <span>ID: {{bank.Unique_Id}}</span>
+            </div>
+            <div class="col-2 text-right mr-2">
+                <i class="fas fa-cog" style="color:#7c7c7c; font-size:20px; margin-top:15px" id="edit-gear"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main-content">
+    <h2 class="text-center mt-3" style="color:blue;font-family: 'PT Serif', serif;" id="BloodBankNameTitle">{{bank.Name | upper}}</h2><br><br>
+
+    <div class="site-content ml-3 mr-3" id="site-content-generate-donor-certificate" style="margin-bottom: 195px;">
+        <div class="generate-donor-certificate-box">
+            <h5>Generate Donor Certificate</h5>
+            <form id="generate-donor-certificate-form" method="post" action="{% url 'Go_Healthy_App:GenerateBloodCertificate' %}" autocomplete="off">
+                <div class="row">
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-name">Name</span>
+                            </div>
+                            <input type="text" inputmode="text" maxlength="200" name="name" class="form-control input-sm text-capitalize" form="generate-donor-certificate-form" placeholder="Blood Donor's Name" aria-label="Person's Name" aria-describedby="addon-name" required>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-gender">Gender</span>
+                            </div>
+                            <select name="gender" class="form-control input-sm" form="generate-donor-certificate-form" aria-label="Person's Gender" aria-describedby="addon-gender" required>
+                                <option label="Donor's Gender"></option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-age">Age</span>
+                            </div>
+                            <input type="number" inputmode="numeric" name="age" min="18" max="65" class="form-control input-sm" form="generate-donor-certificate-form" placeholder="Blood Donor's Age" aria-label="Person's Age" aria-describedby="addon-age" required>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-group">Blood Group</span>
+                            </div>
+                            <select name="blood_group" class="form-control input-sm" form="generate-donor-certificate-form" aria-label="Blood Group" aria-describedby="addon-group" required>
+                                <option label="Select Blood Group"></option>
+                                {% for i in blood_groups %}
+                                <option value="{{i.0}}">{{i.1}}</option>
+                                {% endfor %}
+                                <option value="Unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-component">Component</span>
+                            </div>
+                            <select name="component" class="form-control input-sm" form="generate-donor-certificate-form" aria-label="Blood Component" aria-describedby="addon-component" required>
+                                <option label="What component donor donated?"></option>
+                                {% for i in blood_main_components %}
+                                <option value="{{i.0}}">{{i.1}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-unit">Unit</span>
+                            </div>
+                            <input type="number" name="unit" class="form-control input-sm" form="generate-donor-certificate-form" placeholder="How much blood donor donated?" aria-label="Unit" aria-describedby="addon-unit" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-mobile">Donor's Mobile No</span>
+                            </div>
+                            <input type="tel" inputmode="tel" name="mobile" minlength="10" maxlength="10" class="form-control input-sm" form="generate-donor-certificate-form" placeholder="10 digit mobile no" aria-label="10 digit mobile no" aria-describedby="addon-mobile" required>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-email">Donor's Email Id</span>
+                            </div>
+                            <input type="email" inputmode="email" name="email" maxlength="200" class="form-control input-sm text-lowercase" form="generate-donor-certificate-form" placeholder="example@domain.com" aria-label="email" aria-describedby="addon-email">
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="issues_for" form="generate-donor-certificate-form" value="Blood Donation" required>
+                <button type="submit" class="btn btn-primary w-100 btn-border-white" id="donor-certificate-button" form="generate-donor-certificate-form">Generate</button>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <div class="site-content ml-3 mr-3" id="site-content-generate-collection-certificate" style="margin-bottom: 195px;">
+        <div class="generate-collection-certificate-box">
+            <h5>Add Blood Collection Record</h5>
+            <form id="add-collection-record-form" method="post" action="{% url 'Go_Healthy_App:GenerateBloodCertificate' %}" autocomplete="off">
+                <div class="row">
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-name">Name</span>
+                            </div>
+                            <input type="text" inputmode="text" maxlength="200" name="name" class="form-control input-sm text-capitalize" form="add-collection-record-form" placeholder="Patient's Name" aria-label="Person's Name" aria-describedby="addon-name" required>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-gender">Gender</span>
+                            </div>
+                            <select name="gender" class="form-control input-sm" form="add-collection-record-form" aria-label="Person's Gender" aria-describedby="addon-gender" required>
+                                <option label="Patient's Gender"></option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-age">Age</span>
+                            </div>
+                            <input type="text" inputmode="numeric" name="age" class="form-control input-sm" form="add-collection-record-form" placeholder="Patient's Age" aria-label="Person's Age" aria-describedby="addon-age" required>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-group">Blood Group</span>
+                            </div>
+                            <select name="blood_group" class="form-control input-sm" form="add-collection-record-form" aria-label="Blood Group" aria-describedby="addon-group" required>
+                                <option label="Select Blood Group"></option>
+                                {% for i in blood_groups %}
+                                <option value="{{i.0}}">{{i.1}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-component">Component</span>
+                            </div>
+                            <select name="component" class="form-control input-sm" form="add-collection-record-form" aria-label="Blood Component" aria-describedby="addon-component" required>
+                                <option label="What component collected?"></option>
+                                {% for i in blood_main_components %}
+                                <option value="{{i.0}}">{{i.1}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-unit">Unit</span>
+                            </div>
+                            <input type="number" name="unit" class="form-control input-sm" form="add-collection-record-form" placeholder="How much blood has collected?" aria-label="Unit" aria-describedby="addon-unit" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-mobile">Collector's Mobile No</span>
+                            </div>
+                            <input type="tel" inputmode="tel" name="mobile" minlength="10" maxlength="10" class="form-control input-sm" form="add-collection-record-form" placeholder="10 digit mobile no" aria-label="10 digit mobile no" aria-describedby="addon-mobile" required>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="addon-email">Collector's Email Id</span>
+                            </div>
+                            <input type="email" inputmode="email" name="email" maxlength="200" class="form-control input-sm text-lowercase" form="add-collection-record-form" placeholder="example@domain.com" aria-label="email" aria-describedby="addon-email">
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="issues_for" form="add-collection-record-form" value="Blood Collection" required>
+                <button type="submit" class="btn btn-primary w-100 btn-border-white" id="collection-certificate-button" form="add-collection-record-form">Submit</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="site-content" id="site-content-blood-availability">
+        <div class="text-right text-muted ml-2 mr-2 mr-md-4">
+            Last Update: <span id="last_update">{{bank.Last_Update}}</span>
+        </div>
+        <form id="update-blood-form" method="post" action="{% url 'Go_Healthy_App:UpdateBlood' %}">
+            <div class="blood-availability-data-box ml-2 mr-2 ml-md-4 mr-md-4">
+                <table class="table table-bordered blood-availability-data-table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Blood Components</th>
+                            <th scope="col">A+</th>
+                            <th scope="col">A-</th>
+                            <th scope="col">B+</th>
+                            <th scope="col">B-</th>
+                            <th scope="col">AB+</th>
+                            <th scope="col">AB-</th>
+                            <th scope="col">O+</th>
+                            <th scope="col">O-</th>
+                            <th scope="col">HH</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">WHOLE BLOOD</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_A_pos" value="{{bank.Blood_Availability.whole_blood_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_A_neg" value="{{bank.Blood_Availability.whole_blood_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_B_pos" value="{{bank.Blood_Availability.whole_blood_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_B_neg" value="{{bank.Blood_Availability.whole_blood_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_AB_pos" value="{{bank.Blood_Availability.whole_blood_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_AB_neg" value="{{bank.Blood_Availability.whole_blood_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_O_pos" value="{{bank.Blood_Availability.whole_blood_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_O_neg" value="{{bank.Blood_Availability.whole_blood_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-whole_blood_hh" value="{{bank.Blood_Availability.whole_blood_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Packed Red Blood Cells</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_A_pos" value="{{bank.Blood_Availability.packed_red_blood_cells_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_A_neg" value="{{bank.Blood_Availability.packed_red_blood_cells_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_B_pos" value="{{bank.Blood_Availability.packed_red_blood_cells_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_B_neg" value="{{bank.Blood_Availability.packed_red_blood_cells_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_AB_pos" value="{{bank.Blood_Availability.packed_red_blood_cells_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_AB_neg" value="{{bank.Blood_Availability.packed_red_blood_cells_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_O_pos" value="{{bank.Blood_Availability.packed_red_blood_cells_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_O_neg" value="{{bank.Blood_Availability.packed_red_blood_cells_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-packed_red_blood_cells_hh" value="{{bank.Blood_Availability.packed_red_blood_cells_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">White Blood Cells</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_A_pos" value="{{bank.Blood_Availability.white_blood_cells_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_A_neg" value="{{bank.Blood_Availability.white_blood_cells_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_B_pos" value="{{bank.Blood_Availability.white_blood_cells_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_B_neg" value="{{bank.Blood_Availability.white_blood_cells_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_AB_pos" value="{{bank.Blood_Availability.white_blood_cells_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_AB_neg" value="{{bank.Blood_Availability.white_blood_cells_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_O_pos" value="{{bank.Blood_Availability.white_blood_cells_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_O_neg" value="{{bank.Blood_Availability.white_blood_cells_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-white_blood_cells_hh" value="{{bank.Blood_Availability.white_blood_cells_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Plasma</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_A_pos" value="{{bank.Blood_Availability.plasma_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_A_neg" value="{{bank.Blood_Availability.plasma_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_B_pos" value="{{bank.Blood_Availability.plasma_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_B_neg" value="{{bank.Blood_Availability.plasma_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_AB_pos" value="{{bank.Blood_Availability.plasma_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_AB_neg" value="{{bank.Blood_Availability.plasma_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_O_pos" value="{{bank.Blood_Availability.plasma_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_O_neg" value="{{bank.Blood_Availability.plasma_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-plasma_hh" value="{{bank.Blood_Availability.plasma_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Platelet</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_A_pos" value="{{bank.Blood_Availability.platelet_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_A_neg" value="{{bank.Blood_Availability.platelet_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_B_pos" value="{{bank.Blood_Availability.platelet_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_B_neg" value="{{bank.Blood_Availability.platelet_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_AB_pos" value="{{bank.Blood_Availability.platelet_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_AB_neg" value="{{bank.Blood_Availability.platelet_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_O_pos" value="{{bank.Blood_Availability.platelet_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_O_neg" value="{{bank.Blood_Availability.platelet_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_hh" value="{{bank.Blood_Availability.platelet_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Fresh Frozen Plasma</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_A_pos" value="{{bank.Blood_Availability.fresh_frozen_plasma_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_A_neg" value="{{bank.Blood_Availability.fresh_frozen_plasma_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_B_pos" value="{{bank.Blood_Availability.fresh_frozen_plasma_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_B_neg" value="{{bank.Blood_Availability.fresh_frozen_plasma_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_AB_pos" value="{{bank.Blood_Availability.fresh_frozen_plasma_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_AB_neg" value="{{bank.Blood_Availability.fresh_frozen_plasma_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_O_pos" value="{{bank.Blood_Availability.fresh_frozen_plasma_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_O_neg" value="{{bank.Blood_Availability.fresh_frozen_plasma_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-fresh_frozen_plasma_hh" value="{{bank.Blood_Availability.fresh_frozen_plasma_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Platelet Poor Plasma</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_A_pos" value="{{bank.Blood_Availability.platelet_poor_plasma_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_A_neg" value="{{bank.Blood_Availability.platelet_poor_plasma_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_B_pos" value="{{bank.Blood_Availability.platelet_poor_plasma_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_B_neg" value="{{bank.Blood_Availability.platelet_poor_plasma_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_AB_pos" value="{{bank.Blood_Availability.platelet_poor_plasma_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_AB_neg" value="{{bank.Blood_Availability.platelet_poor_plasma_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_O_pos" value="{{bank.Blood_Availability.platelet_poor_plasma_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_O_neg" value="{{bank.Blood_Availability.platelet_poor_plasma_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_poor_plasma_hh" value="{{bank.Blood_Availability.platelet_poor_plasma_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Platelet Rich Plasma</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_A_pos" value="{{bank.Blood_Availability.platelet_rich_plasma_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_A_neg" value="{{bank.Blood_Availability.platelet_rich_plasma_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_B_pos" value="{{bank.Blood_Availability.platelet_rich_plasma_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_B_neg" value="{{bank.Blood_Availability.platelet_rich_plasma_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_AB_pos" value="{{bank.Blood_Availability.platelet_rich_plasma_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_AB_neg" value="{{bank.Blood_Availability.platelet_rich_plasma_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_O_pos" value="{{bank.Blood_Availability.platelet_rich_plasma_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_O_neg" value="{{bank.Blood_Availability.platelet_rich_plasma_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-platelet_rich_plasma_hh" value="{{bank.Blood_Availability.platelet_rich_plasma_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">SDP (Single Donor Platelets)</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_A_pos" value="{{bank.Blood_Availability.single_donor_platelets_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_A_neg" value="{{bank.Blood_Availability.single_donor_platelets_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_B_pos" value="{{bank.Blood_Availability.single_donor_platelets_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_B_neg" value="{{bank.Blood_Availability.single_donor_platelets_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_AB_pos" value="{{bank.Blood_Availability.single_donor_platelets_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_AB_neg" value="{{bank.Blood_Availability.single_donor_platelets_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_O_pos" value="{{bank.Blood_Availability.single_donor_platelets_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_O_neg" value="{{bank.Blood_Availability.single_donor_platelets_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-single_donor_platelets_hh" value="{{bank.Blood_Availability.single_donor_platelets_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">RDP (Random Donor Platelets)</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_A_pos" value="{{bank.Blood_Availability.random_donor_platelets_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_A_neg" value="{{bank.Blood_Availability.random_donor_platelets_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_B_pos" value="{{bank.Blood_Availability.random_donor_platelets_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_B_neg" value="{{bank.Blood_Availability.random_donor_platelets_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_AB_pos" value="{{bank.Blood_Availability.random_donor_platelets_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_AB_neg" value="{{bank.Blood_Availability.random_donor_platelets_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_O_pos" value="{{bank.Blood_Availability.random_donor_platelets_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_O_neg" value="{{bank.Blood_Availability.random_donor_platelets_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-random_donor_platelets_hh" value="{{bank.Blood_Availability.random_donor_platelets_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                
+                        <tr>
+                            <th scope="row">CPP (Cryo Poor Plasma)</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_A_pos" value="{{bank.Blood_Availability.cryo_poor_plasma_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_A_neg" value="{{bank.Blood_Availability.cryo_poor_plasma_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_B_pos" value="{{bank.Blood_Availability.cryo_poor_plasma_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_B_neg" value="{{bank.Blood_Availability.cryo_poor_plasma_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_AB_pos" value="{{bank.Blood_Availability.cryo_poor_plasma_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_AB_neg" value="{{bank.Blood_Availability.cryo_poor_plasma_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_O_pos" value="{{bank.Blood_Availability.cryo_poor_plasma_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_O_neg" value="{{bank.Blood_Availability.cryo_poor_plasma_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_poor_plasma_hh" value="{{bank.Blood_Availability.cryo_poor_plasma_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">LRBC (Leukoreduced Blood Components)</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_A_pos" value="{{bank.Blood_Availability.leukoreduced_blood_components_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_A_neg" value="{{bank.Blood_Availability.leukoreduced_blood_components_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_B_pos" value="{{bank.Blood_Availability.leukoreduced_blood_components_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_B_neg" value="{{bank.Blood_Availability.leukoreduced_blood_components_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_AB_pos" value="{{bank.Blood_Availability.leukoreduced_blood_components_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_AB_neg" value="{{bank.Blood_Availability.leukoreduced_blood_components_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_O_pos" value="{{bank.Blood_Availability.leukoreduced_blood_components_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_O_neg" value="{{bank.Blood_Availability.leukoreduced_blood_components_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-leukoreduced_blood_components_hh" value="{{bank.Blood_Availability.leukoreduced_blood_components_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">LPC</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_A_pos" value="{{bank.Blood_Availability.lpc_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_A_neg" value="{{bank.Blood_Availability.lpc_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_B_pos" value="{{bank.Blood_Availability.lpc_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_B_neg" value="{{bank.Blood_Availability.lpc_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_AB_pos" value="{{bank.Blood_Availability.lpc_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_AB_neg" value="{{bank.Blood_Availability.lpc_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_O_pos" value="{{bank.Blood_Availability.lpc_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_O_neg" value="{{bank.Blood_Availability.lpc_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-lpc_hh" value="{{bank.Blood_Availability.lpc_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Cryo</th>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_A_pos" value="{{bank.Blood_Availability.cryo_A_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_A_neg" value="{{bank.Blood_Availability.cryo_A_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_B_pos" value="{{bank.Blood_Availability.cryo_B_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_B_neg" value="{{bank.Blood_Availability.cryo_B_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_AB_pos" value="{{bank.Blood_Availability.cryo_AB_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_AB_neg" value="{{bank.Blood_Availability.cryo_AB_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_O_pos" value="{{bank.Blood_Availability.cryo_O_pos}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_O_neg" value="{{bank.Blood_Availability.cryo_O_neg}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-value-change" value="minus" tabindex="-1">-</button>
+                                    </div>
+                                    <input type="number" inputmode="numeric" min="0" class="form-control input-sm blood-availability-input" name="BloodAvailability-cryo_hh" value="{{bank.Blood_Availability.cryo_hh}}" form="update-blood-form" required>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-value-change" value="plus" tabindex="-1">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+
+    <div class="site-content text-center" id="site-content-show-donor-certificates">
+        <h4 style="background-color:rgb(97, 159, 252);color:rgb(243, 242, 242)" class="ml-2 mr-2">BLOOD DONORS' RECORDS</h4>
+        <form id="donorFilter" method="GET" autocomplete="off">
+            {% csrf_token %}
+            <div class="row ml-3 mr-3 no-gutters">
+                <div class="col-md mb-2 ml-1 mr-1">
+                    <input type="search" inputmode="text" class="form-control input-sm" autocomplete="off" name="name" id="donorSearch-name" placeholder="Donor's Name" form="donorFilter">
+                </div>
+                <div class="col-md mb-2 ml-1 mr-1">
+                    <input type="search" inputmode="tel" class="form-control input-sm" autocomplete="off" name="mobile" id="donorSearch-mobile" placeholder="Donor's Mobile No" maxlength="10" form="donorFilter">
+                </div>
+                <div class="col-md mb-2 ml-1 mr-1">
+                    <select class="form-control input-sm" name="blood_group" id="donorSearch-blood_group" form="donorFilter">
+                        <option label="Select Blood Group"></option>
+                        {% for i in blood_groups %}
+                        <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md mb-2 ml-1 mr-1">
+                    <select class="form-control input-sm" name="blood_component" id="donorSearch-blood_component" form="donorFilter">
+                        <option label="Select Blood Component"></option>
+                        {% for i in blood_main_components %}
+                        <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md mb-2 ml-1 mr-1">
+                    <input class="form-control input-sm datetime-placeholder" type="text" name="issueDate" id="donorSearch-issueDate" form="donorFilter" placeholder="Donated On">
+                </div>
+            </div>
+            <input type="hidden" name="issued_for" value="Blood Donation" form="donorFilter" required>
+            <button type="submit" name="action" value="donorSearch" class="btn btn-success mt-1" form="donorFilter" id="donorSearchBtn">
+                <i class="fas fa-search"></i>
+                <span id="donorSearchBtnText">Search</span>
+            </button>
+            <button type="reset" class="btn btn-danger mt-1" id="donorSearchClearBtn" form="donorFilter">
+                Clear
+            </button>
+        </form>
+        <div class="row">
+            <div class="col text-left">
+                <button type="button" class="btn btn-primary ml-3 mb-2" id="donorDataRefresh"><span><i class="fas fa-sync" id="donorBtnSpin"></i></span> Refresh</button>
+            </div>
+        </div>
+        <div class="wrapper-donor" align="center" style="overflow:scroll;width:100%;height:660px; margin-left:10px;margin-right:10px">
+            <table class="table table-sm table-bordered table-hover table-striped table-serial" id="donor-table">
+                <thead>
+                <tr class="data-table-head-donor">
+                    <th scope="col" class="table-column left-column-sticky">Sl No</th>
+                    <th scope="col" class="table-column table-sort-column left-column-sticky-1">Donor's Name <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Gender <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Age <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Email</th>
+                    <th scope="col" class="table-column table-sort-column">Mobile</th>
+                    <th scope="col" class="table-column table-sort-column">Blood Group <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Component <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Unit <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Donated On <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column right-column-sticky">Action</th>
+                </tr>
+                </thead>
+                <tbody id="donorDataBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="site-content text-center" id="site-content-show-collection-certificates">
+        <h4 style="background-color:rgb(97, 159, 252);color:rgb(243, 242, 242)" class="ml-2 mr-2">BLOOD COLLECTION RECORDS</h4>
+        <form id="collectorFilter" method="GET" autocomplete="off">
+            {% csrf_token %}
+            <div class="row ml-3 mr-3 no-gutters">
+                <div class="col-md mb-2 ml-1 mr-1">
+                    <input type="search" inputmode="text" class="form-control input-sm" autocomplete="off" name="name" id="collectorSearch-name" placeholder="Patient's Name" form="collectorFilter">
+                </div>
+                <div class="col-md mb-2 ml-1 mr-1">
+                    <input type="search" inputmode="tel" class="form-control input-sm" autocomplete="off" name="mobile" id="collectorSearch-mobile" placeholder="Collector's Mobile No" maxlength="10" form="collectorFilter">
+                </div>
+                <div class="col-md mb-2 ml-1 mr-1">
+                    <select class="form-control input-sm" name="blood_group" id="collectorSearch-blood_group" form="collectorFilter">
+                        <option label="Select Blood Group"></option>
+                        {% for i in blood_groups %}
+                        <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md mb-2 ml-1 mr-1">
+                    <select class="form-control input-sm" name="blood_component" id="collectorSearch-blood_component" form="collectorFilter">
+                        <option label="Select Blood Component"></option>
+                        {% for i in blood_main_components %}
+                        <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md mb-2 ml-1 mr-1">
+                    <input class="form-control input-sm datetime-placeholder" type="text" name="issueDate" id="collectorSearch-issueDate" form="collectorFilter" placeholder="Collected On">
+                </div>
+            </div>
+            <input type="hidden" name="issued_for" value="Blood Collection" form="collectorFilter" required>
+            <button type="submit" name="action" value="collectorSearch" class="btn btn-success mt-1" form="collectorFilter" id="collectorSearchBtn">
+                <i class="fas fa-search"></i>
+                <span id="collectorSearchBtnText">Search</span>
+            </button>
+            <button type="reset" class="btn btn-danger mt-1" id="collectorSearchClearBtn" form="collectorFilter">
+                Clear
+            </button>
+        </form>
+        <div class="row">
+            <div class="col text-left">
+                <button type="button" class="btn btn-primary ml-3 mb-2" id="collectorDataRefresh"><span><i class="fas fa-sync" id="collectorBtnSpin"></i></span> Refresh</button>
+            </div>
+        </div>
+        <div class="wrapper-collector" align="center" style="overflow:scroll;width:100%;height:660px; margin-left:10px;margin-right:10px">
+            <table class="table table-sm table-bordered table-hover table-striped table-serial" id="collector-table">
+                <thead>
+                <tr class="data-table-head-collector">
+                    <th scope="col" class="table-column left-column-sticky">Sl No</th>
+                    <th scope="col" class="table-column table-sort-column left-column-sticky-1">Collector's Name <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Gender <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Age <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Email</th>
+                    <th scope="col" class="table-column table-sort-column">Mobile</th>
+                    <th scope="col" class="table-column table-sort-column">Blood Group <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Component <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Unit <i class="fas fa-sort table-sort-icon"></i></th>
+                    <th scope="col" class="table-column table-sort-column">Collected On <i class="fas fa-sort table-sort-icon"></i></th>
+                </tr>
+                </thead>
+                <tbody id="collectorDataBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="site-content active" id="site-content-edit">
+        <div class="row ml-0 mr-0 ml-md-2 mr-md-2">
+            <div class="col-md ml-3 mr-3 mb-5">
+                <form id="generalEditForm" method="post" action="{% url 'Go_Healthy_App:BloodBankGeneralEdit' %}" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="row text-left">
+                        <div class="col-md mb-3">
+                            <label for="edit-ownership">Blood Bank's Ownership</label>
+                            <select data-value="{{bank.Ownership}}" form="generalEditForm" class="form-control input-sm gray-input-field" name="ownership" id="edit-ownership" required>
+                                <option label="Select Blood Bank's Ownership"></option>
+                                {% for i in bloodBankOwnership %}
+                                    {% if i.0 == bank.Ownership %}
+                                        <option value="{{i.0}}" selected>{{i.1}}</option>
+                                    {% else %}
+                                        <option value="{{i.0}}">{{i.1}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-md mb-3">
+                            <label for="edit-name">Name of the Blood Bank</label>
+                            <input data-value="{{bank.Name}}" type="text" inputmode="text" class="form-control input-sm gray-input-field text-capitalize" form="generalEditForm" id="edit-name" name="name" placeholder="Blood Bank's Name" value="{{bank.Name}}" data-validation="office_name_validation" required>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-md mb-3">
+                            <label for="edit-address">Address</label>
+                            <textarea data-value="{{bank.Address}}" name="address" class="form-control input-sm gray-input-field text-capitalize" id="edit-address" form="generalEditForm" placeholder="Full Address" rows="3" required maxlength="500">{{bank.Address}}</textarea>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-md"></div>
+                        <div class="col-md mb-3">
+                            <label for="edit-pin">Pin</label>
+                            <input type="text" inputmode="numeric" data-value="{{bank.Pin}}" class="form-control input-sm gray-input-field" form="generalEditForm" id="edit-pin" name="pin" placeholder="Pin" minlength="6" maxlength="6" value="{{bank.Pin}}" required>
+                        </div>
+                        <div class="col-md"></div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-md mb-3">
+                            <label for="edit-state">State</label>
+                            <select class="form-control input-sm gray-input-field" data-value="{{bank.State.Name}}" form="generalEditForm" name="state" data-district_option="#edit-district" id="edit-state" required>
+                                <option label="Select State"></option>
+                                <optgroup label="States">
+                                    {% for i in states %}
+                                        {% if not i.Is_Union_Territory %}
+                                            {% if bank.State.Name == i.Name %}
+                                                <option value="{{i.Name}}" selected>{{i.Name}}</option>
+                                            {% else %}
+                                                <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="Union Territory">
+                                    {% for i in states %}
+                                        {% if i.Is_Union_Territory %}
+                                            {% if bank.State.Name == i.Name %}
+                                                <option value="{{i.Name}}" selected>{{i.Name}}</option>
+                                            {% else %}
+                                                <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-md mb-3">
+                            <label for="edit-district">District</label>
+                            <select data-value="{{bank.District.Name}}" class="form-control input-sm gray-input-field" form="generalEditForm" id="edit-district" name="district" required style="width:100%">
+                                <option label="Select District"></option>
+                                {% for i in bloodBankStateDistricts %}
+                                    {% if i.Name == bank.District.Name %}
+                                        <option value="{{bank.District.Name}}" selected>{{bank.District.Name}}</option>
+                                    {% else %}
+                                        <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-md mb-3">
+                            <label for="edit-subdivision">Subdivision</label>
+                            <input data-value="{{bank.Subdivision}}" type="text" inputmode="text" class="form-control input-sm gray-input-field text-capitalize" form="generalEditForm" id="edit-subdivision" name="subdivision" placeholder="Sub-Division" value="{{bank.Subdivision}}" required>
+                        </div>
+                        <div class="col-md mb-3">
+                            <label for="edit-city">City</label>
+                            <input data-value="{{bank.City}}" type="text" inputmode="text" class="form-control input-sm gray-input-field text-capitalize" form="generalEditForm" id="edit-city" name="city" placeholder="City" value="{{bank.City}}" required>
+                        </div>
+                    </div>
+                    <input type="hidden" name="latitude" id="selectedLatitude" value="{{bank.Latitude}}" required>
+                    <input type="hidden" name="longitude" id="selectedLongitude" value="{{bank.Longitude}}" required>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-sm btn-secondary mt-4" data-toggle="modal" data-target="#MapModal">
+                            Change Blood Bank's Location
+                        </button>
+                    </div>
+                    <hr class="bg-secondary">
+                    <button type="submit" class="btn btn-success w-100" form="generalEditForm" id="saveChangeBtn">Save Change</button>
+                </form>
+            </div>
+            <div class="col-md ml-3 mr-3">
+                <form id="contactForm" method="post" action="{% url 'Go_Healthy_App:BloodBankContactEdit' %}" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="row text-left">
+                        <div class="col-md mb-2">
+                            <label for="edit-website">Website</label>
+                            <input type="url" inputmode="url" class="form-control input-sm gray-input-field" maxlength="100" form="contactForm" data-value="{{bank.Website}}" id="edit-website" name="website" value="{{bank.Website}}" placeholder="https://www.example.com">
+                            <div class="input-help">This field is optional</div>
+                        </div>
+                        <div class="col-md mb-2">
+                            <label for="edit-emergency">Emergency Contact</label>
+                            <input type="tel" inputmode="tel" class="form-control input-sm gray-input-field" maxlength="15" form="contactForm" data-value="{{bank.Emergency_Number}}" id="edit-emergency" name="emergency" value="{{bank.Emergency_Number}}" required>
+                            <div class="input-help">This contact number must be available for 24x7</div>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-md mb-2">
+                            <label for="edit-toll-free">Toll Free No</label>
+                            <input type="tel" inputmode="tel" class="form-control input-sm gray-input-field" maxlength="15" form="contactForm" data-value="{{bank.Toll_Free_Number}}" id="edit-toll-free" name="toll_free" value="{{bank.Toll_Free_Number}}">
+                            <div class="input-help">This field is optional</div>
+                        </div>
+                        <div class="col-md mb-2">
+                            <label for="edit-helpline">Helpline Number</label>
+                            <input type="tel" inputmode="tel" class="form-control input-sm gray-input-field" maxlength="15" form="contactForm" data-value="{{bank.Helpline_Number}}" id="edit-helpline" name="helpline" value="{{bank.Helpline_Number}}">
+                            <div class="input-help">This field is optional</div>
+                        </div>
+                    </div>
+
+                    <div class="row text-left">
+                        <div class="col-md mb-2">
+                            <label for="edit-other1">Other Contact 1</label>
+                            <input type="tel" inputmode="tel" class="form-control input-sm gray-input-field" maxlength="15" form="contactForm" data-value="{{bank.Contacts.0}}" id="edit-other1" name="other_contacts" value="{{bank.Contacts.0}}">
+                            <div class="input-help">This field is optional</div>
+                        </div>
+                        <div class="col-md mb-2">
+                            <label for="edit-other2">Other Contact 2</label>
+                            <input type="tel" inputmode="tel" class="form-control input-sm gray-input-field" maxlength="15" form="contactForm" data-value="{{bank.Contacts.1}}" id="edit-other2" name="other_contacts" value="{{bank.Contacts.1}}">
+                            <div class="input-help">This field is optional</div>
+                        </div>
+                        <div class="col-md mb-2">
+                            <label for="edit-other3">Other Contact 3</label>
+                            <input type="tel" inputmode="tel" class="form-control input-sm gray-input-field" maxlength="15" form="contactForm" data-value="{{bank.Contacts.2}}" id="edit-other3" name="other_contacts" value="{{bank.Contacts.2}}">
+                            <div class="input-help">This field is optional</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row text-left">
+                        <div class="col-md mb-2">
+                            <label for="edit-mobile">Mobile No</label>
+                            <input type="tel" inputmode="tel" class="form-control input-sm gray-input-field" minlength="10" maxlength="10" form="contactForm" data-value="{{bank.Username.Contact}}" id="edit-mobile" name="mobile" value="{{bank.Username.Contact}}" required placeholder="10 digit mobile number">
+                            <div class="row no-gutters">
+                                <div class="col-6">
+                                    <span id="mobileMessage" class="text-danger"></span>
+                                </div>
+                                <div class="col">
+                                    <div class="text-right">
+                                        <button type="button" class="btn text-primary" id="mobile-otp-send-btn" style="padding: 0px !important;">Send OTP</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span id="mobile-otp-sent-to" class="text-secondary"></span>
+                            </div>
+                        </div>
+                        <div class="col-md mb-2">
+                            <label for="edit-mobile-otp">OTP</label>
+                            <input type="text" inputmode="numeric" class="form-control input-sm gray-input-field" minlength="6" maxlength="6" form="contactForm" id="edit-mobile-otp" name="mobileOTP" placeholder="6 digit OTP (Sent to the mobile)">
+                            <span id="mobileotpvalidation" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-md mb-2">
+                            <label for="edit-email">Email Id</label>
+                            <input type="email" inputmode="email" class="form-control input-sm gray-input-field text-lowercase" form="contactForm" data-value="{{bank.Username.email}}" id="edit-email" name="email" placeholder="Email ID" value="{{bank.Username.email}}" required>
+                            <div class="row no-gutters">
+                                <div class="col-6">
+                                    <span id="emailMessage" class="text-danger"></span>
+                                </div>
+                                <div class="col">
+                                    <div class="text-right">
+                                        <button type="button" class="btn text-primary" id="email-otp-send-btn" style="padding: 0px !important;" disabled>Send OTP</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span id="email-otp-sent-to" class="text-secondary"></span>
+                            </div>
+                        </div>
+                        <div class="col-md mb-2">
+                            <label for="edit-email-otp">OTP</label>
+                            <input type="text" inputmode="numeric" class="form-control input-sm gray-input-field" minlength="6" maxlength="6" form="contactForm" id="edit-email-otp" name="emailOTP" placeholder="6 digit OTP (Sent to the email)">
+                            <span id="emailotpvalidation" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <hr class="bg-secondary">
+                </form>
+
+                <button type="submit" class="btn btn-success w-100" id="contactUpdateBtn" form="contactForm">Update Contact</button>
+            </div>
+        </div>
+
+        <div class="modal fade" id="MapModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="MapModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable map-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="MapModalLabel">Select Blood Bank's Location From The Map</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-center">Click on a location on the map to select it. Drag the marker to change location</p>
+                        <input id="pac-input" class="controls" type="text" placeholder="You can search your blood bank here"/>
+                        <div id="map" class="map mt-2"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+</body>
+
+{% block onesignal %}
+    
+{% endblock onesignal %}
+
+{% block script %}
+<script src="{% static 'javascripts/bloodbankadmin.js' %}"></script>
+<script type="text/javascript" src="{% static 'javascripts/map.js' %}"></script>
+{% endblock script %}
+</html>

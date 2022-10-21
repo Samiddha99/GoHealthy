@@ -1,0 +1,377 @@
+
+.footer-top{
+    display: none !important;
+}
+.footer-copyright{
+    margin-top: 50px;
+}
+.top-button{
+    display: none !important;
+}
+
+.sidenav{
+    overflow-x: hidden;
+    position: fixed;
+    top:68px;
+    left:0px;
+    height: 100%;
+    width: 340px;
+    z-index: 51;
+    border: 1px solid white;
+    background-color: #24244e;
+    transition: transform 0.7s ease-out;
+}
+.main-content{
+    margin-left: 340px;
+    transition: margin-left .7s;
+}
+@media only screen and (max-device-width : 500px){
+    .sidenav{
+        width: 100%;
+    }
+}
+.sidenav-close{
+    position: absolute;
+    top: 2px;
+    right: 0px;
+    color: white;
+    background-color: #521cf5;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 18px;
+    border: 1px solid white;
+    border-right: none !important;
+}
+.sidenav-open{
+    position: fixed;
+    top: 110px;
+    left: 0px;
+    color: white;
+    background-color: #521cf5;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 18px;
+    border: 1px solid white;
+    border-left: none !important;
+    z-index: 51;
+}
+.sidenav-close:hover, .sidenav-open:hover{
+    cursor: pointer;
+}
+.sidenav-close:hover .close-icon{
+    transform:translateX(-2px);
+}
+.sidenav-open:hover .open-icon{
+    transform:translateX(2px);
+}
+.sidenav-items{
+    margin-top: 60px;
+}
+.sidenav-item-list, .section-content-list{
+    color: #9090bd;
+    list-style-type: none !important;
+    padding: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+.section-content-list{
+    padding-left: 15px !important;
+    margin-bottom: 5px !important;
+}
+.sidenav-item-list:hover, .section-heading:hover, .section-content-list:hover, .section-content-list.active{
+    background-color: #38386e;
+}
+.sidenav-item-list.active, .section-heading.active{
+    color: white !important;
+    background-color: #54a8fd !important;
+    border-left: 8px solid white;
+    margin-right: -10px !important;
+}
+.sidenav-pannal{
+    text-align: center;
+    color: whitesmoke;
+    font-size: 24px;
+    background-color: #59f07c;
+    border: 2px solid #24244e;
+    position: relative;
+    top: 43px;
+    padding: 5px;
+}
+.sidenav-footer{
+    position: absolute;
+    width: 100% !important;
+    bottom: 69px !important;
+    left: 0px;
+    padding: 2px;
+    background-color:rgb(236, 234, 234);
+}
+.section{
+    margin-bottom: 20px;
+}
+.section-heading{
+    color: #9090bd;
+    font-size: 18px;
+    padding: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    cursor: pointer;
+}
+.section-content{
+    background-color: #111138;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    display: none;
+}
+.site-content{
+    display: none;
+}
+.btn-collapse{
+    float: right;
+    margin-top: 5px;
+}
+.site-content.active{
+    display: block !important;
+}
+#edit-gear{
+    cursor: pointer;
+}
+.date-time{
+    position: absolute;
+    top: 0px;
+    left: 60px;
+    text-align: center;
+}
+.date{
+    color: #9090bd;
+    font-size: 17px;
+    margin-bottom: -4px !important;
+}
+.time{
+    color: #9090bd;
+    font-size: 17px;
+}
+
+.generate-donor-certificate-box, .generate-collection-certificate-box{
+    background-color: rgb(252, 128, 155);
+    padding: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    max-width: 800px;
+    margin: auto;
+}
+.generate-donor-certificate-box h5, .generate-collection-certificate-box h5{
+    color: white;
+    font-size: 25px;
+    margin-bottom: 20px;
+    font-family: 'Merriweather', serif;
+}
+.btn-border-white, .btn-border-white:hover{
+    border: 1px solid white;
+}
+.input-help{
+    font-size: 14px;
+    color: gray;
+}
+#generate-donor-certificate-form input:focus, #generate-donor-certificate-form select:focus, #add-collection-record-form input:focus, #add-collection-record-form select:focus{
+    box-shadow: 0px 0px 4px 1.5px blue;
+    border: none !important;
+    outline: none !important;
+}
+
+.gray-input-field{
+    border: 0.5px solid #929FA8 !important;
+}
+.gray-input-field:focus{
+    border-color: #929FA8 !important;
+    box-shadow: 0px 0px 10px rgba(132, 144, 153, 1) !important;
+    outline:none !important;
+}
+#generalEditForm label, #contactForm label{
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(133, 131, 131);
+    margin-bottom: 2px;
+}
+.map-modal{
+    margin: 10px !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    min-height: 100vh !important;
+}
+.map{
+    width: 100%;
+    height: 100%;
+}
+
+th{
+    white-space: nowrap;
+}
+td{
+    white-space: nowrap;
+}
+.wrapper-donor::-webkit-scrollbar{
+    height: 5px !important;
+}
+.wrapper-donor::-webkit-scrollbar-track {
+    background-color: #ffffff
+}
+.wrapper-donor::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #69ee70;
+}
+.wrapper-donor::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    background-color: #56cc5c;
+}
+
+.wrapper-collector::-webkit-scrollbar{
+    height: 5px !important;
+}
+.wrapper-collector::-webkit-scrollbar-track {
+    background-color: #ffffff
+}
+.wrapper-collector::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #e47068;
+}
+.wrapper-collector::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    background-color: #e05c53;
+}
+
+.table-serial {
+    counter-reset: serial-number;  /* Set the serial number counter to 0 */
+}
+.table-serial-no:before {
+    counter-increment: serial-number;  /* Increment the serial number counter */
+    content: counter(serial-number);  /* Display the counter */
+}
+.table-serial-no{
+    font-weight: bold;
+}
+.data-table-head-donor th{
+    position: sticky !important;
+    top:0px;
+    background-color: #17ce21;
+    color:white
+}
+.data-table-head-collector th{
+    position: sticky !important;
+    top:0px;
+    background-color: #e93f21;
+    color:white
+}
+
+.left-column-sticky-bed-data{
+    position: sticky !important;
+    left: -16px !important;
+    z-index: 9 !important;
+    max-width: 18px !important;
+    text-align: center !important;
+}
+td.left-column-sticky-bed-data{
+    background-color: #ffffff !important;
+}
+.right-column-sticky{
+    position: sticky !important;
+    right: -1px !important;
+    z-index: 9 !important;
+}
+th.right-column-sticky{
+    z-index: 15 !important;
+}
+td.right-column-sticky{
+    background-color: #f3f4f3 !important;
+}
+.left-column-sticky{
+    position: sticky !important;
+    left: 0px !important;
+    z-index: 9 !important;
+}
+th.left-column-sticky{
+    z-index: 15 !important;
+}
+td.left-column-sticky{
+    background-color: #f3f4f3 !important;
+}
+.left-column-sticky-1{
+    position: sticky !important;
+    left: 75px !important;
+    z-index: 9 !important;
+}
+th.left-column-sticky-1{
+    z-index: 15 !important;
+}
+td.left-column-sticky-1{
+    background-color: #f3f4f3 !important;
+}
+
+
+.blood-availability-data-table thead{
+    position: sticky;
+    top:66px;
+    z-index: 9;
+}
+.blood-availability-data-table thead, .blood-availability-data-table td{
+    text-align: center;
+}
+.blood-availability-data-table thead, .blood-availability-data-table th{
+    background-color: rgb(248, 70, 106);
+    color: white;
+}
+.blood-availability-data-table tbody th, .blood-availability-data-table thead th{
+    max-width: 400px;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+.blood-availability-data-table tbody tr:hover > td{
+    background-color: rgb(252, 212, 212);
+}
+.blood-availability-data-table tbody tr:hover > th{
+    background-color: rgb(212, 53, 85);
+}
+.blood-availability-data-table .left-column-sticky{
+    background-color: rgb(248, 70, 106) !important;
+}
+
+.blood-availability-input::-webkit-outer-spin-button,
+.blood-availability-input::-webkit-inner-spin-button {
+    appearance: textfield;
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* Firefox */
+.blood-availability-input[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+.blood-availability-input{
+    padding: 0px !important;
+    text-align: center;
+    background-color: rgb(241, 94, 94);
+    color: white;
+}
+.blood-availability-input:focus{
+    box-shadow: none !important;
+    border: 2px solid rgb(247, 101, 101);
+    color: rgb(240, 34, 34);
+}
+
+.btn-value-change{
+    background-color: rgb(142, 178, 245);
+    color: white;
+    font-weight: bold;
+    /* font-size: 20px; */
+    padding: 8px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.btn-value-change:hover{
+    background-color: rgb(142, 178, 245);
+    color: white;
+}

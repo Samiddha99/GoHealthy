@@ -1,0 +1,808 @@
+.top-button{
+    display: none !important;
+}
+
+.wrapper-admit::-webkit-scrollbar{
+    height: 5px !important;
+}
+.wrapper-admit::-webkit-scrollbar-track {
+    background-color: #ffffff;
+}
+.wrapper-admit::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #FF2A2E;
+}
+.wrapper-admit::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    background-color: #f5181c;
+}
+
+.wrapper-refer::-webkit-scrollbar{
+    height: 5px !important;
+}
+.wrapper-refer::-webkit-scrollbar-track {
+    background-color: #ffffff
+}
+.wrapper-refer::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #f0a51b;
+}
+.wrapper-refer::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    background-color: #da8506;
+}
+
+.wrapper-pastPatients::-webkit-scrollbar{
+    height: 5px !important;
+}
+.wrapper-pastPatients::-webkit-scrollbar-track {
+    background-color: #ffffff
+}
+.wrapper-pastPatients::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #3441fa;
+}
+.wrapper-pastPatients::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    background-color: #212ffa;
+}
+
+.wrapper-referral::-webkit-scrollbar{
+    height: 5px !important;
+}
+.wrapper-referral::-webkit-scrollbar-track {
+    background-color: #ffffff
+}
+.wrapper-referral::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #2699e6;
+}
+.wrapper-referral::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    background-color: #198fdd;
+}
+
+.modal-body-bed-info-table::-webkit-scrollbar{
+    height: 5px !important;
+    width: 5px !important;
+}
+.modal-body-bed-info-table::-webkit-scrollbar-track {
+    background-color: #ffffff
+}
+.modal-body-bed-info-table::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #448ef0;
+}
+.modal-body-bed-info-table::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #2281fd;
+}
+.modal-body-bed-info-table{
+    overflow: auto;
+    height: 100vh;
+}
+.modal-body-bed-info-table thead th{
+    position: sticky !important;
+    top: 0px;
+    z-index: 9;
+}
+
+.modal-body-bed-info{
+    height: 600px;
+    overflow: hidden !important;
+}
+
+.left-column-sticky{
+    position: sticky !important;
+    left: 0px !important;
+    z-index: 9 !important;
+}
+th.left-column-sticky{
+    z-index: 15 !important;
+}
+td.left-column-sticky{
+    background-color: #f3f4f3 !important;
+}
+.left-column-sticky-1{
+    position: sticky !important;
+    left: 75px !important;
+    z-index: 9 !important;
+}
+th.left-column-sticky-1{
+    z-index: 15 !important;
+}
+td.left-column-sticky-1{
+    background-color: #f3f4f3 !important;
+}
+.right-column-sticky{
+    position: sticky !important;
+    right: -1px !important;
+    z-index: 9 !important;
+}
+th.right-column-sticky{
+    z-index: 10 !important;
+}
+td.right-column-sticky{
+    background-color: #f3f4f3 !important;
+}
+.right-column-sticky .dropdown-menu.show, .right-column-sticky .dropdown.show{
+    z-index: 999 !important;
+}
+
+.table-available-beds thead th{
+    background-color: #33bd1a;
+    color: white;
+}
+.table-used-beds th{
+    background-color: #FF2A2E;
+    color: white;
+    position: sticky !important;
+    top:0px;
+}
+.table-booked-beds thead th{
+    background-color: #f0a51b;
+    color: white;
+}
+
+.data-table-head-admit th{
+    position: sticky !important;
+    top:0px;
+    background-color: #FF2A2E;
+    color:white
+}
+.data-table-head-pastPatients th{
+    position: sticky !important;
+    top:0px;
+    background-color: #3441fa;
+    color:white;
+}
+.data-table-head-refer th{
+    position: sticky !important;
+    top:0px;
+    background-color: #f0a51b;
+    color:white
+}
+.data-table-head-referral th{
+    position: sticky !important;
+    top:0px;
+    background-color: #2699e6;
+    color:white
+}
+
+.table-bed-remove-requests thead th{
+    background-color: #f06d1b;
+    color: white;
+}
+
+.table-recent-beds thead th{
+    background-color: #01a154;
+    color: white;
+}
+
+th{
+    white-space: nowrap;
+}
+td{
+    white-space: nowrap;
+}
+.footer-copyright{
+    margin-top: 50px;
+}
+
+
+.custom-navbar{
+    background-color: #5d1cc5;
+}
+.blood{
+    background-color: #5d1cc5;
+}
+.request{
+    background-color: #5d1cc5;
+}
+.blood .dropdown-item:hover{
+    color: #5d1cc5 !important;
+}
+
+
+.btn-bed-edit{
+    cursor: pointer;
+}
+.new-admit-field{
+    color: rgb(78, 78, 79) !important;
+    width: 100% !important;
+    padding: 14px;
+    padding-top: 15px;
+    padding-bottom: 2px;
+    outline: none !important;
+    border: 1px solid rgb(158, 157, 157) !important;
+    border-radius: 3px;
+}
+.new-admit-field:focus{
+    outline: none !important;
+    box-shadow: 0px 0px 10px rgba(255, 30, 0, 1) !important;
+}
+.new-admit-field:disabled{
+    background-color: white !important;
+}
+
+.floating-label .new-admit-field:placeholder-shown + label {
+    color: rgb(78, 78, 79) !important;
+}
+.floating-label .new-admit-field:not(:placeholder-shown) + label, .floating-label .new-admit-field:focus + label {
+    color: rgb(100, 100, 100) !important;
+}
+.floating-label .new-admit-field:not(:placeholder-shown) + label, .floating-label .new-admit-field:focus + label{
+    transform: translate(8px, -3px) scale(1);
+}
+.floating-label .new-admit-field + label span, .floating-label .new-admit-field:focus + label span{
+    background-color: unset !important;
+}
+.floating-label select + label{
+    transform: translate(13px, -3px) scale(1) !important;
+}
+.floating-label select:focus + label{
+    transform: translate(8px, -3px) scale(1) !important;
+}
+.floating-label .new-admit-field + label{
+    font-size: 14px !important;
+}
+
+.book-fetch-field{
+    text-align: center !important;
+    padding-left: 1px !important;
+    padding-right: 1px !important;
+}
+.book-fetch-field:focus{
+    box-shadow: 0px 0px 10px rgba(108, 117, 125, 1) !important;
+}
+.book-fetch-field-dash{
+    max-width: 17px !important;
+    text-align: center !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    font-weight: 900 !important;
+}
+.book-fetch-field-dash:disabled{
+    background-color: white !important;
+}
+.info-o2{
+    padding: 50px;
+}
+.double-border{
+    position: relative;
+    border: 4px solid #4d4fff;
+    border-radius: 50%;
+    background-color:white;
+}
+.double-border:before{
+    content: "";
+    position: absolute;
+    border: 3px solid #0000fe;
+    border-radius: 50%;
+    top:10px;
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+}
+
+
+.bed-change-input{
+    border: 0.5px solid #56ABFF !important;
+}
+.bed-change-input:focus{
+    border-color: #007bff !important;
+    box-shadow: 0px 0px 10px rgba(0, 123, 255, 1) !important;
+    outline:none !important;
+}
+
+.patient-update-input{
+    border: 0.5px solid #8fe0ec !important;
+}
+.patient-update-input:focus{
+    border-color: #17a2b8 !important;
+    box-shadow: 0px 0px 10px #17cde9 !important;
+    outline:none !important;
+}
+
+.referralAdmitForm-input{
+    border: 0.5px solid #fa312a !important;
+}
+.referralAdmitForm-input:focus{
+    border-color: #fa312a !important;
+    box-shadow: 0px 0px 10px rgba(247, 59, 59, 0.904) !important;
+    outline:none !important;
+}
+
+.refer-patient-input{
+    border: 0.5px solid #ffc956 !important;
+}
+.refer-patient-input:focus{
+    border-color: #d6b627 !important;
+    box-shadow: 0px 0px 10px rgb(255, 196, 0) !important;
+    outline:none !important;
+}
+
+.referralPatientRefer-input{
+    border: 0.5px solid #ffc956 !important;
+}
+.referralPatientRefer-input:focus{
+    border-color: #d6b627 !important;
+    box-shadow: 0px 0px 10px rgb(255, 196, 0) !important;
+    outline:none !important;
+}
+
+.update-modal-input:focus{
+    box-shadow: 0px 0px 5px 0.5px #6593f8 !important;
+}
+
+.modal-body-bed-info-table{
+    height: 50vh;
+    overflow: auto;
+}
+
+.add-bed-addon{
+    background: rgb(51, 197, 85);
+    color: white;
+}
+.add-bed-input, .add-bed-input:read-only{
+    border: 0.5px solid #28a745 !important;
+    background-color: white !important;
+    outline: none;
+}
+.add-bed-input:focus{
+    border: 1px solid #28a745;
+    box-shadow: 0px 0px 5px 1px rgba(40, 167, 69, 1);
+    outline: none;
+}
+
+.remove-bed-addon{
+    background: rgb(252, 61, 61);
+    color: white;
+}
+.remove-bed-input, .remove-bed-input:read-only{
+    border: 0.5px solid #ff0000 !important;
+    background-color: white !important;
+    outline: none;
+}
+.remove-bed-input:focus{
+    border: 1px solid #ff0000;
+    box-shadow: 0px 0px 5px 1px rgba(255, 0, 0, 1);
+    outline: none;
+}
+
+.booking-details{
+    margin:1.1px !important;
+}
+.gray-input-field{
+    border: 0.5px solid #929FA8 !important;
+}
+.gray-input-field:focus{
+    border-color: #929FA8 !important;
+    box-shadow: 0px 0px 10px rgba(132, 144, 153, 1) !important;
+    outline:none !important;
+}
+.admit-input{
+    border: 0.5px solid #dc3545 !important;
+}
+.admit-input:focus{
+    border-color: #dc3545 !important;
+    box-shadow: 0px 0px 10px rgba(220, 53, 69, 1) !important;
+    outline:none !important;
+}
+
+.nav-link.nav-red.active{
+    background-color: #FF2A2E;
+    color: white !important;
+}
+.nav-link.nav-warning.active{
+    background-color: #f0a51b;
+    color: white !important;
+}
+.nav-link.nav-blue.active{
+    background-color: #3441fa;
+    color: white !important;
+}
+
+.fa-check-square{
+    font-size: 22px;
+    color: green;
+}
+.fa-times-square{
+    font-size: 22px;
+    color: red;
+}
+.bed-info-background{
+    background-color:#161599;
+    gap:10px;
+    padding:10px;
+    border-radius:10px;
+}
+.bed-header-card{
+    border-radius:10px;
+    background-color: #373A9F;
+    color: white;
+    font-weight:700;
+    font-size: 20px;
+    padding:1px;
+}
+.bed-total-header-card{
+    border-radius:10px;
+    background-color: #373A9F;
+    color: white;
+    font-weight:700;
+    font-size: 20px;
+    padding:1px;
+}
+.bed-header-card .card-body, .bed-total-header-card .card-body{
+    padding:2px;
+}
+.bed-info-card{
+    border-radius:10px;
+    background-color: #373A9F;
+    color: white;
+    font-size: 20px;
+    padding:1px;
+}
+.bed-zoom-card{
+    cursor: zoom-in;
+}
+.bed-zoom-card:hover{
+    -webkit-transform: scale(1.03);
+    -moz-transform: scale(1.03);
+    -ms-transform: scale(1.03);
+    -o-transform: scale(1.03);
+    transform: scale(1.03); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+.bed-info-card .card-body{
+    padding:4px;
+}
+.total{
+    font-size: 22px;
+}
+.hor-line{
+    margin-top:5px;
+    margin-bottom:5px;
+    height:0.3px;
+    background-color:#81A4FF;
+}
+@media only screen and (max-device-width : 508px)
+{
+    .bed-header-card{
+        margin-top: 12px;
+    }
+}
+.bed-data-front-loading{
+    display: none;
+}
+.bed-data-front-percantage{
+    padding: 10px !important;
+}
+.bed-data-front-info{
+    padding: 50px !important;
+    padding-top: 57px !important;
+    padding-bottom: 57px !important;
+}
+.modal-bed{
+    margin: 10px !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    height: 100vh !important;
+}
+
+.footer-top{
+    display: none;
+}
+@media only screen and (min-device-width : 700px){
+    .booking-id-find-group{
+        padding-left: 70px !important;
+        padding-right: 70px !important;
+    }
+}
+
+.sidenav{
+    overflow-x: hidden;
+    position: fixed;
+    top:68px;
+    left:0px;
+    height: 100%;
+    width: 300px;
+    z-index: 51;
+    border: 1px solid white;
+    background-color: #24244e;
+    transition: transform 0.7s ease-out;
+}
+.main-content{
+    margin-left: 300px;
+    transition: margin-left .7s;
+}
+@media only screen and (max-device-width : 500px){
+    .sidenav{
+        width: 100%;
+    }
+}
+
+.sidenav-close{
+    position: absolute;
+    top: 2px;
+    right: 0px;
+    color: white;
+    background-color: #521cf5;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 18px;
+    border: 1px solid white;
+    border-right: none !important;
+}
+.sidenav-open{
+    position: fixed;
+    top: 110px;
+    left: 0px;
+    color: white;
+    background-color: #521cf5;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 18px;
+    border: 1px solid white;
+    border-left: none !important;
+    z-index: 51;
+}
+.sidenav-close:hover, .sidenav-open:hover{
+    cursor: pointer;
+}
+.sidenav-close:hover .close-icon{
+    transform:translateX(-2px);
+}
+.sidenav-open:hover .open-icon{
+    transform:translateX(2px);
+}
+.sidenav-items{
+    margin-top: 60px;
+}
+.sidenav-item-list, .section-content-list{
+    color: #9090bd;
+    list-style-type: none !important;
+    padding: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+.section-content-list{
+    padding-left: 55px !important;
+    margin-bottom: 5px !important;
+}
+.sidenav-item-list:hover, .section-heading:hover, .section-content-list:hover, .section-content-list.active{
+    background-color: #38386e;
+}
+.sidenav-item-list.active, .section-heading.active{
+    color: white !important;
+    background-color: #54a8fd !important;
+    border-left: 8px solid white;
+    margin-right: -10px !important;
+}
+.sidenav-pannal{
+    text-align: center;
+    color: whitesmoke;
+    font-size: 24px;
+    background-color: #59f07c;
+    border: 2px solid #24244e;
+    position: relative;
+    top: 43px;
+    padding: 5px;
+}
+.sidenav-footer{
+    position: absolute;
+    width: 100% !important;
+    bottom: 69px !important;
+    left: 0px;
+    padding: 2px;
+    background-color:rgb(236, 234, 234);
+}
+.section{
+    margin-bottom: 20px;
+}
+.section-heading{
+    color: #9090bd;
+    font-size: 18px;
+    padding: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    cursor: pointer;
+}
+.section-content{
+    background-color: #111138;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    display: none;
+}
+.site-content{
+    display: none;
+}
+.btn-collapse{
+    float: right;
+    margin-top: 5px;
+}
+.site-content.active{
+    display: block !important;
+}
+#edit-gear{
+    cursor: pointer;
+}
+.date-time{
+    position: absolute;
+    top: 0px;
+    left: 60px;
+    text-align: center;
+}
+.date{
+    color: #9090bd;
+    font-size: 17px;
+    margin-bottom: -4px !important;
+}
+.time{
+    color: #9090bd;
+    font-size: 17px;
+}
+#oxygen-gauge-container{
+    width: 100%;
+    height: 300px;
+    padding: 10px;
+}
+.o2-remaining-container{
+    top: -39px;
+    position: relative;
+}
+@media only screen and (min-device-width : 700px){
+    .o2-remaining-container{
+        width:400px;
+        margin: auto !important;
+    }
+}
+.o2-remaining-container-body{
+    background-color: #000000;
+    height: 100px;
+    color: white;
+    border-radius: 12px;
+}
+
+.antivenon-update-div{
+    margin-left: -130px !important;
+    margin-bottom: 50px;
+}
+.checkbox-title{
+    position: relative;
+    top: 20px !important;
+    left: 0px !important;
+    font-size: 18px;
+    color: dodgerblue;
+    font-weight: 700;
+}
+.checkbox-label {
+    display: inline-block;
+    position: relative;
+    top: 0px;
+    left: 0px !important; 
+}
+/* Hide the browser's default checkbox */
+.checkbox-label input {
+    display:none;
+}
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: -2px;
+    left: 0px !important;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0px;
+}
+.value-no{
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 2px solid rgb(13, 120, 226);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.value-yes{
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 2px solid rgb(13, 120, 226);
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+/* On mouse-over, add a grey background color */
+.checkbox-label:hover input ~ .checkmark {
+    cursor: pointer;
+}
+/* When the checkbox is checked, add a blue background */
+.checkbox-label input:checked ~ .checkmark .value-yes{
+    background-color: rgb(13, 120, 226);
+    color: white;
+}
+.checkbox-label input:checked ~ .checkmark .value-no{
+    background-color: white;
+    color: rgb(13, 120, 226);
+}
+.checkbox-label input ~ .checkmark .value-no{
+    background-color: rgb(13, 120, 226);
+    color: white;
+}
+.checkbox-label input ~ .checkmark .value-yes{
+    background-color: white;
+    color: rgb(13, 120, 226);
+}
+
+.btn-more-action-item, .btn-more-action-item:hover{
+    outline: none !important;
+    border: none !important;
+    background-color: transparent;
+}
+
+
+.dataLists{
+    height: 200px;
+    overflow-y: auto;
+    overflow-x: auto;
+    overflow-wrap: break-word;
+}
+.input-help{
+    font-size: 14px;
+    color: gray;
+}
+#generalEditForm label, #contactForm label{
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(133, 131, 131);
+    margin-bottom: 2px;
+}
+.map-modal{
+    margin: 10px !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    min-height: 100vh !important;
+}
+.map{
+    width: 100%;
+    height: 100%;
+}
+
+.add-remove-button{
+    border-radius: 10px;
+    padding: 1px 8px 1px 8px;
+}
+
+
+.autocomplete-result {
+    border-top: 1px solid #eee;
+    padding: 10px;
+    background: transparent;
+}
+.autocomplete-result-list{
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+.autocomplete-option-title {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+.bed-info-filter-input{
+    border-radius: 20px;
+    outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid #3131c1;
+    background-color: #3131c1 !important;
+    color: white !important;
+}
+
+.bed-info-filter-input:focus{
+    border: 1px solid #3131c1;
+    background-color: white !important;
+    color: #3131c1 !important;
+}

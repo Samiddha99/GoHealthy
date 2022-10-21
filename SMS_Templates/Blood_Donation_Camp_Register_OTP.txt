@@ -1,0 +1,7 @@
+Use the OTP to verify your mobile number to register a blood donation camp.
+Your OTP: **yourOTP**
+OTP will be expired after 10 minutes.
+Never share the OTP to anyone.
+
+Regards,
+Go Healthy

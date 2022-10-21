@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% extends 'base.html' %}
+  {% load static %} <!--To use the files under static folder we have to load the static in that page-->
+  {% load custom_tags %}
+  <head>
+    {% block meta %}
+    <meta name="title" content="Blood Donation Camps | Go Healthy">
+    <meta name="description" content="Here you can find which blood banks have available blood">
+    {% endblock meta %}
+
+    {% block title %}
+      <title>Blood Donation Camps | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+      <link rel="stylesheet" href="{% static 'css/blooddonationcamps.css' %}">
+    {% endblock style %}
+
+    </head>
+
+    {% block body %}
+    <body>
+    {% endblock body %}
+
+    {% block content %}
+  
+        <div class="small-screen-text mb-3 ml-2 mr-2" align="center">
+            <a href="{% url 'Go_Healthy_App:BloodDonationCampRegistration' %}" class="btn btn-new-event">Create An Event</a>
+            <h2 class="info-text-header">Do You Know?</h2>
+            <h3 class="info-text-message">1 pint of blood can save upto 3 lives</h3>
+        </div>
+        <div class="row no-gutters">
+        <div class="col-md-5 ml-2 mr-2 mb-5 order-md-2 filter-box">
+            <div class="filter-box">
+                <div class="filter-form">
+                    <form id="filter" method="get" autocomplete="off" action="{% url 'Go_Healthy_App:BloodDonationCamps' %}">
+                        <div id="autocomplete" class="autocomplete">
+                            <input class="autocomplete-input form-control input-sm search-field" form="filter" id="Name" name="Name" placeholder="Search by Organizer's Name" aria-label="Search by Organizer's Name">
+                            <ul class="autocomplete-result-list"></ul>
+                        </div>            
+                        <button class="btn search-button" type="submit" form="filter" name="action" value="filter"><i class="far fa-search"></i></button>
+                        <div class="ml-1 mr-1 mt-1 advance-search-box">
+                            <p class="text-muted" align="left">ADVANCED SEARCH</p>
+                            <div class="row">
+                                <div class="col-md mb-3">
+                                    <input type="text" id="date" name="Date" class="form-control input-sm advance-search-field datetime-placeholder" form="filter" placeholder="Date">
+                                </div>
+                                <div class="col-md mb-3">
+                                    <input type="search" inputmode="numeric" class="form-control input-sm advance-search-field" maxlength="6" value="{{pin}}" placeholder="Pin" name="Pin" id="Pin" form="filter">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md mb-3">
+                                    <select id="State" name="State" class="form-control input-sm advance-search-field" form="filter">
+                                        <option label="Select State"></option>
+                                        <option value="All States & Union Territories">All States & Union Territories</option>
+                                        <optgroup label="States">
+                                            {% for i in states %}
+                                                {% if not i.Is_Union_Territory %}
+                                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                                {%endif%}
+                                            {% endfor %}
+                                        </optgroup>
+                                        <optgroup label="Union Territories">
+                                            {% for i in states %}
+                                                {% if i.Is_Union_Territory %}
+                                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                                {%endif%}
+                                            {% endfor %}
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-md mb-3">
+                                    <select class="form-control input-sm advance-search-field" name="District" id="District" form="filter" data-toggle="tooltip" data-placement="top" title="To Select District choose A State First">
+                                        <option label="Select District"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md mb-3">
+                                    <input type="search" class="form-control input-sm advance-search-field" list="sub_options" value="{{subdivision}}" placeholder="Sub-division" name="Subdivision" id="Subdivision" form="filter">
+                                    <datalist id="sub_options">
+
+                                    </datalist>
+                                </div>
+                                <div class="col-md mb-3">
+                                    <input type="search" class="form-control input-sm advance-search-field" list="city_options" value="{{city}}" placeholder="City" name="City" id="City" form="filter">
+                                    <datalist id="city_options">
+
+                                    </datalist>
+                                </div>
+                            </div>
+                            <div class="row no-gutters mt-1">
+                                <div class="col-3 mb-2" align="left">
+                                    <button type="button" class="btn btn-primary" id="filter-clear">Clear</button>
+                                </div>
+                                <div class="col-4 mb-2" align="center">
+                                    <p id="total-results" style="visibility:hidden"><span style="color:#00bcec" id="total-results-no"></span> results</p>
+                                </div>
+                                <div class="col-5 mb-2" align="right">
+                                    <button type="submit" class="btn btn-search" form="filter" name="action" value="filter" id="filter_search">SEARCH</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="large-screen-text mt-5" align="center">
+                    <a href="{% url 'Go_Healthy_App:BloodDonationCampRegistration' %}" class="btn btn-new-event">Create An Event</a>
+                    <h2 class="info-text-header">Do You Know?</h2>
+                    <h3 class="info-text-message">1 pint of blood can save upto 3 lives</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md mt-4 order-md-1" align="center">
+            <div class="div-results" id="div-results">
+                <div class="no-resuls-found mb-5 ml-3">
+                    <div class="row">
+                        <div class="col-3 text-right">
+                            <i class="fa-solid fa-face-frown-slight fa-beat-fade sad-emoji"></i>
+                        </div>
+                        <div class="col text-left">
+                            <div class="not-found-text">
+                                <div class="sorry ml-4">
+                                    Sorry
+                                </div>
+                                <div class="no-data-heading">
+                                    <span class="no-data-heading-box">
+                                        No Results Found!
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-3 mr-3">
+                    <div id="results">
+                    
+                    </div>
+                    {% makeList 3 as range_3 %}
+                    {% for i in range_3 %}
+                    <div class="loading-skeleton mb-3 text-center"> 
+                        <center>
+                        <div class="card mb-3 data-card" align="center">
+                            <div class="card-body" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                <h5 class="card-title">
+                                    <div style="margin-bottom: 0px;" class="skeleton title-skeleton-label mt-3"></div>
+                                    <div class="skeleton title-skeleton"></div>
+                                </h5>
+                                <div class="card-text">
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md col-venue">
+                                            <div class="skeleton venue-skeleton"></div>
+                                            <div class="text-left">
+                                                <div class="skeleton address-skeleton"></div>
+                                                <div class="skeleton address-skeleton"></div>
+                                                <div class="skeleton address-skeleton"></div>
+                                                <div class="skeleton address-skeleton"></div>
+                                                <div class="skeleton address-skeleton"></div>
+                                                <div class="skeleton address-skeleton"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md pt-3 pt-md-0">
+                                            <h5 class="text-center skeleton contact-skeleton-label"></h5>
+                                            <div class="skeleton contact-skeleton"></div>
+                                            <h5 class="text-center mt-4 skeleton organized-on-skeleton"></h5>
+                                            <div class="skeleton date-skeleton"></div>
+                                            <div class="skeleton time-skeleton"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </center>  
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+        </div>
+        {% endblock content %}
+
+        {% block script %}
+
+        <script src="{% static 'javascripts/blooddonationcamps.js' %}"></script>
+
+        {% endblock script %}
+    </body>
+</html>

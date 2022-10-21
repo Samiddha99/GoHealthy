@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% load embed_video_tags %}
+<head>
+    {% block meta %}
+    <meta name="title" content="First Aid - Video | Go Healthy">
+    <meta name="description" content="Learn First Aid with Video Tutorials">
+    {% endblock meta %}
+
+    {% block title %}
+    <title>First Aid - Videos | Go Healthy</title>
+    {% endblock title %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/firstaid_video.css' %}">
+    {% endblock style %}
+    
+</head>
+{% block body %}
+<body style="background-image: url('{% static 'images/GoHealthy_first aid video page background.jpg' %}');
+             background-size: cover;background-repeat:no-repeat;background-attachment:fixed;">
+{% endblock body %}
+
+{% block content %}
+<form id="languageFilter" method="get">
+<div class="row">
+    <div class="col-md-8 col"></div>
+    <div class="col-md-3 col-7 ml-2 mr-3" align="right">
+        <select name="language" id="language" class="form-control input-sm" form="languageFilter" required style="width:95%">
+            <option label="Select Language"></option>
+            {% if language == 'All Languages' %}
+            <option value="All Languages" selected>All Languages</option>
+            {% else %}
+            <option value="All Languages">All Languages</option>
+            {% endif %}
+            {% for i in languages %}
+            {% if language == i.Language %}
+            <option value="{{i.Language}}" selected>{{i.Language}}</option>
+            {% else %}
+            <option value="{{i.Language}}">{{i.Language}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-11 ml-2 mr-3 mt-1" align="right">
+        <button type="submit" class="btn btn-success" form="languageFilter" name="action" value="filter" style="width:200px;margin-top:1px">Filter</button>
+    </div>
+    <div class="col-md"></div>
+</div>
+</form>
+
+<!-- Insert all the videos Here-->
+<div class="row">
+    <div class="col-md-8 ml-2 mr-2">
+        {% for i in videos %}
+            <div class="video-header-text">
+                {{forloop.counter}}. {{i.Name}}
+            </div>
+            <video id="player" class="plyr-video" title="{{i.Name}}" playsinline controls>
+                <source src="{{i.Video.url}}" type="video/mp4" />
+            </video>
+        {% endfor %}
+  
+        <!-- <div class="plyr__video-embed plyr-video" id="player">
+            <iframe class="lazy" data-loader="iframe"
+              src="https://www.youtube.com/embed/rbN7fUnWWjo?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1"
+              allowfullscreen
+              allowtransparency
+              allow="autoplay">
+            </iframe>
+        </div>-->
+        
+         <!-- <div id="player1" class="plyr-video" data-plyr-provider="youtube" data-plyr-embed-id="rbN7fUnWWjo"></div> -->
+    </div>
+    <div class="col-md"></div>
+</div>
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'javascripts/firstaid_video.js' %}"></script>
+
+{% endblock script %}
+</body>
+</html>
