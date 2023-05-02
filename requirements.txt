@@ -218,7 +218,6 @@ tuspy==0.2.4
 twilio==6.59.0
 twine==3.4.1
 Twisted==21.2.0
-twisted-iocpsupport==1.0.3
 txaio==21.2.1
 typing-extensions==3.10.0.2
 tzlocal==2.1
