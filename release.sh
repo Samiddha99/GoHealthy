@@ -8,4 +8,4 @@ python manage.py crontab add
 python manage.py crontab show
 crontab -l
 # python manage.py runserver 0.0.0.0:$PORT
-daphne GoHealthy.asgi:application
+daphne -b 0.0.0.0 GoHealthy.asgi:application

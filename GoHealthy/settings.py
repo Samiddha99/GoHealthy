@@ -43,6 +43,7 @@ SECRET_KEY = config("SECRET_KEY", cast=str)
 
 # Application definition
 INSTALLED_APPS = [
+    'daphne',
     'channels',
     'django_eventstream',
     'clearcache',
