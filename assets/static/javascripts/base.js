@@ -93,7 +93,6 @@ $(document).on('click', ".table-sort-column", function(){
     $(".table-sort-icon").removeClass('fad fa-sort-up');
     $(".table-sort-icon").removeClass('fad fa-sort-down');
     $(".table-sort-icon").addClass('fas fa-sort');
-    $(sort_icon).removeClass('fas fa-sort');
     sortTable(index, table, sort_icon);
 })
 
@@ -111,6 +110,7 @@ function sortTable(column_index, table, target_col_sort_icon) {
         /* Loop through all table rows (except the
         first, which contains table headers): */
         for (i = 0; i < (rows.length - 1); i++) {
+			$(target_col_sort_icon).removeClass('fas fa-sort');
             // Start by saying there should be no switching:
             shouldSwitch = false;
             /* Get the two elements you want to compare,

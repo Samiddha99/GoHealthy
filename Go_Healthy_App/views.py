@@ -1,7 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect, response, JsonResponse, StreamingHttpResponse
 from django.views.decorators.http import require_http_methods, require_GET, require_safe, require_POST
 from django.views.decorators.cache import cache_page
@@ -31,8 +29,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models.expressions import RawSQL
 import shutil
 from django.db.models.expressions import F
-from django.core.files import File
-from ratelimit.decorators import ratelimit
+from django_ratelimit.decorators import ratelimit
 import django
 import pytz
 import time as t
@@ -73,9 +70,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import *
 from django.contrib.auth.password_validation import *
 import django.contrib.auth.password_validation as validators
-from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMessage
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from twilio.rest import Client
 from django import forms
@@ -5279,7 +5274,7 @@ def PasswordChange(request):
         }
         password_errors.append(error)
     elif validation_errors['password_error'] != 'No Error':
-        password_errors += validation_errors.password_error
+        password_errors += validation_errors['password_error']
     elif new_password1 == old_password:
         error = {
             'error_code': '003',

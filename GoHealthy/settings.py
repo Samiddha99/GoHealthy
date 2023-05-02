@@ -9,14 +9,18 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import subprocess
 from xmlrpc.client import Boolean
 from django.db.models.expressions import F
 
-import django_heroku
-from decouple import config
+from decouple import config, Csv
+from dotenv import load_dotenv
+import environ
 
 import dj_database_url
+from dj_database_url import parse as db_url
 
+import django_heroku
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,30 +30,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-env_file = BASE_DIR / 'GoHealthy/.env'
-if os.path.exists(env_file):
-    import environ
-    env = environ.Env()
-    # reading .env file
-    environ.Env.read_env()
+env_file = BASE_DIR / '.env'
+env = environ.Env()
 
 SITE_ID = 1
-DEBUG = eval(str(config("DEBUG", False)))
-DEPLOY = eval(str(config("DEPLOY", True)))
-
-# if DEBUG:
-#     import mimetypes
-#     mimetypes.add_type("application/javascript", ".js", True)
+DEBUG = config("DEBUG", default=False, cast=bool)
+DEPLOY = config("DEPLOY", default=True, cast=bool)
 
 
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY", cast=str)
 
 
 # Application definition
 INSTALLED_APPS = [
     'channels',
-    'django.contrib.staticfiles',
+    'django_eventstream',
     'clearcache',
+    'Go_Healthy_App.apps.GoHealthyAppConfig',
     #'jet.dashboard',
     #'jet',
     'django.contrib.admin',
@@ -58,8 +55,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.sites',
-    'Go_Healthy_App.apps.GoHealthyAppConfig',
     'django_user_agents',
+    'whitenoise.runserver_nostatic',
+    'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'django.contrib.postgres',
     #'django_hstore',
@@ -68,14 +66,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_cleanup',
     'django_dropbox_storage',
-    'django_eventstream',
     'cache_headers',
     'django_crontab',
     'embed_video',
     'django_filters',
-    'django.forms',
     'crispy_forms',
-    'template_forms',
     'geoposition',
     'storages',
     'boto',
@@ -149,8 +144,10 @@ VPNAPI_KEY = config('VPNAPI_KEY')
 DLT_ENTITY_ID = config('DLT_ENTITY_ID')
 DLT_ENTITY_NAME = config('DLT_ENTITY_NAME')
 
-WKHTMLTOPDF_BINARY_PATH=config("WKHTMLTOPDF_BINARY_PATH", "/usr/bin/wkhtmltopdf")
-WKHTMLTOIMAGE_BINARY_PATH=config("WKHTMLTOIMAGE_BINARY_PATH", "/usr/bin/wkhtmltoimage")
+try:
+    WKHTMLTOPDF_BINARY_PATH = subprocess.run("which wkhtmltopdf", shell=True, capture_output=True, text=True).stdout
+except:
+    WKHTMLTOPDF_BINARY_PATH = subprocess.run("where wkhtmltopdf", shell=True, capture_output=True, text=True).stdout
 
 SMS_SEND_ENABLED = config("SMS_SEND_ENABLED", '0')
 
@@ -172,7 +169,7 @@ MIDDLEWARE = [
     'django_referrer_policy.middleware.ReferrerPolicyMiddleware',
     'django_grip.GripMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
-    'ratelimit.middleware.RatelimitMiddleware',
+    'django_ratelimit.middleware.RatelimitMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
     # custom middleware
     # 'Go_Healthy_App.middleware.security.IPCheckMiddleware',
@@ -335,7 +332,7 @@ CSP_BLOCK_ALL_MIXED_CONTENT = True
 #     INTERNAL_IPS = ['127.0.0.1',]
 
 WHITENOISE_SKIP_COMPRESS_EXTENSIONS = []
-ROOT_URLCONF = 'GoHealthy.urls'
+
 EVENTSTREAM_STORAGE_CLASS = 'django_eventstream.storage.DjangoModelStorage'
 
 TEMPLATES = [
@@ -387,9 +384,11 @@ RATELIMIT_VIEW = 'Go_Healthy_App.views.rateLimitView'
 DEFAULT_VIEW_RATE_LIMIT = '2000/h'
 
 
-#WSGI_APPLICATION = 'GoHealthy.wsgi.application'
+# WSGI_APPLICATION = 'GoHealthy.wsgi.application'
 ASGI_APPLICATION = 'GoHealthy.asgi.application'
+ROOT_URLCONF = 'GoHealthy.urls'
 EVENTSTREAM_CHANNELMANAGER_CLASS = 'Go_Healthy_App.channelmanager.CustomChannelManager'
+
 
 if DEPLOY:
     EVENTSTREAM_ALLOW_ORIGIN = config('DOMAIN_NAME')
@@ -405,10 +404,12 @@ LOGOUT_REDIRECT_URL = '/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 if DEPLOY:
-    DATABASES = { 'default' : dj_database_url.config()} # Parse database configuration from $DATABASE_URL
+    DATABASES = {'default' : config('DATABASE_URL', cast=db_url)} # Parse database configuration from $DATABASE_URL
     DATABASES['default']['HAS_HSTORE'] = True
     options = {'options': '-c search_path=go_healthy_schema,django,public'}
     DATABASES['default']['OPTIONS'] = options
+    DATABASES['default']['CONN_MAX_AGE'] = 600
+    DATABASES['default']['CONN_HEALTH_CHECKS'] = True
 else:
     DATABASES = {
         'default': {
@@ -425,7 +426,6 @@ else:
         }
     }
 
-#DATABASE_URL = ""
 AUTH_USER_MODEL = 'Go_Healthy_App.Users'
 
 # Password validation
@@ -462,6 +462,47 @@ CRONJOBS = [
     ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.deleteOTP', '>> /logs/scheduled_job/deleteOTP.log'),
     ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.deleteResetLink', '>> /logs/scheduled_job/deleteResetLink.log'),
 ]
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/howto/static-files/
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'assets/staticfiles'  # The command manage.py collectstatic will automatically compile all the static files throughout the project and dump it into a single root directory, which is declared in STATIC_ROOT
+STATICFILES_DIRS = [BASE_DIR / 'assets/static/', ]
+
+MEDIA_ROOT = BASE_DIR / 'assets/media/'
+MEDIA_URL = '/media/'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+if DEPLOY:
+    DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+    #DROPBOX_ROOT_FOLDER = '/assets/'
+    DROPBOX_ROOT_PATH = '/assets/media/'
+
+
+#For Mail Sending
+DEFAULT_FROM_EMAIL = config("GOOGLE_EMAIL_ID")
+SERVER_EMAIL = config("GOOGLE_EMAIL_ID")
+
+ADMINS = [
+    (config("SENDGRID_EMAIL_SENDER_NAME"), config("GOOGLE_EMAIL_ID")),
+]  # send error to this mail
+MANAGERS = ADMINS
+
+EMAIL_BACKEND = config("EMAIL_BACKEND")
+EMAIL_HOST = config("SENDGRID_EMAIL_HOST")
+EMAIL_USE_TLS = True
+
+#EMAIL_USE_SSL = True
+EMAIL_PORT = config("SENDGRID_EMAIL_TLS_PORT1", cast=int)
+EMAIL_ID = config("GOOGLE_EMAIL_ID")
+EMAIL_HOST_NAME = config("SENDGRID_EMAIL_SENDER_NAME")
+EMAIL_HOST_USER = config("SENDGRID_EMAIL_HOST_USERNAME")
+EMAIL_HOST_PASSWORD = config("SENDGRID_EMAIL_HOST_PASSWORD")
+
+ADMIN_URL = config('ADMIN_URL')
+
+SITE_URL = config('SITE_URL')
 
 
 # Internationalization
@@ -540,49 +581,6 @@ TIME_FORMAT = 'h:i A' # '01:30 PM
 MAX_UPLOAD_SIZE = 104857600 # 100 MB
 CONTENT_TYPES = ['image/+', 'video/+', 'audio/+', 'text/+', 'application/pdf', 'application/msword', 'application/vnd+']
 DOCUMENT_CONTENT_TYPES = ['image/+', 'application/pdf']
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-STATIC_ROOT = BASE_DIR / 'assets/staticfiles'  # The command manage.py collectstatic will automatically compile all the static files throughout the project and dump it into a single root directory, which is declared in STATIC_ROOT
-STATIC_URL = '/static/'
-MEDIA_ROOT = BASE_DIR / 'assets/media/'
-STATICFILES_DIRS = [BASE_DIR / 'assets/static/', ]
-MEDIA_URL = '/media/'
-
-if DEPLOY:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-    #DROPBOX_ROOT_FOLDER = '/assets/'
-    DROPBOX_ROOT_PATH = '/assets/media/'
-
-
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-#For Mail Sending
-DEFAULT_FROM_EMAIL = config("GOOGLE_EMAIL_ID")
-SERVER_EMAIL = config("GOOGLE_EMAIL_ID")
-
-ADMINS = [
-    (config("SENDGRID_EMAIL_SENDER_NAME"), config("GOOGLE_EMAIL_ID")),
-]  # send error to this mail
-MANAGERS = ADMINS
-
-EMAIL_BACKEND = config("EMAIL_BACKEND")
-EMAIL_HOST = config("SENDGRID_EMAIL_HOST")
-EMAIL_USE_TLS = True
-
-#EMAIL_USE_SSL = True
-EMAIL_PORT = config("SENDGRID_EMAIL_TLS_PORT1", cast=int)
-EMAIL_ID = config("GOOGLE_EMAIL_ID")
-EMAIL_HOST_NAME = config("SENDGRID_EMAIL_SENDER_NAME")
-EMAIL_HOST_USER = config("SENDGRID_EMAIL_HOST_USERNAME")
-EMAIL_HOST_PASSWORD = config("SENDGRID_EMAIL_HOST_PASSWORD")
-
-ADMIN_URL = config('ADMIN_URL')
-
-SITE_URL = config('SITE_URL')
 
 if DEPLOY:
     django_heroku.settings(locals())

@@ -17,22 +17,20 @@ from django.contrib.postgres.fields import *
 from embed_video.fields import EmbedVideoField
 from constrainedfilefield.fields import ConstrainedFileField
 from django.forms import ModelForm
-from django.urls import reverse
 import datetime
 import django
 import os
-from django.db.models.signals import pre_delete, pre_save, post_save, post_delete
+from django.db.models.signals import *
 from django.dispatch.dispatcher import receiver
 from django.utils import timezone as zonetime
 import secrets
 import string
 import threading
-from django.db.models.signals import pre_migrate
 import sys
 from django_eventstream import send_event, get_current_event_id
 #from geoposition.fields import GeopositionField
 #from django.contrib.gis.db import models
-from django.contrib.auth.models import Group, User, AbstractUser, AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import *
 from .validators import *
 from .choice import *
 
@@ -274,7 +272,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['email', 'User_Type', 'Contact', 'ID_Type', 'ID_Number', 'display_profile_pic', 'is_verified', 'is_book_allow', 'is_online', 'last_seen', 'Last_Update', 'Is_in_Upgradation']
+    REQUIRED_FIELDS = ['email', 'User_Type', 'Contact', 'ID_Type', 'ID_Number', 'display_profile_pic', 'is_verified', 'is_book_allow', 'is_online', 'last_seen', 'last_update', 'Is_in_Upgradation']
 
     class Meta:
         # unique_together = [['ID_Type', 'ID_Number']]
@@ -301,7 +299,6 @@ class Users(AbstractBaseUser, PermissionsMixin):
             self.last_update = zonetime.now()
         self.full_clean(exclude=['last_login_details',]) # calls self.clean() as well cleans other fields
         super(Users, self).save(*args, **kwargs)
-
 
     def __str__(self):
         return self.username

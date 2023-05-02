@@ -10,8 +10,8 @@ var userType = String($('#UserType').val()).replace(/\[/g, "").replace(/\]/g, ""
 var generalUserTypes = String($('#generalUserTypes').val()).replace(/\[/g, "").replace(/\]/g, "").replace(/'/g, "").split(", ");
 var specialUserTypes = String($('#specialUserTypes').val()).replace(/\[/g, "").replace(/\]/g, "").replace(/'/g, "").split(", ");
 var bedSource;
-var timer_running = 0;
 
+var timer_running = 0;
 timer = function (targetTime)
 {
     // Update the count down every 1 second

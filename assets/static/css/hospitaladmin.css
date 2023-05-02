@@ -80,54 +80,59 @@
 .modal-body-bed-info-table{
     overflow: auto;
     height: 100vh;
+	padding: 0px;
 }
-.modal-body-bed-info-table thead th{
-    position: sticky !important;
-    top: 0px;
-    z-index: 9;
-}
-
 .modal-body-bed-info{
     height: 600px;
     overflow: hidden !important;
 }
 
-.left-column-sticky{
+
+
+.table-sticky-thead {
+    overflow-x: scroll !important;
+    overflow-y: scroll !important;
+    height: 60vh;
+    padding: 0px !important;
+}
+tbody .th, tbody .td {
+    z-index: 15;
+}
+.table-sticky-thead thead th {
+    position: sticky !important;
+    top: 0px;
+    z-index: 19;
+}
+.left-column-sticky {
     position: sticky !important;
     left: 0px !important;
-    z-index: 9 !important;
 }
-th.left-column-sticky{
-    z-index: 15 !important;
-}
-td.left-column-sticky{
-    background-color: #f3f4f3 !important;
-}
-.left-column-sticky-1{
+.left-column-sticky-1 {
     position: sticky !important;
     left: 75px !important;
-    z-index: 9 !important;
 }
-th.left-column-sticky-1{
-    z-index: 15 !important;
+thead .left-column-sticky, thead .left-column-sticky-1 {
+    z-index: 20 !important;
 }
-td.left-column-sticky-1{
+tbody .left-column-sticky, tbody .left-column-sticky-2 {
     background-color: #f3f4f3 !important;
+    z-index: 18 !important;
 }
-.right-column-sticky{
+.right-column-sticky {
     position: sticky !important;
-    right: -1px !important;
-    z-index: 9 !important;
+    right: 0px !important;
 }
-th.right-column-sticky{
-    z-index: 10 !important;
+thead .right-column-sticky {
+    z-index: 20 !important;
 }
-td.right-column-sticky{
+tbody .right-column-sticky {
     background-color: #f3f4f3 !important;
+    z-index: 18 !important;
 }
-.right-column-sticky .dropdown-menu.show, .right-column-sticky .dropdown.show{
+.right-column-sticky .dropdown-menu.show, .right-column-sticky .dropdown.show {
     z-index: 999 !important;
 }
+
 
 .table-available-beds thead th{
     background-color: #33bd1a;
@@ -136,44 +141,31 @@ td.right-column-sticky{
 .table-used-beds th{
     background-color: #FF2A2E;
     color: white;
-    position: sticky !important;
-    top:0px;
 }
 .table-booked-beds thead th{
     background-color: #f0a51b;
     color: white;
 }
-
 .data-table-head-admit th{
-    position: sticky !important;
-    top:0px;
     background-color: #FF2A2E;
     color:white
 }
 .data-table-head-pastPatients th{
-    position: sticky !important;
-    top:0px;
     background-color: #3441fa;
     color:white;
 }
 .data-table-head-refer th{
-    position: sticky !important;
-    top:0px;
     background-color: #f0a51b;
     color:white
 }
 .data-table-head-referral th{
-    position: sticky !important;
-    top:0px;
     background-color: #2699e6;
     color:white
 }
-
 .table-bed-remove-requests thead th{
     background-color: #f06d1b;
     color: white;
 }
-
 .table-recent-beds thead th{
     background-color: #01a154;
     color: white;

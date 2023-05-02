@@ -51,8 +51,7 @@ import pdfkit
 import imgkit
 from fpdf import FPDF, HTMLMixin
 from dateutil import parser
-from django.db.models.functions import Extract
-from django.db.models.functions import ExtractDay, ExtractMonth, ExtractQuarter, ExtractWeek, ExtractIsoWeekDay, ExtractWeekDay, ExtractIsoYear, ExtractYear
+from django.db.models.functions import *
 from ipware import get_client_ip
 import calendar
 import traceback
@@ -226,7 +225,7 @@ def passwordValidation(password :str, Username :str):
                 'error_message': "This password is too common",
             }
             passwordErrors.append(password_error)
-    if password.lower() in Username.lower():
+    if password.lower().find(Username.lower()) != -1:
         password_error = {
             'error_code': '2',
             'error_message': "Password must not be similar to the Username",
@@ -345,11 +344,7 @@ def generateIMGfromHTML(template_src :str, file_name :str, save :bool, context :
 
 
 def generatePDFfromHTML(template_src :str, file_name :str, save :bool, title :str, context :dict = {}, pdf_url=''):
-    if settings.DEPLOY:
-        pdfkit_config = pdfkit.configuration(wkhtmltopdf=settings.WKHTMLTOPDF_BINARY_PATH)
-    else:
-        pdfkit_config = pdfkit.configuration()
-
+    pdfkit_config = pdfkit.configuration(wkhtmltopdf=settings.WKHTMLTOPDF_BINARY_PATH)
     template_file = open(template_src, "r")
     template = Template(template_file.read())
     template_file.close()
@@ -384,7 +379,6 @@ def generatePDFfromHTML(template_src :str, file_name :str, save :bool, title :st
         result = BytesIO(initial_bytes=pdf) # convert the bytes format in bytesIO
         pdfFile = File(result, name=file_name) # return the created pdf as file format
         return pdfFile
-
     #pdf = pisa.pisaDocument(BytesIO(html.encode("utf-8")), result)
     #pdf = pisa.CreatePDF(BytesIO(html.encode("utf-8")), result)
  
@@ -527,7 +521,6 @@ class Send_Mail(threading.Thread):
                     for recipients in splits:
                         payload['personalizations'][0]['to'] = recipients
                         result = requests.request("POST", "https://api.sendgrid.com/v3/mail/send", data=json.dumps(payload), headers=headers)
-                
                 result = result.text
             else:
                 result = None

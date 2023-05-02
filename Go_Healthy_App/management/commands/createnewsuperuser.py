@@ -33,6 +33,8 @@ class Command(BaseCommand):
                 raise CommandError("Confirm Password field can't be empty")
             if password1 != password2:
                 raise CommandError("Password and Confirm Password didn't matched")
+            if Users.objects.filter(username=username).exists():
+                raise CommandError("User with this username already exists")
             if Users.objects.filter(email=email).exists():
                 raise CommandError("User with this email already exists")
             if Users.objects.filter(Contact=contact).exists():

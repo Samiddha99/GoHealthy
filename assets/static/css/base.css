@@ -498,13 +498,13 @@ button:disabled{
 .TwoButton-Alert-button-okay:hover{
     background-color: #e6e3e3;
 }
-.btn-file-upload{
+/* .btn-file-upload{
     background-color: #5d1cc5;
     color: white;
     border-radius: 10px;
     padding: 5px;
     cursor: pointer;
-}
+} */
 .btn-upload{
     border-radius: 5px;
     border: none;
