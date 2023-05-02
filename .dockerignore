@@ -1,5 +1,9 @@
 fly.toml
 .git/
 *.sqlite3
+Procfile
+Aptfile
+.buildpacks
+python
 # assets/static/*
 # assets/staticfiles/*
