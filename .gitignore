@@ -133,8 +133,8 @@ db.sqlite3
 
 #Media Files
 assets/media
-assets/staticfiles/*
 !assets/staticfiles
+assets/staticfiles/*
 
 Procfile
 Aptfile
