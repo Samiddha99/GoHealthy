@@ -180,9 +180,9 @@ MIDDLEWARE = [
 # Strict: Allowed on first party requests only. No cross-domain shenanigans
 # Lax: Allowed on third party requests from safe top-level navigation (like, links or GET)
 # None: Allowed on all first party and third party requests. Must also use the 'Secure' cookie attribute
+ALLOWED_HOSTS = config('DOMAIN_NAME', default='127.0.0.1:8000', cast=Csv(str))
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='127.0.0.1:8000', cast=Csv(str))
 if DEPLOY:
-    ALLOWED_HOSTS = [config('DOMAIN_NAME')]
-    
     CSRF_COOKIE_SECURE = True  # browser trigger the cookie as safe, and only be send by secure connection.
     CSRF_COOKIE_DOMAIN = '.' + config('DOMAIN_NAME')  # if set . before the domain name, then it also allow for subdomain.
     CSRF_TRUSTED_ORIGINS = [config('DOMAIN_NAME'), ]
@@ -222,7 +222,6 @@ else:
     SECURE_HSTS_PRELOAD = False
     SECURE_HSTS_INCLUDE_SUBDOMAINS = False
     SECURE_SSL_REDIRECT = False
-    ALLOWED_HOSTS = ['*']
     CORS_ALLOWED_ORIGINS = []
     
 
@@ -461,6 +460,19 @@ CRONTAB_EXECUTABLE = config('CRONTAB_EXECUTABLE_PATH', '/usr/bin/crontab') # pat
 CRONJOBS = [
     ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.deleteOTP', '>> /logs/scheduled_job/deleteOTP.log'),
     ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.deleteResetLink', '>> /logs/scheduled_job/deleteResetLink.log'),
+    ('*/5 * * * *', 'Go_Healthy_App.scheduletasks.tasks.sendBloodDonationCampReminder', '>> /logs/scheduled_job/sendBloodDonationCampReminder.log'),
+    ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.bookExpireAlert', '>> /logs/scheduled_job/bookExpireAlert.log'),
+    ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.expireBooking', '>> /logs/scheduled_job/expireBooking.log'),
+    ('*/1 * * * *', 'Go_Healthy_App.scheduletasks.tasks.unreserveBed', '>> /logs/scheduled_job/unreserveBed.log'),
+    ('*/60 * * * *', 'Go_Healthy_App.scheduletasks.tasks.multipleBookingWarning', '>> /logs/scheduled_job/multipleBookingWarning.log'),
+    ('* * */30 * *', 'Go_Healthy_App.scheduletasks.tasks.deleteBloodRequest', '>> /logs/scheduled_job/deleteBloodRequest.log'),
+    ('* * */30 * *', 'Go_Healthy_App.scheduletasks.tasks.deleteBloodDonationCamps', '>> /logs/scheduled_job/deleteBloodDonationCamps.log'),
+    ('* * */1 * *', 'Go_Healthy_App.scheduletasks.tasks.deletePastPatientRecords', '>> /logs/scheduled_job/deletePastPatientRecords.log'),
+    ('* * */1 * *', 'Go_Healthy_App.scheduletasks.tasks.deleteContactUs', '>> /logs/scheduled_job/deleteContactUs.log'),
+    ('* * */1 * *', 'Go_Healthy_App.scheduletasks.tasks.deleteFeedback', '>> /logs/scheduled_job/deleteFeedback.log'),
+    ('5 00 * * *', 'Go_Healthy_App.scheduletasks.tasks.donorDowngradeMessage', '>> /logs/scheduled_job/donorDowngradeMessage.log'),
+    ('10 00 * * *', 'Go_Healthy_App.scheduletasks.tasks.deleteNonVerifyUser', '>> /logs/scheduled_job/deleteNonVerifyUser.log'),
+    ('00 00 * * *', 'Go_Healthy_App.scheduletasks.tasks.resetLiveData', '>> /logs/scheduled_job/resetLiveData.log'),
 ]
 
 
