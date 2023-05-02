@@ -2,6 +2,7 @@ from django.conf import settings
 from django.apps import AppConfig
 from django.core.cache import cache
 from django.db import connection
+import os
 
 
 class GoHealthyAppConfig(AppConfig):
@@ -22,6 +23,9 @@ class GoHealthyAppConfig(AppConfig):
 
             # from Go_Healthy_App.scheduletasks import tasks
             # tasks.startSchedule()
+
+            if not os.path.exists(settings.STATIC_ROOT):
+                os.makedirs(settings.STATIC_ROOT)
 
             from Go_Healthy_App import add_all_data
             add_all_data.addStates()
