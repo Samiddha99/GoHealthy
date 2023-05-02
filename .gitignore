@@ -135,3 +135,9 @@ db.sqlite3
 assets/media
 assets/staticfiles/*
 !assets/staticfiles
+
+Procfile
+Aptfile
+.buildpacks
+python
+
