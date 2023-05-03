@@ -17,6 +17,8 @@ RUN apt-get update && apt-get install -y \
     gcc \
     cron \
     wkhtmltopdf \
+    nginx \
+    supervisor \
     && rm -rf /var/lib/apt/lists/* !
 
 COPY requirements.txt /tmp/requirements.txt
