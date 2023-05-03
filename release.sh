@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-echo "Starting the web server................."
+echo "Starting the web server................"
 echo "Running release comands"
 python manage.py makemigrations
 python manage.py migrate
