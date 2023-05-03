@@ -9,4 +9,4 @@ python manage.py crontab add
 python manage.py crontab show
 crontab -l
 # python manage.py runserver 0.0.0.0:$PORT
-daphne -b 0.0.0.0 -p $PORT GoHealthy.asgi:application
+daphne GoHealthy.asgi --port $PORT --bind 0.0.0.0
