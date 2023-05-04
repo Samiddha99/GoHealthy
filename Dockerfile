@@ -32,4 +32,4 @@ COPY . /code
 
 # RUN python manage.py collectstatic -- noinput
 
-# CMD ["daphne", "--workers", "2", "GoHealthy.asgi"]
+CMD ["daphne", "--workers", "2", "GoHealthy.asgi:application"]
