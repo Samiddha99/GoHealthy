@@ -32,4 +32,4 @@ COPY . /code
 
 # RUN python manage.py collectstatic -- noinput
 
-ENTRYPOINT ["./code/release.sh"]
+ENTRYPOINT ["./release.sh"]
