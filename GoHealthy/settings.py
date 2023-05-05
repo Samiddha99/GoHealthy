@@ -205,7 +205,7 @@ if DEPLOY:
     SECURE_HSTS_PRELOAD = True
     SECURE_HSTS_SECONDS = 1 * 365 * 24 * 60 * 60  # 365 days in second
     SECURE_REFERRER_POLICY = 'same-origin'
-    SECURE_SSL_REDIRECT = True  # if any http request come, then convert it to https if possible.
+    # SECURE_SSL_REDIRECT = True  # if any http request come, then convert it to https if possible.
     
     APPEND_SLASH = True # append a slash after the url
     
