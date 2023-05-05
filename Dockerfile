@@ -18,15 +18,15 @@ RUN apt-get update && apt-get install -y \
     cron \
     wkhtmltopdf \
     nginx \
-    supervisor
-    # && rm -rf /var/lib/apt/lists/* !
+    supervisor \
+    && rm -rf /var/lib/apt/lists/* !
 
 COPY requirements.txt /tmp/requirements.txt
 
 RUN set -ex && \
     pip install --upgrade pip && \
-    pip install -r /tmp/requirements.txt
-    # rm -rf /root/.cache/
+    pip install -r /tmp/requirements.txt \
+    rm -rf /root/.cache/
 
 COPY . /code
 
