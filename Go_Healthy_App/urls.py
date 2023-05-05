@@ -153,6 +153,7 @@ urlpatterns = [
     path('faq/', views.faq, name='FAQ'),
     path('blood-donor-eligibility/', views.donorEligibility, name="DonorEligibility"),
     path('terms-and-conditions/', views.termsConditions, name='TermsConditions'),
+    
     path('column-graph-blood-donation-collection-data/', views.columnGraph_bloodDonatedandCollected, name="ColumnGraph_bloodDonatedandCollected"),
     path('column-graph-blood-request-donation-data/', views.columnGraph_bloodRequestedandDonated, name="ColumnGraph_bloodRequestedandDonated"),
     path('column-graph-blood-donation-camp-data/', views.columnGraph_bloodDonationCamps, name="ColumnGraph_bloodDonationCamps"),

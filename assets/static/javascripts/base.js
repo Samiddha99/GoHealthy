@@ -1056,7 +1056,7 @@ function only_numeric(){
 $(document).on('keyup', 'input[data-validation=basic_name_validation]', basic_name_validation);
 function basic_name_validation(){
     let name = $(this).val()
-    name = name.replace(/[^a-z^A-Z^ ^.^(^)]/g, "").replace(/ ./g, ".").replace(/\.+/g, ".")
+    name = name.replace(/[^a-z^A-Z^ ^.^(^)]/g, "").replace(/\.+/g, ".")
     name = name.replace(/^\./g, "").replace(/^\)/g, "") // remove dot and open bracket at begaining position
     $(this).val(name)
 }
@@ -1070,7 +1070,7 @@ $(document).on('change', 'input[data-validation=basic_name_validation]', functio
 $(document).on('keyup', 'input[data-validation=office_name_validation]', office_name_validation);
 function office_name_validation(){
     let name = $(this).val()
-    name = name.replace(/[^a-z^A-Z^ ^.^-^:^,^&^(^)^`^']/g, "").replace(/ ./g, ".").replace(/\.+/g, ".")
+    name = name.replace(/[^a-z^A-Z^ ^.^-^:^,^&^(^)^`^']/g, "").replace(/\.+/g, ".")
     name = name.replace(/^\./g, "").replace(/^\-/g, "").replace(/^\:/g, "").replace(/^\,/g, "").replace(/^\&/g, "").replace(/^\)/g, "").replace(/^\`/g, "").replace(/^\'/g, "")
     $(this).val(name)
 }

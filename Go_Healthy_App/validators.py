@@ -26,11 +26,10 @@ class Validate_image_aspect_ratio(object):
                 img = Image.open(value)
                 width, height = img.size
                 if width/height != self.aspect_ratio:
-                    raise ValidationError('Unsuported aspect ratio!')
+                    raise ValidationError('Un-supported aspect ratio!')
 
 
 def check_user_type(value):
-    print(value)
     if value != '' and value is not None:
         authorityUserTypes = ['Hospital', 'Blood Bank']
         generalUserTypes = ['Normal', 'Blood Donor', 'Doctor']

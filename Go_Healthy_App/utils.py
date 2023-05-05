@@ -792,6 +792,7 @@ def cityFromCord(latitude :str, longitude :str):
     response_data = requests.get(url)
     response_data = response_data.text  # convert url response to string
     response_data = json.loads(response_data)  # convert converted string to dict
+    print(response_data)
     response_data = response_data["results"][0]["components"]
     city = response_data.get('city', '')
     town = response_data.get('town', '')

@@ -39,14 +39,14 @@
                 </div>
             </div>
             <div class="col-4 col-md-1 mb-1 mr-1 mr-2">
-                <select class="form-control input-sm filter-input" name="group" form="filter" style="padding-left:1px;padding-right:1px">
+                <select class="form-control input-sm filter-input" name="group" form="filter" style="padding-left:1px;padding-right:1px; background-color:#434ea2 !important;">
                     <option label="Blood Group"></option>
                     {% for i in bloodGroups %}
                     <option label="{{i.1}}" value="{{i.0}}">{{i.1}}</option>
                     {% endfor %}
                 </select>
             </div>
-            <div class="col-md-1 mr-2 ml-2">
+            <div class="col-md-1 mr-2 ml-2 mt-1">
                 <button type="submit" class="btn btn-primary btn-sm" id="btn_search" form="filter">Search</button>
             </div>
         </div>
