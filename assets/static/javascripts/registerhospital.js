@@ -1049,8 +1049,8 @@ $(document).ready(function(){
                     <td>${bed.Ward}</td>
                     <td>${bed.Support}</td>
                     <td id="td-room-${bed.Room__id}">${bed.Room__Room == null ? '___': bed.Room__Room}</td>
-                    <td>${bed.Floor}</td>
                     <td id="td-unit-${bed.Unit__id}">${bed.Unit__Unit== null ? '___': bed.Unit__Unit}</td>
+                    <td>${bed.Floor}</td>
                     <td id="td-building-${bed.Building__id}">${bed.Building__Building== null ? '___': bed.Building__Building}</td>
                 </tr>`
                 $("#added-bed-data-body").append(html);
@@ -1095,8 +1095,8 @@ $(".registration-div").on('submit', "#hospitalRegistrationBedAdd", function(even
                     <td>${createdBed.Ward}</td>
                     <td>${createdBed.Support}</td>
                     <td id="td-room-${createdBed.Room__id}">${createdBed.Room__Room == null ? '___': createdBed.Room__Room}</td>
-                    <td>${createdBed.Floor}</td>
                     <td id="td-unit-${createdBed.Unit__id}">${createdBed.Unit__Unit== null ? '___': createdBed.Unit__Unit}</td>
+                    <td>${createdBed.Floor}</td>
                     <td id="td-building-${createdBed.Building__id}">${createdBed.Building__Building== null ? '___': createdBed.Building__Building}</td>
                 </tr>`
                 $("#added-bed-data-body").prepend(html);
