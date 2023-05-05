@@ -6583,7 +6583,7 @@ def allAddedBuildings(request):
 def addRoom(request):
     if request.method == 'POST':
         hospitalId = request.POST.get('hospitalId')
-        room = firstCharOfEachWordCapital(request.POST.get('room'))
+        room = request.POST.get('room')
         emailOTP = request.POST.get('emailOTP')
         mobileOTP = request.POST.get('mobileOTP')
         hospital = Hospital.objects.get(Unique_Id=hospitalId)
@@ -6676,7 +6676,7 @@ def editRoom(request):
 def addUnit(request):
     if request.method == 'POST':
         hospitalId = request.POST.get('hospitalId')
-        unit = firstCharOfEachWordCapital(request.POST.get('unit'))
+        unit = request.POST.get('unit')
         emailOTP = request.POST.get('emailOTP')
         mobileOTP = request.POST.get('mobileOTP')
         hospital = Hospital.objects.get(Unique_Id=hospitalId)
@@ -6768,7 +6768,7 @@ def editUnit(request):
 def addBuilding(request):
     if request.method == 'POST':
         hospitalId = request.POST.get('hospitalId')
-        building = firstCharOfEachWordCapital(request.POST.get('building'))
+        building = request.POST.get('building')
         emailOTP = request.POST.get('emailOTP')
         mobileOTP = request.POST.get('mobileOTP')
         hospital = Hospital.objects.get(Unique_Id=hospitalId)
@@ -6865,7 +6865,7 @@ def addBed(request):
     room = request.POST.get('hospitalRoomName')
     unit = request.POST.get('hospitalUnitName')
     floor = request.POST.get('hospitalFloor')
-    building = firstCharOfEachWordCapital(request.POST.get('hospitalBuilding'))
+    building = request.POST.get('hospitalBuilding')
     hospitalId = request.POST.get('hospitalID')
     emailOTP = request.POST.get('emailOTP')
     mobileOTP = request.POST.get('mobileOTP')
@@ -6963,7 +6963,7 @@ def removeBed(request):
             room = request.POST.get('hospitalRoomName')
             unit = request.POST.get('hospitalUnitName')
             floor = request.POST.get('hospitalFloor')
-            building = firstCharOfEachWordCapital(request.POST.get('hospitalBuilding'))
+            building = request.POST.get('hospitalBuilding')
             if room != '' and room is not None:
                 room = HospitalRoom.objects.get(Hospital=hospital, Room=room)
             else:
