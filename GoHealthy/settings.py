@@ -153,7 +153,6 @@ except:
 SMS_SEND_ENABLED = config("SMS_SEND_ENABLED", '0')
 
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
