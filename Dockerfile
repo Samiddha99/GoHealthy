@@ -24,10 +24,10 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt /tmp/requirements.txt
 
 RUN set -ex && \
-    python -m venv venv &&\
-    source venv/bin/activate &&\
+    # python -m venv venv &&\
+    # source venv/bin/activate &&\
     pip install --upgrade pip && \
-    pip install -r /tmp/requirements.txt \
+    pip install -r /tmp/requirements.txt &&\
     rm -rf /root/.cache/
 
 COPY . /code
