@@ -155,7 +155,7 @@ SMS_SEND_ENABLED = config("SMS_SEND_ENABLED", '0')
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    # 'csp.middleware.CSPMiddleware',  #Content-Secure-Policy Middleware
+    'csp.middleware.CSPMiddleware',  #Content-Secure-Policy Middleware
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'cache_headers.middleware.CacheHeadersMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -181,147 +181,147 @@ MIDDLEWARE = [
 # None: Allowed on all first party and third party requests. Must also use the 'Secure' cookie attribute
 ALLOWED_HOSTS = config('DOMAIN_NAME', default='127.0.0.1:8000', cast=Csv(str))
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='127.0.0.1:8000', cast=Csv(str))
-# if DEPLOY:
-#     CSRF_COOKIE_SECURE = True  # browser trigger the cookie as safe, and only be send by secure connection.
-#     CSRF_COOKIE_DOMAIN = '.' + config('DOMAIN_NAME')  # if set . before the domain name, then it also allow for subdomain.
-#     CSRF_TRUSTED_ORIGINS = [config('DOMAIN_NAME'), ]
-#     CSRF_COOKIE_NAME = '__Secure-csrftoken'
-#     CSRF_COOKIE_SAMESITE = 'Strict'
-#     CSRF_COOKIE_HTTPONLY = True
-#     CSRF_USE_SESSIONS = True
+if DEPLOY:
+    CSRF_COOKIE_SECURE = True  # browser trigger the cookie as safe, and only be send by secure connection.
+    CSRF_COOKIE_DOMAIN = '.' + config('DOMAIN_NAME')  # if set . before the domain name, then it also allow for subdomain.
+    CSRF_TRUSTED_ORIGINS = [config('DOMAIN_NAME'), ]
+    CSRF_COOKIE_NAME = '__Secure-csrftoken'
+    CSRF_COOKIE_SAMESITE = 'Strict'
+    CSRF_COOKIE_HTTPONLY = True
+    CSRF_USE_SESSIONS = True
     
-#     SESSION_COOKIE_NAME = '__Secure-sessionid'
-#     SESSION_COOKIE_SECURE = True  # browser trigger the session cookie as safe, and only be send by secure connection.
-#     SESSION_COOKIE_SAMESITE = 'Strict'
-#     SESSION_COOKIE_HTTPONLY = True  # session cookies can only be access by https request.
-#     SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-#     SESSION_COOKIE_AGE = 1 * 24 * 60 * 60  # 1 days in second
-#     SESSION_COOKIE_DOMAIN = '.' + config('DOMAIN_NAME')  # if set . before the domain name, then it also allow for subdomain.
-#     SESSION_SAVE_EVERY_REQUEST = True
+    SESSION_COOKIE_NAME = '__Secure-sessionid'
+    SESSION_COOKIE_SECURE = True  # browser trigger the session cookie as safe, and only be send by secure connection.
+    SESSION_COOKIE_SAMESITE = 'Strict'
+    SESSION_COOKIE_HTTPONLY = True  # session cookies can only be access by https request.
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+    SESSION_COOKIE_AGE = 1 * 24 * 60 * 60  # 1 days in second
+    SESSION_COOKIE_DOMAIN = '.' + config('DOMAIN_NAME')  # if set . before the domain name, then it also allow for subdomain.
+    SESSION_SAVE_EVERY_REQUEST = True
     
-#     SECURE_BROWSER_XSS_FILTER = True  # prevent rom xss attack. if true, filter all malicious files, scripts will be filtered.
-#     SECURE_CONTENT_TYPE_NOSNIFF = True
-#     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-#     SECURE_HSTS_PRELOAD = True
-#     SECURE_HSTS_SECONDS = 1 * 365 * 24 * 60 * 60  # 365 days in second
-#     SECURE_REFERRER_POLICY = 'same-origin'
-#     SECURE_SSL_REDIRECT = True  # if any http request come, then convert it to https if possible.
+    SECURE_BROWSER_XSS_FILTER = True  # prevent rom xss attack. if true, filter all malicious files, scripts will be filtered.
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_SECONDS = 1 * 365 * 24 * 60 * 60  # 365 days in second
+    SECURE_REFERRER_POLICY = 'same-origin'
+    SECURE_SSL_REDIRECT = True  # if any http request come, then convert it to https if possible.
     
-#     APPEND_SLASH = True # append a slash after the url
+    APPEND_SLASH = True # append a slash after the url
     
-#     X_FRAME_OPTIONS = 'SAMEORIGIN'  # If the response contains the header with a value of SAMEORIGIN then the browser will only load the resource in a frame if the request originated from the same site. If the header is set to DENY then the browser will block the resource from loading in a frame no matter which site made the request.
-#     # Suppose an online store has a page where a logged in user can click “Buy Now” to purchase an item. A user has chosen to stay logged into the store all the time for convenience. An attacker site might create an “I Like Ponies” button on one of their own pages, and load the store’s page in a transparent iframe such that the “Buy Now” button is invisibly overlaid on the “I Like Ponies” button.
-#     # If the user visits the attacker’s site, clicking “I Like Ponies” will cause an inadvertent click on the “Buy Now” button and an unknowning purchase of the item.
-#     CORS_ALLOW_ALL_ORIGINS = False  # if False, CORS will be disabled, True means enabled. enable CORS is dangerous; because it allows other sites to do CORS into our site.
-#     CORS_ALLOWED_ORIGINS = ['https://'+config('DOMAIN_NAME')]
-#     # CORS_PREFLIGHT_MAX_AGE = 60  # The number of seconds a client/browser can cache the preflight response.
-#     # CORS_ALLOW_METHODS = ['GET',]
-#     # CORS_ALLOW_METHODS = []
-# else:
-#     SECURE_HSTS_PRELOAD = False
-#     SECURE_HSTS_INCLUDE_SUBDOMAINS = False
-#     SECURE_SSL_REDIRECT = False
-#     CORS_ALLOWED_ORIGINS = []
+    X_FRAME_OPTIONS = 'SAMEORIGIN'  # If the response contains the header with a value of SAMEORIGIN then the browser will only load the resource in a frame if the request originated from the same site. If the header is set to DENY then the browser will block the resource from loading in a frame no matter which site made the request.
+    # Suppose an online store has a page where a logged in user can click “Buy Now” to purchase an item. A user has chosen to stay logged into the store all the time for convenience. An attacker site might create an “I Like Ponies” button on one of their own pages, and load the store’s page in a transparent iframe such that the “Buy Now” button is invisibly overlaid on the “I Like Ponies” button.
+    # If the user visits the attacker’s site, clicking “I Like Ponies” will cause an inadvertent click on the “Buy Now” button and an unknowning purchase of the item.
+    CORS_ALLOW_ALL_ORIGINS = False  # if False, CORS will be disabled, True means enabled. enable CORS is dangerous; because it allows other sites to do CORS into our site.
+    CORS_ALLOWED_ORIGINS = ['https://'+config('DOMAIN_NAME')]
+    # CORS_PREFLIGHT_MAX_AGE = 60  # The number of seconds a client/browser can cache the preflight response.
+    # CORS_ALLOW_METHODS = ['GET',]
+    # CORS_ALLOW_METHODS = []
+else:
+    SECURE_HSTS_PRELOAD = False
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_SSL_REDIRECT = False
+    CORS_ALLOWED_ORIGINS = []
 
 
 REFERRER_POLICY = 'strict-origin' #Add referrer-policy
 # #Content-Secure-Policy Configuration
-# context_processors = [
-#     'csp.context_processors.nonce'
-# ]
+context_processors = [
+    'csp.context_processors.nonce'
+]
 
-# CSP_DEFAULT_SRC = ["'self'"]
+CSP_DEFAULT_SRC = ["'self'"]
 
-# CSP_SCRIPT_SRC = [
-#     "'self'",
-#     "https://code.jquery.com/jquery-3.5.1.min.js",
-#     "https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js",
-#     "https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js",
-#     "https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js",
-#     "https://maps.googleapis.com/maps/api/js",
-#     "https://www.google.com/recaptcha/api.js",
-#     "https://www.gstatic.com/recaptcha/ *",
-#     "https://translate.googleapis.com/ *",
-#     "https://polyfill.io/ *",
-#     "https://cdn.onesignal.com/sdks/OneSignalSDK.js",
-#     "https://cdn.anychart.com/ *",
-#     "https://code.jscharting.com/ *",
-#     "https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/ *",
-#     "https://unpkg.com/@trevoreyre/autocomplete-js",
-#     "https://player.vimeo.com/api/player.js",
-#     "https://cdn.plyr.io/ *",
-#     "http://cdn.dashjs.org/latest/dash.all.min.js",
-#     "https://cdnjs.cloudflare.com/ajax/libs/hls.js/ *",
-#     "https://hammerjs.github.io/dist/hammer.min.js",
-# ]
-# CSP_SCRIPT_SRC_ELEM = CSP_SCRIPT_SRC
-# CSP_SCRIPT_SRC_ATTR = ["'self'",]
+CSP_SCRIPT_SRC = [
+    "'self'",
+    "https://code.jquery.com/jquery-3.5.1.min.js",
+    "https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js",
+    "https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js",
+    "https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js",
+    "https://maps.googleapis.com/maps/api/js",
+    "https://www.google.com/recaptcha/api.js",
+    "https://www.gstatic.com/recaptcha/ *",
+    "https://translate.googleapis.com/ *",
+    "https://polyfill.io/ *",
+    "https://cdn.onesignal.com/sdks/OneSignalSDK.js",
+    "https://cdn.anychart.com/ *",
+    "https://code.jscharting.com/ *",
+    "https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/ *",
+    "https://unpkg.com/@trevoreyre/autocomplete-js",
+    "https://player.vimeo.com/api/player.js",
+    "https://cdn.plyr.io/ *",
+    "http://cdn.dashjs.org/latest/dash.all.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/hls.js/ *",
+    "https://hammerjs.github.io/dist/hammer.min.js",
+]
+CSP_SCRIPT_SRC_ELEM = CSP_SCRIPT_SRC
+CSP_SCRIPT_SRC_ATTR = ["'self'",]
 
-# CSP_STYLE_SRC = [
-#     "'self'",
-#     "'unsafe-inline'",
-#     "https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css",
-#     "https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css",
-#     "https://fonts.googleapis.com/icon/ *",
-#     "https://fonts.googleapis.com/css/ *",
-#     "https://translate.googleapis.com/ *",
-#     "https://fonts.googleapis.com/ *",
-#     "https://ka-f.fontawesome.com/ *",
-#     "https://cdn.plyr.io/ *",
-#     "https://cdn.anychart.com/ *",
-# ]
-# CSP_STYLE_SRC_ELEM = CSP_STYLE_SRC
+CSP_STYLE_SRC = [
+    "'self'",
+    "'unsafe-inline'",
+    "https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css",
+    "https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css",
+    "https://fonts.googleapis.com/icon/ *",
+    "https://fonts.googleapis.com/css/ *",
+    "https://translate.googleapis.com/ *",
+    "https://fonts.googleapis.com/ *",
+    "https://ka-f.fontawesome.com/ *",
+    "https://cdn.plyr.io/ *",
+    "https://cdn.anychart.com/ *",
+]
+CSP_STYLE_SRC_ELEM = CSP_STYLE_SRC
 
-# CSP_IMG_SRC = [
-#     "'self'",
-#     "https://www.gstatic.com/images/branding/product/1x/translate_24dp.png",
-#     "https://www.gstatic.com/images/branding/product/2x/translate_24dp.png",
-#     "https://content.dropboxapi.com/ *",
-#     "data:",
-#     "blob:",
-# ]
+CSP_IMG_SRC = [
+    "'self'",
+    "https://www.gstatic.com/images/branding/product/1x/translate_24dp.png",
+    "https://www.gstatic.com/images/branding/product/2x/translate_24dp.png",
+    "https://content.dropboxapi.com/ *",
+    "data:",
+    "blob:",
+]
 
-# CSP_FONT_SRC = [
-#     "'self'",
-#     "https://fonts.gstatic.com/ *",
-#     "https://ka-f.fontawesome.com/ *",
-#     "https://cdn.anychart.com/ *"
-# ]
+CSP_FONT_SRC = [
+    "'self'",
+    "https://fonts.gstatic.com/ *",
+    "https://ka-f.fontawesome.com/ *",
+    "https://cdn.anychart.com/ *"
+]
 
-# CSP_CONNECT_SRC = [
-#     "'self'",
-#     "https://ka-f.fontawesome.com/ *",
-#     "https://internalapi.engagespot.co *",
-# ]
+CSP_CONNECT_SRC = [
+    "'self'",
+    "https://ka-f.fontawesome.com/ *",
+    "https://internalapi.engagespot.co *",
+]
 
-# CSP_FRAME_SRC = [
-#     "'self'",
-#     "https://www.google.com",
-#     "https://player.vimeo.com",
-#     "https://www.youtube.com",
-#     "https://www.youtube-nocookie.com",
-#     "https://cdn.anychart.com/ *",
-#     "https://export.anychart.com/",
-# ]
-# CSP_MEDIA_SRC = [
-#     "'self'",
-#     "https://content.dropboxapi.com/ *",
-#     "https://www.youtube.com",
-#     "https://www.youtube-nocookie.com",
-# ]
-# CSP_MANIFEST_SRC = [
-#     "'self'",
-# ]
-# CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
-# CSP_FRAME_ANCESTORS = ["'self'"]
-# CSP_BASE_URI = ["'self'"]
-# CSP_FORM_ACTION = ["'self'", "https://export.anychart.com/ *"]
-# CSP_OBJECT_SRC = ["'none'"]
-# CSP_UPGRADE_INSECURE_REQUESTS = True
-# CSP_BLOCK_ALL_MIXED_CONTENT = True
+CSP_FRAME_SRC = [
+    "'self'",
+    "https://www.google.com",
+    "https://player.vimeo.com",
+    "https://www.youtube.com",
+    "https://www.youtube-nocookie.com",
+    "https://cdn.anychart.com/ *",
+    "https://export.anychart.com/",
+]
+CSP_MEDIA_SRC = [
+    "'self'",
+    "https://content.dropboxapi.com/ *",
+    "https://www.youtube.com",
+    "https://www.youtube-nocookie.com",
+]
+CSP_MANIFEST_SRC = [
+    "'self'",
+]
+CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
+CSP_FRAME_ANCESTORS = ["'self'"]
+CSP_BASE_URI = ["'self'"]
+CSP_FORM_ACTION = ["'self'", "https://export.anychart.com/ *"]
+CSP_OBJECT_SRC = ["'none'"]
+CSP_UPGRADE_INSECURE_REQUESTS = True
+CSP_BLOCK_ALL_MIXED_CONTENT = True
 
-#CSP_REPORT_URI = [""]
-#CSP_REPORT_ONLY = True
+# CSP_REPORT_URI = [""]
+# CSP_REPORT_ONLY = True
 
 
 # if DEBUG:
