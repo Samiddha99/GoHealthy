@@ -487,7 +487,7 @@ MEDIA_ROOT = BASE_DIR / 'assets/media/'
 MEDIA_URL = '/media/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-if :
+if DEPLOY:
     DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
     #DROPBOX_ROOT_FOLDER = '/assets/'
     DROPBOX_ROOT_PATH = '/assets/media/'
