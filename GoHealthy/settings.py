@@ -187,7 +187,7 @@ if DEPLOY:
     CSRF_COOKIE_DOMAIN = MAIN_DOMAIN_NAME  # if set . before the domain name, then it also allow for subdomain.
     CSRF_COOKIE_NAME = '__Secure-csrftoken'
     CSRF_COOKIE_SAMESITE = 'Strict'
-    # CSRF_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_HTTPONLY = True
     CSRF_USE_SESSIONS = True
     
     SESSION_COOKIE_NAME = '__Secure-sessionid'
