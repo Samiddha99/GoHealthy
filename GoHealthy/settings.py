@@ -201,8 +201,8 @@ if DEPLOY:
     
     SECURE_BROWSER_XSS_FILTER = True  # prevent rom xss attack. if true, filter all malicious files, scripts will be filtered.
     SECURE_CONTENT_TYPE_NOSNIFF = True
-    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    # SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
     # SECURE_HSTS_SECONDS = 1 * 365 * 24 * 60 * 60  # 365 days in second
     # SECURE_REFERRER_POLICY = 'same-origin'
     # SECURE_SSL_REDIRECT = True  # if any http request come, then convert it to https if possible.
@@ -251,6 +251,7 @@ CSP_SCRIPT_SRC = [
     "https://player.vimeo.com/api/player.js",
     "https://cdn.plyr.io/ *",
     "http://cdn.dashjs.org/latest/dash.all.min.js",
+    "https://cdn.dashjs.org/latest/dash.all.min.js",
     "https://cdnjs.cloudflare.com/ajax/libs/hls.js/ *",
     "https://hammerjs.github.io/dist/hammer.min.js",
 ]
