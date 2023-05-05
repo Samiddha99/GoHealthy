@@ -32,4 +32,4 @@ COPY . /code
 
 # RUN python manage.py collectstatic -- noinput
 
-ENTRYPOINT ["./release.sh"]
+# ENTRYPOINT ['daphne' 'GoHealthy.asgi:application' '-b' '0.0.0.0' '-p' $PORT]
