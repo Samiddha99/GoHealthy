@@ -1089,6 +1089,7 @@ $(".registration-div").on('submit', "#hospitalRegistrationBedAdd", function(even
                 `<tr class="addedBed-table-row" id="addedBed-table-row-${createdBed.id}">
                     <td><i class="fa-solid fa-trash delete-added-createdBed" id="delete-added-createdBed-${createdBed.id}" style="cursor:pointer" data-value="${createdBed.id}"></i></td>
                     <th scope="row" class="table-serial-no"></th>
+                    <td>${createdBed.Department__department}</td>
                     <td>${createdBed.Bed_No}</td>
                     <td>${createdBed.Ward}</td>
                     <td>${createdBed.Support}</td>
