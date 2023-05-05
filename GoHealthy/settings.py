@@ -181,10 +181,10 @@ MIDDLEWARE = [
 # None: Allowed on all first party and third party requests. Must also use the 'Secure' cookie attribute
 ALLOWED_HOSTS = config('DOMAIN_NAME', default='127.0.0.1:8000', cast=Csv(str))
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='127.0.0.1:8000', cast=Csv(str))
+MAIN_DOMAIN_NAME = config('DOMAIN_NAME', default='127.0.0.1:8000', cast=Csv(str))[0]
 if DEPLOY:
     CSRF_COOKIE_SECURE = True  # browser trigger the cookie as safe, and only be send by secure connection.
-    CSRF_COOKIE_DOMAIN = '.' + config('DOMAIN_NAME')  # if set . before the domain name, then it also allow for subdomain.
-    CSRF_TRUSTED_ORIGINS = [config('DOMAIN_NAME'), ]
+    CSRF_COOKIE_DOMAIN = MAIN_DOMAIN_NAME  # if set . before the domain name, then it also allow for subdomain.
     CSRF_COOKIE_NAME = '__Secure-csrftoken'
     CSRF_COOKIE_SAMESITE = 'Strict'
     CSRF_COOKIE_HTTPONLY = True
@@ -196,7 +196,7 @@ if DEPLOY:
     SESSION_COOKIE_HTTPONLY = True  # session cookies can only be access by https request.
     SESSION_EXPIRE_AT_BROWSER_CLOSE = False
     SESSION_COOKIE_AGE = 1 * 24 * 60 * 60  # 1 days in second
-    SESSION_COOKIE_DOMAIN = '.' + config('DOMAIN_NAME')  # if set . before the domain name, then it also allow for subdomain.
+    SESSION_COOKIE_DOMAIN = MAIN_DOMAIN_NAME  # if set . before the domain name, then it also allow for subdomain.
     SESSION_SAVE_EVERY_REQUEST = True
     
     SECURE_BROWSER_XSS_FILTER = True  # prevent rom xss attack. if true, filter all malicious files, scripts will be filtered.
@@ -213,7 +213,7 @@ if DEPLOY:
     # Suppose an online store has a page where a logged in user can click “Buy Now” to purchase an item. A user has chosen to stay logged into the store all the time for convenience. An attacker site might create an “I Like Ponies” button on one of their own pages, and load the store’s page in a transparent iframe such that the “Buy Now” button is invisibly overlaid on the “I Like Ponies” button.
     # If the user visits the attacker’s site, clicking “I Like Ponies” will cause an inadvertent click on the “Buy Now” button and an unknowning purchase of the item.
     CORS_ALLOW_ALL_ORIGINS = False  # if False, CORS will be disabled, True means enabled. enable CORS is dangerous; because it allows other sites to do CORS into our site.
-    CORS_ALLOWED_ORIGINS = ['https://'+config('DOMAIN_NAME')]
+    CORS_ALLOWED_ORIGINS = [config('SITE_URL')]
     # CORS_PREFLIGHT_MAX_AGE = 60  # The number of seconds a client/browser can cache the preflight response.
     # CORS_ALLOW_METHODS = ['GET',]
     # CORS_ALLOW_METHODS = []
