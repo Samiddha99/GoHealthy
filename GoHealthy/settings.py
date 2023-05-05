@@ -187,7 +187,7 @@ if DEPLOY:
     CSRF_COOKIE_DOMAIN = MAIN_DOMAIN_NAME  # if set . before the domain name, then it also allow for subdomain.
     CSRF_COOKIE_NAME = '__Secure-csrftoken'
     CSRF_COOKIE_SAMESITE = 'Strict'
-    CSRF_COOKIE_HTTPONLY = True
+    # CSRF_COOKIE_HTTPONLY = True
     CSRF_USE_SESSIONS = True
     
     SESSION_COOKIE_NAME = '__Secure-sessionid'
@@ -199,13 +199,13 @@ if DEPLOY:
     SESSION_COOKIE_DOMAIN = MAIN_DOMAIN_NAME  # if set . before the domain name, then it also allow for subdomain.
     SESSION_SAVE_EVERY_REQUEST = True
     
-    SECURE_BROWSER_XSS_FILTER = True  # prevent rom xss attack. if true, filter all malicious files, scripts will be filtered.
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_HSTS_SECONDS = 1 * 365 * 24 * 60 * 60  # 365 days in second
-    SECURE_REFERRER_POLICY = 'same-origin'
-    SECURE_SSL_REDIRECT = True  # if any http request come, then convert it to https if possible.
+    # SECURE_BROWSER_XSS_FILTER = True  # prevent rom xss attack. if true, filter all malicious files, scripts will be filtered.
+    # SECURE_CONTENT_TYPE_NOSNIFF = True
+    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    # SECURE_HSTS_PRELOAD = True
+    # SECURE_HSTS_SECONDS = 1 * 365 * 24 * 60 * 60  # 365 days in second
+    # SECURE_REFERRER_POLICY = 'same-origin'
+    # SECURE_SSL_REDIRECT = True  # if any http request come, then convert it to https if possible.
     
     APPEND_SLASH = True # append a slash after the url
     
