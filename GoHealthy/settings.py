@@ -37,7 +37,6 @@ SITE_ID = 1
 DEBUG = config("DEBUG", default=False, cast=bool)
 DEPLOY = config("DEPLOY", default=True, cast=bool)
 
-
 SECRET_KEY = config("SECRET_KEY", cast=str)
 
 
