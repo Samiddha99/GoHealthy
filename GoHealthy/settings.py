@@ -199,8 +199,8 @@ if DEPLOY:
     SESSION_COOKIE_DOMAIN = MAIN_DOMAIN_NAME  # if set . before the domain name, then it also allow for subdomain.
     SESSION_SAVE_EVERY_REQUEST = True
     
-    # SECURE_BROWSER_XSS_FILTER = True  # prevent rom xss attack. if true, filter all malicious files, scripts will be filtered.
-    # SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True  # prevent rom xss attack. if true, filter all malicious files, scripts will be filtered.
+    SECURE_CONTENT_TYPE_NOSNIFF = True
     # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     # SECURE_HSTS_PRELOAD = True
     # SECURE_HSTS_SECONDS = 1 * 365 * 24 * 60 * 60  # 365 days in second
