@@ -1044,6 +1044,7 @@ $(document).ready(function(){
                 `<tr class="addedBed-table-row" id="addedBed-table-row-${bed.id}">
                     <td><i class="fa-solid fa-trash delete-added-bed" id="delete-added-bed-${bed.id}" style="cursor:pointer" data-value="${bed.id}"></i></td>
                     <th scope="row" class="table-serial-no"></th>
+                    <td>${bed.Department__department}</td>
                     <td>${bed.Bed_No}</td>
                     <td>${bed.Ward}</td>
                     <td>${bed.Support}</td>
