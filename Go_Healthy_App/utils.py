@@ -749,7 +749,7 @@ def addressFromPin(pin :str):
 def addressFromCord(latitude :str, longitude :str):
     OPENCAGEDATA_API = settings.OPENCAGEDATA_API
     address = {}
-    url = "https://api.opencagedata.com/geocode/v1/json?q=" +latitude+"+"+longitude+"&key="+OPENCAGEDATA_API
+    url = f"https://api.opencagedata.com/geocode/v1/json?key={OPENCAGEDATA_API}&q={latitude}+{longitude}"
     response_data = requests.get(url)
     response_data = response_data.text  # convert url response to string
     response_data = json.loads(response_data)  # convert converted string to dict
@@ -788,11 +788,10 @@ def addressFromCord(latitude :str, longitude :str):
 def cityFromCord(latitude :str, longitude :str):
     OPENCAGEDATA_API = settings.OPENCAGEDATA_API
     address = {}
-    url = "https://api.opencagedata.com/geocode/v1/json?q=" + latitude + "+" + longitude + "&key=" + OPENCAGEDATA_API
+    url = f"https://api.opencagedata.com/geocode/v1/json?key={OPENCAGEDATA_API}&q={latitude}+{longitude}"
     response_data = requests.get(url)
     response_data = response_data.text  # convert url response to string
     response_data = json.loads(response_data)  # convert converted string to dict
-    print(response_data)
     response_data = response_data["results"][0]["components"]
     city = response_data.get('city', '')
     town = response_data.get('town', '')
