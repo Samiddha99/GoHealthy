@@ -67,6 +67,7 @@ function closeNav() {
 
 $("#voiceForm").on('submit', function( event ) {
     event.preventDefault();
+    grecaptcha.execute();
     let theForm = new FormData(this)
     let csrf = $('input[name=csrfmiddlewaretoken]').val()
     theForm.append('csrfmiddlewaretoken', csrf);

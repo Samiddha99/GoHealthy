@@ -212,7 +212,7 @@
                         Are you need an emergency support?
                         <br>Are you facing problem regarding patient addmission, bed book, finding blood donor? Then call us.
                     </p>
-                    {% for contact in siteContactsMain %}
+                    {% for contact in siteContacts24x7 %}
                         {% if not loop.index > 2 %}
                             <p class="text-muted" style="font-weight: 500; line-height: 8px;">
                                 <i class="fal fa-phone-alt" style="font-size: 18px;"></i> {{contact.Contact_Number}}

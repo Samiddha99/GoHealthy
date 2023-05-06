@@ -134,15 +134,8 @@ MAILJET_SMS_TOKEN = config('MAILJET_SMS_TOKEN')
 
 TWO_FACTOR_API = config('TWO_FACTOR_API')
 
-
-# {"access_token": "sl.Bd3r7f8YtaOPRzxgdEabTiUn7b-Zz06V9a8UlSAfJ2nSz0wUHIP7-hP65kvhyER0fWeaNq4OPED6lwfTSzcvtH6LfTFG6J3ICDTrHZYpJizcs7o-9nfk7dbHFZk4cCYPmhk0PfsSfQjQ",
-#  "token_type": "bearer",
-#  "expires_in": 14400,
-#  "refresh_token": "SZx_0aOljRgAAAAAAAAAATbORVxDswgLFJZZoIRsOCRn2KTOZRTPUr39bwz_JQyU",
-#  "scope": "account_info.read account_info.write contacts.read contacts.write file_requests.read file_requests.write files.content.read files.content.write files.metadata.read files.metadata.write sharing.read sharing.write",
-#  "uid": "823353905",
-#  "account_id":"dbid:AABe2wOP_oTvjlJg2aLI5nB3OEDJ8gZdNXM"}
-
+# Use this link to get AUTHORIZATION_CODE: https://www.dropbox.com/oauth2/authorize?client_id=<APP_KEY>&token_access_type=offline&response_type=code
+# Use this to get OAUTH2_REFRESH_TOKEN: curl https://api.dropbox.com/oauth2/token code=<AUTHORIZATION_CODE> -d grant_type=authorization_code -d -d client_id=<APP_KEY> -d client_secret=<APP_SECRET>
 DROPBOX_OAUTH2_TOKEN = config('DROPBOX_OAUTH2_TOKEN')
 DROPBOX_APP_KEY = config('DROPBOX_APP_KEY')
 DROPBOX_APP_SECRET = config('DROPBOX_APP_SECRET')
@@ -157,6 +150,7 @@ DROPBOX_AUTHORIZATION_KEY = config('DROPBOX_AUTHORIZATION_KEY')
 AUTHORIZATION_CODE = config('DROPBOX_AUTHORIZATION_KEY')
 AUTHORIZATION_KEY = config('DROPBOX_AUTHORIZATION_KEY')
 
+GOOGLE_RECAPTCHA_SITE_KEY = config('GOOGLE_RECAPTCHA_SITE_KEY')
 GOOGLE_RECAPTCHA_SECRET_KEY = config('GOOGLE_RECAPTCHA_SECRET_KEY')
 
 ENGAGESPOT_API_KEY = config("ENGAGESPOT_API_KEY")
@@ -271,6 +265,7 @@ CSP_SCRIPT_SRC = [
     "https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js",
     "https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js",
     "https://maps.googleapis.com/maps/api/js",
+    "https://www.google.com/recaptcha/",
     "https://www.google.com/recaptcha/api.js",
     "https://www.gstatic.com/recaptcha/ *",
     "https://translate.googleapis.com/ *",
@@ -335,6 +330,8 @@ CSP_FRAME_SRC = [
     "https://www.youtube-nocookie.com",
     "https://cdn.anychart.com/ *",
     "https://export.anychart.com/",
+    "https://www.google.com/recaptcha/",
+    "https://recaptcha.google.com/recaptcha/",
 ]
 CSP_MEDIA_SRC = [
     "'self'",

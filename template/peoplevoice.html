@@ -67,7 +67,7 @@
                     <p>Your story must not contains any personal details and confidential details like your name, email id, contact number, address, booking id, username, password etc.</p>
                     <div class="row">
                         <div class="col-md">
-                            <label for="text" class="voice-input-label mt-3">In which hospital?</label><br>
+                            <label for="text" class="voice-input-label mt-1">In which hospital?</label><br>
                             <div id="autocomplete-hospital" class="autocomplete">
                                 <input type="text" class="autocomplete-input dropdown-input voice-input" id="hospitalName" form="voiceForm" placeholder="Search Hospital">
                                 <ul class="autocomplete-result-list"></ul>
@@ -77,12 +77,12 @@
                             <p style="color:red" id="hospitalError"></p>
                         </div>
                     </div>
-                    <div class="mt-5" align="center">
+                    <div class="mt-2" align="center">
                         <label>
                             <input type="checkbox" name="agreement" required form="voiceForm">
                             I give the permission to publish my story on the website
                         </label><br>
-                        <div class="g-recaptcha mb-4 mt-1" data-sitekey="6Ld4QtwaAAAAAIF_KlE40NNOineo7HqrDgoghRkA"></div>
+                        <div class="g-recaptcha" data-sitekey="{{GOOGLE_RECAPTCHA_SITE_KEY}}" data-size="invisible"></div>
                         <button type="submit" form="voiceForm" id="voiceFormSubmitBtn" name="voiceFormSubmit" class="btn btn-outline-primary">Submit</button>
                         <p style="color:red" id="voiceFormError"></p>
                     </div>

@@ -1,6 +1,8 @@
 from .choice import *
 from .models import *
 from .utils import activeLogedCount
+from django.conf import settings
+
 
 def add_variable_to_context(request):
     try:
@@ -8,6 +10,7 @@ def add_variable_to_context(request):
     except:
         hasIssuedCertificates = False
     return {
+        'GOOGLE_RECAPTCHA_SITE_KEY': settings.GOOGLE_RECAPTCHA_SITE_KEY,
         'hasIssuedCertificates': hasIssuedCertificates,
         'baseBloodGroups': blood_groups,
         'allStates': States.objects.all(),
