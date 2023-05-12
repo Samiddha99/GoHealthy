@@ -135,20 +135,11 @@ MAILJET_SMS_TOKEN = config('MAILJET_SMS_TOKEN')
 TWO_FACTOR_API = config('TWO_FACTOR_API')
 
 # Use this link to get AUTHORIZATION_CODE: https://www.dropbox.com/oauth2/authorize?client_id=<APP_KEY>&token_access_type=offline&response_type=code
-# Use this to get OAUTH2_REFRESH_TOKEN: curl https://api.dropbox.com/oauth2/token code=<AUTHORIZATION_CODE> -d grant_type=authorization_code -d -d client_id=<APP_KEY> -d client_secret=<APP_SECRET>
-DROPBOX_OAUTH2_TOKEN = config('DROPBOX_OAUTH2_TOKEN')
+# Use this to get OAUTH2_REFRESH_TOKEN: curl https://api.dropbox.com/oauth2/token -d code=<AUTHORIZATION_CODE> -d grant_type=authorization_code -d client_id=<APP_KEY> -d client_secret=<APP_SECRET>
+DROPBOX_OAUTH2_ACCESS_TOKEN = config('DROPBOX_OAUTH2_ACCESS_TOKEN')
+DROPBOX_OAUTH2_REFRESH_TOKEN = config('DROPBOX_OAUTH2_REFRESH_TOKEN')
 DROPBOX_APP_KEY = config('DROPBOX_APP_KEY')
 DROPBOX_APP_SECRET = config('DROPBOX_APP_SECRET')
-DROPBOX_OAUTH2_REFRESH_TOKEN = config('DROPBOX_OAUTH2_REFRESH_TOKEN')
-
-DROPBOX_ACCESS_TOKEN = config('DROPBOX_OAUTH2_TOKEN')
-DROPBOX_APP_ACCESS_TOKEN = config('DROPBOX_OAUTH2_TOKEN')
-DROPBOX_CONSUMER_KEY = config("DROPBOX_APP_KEY")
-DROPBOX_CONSUMER_SECRET = config('DROPBOX_APP_SECRET')
-DROPBOX_AUTHORIZATION_CODE = config('DROPBOX_AUTHORIZATION_KEY')
-DROPBOX_AUTHORIZATION_KEY = config('DROPBOX_AUTHORIZATION_KEY')
-AUTHORIZATION_CODE = config('DROPBOX_AUTHORIZATION_KEY')
-AUTHORIZATION_KEY = config('DROPBOX_AUTHORIZATION_KEY')
 
 GOOGLE_RECAPTCHA_SITE_KEY = config('GOOGLE_RECAPTCHA_SITE_KEY')
 GOOGLE_RECAPTCHA_SECRET_KEY = config('GOOGLE_RECAPTCHA_SECRET_KEY')
@@ -516,8 +507,7 @@ MEDIA_URL = '/media/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 if DEPLOY:
-    DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-    #DROPBOX_ROOT_FOLDER = '/assets/'
+    DEFAULT_FILE_STORAGE = 'custom_storages.backends.dropbox.DropBoxStorage'
     DROPBOX_ROOT_PATH = '/assets/media/'
 
 
