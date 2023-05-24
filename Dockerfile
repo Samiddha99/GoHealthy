@@ -1,5 +1,4 @@
 ARG PYTHON_VERSION=3.10-slim-buster
-
 ARG DEBIAN_FRONTEND=noninteractive
 
 FROM python:${PYTHON_VERSION}
@@ -13,25 +12,26 @@ WORKDIR /code
 
 #install the linux packages, since these are the dependencies of some python packages
 RUN apt-get update && apt-get install -y \
+    build-essential \
     libpq-dev \
+    libpcre3-dev \
+    curl \
     gcc \
     cron \
     wkhtmltopdf \
-    nginx \
-    supervisor \
     && rm -rf /var/lib/apt/lists/* !
 
 COPY requirements.txt /tmp/requirements.txt
 
 RUN set -ex && \
-    # python -m venv venv &&\
-    # source venv/bin/activate &&\
     pip install --upgrade pip && \
-    pip install -r /tmp/requirements.txt \
-    && rm -rf /root/.cache/
+    pip install -r /tmp/requirements.txt
 
 COPY . /code
 
-# RUN python manage.py collectstatic -- noinput
+#public the port so that it can access over the internet
+EXPOSE 8000
 
-# ENTRYPOINT ['daphne' 'GoHealthy.asgi:application' '-b' '0.0.0.0' '-p' $PORT]
+RUN chmod +x start.sh
+
+CMD ["sh", "./start.sh"]

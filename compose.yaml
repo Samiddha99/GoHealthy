@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  web:
+    build: . # relative location of the directory wher Dockerfile is present. We use . since it is in root directory
+    volumes:
+      - .:/code
+    image: gohealthy-web:django
+    command: "sh /code/start.sh"
+    ports:
+      - "8000:8000"

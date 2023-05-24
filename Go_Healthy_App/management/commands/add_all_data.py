@@ -1,6 +1,7 @@
-from .models import *
+from django.core.management.base import BaseCommand, CommandError
+from Go_Healthy_App.models import *
 import traceback
-from .choice import *
+from Go_Healthy_App.choice import *
 
 def addStates():
     try:
@@ -510,4 +511,14 @@ def addSomeCommonDisease():
             SomeCommonDisease.objects.get_or_create(Disease=d[0], Concerned_Department=dept)
         except Exception as e:
             print(e)
+
+
+class Command(BaseCommand):
+    help = 'Create data'
+    def handle(self, *args, **kwargs):
+        addStates()
+        addDegrees()
+        addLanguages()
+        addDepartments()
+        addSomeCommonDisease()
 

@@ -23,15 +23,3 @@ class GoHealthyAppConfig(AppConfig):
 
             # from Go_Healthy_App.scheduletasks import tasks
             # tasks.startSchedule()
-
-            if not os.path.exists(settings.STATIC_ROOT):
-                os.makedirs(settings.STATIC_ROOT)
-
-            from Go_Healthy_App import add_all_data
-            add_all_data.addStates()
-            add_all_data.addDegrees()
-            add_all_data.addLanguages()
-            add_all_data.addDepartments()
-            add_all_data.addSomeCommonDisease()
-        except Exception as e:
-            print(f" ! {e}")
