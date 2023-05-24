@@ -30,7 +30,7 @@ RUN set -ex && \
 COPY . /code
 
 #public the port so that it can access over the internet
-EXPOSE 8000
+#EXPOSE 8000
 
 RUN chmod +x start.sh
 
