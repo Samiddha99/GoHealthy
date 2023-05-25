@@ -9,7 +9,6 @@ class GoHealthyAppConfig(AppConfig):
     name = 'Go_Healthy_App'
 
     def ready(self):
-        print('Starting web server.....')
         try:
             cache.clear()
 
@@ -23,3 +22,5 @@ class GoHealthyAppConfig(AppConfig):
 
             # from Go_Healthy_App.scheduletasks import tasks
             # tasks.startSchedule()
+        except Exception as e:
+            print(e)

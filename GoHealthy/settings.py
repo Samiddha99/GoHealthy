@@ -425,8 +425,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 if DEPLOY:
     DATABASES = {'default' : config('DATABASE_URL', cast=db_url)} # Parse database configuration from $DATABASE_URL
     DATABASES['default']['HAS_HSTORE'] = True
-    options = {'options': '-c search_path=go_healthy_schema,django,public'}
-    DATABASES['default']['OPTIONS'] = options
     DATABASES['default']['CONN_MAX_AGE'] = 600
     DATABASES['default']['CONN_HEALTH_CHECKS'] = True
 else:
