@@ -203,7 +203,7 @@ CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='127.0.0.1:8000', 
 MAIN_DOMAIN_NAME = config('DOMAIN_NAME', default='127.0.0.1:8000', cast=Csv(str))[0]
 if DEPLOY:
     # CSRF_COOKIE_SECURE = True  # browser trigger the cookie as safe, and only be send by secure connection.
-    CSRF_COOKIE_DOMAIN = MAIN_DOMAIN_NAME  # if set . before the domain name, then it also allow for subdomain.
+    CSRF_COOKIE_DOMAIN = ".onrender.com"  # if set . before the domain name, then it also allow for subdomain.
     # CSRF_COOKIE_NAME = '__Secure-csrftoken'
     # CSRF_COOKIE_SAMESITE = 'Strict'
     # CSRF_COOKIE_HTTPONLY = False
@@ -505,7 +505,7 @@ STATICFILES_DIRS = [BASE_DIR / 'assets/static/', ]
 MEDIA_ROOT = BASE_DIR / 'assets/media/'
 MEDIA_URL = '/media/'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 if DEPLOY:
     DEFAULT_FILE_STORAGE = 'custom_storages.backends.dropbox.DropBoxStorage'
     DROPBOX_ROOT_PATH = '/assets/media/'
