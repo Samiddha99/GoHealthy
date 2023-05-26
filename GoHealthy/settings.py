@@ -199,14 +199,13 @@ MIDDLEWARE = [
 ALLOWED_HOSTS = config('DOMAIN_NAME', default='127.0.0.1:8000', cast=Csv(str))
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='127.0.0.1:8000', cast=Csv(str))
 MAIN_DOMAIN_NAME = config('DOMAIN_NAME', default='127.0.0.1:8000', cast=Csv(str))[0]
-print(MAIN_DOMAIN_NAME)
 if DEPLOY:
     CSRF_COOKIE_SECURE = True  # browser trigger the cookie as safe, and only be send by secure connection.
     CSRF_COOKIE_DOMAIN = MAIN_DOMAIN_NAME  # if set . before the domain name, then it also allow for subdomain.
     CSRF_COOKIE_NAME = '__Secure-csrftoken'
     CSRF_COOKIE_SAMESITE = 'Strict'
-    CSRF_COOKIE_HTTPONLY = True
-    CSRF_USE_SESSIONS = True
+    CSRF_COOKIE_HTTPONLY = False
+    CSRF_USE_SESSIONS = False
     
     SESSION_COOKIE_NAME = '__Secure-sessionid'
     SESSION_COOKIE_SECURE = True  # browser trigger the session cookie as safe, and only be send by secure connection.
