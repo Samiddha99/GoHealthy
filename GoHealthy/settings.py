@@ -206,13 +206,13 @@ if DEPLOY:
     CSRF_COOKIE_DOMAIN = MAIN_DOMAIN_NAME  # if set . before the domain name, then it also allow for subdomain.
     # CSRF_COOKIE_NAME = '__Secure-csrftoken'
     # CSRF_COOKIE_SAMESITE = 'Strict'
-    # CSRF_COOKIE_HTTPONLY = True
-    # CSRF_USE_SESSIONS = True
+    CSRF_COOKIE_HTTPONLY = False
+    CSRF_USE_SESSIONS = False
     
-    SESSION_COOKIE_NAME = '__Secure-sessionid'
-    SESSION_COOKIE_SECURE = True  # browser trigger the session cookie as safe, and only be send by secure connection.
-    SESSION_COOKIE_SAMESITE = 'Strict'
-    SESSION_COOKIE_HTTPONLY = True  # session cookies can only be access by https request.
+    # SESSION_COOKIE_NAME = '__Secure-sessionid'
+    # SESSION_COOKIE_SECURE = True  # browser trigger the session cookie as safe, and only be send by secure connection.
+    # SESSION_COOKIE_SAMESITE = 'Strict'
+    # SESSION_COOKIE_HTTPONLY = True  # session cookies can only be access by https request.
     SESSION_EXPIRE_AT_BROWSER_CLOSE = False
     SESSION_COOKIE_AGE = 1 * 24 * 60 * 60  # 1 days in second
     SESSION_COOKIE_DOMAIN = MAIN_DOMAIN_NAME  # if set . before the domain name, then it also allow for subdomain.
@@ -220,8 +220,8 @@ if DEPLOY:
     
     SECURE_BROWSER_XSS_FILTER = True  # prevent rom xss attack. if true, filter all malicious files, scripts will be filtered.
     SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
     SECURE_HSTS_SECONDS = 1 * 365 * 24 * 60 * 60  # 365 days in second
     SECURE_REFERRER_POLICY = 'same-origin'
     # SECURE_SSL_REDIRECT = True  # if any http request come, then convert it to https if possible.
