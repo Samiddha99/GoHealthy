@@ -74,7 +74,6 @@ INSTALLED_APPS = [
     'django_filters',
     'crispy_forms',
     'geoposition',
-    'storages',
     'boto',
     'sri', #Subresource Integrity
 ]
@@ -138,10 +137,13 @@ TWO_FACTOR_API = config('TWO_FACTOR_API')
 
 # Use this link to get AUTHORIZATION_CODE: https://www.dropbox.com/oauth2/authorize?client_id=<APP_KEY>&token_access_type=offline&response_type=code
 # Use this to get OAUTH2_REFRESH_TOKEN: curl https://api.dropbox.com/oauth2/token -d code=<AUTHORIZATION_CODE> -d grant_type=authorization_code -d client_id=<APP_KEY> -d client_secret=<APP_SECRET>
+OVERWRITE_FILE = False
+CLOUD_STORAGE_CREATE_NEW_IF_SAME_CONTENT = True
 DROPBOX_OAUTH2_ACCESS_TOKEN = config('DROPBOX_OAUTH2_ACCESS_TOKEN')
 DROPBOX_OAUTH2_REFRESH_TOKEN = config('DROPBOX_OAUTH2_REFRESH_TOKEN')
 DROPBOX_APP_KEY = config('DROPBOX_APP_KEY')
 DROPBOX_APP_SECRET = config('DROPBOX_APP_SECRET')
+DROPBOX_ROOT_PATH = "/assets/media/"
 
 GOOGLE_RECAPTCHA_SITE_KEY = config('GOOGLE_RECAPTCHA_SITE_KEY')
 GOOGLE_RECAPTCHA_SECRET_KEY = config('GOOGLE_RECAPTCHA_SECRET_KEY')
@@ -270,7 +272,7 @@ CSP_SCRIPT_SRC = [
     "https://unpkg.com/@trevoreyre/autocomplete-js",
     "https://player.vimeo.com/api/player.js",
     "https://cdn.plyr.io/ *",
-    "http://cdn.dashjs.org/latest/dash.all.min.js",
+    "https://cdn.dashjs.org/latest/dash.all.min.js",
     "https://cdn.dashjs.org/latest/dash.all.min.js",
     "https://cdnjs.cloudflare.com/ajax/libs/hls.js/ *",
     "https://hammerjs.github.io/dist/hammer.min.js",
@@ -424,26 +426,26 @@ LOGOUT_REDIRECT_URL = '/login/'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-if DEPLOY:
-    DATABASES = {'default' : config('DATABASE_URL', cast=db_url)} # Parse database configuration from $DATABASE_URL
-    DATABASES['default']['HAS_HSTORE'] = True
-    DATABASES['default']['CONN_MAX_AGE'] = 600
-    DATABASES['default']['CONN_HEALTH_CHECKS'] = True
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': config('POSTGRESQL_DATABASE_ENGINE'),
-            'NAME': config('POSTGRESQL_DATABASE_NAME'),
-            'USER': config('POSTGRESQL_DATABASE_USER'),
-            'PASSWORD': config('POSTGRESQL_DATABASE_PASSWORD'),
-            'HOST': config('POSTGRESQL_DATABASE_HOST'),
-            'PORT': config('POSTGRESQL_DATABASE_PORT'),
-            'HAS_HSTORE': True,
-            'OPTIONS': {
-                'options': '-c search_path=go_healthy_schema,django,public'
-            },
-        }
-    }
+# if DEPLOY:
+DATABASES = {'default' : config('DATABASE_URL', cast=db_url)} # Parse database configuration from $DATABASE_URL
+DATABASES['default']['HAS_HSTORE'] = True
+DATABASES['default']['CONN_MAX_AGE'] = 600
+DATABASES['default']['CONN_HEALTH_CHECKS'] = True
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': config('POSTGRESQL_DATABASE_ENGINE'),
+#             'NAME': config('POSTGRESQL_DATABASE_NAME'),
+#             'USER': config('POSTGRESQL_DATABASE_USER'),
+#             'PASSWORD': config('POSTGRESQL_DATABASE_PASSWORD'),
+#             'HOST': config('POSTGRESQL_DATABASE_HOST'),
+#             'PORT': config('POSTGRESQL_DATABASE_PORT'),
+#             'HAS_HSTORE': True,
+#             'OPTIONS': {
+#                 'options': '-c search_path=go_healthy_schema,django,public'
+#             },
+#         }
+#     }
 
 AUTH_USER_MODEL = 'Go_Healthy_App.Users'
 
@@ -506,9 +508,7 @@ MEDIA_ROOT = BASE_DIR / 'assets/media/'
 MEDIA_URL = '/media/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-if DEPLOY:
-    DEFAULT_FILE_STORAGE = 'custom_storages.backends.dropbox.DropBoxStorage'
-    DROPBOX_ROOT_PATH = '/assets/media/'
+DEFAULT_FILE_STORAGE = 'cloud_storages.backends.dropbox.DropBoxStorage'
 
 
 #For Mail Sending
