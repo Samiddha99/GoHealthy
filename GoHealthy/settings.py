@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'geoposition',
     'boto',
+    'cloud_storages',
     'sri', #Subresource Integrity
 ]
 
