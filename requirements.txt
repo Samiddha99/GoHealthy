@@ -44,7 +44,7 @@ django-background-tasks==1.2.5
 django-cache-headers==0.4
 django-cleanup==5.2.0
 django-clearcache==1.2.1
-django-cloud-storages==1.1.8
+django-cloud-storages==1.1.9
 django-compat==1.0.15
 django-constrainedfilefield==4.0.0
 django-cors-headers==3.7.0

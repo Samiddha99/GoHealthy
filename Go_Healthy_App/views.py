@@ -6418,7 +6418,7 @@ def hospitalRegistration(request):
                         }
                         return JsonResponse(context)
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             no += 1
             context = {
                 "no": no,

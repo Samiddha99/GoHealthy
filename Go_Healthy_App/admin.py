@@ -333,3 +333,8 @@ class SessionAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Session._meta.get_fields()]
     form = SessionAdminForm
 admin.site.register(Session, SessionAdmin)
+
+
+class OTPAdmin(admin.ModelAdmin):
+    list_display = ['Mobile', 'MobileOTP', 'Email', 'EmailOTP', 'Send_For', 'Is_Verified', 'expire', 'Added_at']
+admin.site.register(OTP, OTPAdmin)
