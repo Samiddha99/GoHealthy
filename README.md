@@ -1,10 +1,10 @@
 # Welcome to Go Healthy
 ## Health is Your Right
    
-![logo](logo.png) 
+![logo](/main/assets/static/images/GoHealthy_logo%20main.png) 
 ## We look forwards a time, when nobody dies due to insufficiency of Healthcare Service In India.
  
-**_visit the site_** [GoHealthy](https://gohealthy.pythonanywhere.com/)
+**_visit the site_** [GoHealthy](https://gohealthy.onrender.com)
  ```
  Go Healthy is a website for medical support. Purpose of the website is to deliver all details about Bed and Antivenom availability in all hospitals,
  Doctors and Blood Donor near you and how to do first aid. This website has four different features.
@@ -74,16 +74,6 @@ This solution will solve the **fifth problem** - that is ***The accident victims
 
 
 <h6>NOTE:</h6>The features on the website is not able to solve the whole problem totally. The features just give a relief to the people and help the people. And may reduce the number of death at a lower rate.<br>When Government will focus on these issues, only then the problem will solve totally.
-
-# Work Flow
-## Work Flow 1
-![Work Flow 1](WorkFlow-1.png)
-
-## Work Flow 2
-![Work Flow 2](WorkFlow-2.png)
-
-## Work Flow 3
-![Work Flow 3](WorkFlow-3.png)
 
 
 
