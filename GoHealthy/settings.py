@@ -423,8 +423,8 @@ RATELIMIT_VIEW = 'Go_Healthy_App.views.rateLimitView'
 DEFAULT_VIEW_RATE_LIMIT = '2000/h'
 
 
-# WSGI_APPLICATION = 'GoHealthy.wsgi.application'
-ASGI_APPLICATION = 'GoHealthy.asgi.application'
+WSGI_APPLICATION = 'GoHealthy.wsgi.application'
+# ASGI_APPLICATION = 'GoHealthy.asgi.application'
 ROOT_URLCONF = 'GoHealthy.urls'
 EVENTSTREAM_CHANNELMANAGER_CLASS = 'Go_Healthy_App.channelmanager.CustomChannelManager'
 
