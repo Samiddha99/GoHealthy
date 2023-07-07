@@ -200,6 +200,7 @@ input[type="radio"]:checked + .radio-label{
     color: rgb(119, 119, 119);
     padding-top: 5px;
     padding-bottom: 5px;
+    text-align: center;
 }
 .otp-enter-input:focus{
     border: 2px solid #7d2e70;

@@ -88,7 +88,7 @@ def activeLogedCount(user):
                 count += 1
         return count
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return 0
 
 

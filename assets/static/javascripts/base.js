@@ -349,13 +349,13 @@ function getCookiesValue(cookies_name){
 
 function findAge(dob){
     dob = dob.split("-");
-    dob_year = int(dob[0])
-    dob_month = int(dob[1])
-    dob_day = int(dob[2])
+    dob_year = Number(dob[0])
+    dob_month = Number(dob[1])
+    dob_day = Number(dob[2])
     today = new Date()
-    today_day = int(today.toLocaleString('default', { day: 'numeric' }));
-    today_month = int(today.toLocaleString('default', { month: 'numeric' }));
-    today_year = int(today.toLocaleString('default', { year: 'numeric' }));
+    today_day = Number(today.toLocaleString('default', { day: 'numeric' }));
+    today_month = Number(today.toLocaleString('default', { month: 'numeric' }));
+    today_year = Number(today.toLocaleString('default', { year: 'numeric' }));
     age = today_year - dob_year - ((today_month, today_day) < (dob_month, dob_day))
     return age
 }

@@ -594,7 +594,7 @@ def Hospitals(request):
                 }
             }
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             traceback.print_exc()
             obj = []
             total = 0
@@ -928,7 +928,7 @@ def BloodBankView(request):
             else:
                 isLast = False
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             traceback.print_exc()
             obj = []
             total = 0
@@ -1084,7 +1084,7 @@ def bloodDonationCamp(request):
             else:
                 isLast = False
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             obj = []
             total = 0
             totalPageItem = 0
@@ -1296,7 +1296,7 @@ def bloodDonationCampRegistration(request):
                                 newThreadWebPush = sendWebPushNotification(notification_title=title, notification_message=notificationMessage, notification_topic="Blood Donation Camp", notification_target_url=targetURL, uids=usersList, tags=['blood_donation_camp'])
                                 newThreadWebPush.start()
                             except Exception as e:
-                                print(e)
+                                traceback.print_exc()
                             finally:
                                 OTP.objects.filter(Mobile=Contact, Send_For='Blood Donation Camp Registration').delete()
                         transaction.on_commit(runAfterSuccess)
@@ -1312,7 +1312,7 @@ def bloodDonationCampRegistration(request):
             }
         except Exception as e:
             traceback.print_exc()
-            print(e)
+            traceback.print_exc()
             response_data = {
                 'error': '1',
                 'message': 'Error occurred. Try again!',
@@ -1409,7 +1409,7 @@ def bloodDonationCampEdit(request):
                                 newThreadWebPush = sendWebPushNotification(notification_title=title, notification_message=notificationMessage, notification_topic="Blood Donation Camp", notification_target_url=targetURL, uids=reminders_user, tags=['blood_donation_camp'])
                                 newThreadWebPush.start()
                             except Exception as e:
-                                print(e)
+                                traceback.print_exc()
                             finally:
                                 OTP.objects.filter(Mobile=donationCamp.Organizer_Contact, Send_For='Blood Donation Camp Edit').delete()
                         transaction.on_commit(runAfterSuccess)
@@ -1425,7 +1425,7 @@ def bloodDonationCampEdit(request):
             }
         except Exception as e:
             traceback.print_exc()
-            print(e)
+            traceback.print_exc()
             response_data = {
                 'error': '1',
                 'message': 'Error occurred. Try again!',
@@ -1481,14 +1481,14 @@ def cancelBloodDonationCamp(request):
                         newThreadWebPush = sendWebPushNotification(notification_title=title, notification_message=notificationMessage, notification_topic="Blood Donation Camp Postponed", notification_target_url=targetURL, uids=reminders_user, tags=['blood_donation_camp'])
                         newThreadWebPush.start()
                     except Exception as e:
-                        print(e)
+                        traceback.print_exc()
                         traceback.print_exc()
                     finally:
                         OTP.objects.filter(Mobile=donationCamp.Organizer_Contact, Send_For='Blood Donation Camp Edit').delete()
                 transaction.on_commit(runAfterSuccess)
     except Exception as e:
             traceback.print_exc()
-            print(e)
+            traceback.print_exc()
             response_data = {
                 'error': '1',
                 'message': 'Error occurred. Try again!',
@@ -1665,7 +1665,7 @@ def addRating(request):
             response_data['votes'] = numerize.numerize(reviews, 1)  # it will do 1000 to 1.0K and so on
             response_data['ratings'] = rating
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         traceback.print_exc()
         response_data = {}
         response_data['status'] = 'failed'
@@ -1777,7 +1777,7 @@ def firstaid_photo(request):
                         kwargs[k] = v
                 obj = FirstaidPhoto.objects.filter(**kwargs)
     except Exception as e:
-        print(e)
+        traceback.print_exc()
     finally:
         context = {
             'Ph':obj,
@@ -1807,7 +1807,7 @@ def firstaid_video(request):
                         kwargs[k] = v
                 obj = FirstaidVideo.objects.filter(**kwargs)
     except Exception as e:
-        print(e)
+        traceback.print_exc()
     finally:
         context = {
             'videos':obj,
@@ -3518,12 +3518,12 @@ def BedBook(request, hospitalID=''):
                         newThreadEmail = Send_Mail(From=sender, To=receiver, Subject=subject, Text=body, HTML=htmlMessage, Attachments=attachments, uniqueID=uniqueId, messageGroup="Bed_Booked")
                         newThreadEmail.start()
                     except Exception as e:
-                        print(e)
+                        traceback.print_exc()
                     finally:
                         return True
                 transaction.on_commit(runAfterSuccess)
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             traceback.print_exc()
             #transaction.savepoint_rollback(bed_not_update_sid)
             #transaction.savepoint_rollback(book_not_create_sid)
@@ -3648,12 +3648,12 @@ def NewBook(request):
                         newThreadSMS = sendSMS(numbers=[mobile, ], message=mes, template_id='1407166179866683454')
                         newThreadSMS.start()
                     except Exception as e:
-                        print(e)
+                        traceback.print_exc()
                     finally:
                         return True
                 transaction.on_commit(sendConfirmation)
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             traceback.print_exc()
             print("\n\n")
             response_data = {
@@ -3796,7 +3796,7 @@ def statusUpdate(request):
                                     newThreadSMS = sendSMS(numbers=[book.Mobile, ], message=mes, template_id='1407166168558797879')
                                     newThreadSMS.start()
                                 except Exception as e:
-                                    print(e)
+                                    traceback.print_exc()
                                 finally:
                                     return True
                             if bed.Building is not None and bed.Building != '':
@@ -3838,7 +3838,7 @@ def statusUpdate(request):
                                     newThreadSMS = sendSMS(numbers=[book.Mobile, ], message=mes, template_id='')
                                     newThreadSMS.start()
                                 except Exception as e:
-                                    print(e)
+                                    traceback.print_exc()
                                 finally:
                                     return True
                             context = {
@@ -3863,7 +3863,7 @@ def statusUpdate(request):
                                     newThreadSMS = sendSMS(numbers=[book.Mobile, ], message=mes, template_id='')
                                     newThreadSMS.start()
                                 except Exception as e:
-                                    print(e)
+                                    traceback.print_exc()
                                 finally:
                                     return True
                             context = {
@@ -3897,7 +3897,7 @@ def statusUpdate(request):
                                     newThreadSMS = sendSMS(numbers=[book.Mobile, ], message=mes, template_id='')
                                     newThreadSMS.start()
                                 except Exception as e:
-                                    print(e)
+                                    traceback.print_exc()
                                 finally:
                                     return True
                             context = {
@@ -3930,7 +3930,7 @@ def statusUpdate(request):
                                 BedNo.objects.filter(Q(Booking_Id=bookid, Hospital=hospital)).first().save()
                                 sendConfirmation()
                             except Exception as e:
-                                print(e)
+                                traceback.print_exc()
                             finally:
                                 return True
                         transaction.on_commit(runAfterSuccess)
@@ -4057,7 +4057,7 @@ def PatientEdit(request):
                         BedNo.objects.filter(Q(Booking_Id=bookid, Hospital=hospital)).first().save()
                         sendConfirmation()
                     except Exception as e:
-                        print(e)
+                        traceback.print_exc()
                     finally:
                         return True
                 transaction.on_commit(runAfterSuccess)
@@ -4186,7 +4186,7 @@ def referralpatientEdit(request):
                         BedNo.objects.filter(Q(Hospital=hospital, id=Bed_Id)).first().save()
                         sendConfirmation()
                     except Exception as e:
-                        print(e)
+                        traceback.print_exc()
                     finally:
                         return True
                 transaction.on_commit(runAfterSuccess)
@@ -4365,7 +4365,7 @@ def reserveBooking(request):
                         try:
                             BedNo.objects.filter(id=bedNo).first().save()
                         except Exception as e:
-                            print(e)
+                            traceback.print_exc()
                         finally:
                             return True
                     transaction.on_commit(runAfterSuccess)
@@ -5678,7 +5678,7 @@ def RegisterDonor(request):
                             newThreadEmail = Send_Mail(From=sender, To=receiver, Subject=subject, Text=body, HTML=htmlMessage, uniqueID=uniqueId, messageGroup="Donor_Registered")
                             newThreadEmail.start()
                         except Exception as e:
-                            print(e)
+                            traceback.print_exc()
                         finally:
                             return True
                     transaction.on_commit(sendConfirmation)
@@ -5702,7 +5702,7 @@ def RegisterDonor(request):
                     }
                     return JsonResponse(context)
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             no += 1
             context = {
                 "no": no,
@@ -5904,7 +5904,7 @@ def RegisterDoctor(request):
                     Doctor.objects.create(Username=newuser, Name=name, Gender=gender, Blood_Group=bloodGroup, Degree=degree, Special=specialty, Address=address, State=state, City=city, Subdivision=subdivision, District=district, Pin=pin, Permanent_Address=permanent_address, Permanent_State=permanent_state, Permanent_City=permanent_city, Permanent_Subdivision=permanent_subdivision, Permanent_District=permanent_district, Permanent_Pin=permanent_pin, Image=pic)
                     if donor == "BloodDonor":
                         usern = Users.objects.get(username=username)
-                        Blood_Donar.objects.create(Username=usern, Name=name, Gender=gender, Date_of_Birth=dob, Blood_Group=bloodGroup, Address=address, State=state, Subdivision=subdivision, District=district, Pin=pin, Permanent_Address=permanent_address, Permanent_State=permanent_state, Permanent_City=permanent_city, Permanent_Subdivision=permanent_subdivision, Permanent_District=permanent_district, Permanent_Pin=permanent_pin, Image=pic)
+                        Blood_Donar.objects.create(Username=usern, Name=name, Gender=gender, Date_of_Birth=dob, Blood_Group=bloodGroup, Address=address, State=state, City=city, Subdivision=subdivision, District=district, Pin=pin, Permanent_Address=permanent_address, Permanent_State=permanent_state, Permanent_City=permanent_city, Permanent_Subdivision=permanent_subdivision, Permanent_District=permanent_district, Permanent_Pin=permanent_pin, Image=pic)
 
                     def sendConfirmation():
                         try:
@@ -5927,7 +5927,7 @@ def RegisterDoctor(request):
                             newThreadEmail = Send_Mail(From=sender, To=receiver, Subject=subject, Text=body, HTML=htmlMessage, uniqueID=uniqueId, messageGroup="Doctor_Registered")
                             newThreadEmail.start()
                         except Exception as e:
-                            print(e)
+                            traceback.print_exc()
                         finally:
                             return True
                     transaction.on_commit(sendConfirmation)
@@ -5952,7 +5952,7 @@ def RegisterDoctor(request):
                     }
                     return JsonResponse(context)
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             no += 1
             context = {
                 "no": no,
@@ -6146,7 +6146,7 @@ def NormalRegistration(request):
                             newThreadEmail = Send_Mail(From=sender, To=receiver, Subject=subject, Text=body, HTML=htmlMessage, uniqueID=uniqueId, messageGroup="User_Registered")
                             newThreadEmail.start()
                         except Exception as e:
-                            print(e)
+                            traceback.print_exc()
                         finally:
                             return True
                     transaction.on_commit(sendConfirmation)
@@ -6171,7 +6171,7 @@ def NormalRegistration(request):
                     }
                     return JsonResponse(context)
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             no += 1
             context = {
                 "no": no,
@@ -6392,7 +6392,7 @@ def hospitalRegistration(request):
                                 newThreadEmail = Send_Mail(From=sender, To=receiver, Subject=subject, Text=body, HTML=htmlMessage, uniqueID=uniqueId, messageGroup="Hospital_Partially_Registered")
                                 newThreadEmail.start()
                             except Exception as e:
-                                print(e)
+                                traceback.print_exc()
                             finally:
                                 return True
                         transaction.on_commit(sendConfirmation)
@@ -7061,7 +7061,7 @@ def editBedInfo(request):
                                 if response_data['ward_changed']:
                                     bedsUpdates.first().save()
                             except Exception as e:
-                                print(e)
+                                traceback.print_exc()
                             finally:
                                 return True
                         transaction.on_commit(runAfterSuccess)
@@ -7123,7 +7123,7 @@ def registerHospitalSubmit(request):
                             newThreadEmail = Send_Mail(From=sender, To=receiver, Subject=subject, Text=body, HTML=htmlMessage, uniqueID=uniqueId, messageGroup="Hospital_Registered")
                             newThreadEmail.start()
                         except Exception as e:
-                            print(e)
+                            traceback.print_exc()
                         finally:
                             OTP.objects.filter(Mobile=hospital.Username.Contact, Is_Verified=True, Send_For="Hospital Register User Verification").delete()
                             OTP.objects.filter(Email=hospital.Username.email, Is_Verified=True, Send_For="Hospital Register User Verification").delete()
@@ -7324,7 +7324,7 @@ def bloodBankRegistration(request):
                                 newThreadEmail = Send_Mail(From=sender, To=receiver, Subject=subject, Text=body, HTML=htmlMessage, uniqueID=uniqueId, messageGroup="Blood_Bank_Partially_Registered")
                                 newThreadEmail.start()
                             except Exception as e:
-                                print(e)
+                                traceback.print_exc()
                             finally:
                                 return True
                         transaction.on_commit(sendConfirmation)
@@ -7350,7 +7350,7 @@ def bloodBankRegistration(request):
                         }
                         return JsonResponse(context)
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             no += 1
             context = {
                 "no": no,
@@ -7490,7 +7490,7 @@ def registerBloodBankAddBlood(request):
                             newThreadEmail = Send_Mail(From=sender, To=receiver, Subject=subject, Text=body, HTML=htmlMessage, uniqueID=uniqueId, messageGroup="Blood_Bank_Registered")
                             newThreadEmail.start()
                         except Exception as e:
-                            print(e)
+                            traceback.print_exc()
                         finally:
                             OTP.objects.filter(Mobile=bloodBank.Username.Contact, Is_Verified=True, Send_For="Blood Bank Register User Verification").delete()
                             OTP.objects.filter(Email=bloodBank.Username.email, Is_Verified=True, Send_For="Blood Bank Register User Verification").delete()

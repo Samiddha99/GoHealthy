@@ -1,7 +1,8 @@
 
-$("#div_registration-form").on('click', "#donor", function(){
+$("#div_registration-form").on('change', "#donor", function(){
     $("#dob-field").hide();
     $('#dob').val('');
+    $('#dob').prop('required', false);
     $("#dobMessage").html("")
     if(document.getElementById('donor').checked){
         $('input[name="eligibiltyCheck"]').prop('checked', false)
@@ -19,10 +20,12 @@ $('input[name="eligibiltyCheck"]').on('change', function(){
     if(isEligible == '0'){
         $('#donor').prop('checked', false);
         $("#dob-field").hide();
+        $('#dob').prop('required', false);
     }
     else{
         $('#donor').prop('checked', true);
         $("#dob-field").show();
+        $('#dob').prop('required', true);
     }
 });
 $('#donorEligibilityBtn').on('click', function(){

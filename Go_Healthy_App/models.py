@@ -1335,7 +1335,7 @@ class PeopleVoice(models.Model):
     Language = models.ForeignKey(Languages, on_delete=models.CASCADE)
     Text = models.CharField(max_length=5000)
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, blank=True, null=True)
-    Is_Approved = models.BooleanField(default=True)
+    Is_Approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
         get_latest_by = ['-created_at']

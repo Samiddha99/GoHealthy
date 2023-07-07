@@ -12,6 +12,7 @@ import os
 import subprocess
 from xmlrpc.client import Boolean
 from django.db.models.expressions import F
+import re
 
 from decouple import config, Csv
 from dotenv import load_dotenv
@@ -175,18 +176,18 @@ SMS_SEND_ENABLED = config("SMS_SEND_ENABLED", '0')
 
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware', # default
     'corsheaders.middleware.CorsMiddleware',
     'csp.middleware.CSPMiddleware',  #Content-Secure-Policy Middleware
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'cache_headers.middleware.CacheHeadersMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware', # default
+    'django.middleware.common.CommonMiddleware', # default
+    'django.middleware.csrf.CsrfViewMiddleware', # default
     'django.middleware.http.ConditionalGetMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # default
+    'django.contrib.messages.middleware.MessageMiddleware', # default
+    'django.middleware.clickjacking.XFrameOptionsMiddleware', # default
     'django_referrer_policy.middleware.ReferrerPolicyMiddleware',
     'django_grip.GripMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
@@ -196,6 +197,14 @@ MIDDLEWARE = [
     # 'Go_Healthy_App.middleware.security.IPCheckMiddleware',
     'Go_Healthy_App.middleware.request_update.FormatPostData',
 ]
+
+
+IGNORABLE_404_URLS = [
+    re.compile(r"^/apple-touch-icon.*\.png$"),
+    re.compile(r"^/favicon\.ico$"),
+    re.compile(r"^/robots\.txt$"),
+    re.compile(r"sendgrid"),
+] # Don't send broken link error to admin mail for this urls.
 
 
 # Strict: Allowed on first party requests only. No cross-domain shenanigans
@@ -260,7 +269,7 @@ CSP_SCRIPT_SRC = [
     "https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js",
     "https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js",
     "https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js",
-    "https://maps.googleapis.com/maps/api/js",
+    "https://maps.googleapis.com/maps/api/ *",
     "https://www.google.com/recaptcha/",
     "https://www.google.com/recaptcha/api.js",
     "https://www.gstatic.com/recaptcha/ *",
@@ -293,6 +302,7 @@ CSP_STYLE_SRC = [
     "https://ka-f.fontawesome.com/ *",
     "https://cdn.plyr.io/ *",
     "https://cdn.anychart.com/ *",
+    "https://maps.googleapis.com/maps/api/ *",
 ]
 CSP_STYLE_SRC_ELEM = CSP_STYLE_SRC
 
@@ -303,19 +313,22 @@ CSP_IMG_SRC = [
     "https://content.dropboxapi.com/ *",
     "data:",
     "blob:",
+    "https://maps.googleapis.com/maps/api/ *",
 ]
 
 CSP_FONT_SRC = [
     "'self'",
     "https://fonts.gstatic.com/ *",
     "https://ka-f.fontawesome.com/ *",
-    "https://cdn.anychart.com/ *"
+    "https://cdn.anychart.com/ *",
+    "https://maps.googleapis.com/maps/api/ *",
 ]
 
 CSP_CONNECT_SRC = [
     "'self'",
     "https://ka-f.fontawesome.com/ *",
     "https://internalapi.engagespot.co *",
+    "https://maps.googleapis.com/maps/api/ *",
 ]
 
 CSP_FRAME_SRC = [
@@ -328,12 +341,14 @@ CSP_FRAME_SRC = [
     "https://export.anychart.com/",
     "https://www.google.com/recaptcha/",
     "https://recaptcha.google.com/recaptcha/",
+    "https://maps.googleapis.com/maps/api/ *",
 ]
 CSP_MEDIA_SRC = [
     "'self'",
     "https://content.dropboxapi.com/ *",
     "https://www.youtube.com",
     "https://www.youtube-nocookie.com",
+    "https://maps.googleapis.com/maps/api/ *",
 ]
 CSP_MANIFEST_SRC = [
     "'self'",
