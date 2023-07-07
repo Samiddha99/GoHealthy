@@ -1,7 +1,7 @@
 # Welcome to Go Healthy
 ## Health is Your Right
    
-![logo](/main/assets/static/images/GoHealthy_logo%20main.png) 
+![logo](/assets/static/images/GoHealthy_logo%20main.png) 
 ## We look forwards a time, when nobody dies due to insufficiency of Healthcare Service In India.
  
 **_visit the site_** [GoHealthy](https://gohealthy.onrender.com)
