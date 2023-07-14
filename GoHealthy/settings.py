@@ -405,15 +405,15 @@ CACHES = {
 
 USER_AGENTS_CACHE = None
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": ['redis://localhost:6379'],
-        },
-        "ROUTING": "GoHealthy.routing.channel_routing",
-    },
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": ['redis://localhost:6379'],
+#         },
+#         "ROUTING": "GoHealthy.routing.channel_routing",
+#     },
+# }
 
 
 RATELIMIT_CACHE_PREFIX = "GoHealthy_rate_limit"
@@ -423,8 +423,8 @@ RATELIMIT_VIEW = 'Go_Healthy_App.views.rateLimitView'
 DEFAULT_VIEW_RATE_LIMIT = '2000/h'
 
 
-WSGI_APPLICATION = 'GoHealthy.wsgi.application'
-# ASGI_APPLICATION = 'GoHealthy.asgi.application'
+# WSGI_APPLICATION = 'GoHealthy.wsgi.application'
+ASGI_APPLICATION = 'GoHealthy.asgi.application'
 ROOT_URLCONF = 'GoHealthy.urls'
 EVENTSTREAM_CHANNELMANAGER_CLASS = 'Go_Healthy_App.channelmanager.CustomChannelManager'
 
