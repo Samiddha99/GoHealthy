@@ -190,7 +190,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware', # default
     'django_referrer_policy.middleware.ReferrerPolicyMiddleware',
     'django_grip.GripMiddleware',
-    'django.middleware.common.BrokenLinkEmailsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware', # default
     'django_ratelimit.middleware.RatelimitMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
     # custom middleware
@@ -215,7 +215,7 @@ CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='127.0.0.1:8000', 
 MAIN_DOMAIN_NAME = config('DOMAIN_NAME', default='127.0.0.1:8000', cast=Csv(str))[0]
 if DEPLOY:
     CSRF_COOKIE_SECURE = True  # browser trigger the cookie as safe, and only be send by secure connection.
-    # CSRF_COOKIE_DOMAIN = MAIN_DOMAIN_NAME  # if set . before the domain name, then it also allow for subdomain.
+    # CSRF_COOKIE_DOMAIN = 'MAIN_DOMAIN_NAME'  #The domain to be used when setting the CSRF cookie. If set . before the domain name, then it also allow for subdomain.
     CSRF_COOKIE_NAME = '__Secure-csrftoken'
     CSRF_COOKIE_SAMESITE = 'Strict'
     CSRF_COOKIE_HTTPONLY = True
@@ -423,8 +423,8 @@ RATELIMIT_VIEW = 'Go_Healthy_App.views.rateLimitView'
 DEFAULT_VIEW_RATE_LIMIT = '2000/h'
 
 
-# WSGI_APPLICATION = 'GoHealthy.wsgi.application'
-ASGI_APPLICATION = 'GoHealthy.asgi.application'
+WSGI_APPLICATION = 'GoHealthy.wsgi.application'
+# ASGI_APPLICATION = 'GoHealthy.asgi.application'
 ROOT_URLCONF = 'GoHealthy.urls'
 EVENTSTREAM_CHANNELMANAGER_CLASS = 'Go_Healthy_App.channelmanager.CustomChannelManager'
 
