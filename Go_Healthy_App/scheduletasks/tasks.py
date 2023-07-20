@@ -17,8 +17,6 @@ from django.utils import timezone as zonetime
 from mailjet_rest import Client as mailjet_client
 from django.db.models import Count
 import requests
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
 from email.mime.multipart import MIMEMultipart
 from django_eventstream import send_event
 from email.mime.text import MIMEText

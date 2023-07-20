@@ -48,7 +48,6 @@ from django.core import exceptions
 from django.contrib.auth.hashers import check_password
 import datetime
 from django.utils import timezone as zonetime
-from sendgrid.helpers.mail import Mail
 from rest_framework.response import Response
 from itertools import chain
 from operator import attrgetter, truediv

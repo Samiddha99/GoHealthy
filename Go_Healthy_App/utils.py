@@ -29,7 +29,6 @@ import dropbox
 import numpy
 import requests
 import http.client
-import sendgrid
 from dateutil import tz
 from django.core import exceptions
 from django.core.exceptions import ValidationError
