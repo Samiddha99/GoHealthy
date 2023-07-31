@@ -477,7 +477,7 @@ def Hospitals(request):
         total = 0
         count = 0
         try:
-            sort = request.GET.get('sort', '')
+            sort = request.GET.get('sort', '?')
 
             latitude = request.GET.get('latitude', '')
             longitude = request.GET.get('longitude', '')
@@ -572,8 +572,7 @@ def Hospitals(request):
             hospitalBeds = BedNo.objects.filter(Q(Hospital__in=obj) & ~Q(Availability="Null")).filter(**filter_value1).values_list('Hospital__id', flat=True)
             obj = obj.filter(id__in=hospitalBeds)
 
-            if sort != '':
-                obj = obj.order_by(sort)
+            obj = obj.order_by(sort)
             total = obj.count()
             
             p = Paginator(obj, 50) # 50 items on each page
@@ -653,7 +652,7 @@ def Doctors(request):
         isFirstLoad = request.GET.get('isFirstLoad')
         total_page = None
         try:
-            sort = str(request.GET.get('sort', ''))
+            sort = str(request.GET.get('sort', '?'))
             Reg_no = request.GET.get('Registration_no', '')
             specialities = request.GET.getlist('specialities[]', '')
             state_search = request.GET.get('State', '')
@@ -702,8 +701,7 @@ def Doctors(request):
             total = obj.count()
             total_page = math.ceil(total / page_size)
 
-            if sort != '':
-                obj.order_by(sort)
+            obj.order_by(sort)
     
             obj = obj[start:end]
             totalPageItem = obj.count()
@@ -757,7 +755,7 @@ def Blood(request):
         page_no = int(request.GET.get('page', '1'))
         isFirstLoad = request.GET.get('isFirstLoad')
         try:
-            sort = request.GET.get('sort', '')
+            sort = request.GET.get('sort', '?')
             latitude = request.GET.get('latitude', '')
             longitude = request.GET.get('longitude', '')
             group = request.GET.getlist('groups[]')
@@ -806,8 +804,7 @@ def Blood(request):
             total = obj.count()
             total_page = math.ceil(total / page_size)
 
-            if sort != '':
-                obj.order_by(sort)
+            obj.order_by(sort)
     
             obj = obj[start:end]
             totalPageItem = obj.count()
@@ -863,7 +860,7 @@ def BloodBankView(request):
 
             latitude = request.GET.get('latitude', '')
             longitude = request.GET.get('longitude', '')
-            sort = request.GET.get('Sort', '')
+            sort = request.GET.get('Sort', '?')
             groupField = request.GET.getlist('Groups[]')
             state_search = request.GET.get('State', '')
             district_search = request.GET.get('District', '')
@@ -916,8 +913,7 @@ def BloodBankView(request):
             total = obj.count()
             total_page = math.ceil(total / page_size)
 
-            if sort != '':
-                obj.order_by(sort)
+            obj.order_by(sort)
     
             obj = obj[start:end]
             totalPageItem = obj.count()
